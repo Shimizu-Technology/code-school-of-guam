@@ -19,14 +19,14 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, clientSecret: paymentIntent.client_secret });
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Capture error details from Stripe and handle different cases
     let errorMessage = 'An error occurred while processing the payment.';
     let errorCode = 'payment_error';
 
-    if (error.raw) {
+    if (error instanceof Stripe.errors.StripeError) {
       // Handle specific error types from Stripe
-      switch (error.raw.code) {
+      switch (error.code) {
         case 'card_declined':
           errorMessage = 'Your card was declined. Please try another card.';
           errorCode = 'card_declined';
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
           errorCode = 'expired_card';
           break;
         default:
-          errorMessage = error.raw.message || errorMessage;
+          errorMessage = error.message || errorMessage;
       }
     }
 

@@ -37,7 +37,7 @@ const PaymentPage: FC = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <h3 className="text-lg font-semibold">Code School of Guam</h3>
-              <p className="text-sm text-gray-400">Empowering Guam's tech future</p>
+              <p className="text-sm text-gray-400">Empowering Guam&apos;s tech future</p>
             </div>
             <div className="flex space-x-4">
               <Link href="/#about" className="text-sm text-gray-400 hover:text-white">About</Link>

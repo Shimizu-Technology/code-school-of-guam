@@ -45,7 +45,7 @@ const PaymentDashboard: React.FC = () => {
     <div className="max-w-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Select Payment Option</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {paymentOptions.map((option, index) => (
+        {paymentOptions.map((option) => (
           <button
             key={option.type}
             onClick={() => handlePaymentSelect(option.type)}
