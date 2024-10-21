@@ -10,7 +10,7 @@ const PaymentDashboard: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
 
   const paymentOptions = [
-    { type: 'Deposit', amount: 1000 },
+    { type: 'Deposit', amount: 500 },
     { type: 'Monthly Installment', amount: 2500 },
     { type: 'Full Tuition', amount: 10000 },
     { type: 'Other', amount: null }, // Added "Other" option
