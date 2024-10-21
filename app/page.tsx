@@ -78,6 +78,7 @@ export default function LandingPage() {
     { href: "#faq", label: "FAQs" },
     { href: "#policies", label: "Policies" },
     { href: "#contact", label: "Contact Us" },
+    { href: "/payment", label: "Payment", isButton: true }
   ]
 
   const faqs = [
