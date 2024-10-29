@@ -15,6 +15,7 @@ export default function LandingPage() {
   const [email, setEmail] = useState("")
   const [isVisible, setIsVisible] = useState(false)
   const [activeSection, setActiveSection] = useState("")
+  const [showNav, setShowNav] = useState(false) // Track nav visibility for mobile
 
   useEffect(() => {
     setIsVisible(true)
@@ -80,6 +81,11 @@ export default function LandingPage() {
     { href: "#contact", label: "Contact Us" },
     { href: "/payment", label: "Payment", isButton: true }
   ]
+
+  // Close the mobile nav after clicking a link
+  const closeNav = () => {
+    setShowNav(false)
+  }
 
   const faqs = [
     {
@@ -201,7 +207,7 @@ export default function LandingPage() {
                 ))}
               </div>
             </div>
-            <Sheet>
+            <Sheet open={showNav} onOpenChange={setShowNav}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="lg:hidden">
                   <Menu className="h-6 w-6" />
@@ -211,7 +217,12 @@ export default function LandingPage() {
               <SheetContent side="right" className="bg-gray-900 text-white">
                 <nav className="flex flex-col gap-4">
                   {navItems.map((item, index) => (
-                    <Link key={index} className="text-sm font-medium hover:text-orange-500 transition-colors duration-200" href={item.href}>
+                    <Link 
+                      key={index} 
+                      className="text-sm font-medium hover:text-orange-500 transition-colors duration-200" 
+                      href={item.href} 
+                      onClick={closeNav} // Close nav after clicking
+                    >
                       {item.label}
                     </Link>
                   ))}
@@ -383,7 +394,7 @@ export default function LandingPage() {
             <p className="text-lg text-gray-600 text-center mb-8">
               We offer two comprehensive programs to suit different learning styles and schedules:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
@@ -399,7 +410,6 @@ export default function LandingPage() {
                     <li>Career support</li>
                   </ul>
                   <p className="font-bold text-gray-900">Tuition: $10,000</p>
-                  <p className="text-sm text-gray-600 mt-2">Payment options: Full upfront payment with $1,000 discount, or four monthly installments</p>
                 </CardContent>
               </Card>
               <Card className="hover-lift bg-gray-100">
@@ -420,6 +430,46 @@ export default function LandingPage() {
                 </CardContent>
               </Card>
             </div>
+
+            <div className="bg-gray-100 rounded-lg p-8 mb-12">
+              <h3 className="text-2xl font-bold mb-6 text-center">Payment Options</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="hover-lift bg-white">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center">
+                      <CheckCircle className="mr-2 h-5 w-5 text-orange-500" />
+                      Full Tuition Upfront
+                    </h4>
+                    <p className="text-gray-600">Receive a discount when you pay in full—save more and simplify your enrollment!</p>
+                  </CardContent>
+                </Card>
+                <Card className="hover-lift bg-white">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center">
+                      <Calendar className="mr-2 h-5 w-5 text-orange-500" />
+                      4 Monthly Installments
+                    </h4>
+                    <p className="text-gray-600">Split your tuition into 4 equal payments, starting from the first month of class.</p>
+                  </CardContent>
+                </Card>
+                <Card className="hover-lift bg-white">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center">
+                      <Briefcase className="mr-2 h-5 w-5 text-orange-500" />
+                      Bank Loan Options
+                    </h4>
+                    <ul className="list-disc list-inside text-gray-600 mb-2">
+                      <li>Get a personal loan from the bank of your choice</li>
+                      <li>Use our partnership with PFC Finance for a streamlined loan process</li>
+                    </ul>
+                    <p className="text-sm text-gray-500 italic mt-2">
+                      Note: If you're interested in the PFC Finance option, please reach out to us, and we'll share the details with you.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
             <div className="mt-8">
               <h3 className="text-2xl font-bold mb-4 text-center">Our Pricing Philosophy</h3>
               <p className="text-lg text-gray-600 text-center">
