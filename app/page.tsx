@@ -463,7 +463,7 @@ export default function LandingPage() {
                       <li>Use our partnership with PFC Finance for a streamlined loan process</li>
                     </ul>
                     <p className="text-sm text-gray-500 italic mt-2">
-                      Note: If you're interested in the PFC Finance option, please reach out to us, and we'll share the details with you.
+                      Note: If you&apos;re interested in the PFC Finance option, please reach out to us, and we&apos;ll share the details with you.
                     </p>
                   </CardContent>
                 </Card>
