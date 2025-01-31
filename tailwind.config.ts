@@ -2,20 +2,37 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      /* 
+        Slightly smaller default padding (1rem) if you want 
+        tighter spacing on mobile, or stick with 2rem. 
+      */
+      padding: {
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "4rem",
+        xl: "6rem",
+        "2xl": "8rem",
+      },
       screens: {
         "2xl": "1400px",
       },
     },
     extend: {
+      /* 
+        Optionally define a custom font family here 
+        to match your Google Font (e.g., 'Inter'). 
+      */
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -51,6 +68,10 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
       },
+      /* 
+        Adjust border radius or add new breakpoints if desired. 
+        For example, you can add an 'xs' breakpoint if you want. 
+      */
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -72,5 +93,9 @@ module.exports = {
       },
     },
   },
+  /* 
+    tailwindcss-animate is already included 
+    for your accordion animations, etc. 
+  */
   plugins: [require("tailwindcss-animate")],
 }
