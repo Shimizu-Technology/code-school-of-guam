@@ -395,6 +395,42 @@ export default function LandingPage() {
           </div>
         </section>
 
+        <section
+          id="next-cohort"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gray-50 relative overflow-hidden"
+        >
+          <div className="container mx-auto px-4 md:px-6">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-center text-gray-900 mb-4">
+              Next Cohort Starts July 28
+            </h2>
+            <div className="max-w-3xl mx-auto bg-white rounded-md shadow p-6 md:p-8">
+              <p className="text-lg text-gray-600 mb-4 text-center">
+                We’re currently one month into our pilot cohort, and we’re excited
+                to welcome our next class on <strong>Monday, July 28</strong>. The exact
+                schedule will be chosen based on majority preference among applicants:
+              </p>
+              <ul className="list-disc list-inside text-gray-600 mb-4 mx-auto max-w-xl">
+                <li>Option 1: Monday – Friday, 5:30pm – 9:30pm</li>
+                <li>Option 2: Monday – Thursday, 6:00pm – 9:00pm; plus Saturday, 8:00am – 4:00pm</li>
+              </ul>
+              <p className="text-lg text-gray-600 mb-6 text-center">
+                Let us know which schedule works better for you when you apply, and
+                we’ll finalize it based on the majority preference.
+              </p>
+              <div className="text-center">
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSc84Vee53gbVhwamS77qvizzV8vGri4Ms83kIEzqgN6vg7wZA/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orange-500"
+                >
+                  Apply Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Why Choose Us */}
         <section
           id="why-choose-us"
