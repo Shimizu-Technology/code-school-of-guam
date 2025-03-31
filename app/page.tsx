@@ -320,7 +320,7 @@ export default function LandingPage() {
               </div>
               <div className="w-full max-w-sm space-y-2">
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSc84Vee53gbVhwamS77qvizzV8vGri4Ms83kIEzqgN6vg7wZA/viewform?vc=0&c=0&w=1&flr=0"
+                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -419,7 +419,7 @@ export default function LandingPage() {
               </p>
               <div className="text-center">
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSc84Vee53gbVhwamS77qvizzV8vGri4Ms83kIEzqgN6vg7wZA/viewform"
+                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orange-500"
@@ -1006,7 +1006,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-12 text-center">
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSc84Vee53gbVhwamS77qvizzV8vGri4Ms83kIEzqgN6vg7wZA/viewform?vc=0&c=0&w=1&flr=0"
+                href="https://forms.gle/bifqSWnbH74vLZ7v7"
                 className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1380,7 +1380,7 @@ export default function LandingPage() {
       {/* Floating Apply Now Button */}
       <div className="fixed bottom-4 right-4 z-50">
         <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSc84Vee53gbVhwamS77qvizzV8vGri4Ms83kIEzqgN6vg7wZA/viewform?vc=0&c=0&w=1&flr=0"
+          href="https://forms.gle/bifqSWnbH74vLZ7v7"
           className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
           target="_blank"
           rel="noopener noreferrer"
