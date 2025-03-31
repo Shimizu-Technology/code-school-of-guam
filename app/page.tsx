@@ -1,6 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import {
+  setupScrollAnimations,
+  setupStaggeredAnimations,
+  setupDeviceOrientationEffects,
+  setupTouchEffects
+} from "@/lib/animation-utils"
+import { SimpleMobileNav } from "@/components/simple-mobile-nav"
+import { EnhancedFAQSection } from "@/components/enhanced-faq-section"
+import { RefinedTimelineSection } from "@/components/refined-timeline-section"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -55,7 +64,21 @@ export default function LandingPage() {
       })
     }
 
+    // Initialize scroll position tracking
     window.addEventListener("scroll", handleScroll)
+    
+    // Initialize all our animation utilities
+    setupScrollAnimations()
+    setupStaggeredAnimations()
+    
+    // Only initialize device orientation effects on mobile devices
+    if (window.innerWidth <= 768) {
+      setupDeviceOrientationEffects()
+    }
+    
+    // Initialize touch effects for all devices
+    setupTouchEffects()
+    
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -225,11 +248,17 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 w-full bg-gray-900 text-white shadow-md">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
-            {/* Logo / Title */}
-            <Link className="flex items-center" href="#">
+            {/* Logo / Title with Smooth Scroll */}
+            <a
+              className="flex items-center hover:text-white cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            >
               <Code className="h-8 w-8 text-ruby-500" />
-              <span className="ml-2 text-xl font-bold">Code School of Guam</span>
-            </Link>
+              <span className="ml-2 text-xl font-bold text-white">Code School of Guam</span>
+            </a>
 
             {/* Desktop Nav - Large Screens */}
             <nav className="hidden xl:flex space-x-4">
@@ -303,29 +332,8 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* Mobile Nav (Sheet) */}
-            <Sheet open={showNav} onOpenChange={setShowNav}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="xl:hidden">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="bg-gray-900 text-white">
-                <nav className="flex flex-col gap-4">
-                  {navItems.map((item, index) => (
-                    <Link
-                      key={index}
-                      className="text-sm font-medium hover:text-ruby-500 transition-colors duration-200"
-                      href={item.href}
-                      onClick={closeNav}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </nav>
-              </SheetContent>
-            </Sheet>
+            {/* Simple Mobile Nav for Better Compatibility */}
+            <SimpleMobileNav navItems={navItems} activeSection={activeSection} />
           </div>
         </div>
       </header>
@@ -341,8 +349,11 @@ export default function LandingPage() {
             <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-blue-500 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
           </div>
           
-          {/* Abstract code pattern background */}
-          <div className="absolute inset-0 opacity-5">
+          {/* Mobile-optimized floating elements that respond to device movement */}
+          <div className="absolute inset-0 opacity-10 md:opacity-5">
+            <div className="absolute top-1/3 left-1/5 w-16 h-16 bg-ruby-500 rounded-full animate-float" style={{ animationDelay: '0.5s' }} data-tilt-effect></div>
+            <div className="absolute top-2/3 right-1/5 w-12 h-12 bg-blue-400 rounded-full animate-float" style={{ animationDelay: '1.2s' }} data-tilt-effect></div>
+            <div className="absolute bottom-1/4 left-1/3 w-8 h-8 bg-green-400 rounded-full animate-float" style={{ animationDelay: '0.8s' }} data-tilt-effect></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent_70%)]"></div>
           </div>
           
@@ -351,31 +362,32 @@ export default function LandingPage() {
               className={`flex flex-col items-center space-y-6 text-center ${
                 isVisible ? "fade-in" : ""
               }`}
+              data-tilt-effect
             >
-              <div className="space-y-4">
+              <div className="space-y-4 reveal-on-scroll">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-lg">
                   Launch Your Tech Career in Guam
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl/relaxed lg:text-2xl/relaxed">
                   Join Guam's first coding bootcamp with our{" "}
-                  <span className="font-semibold text-ruby-500">
+                  <span className="font-semibold text-ruby-500 animate-pulse-slow">
                     fully remote classes
                   </span>{" "}
                   and transform your passion for technology into a
                   powerful career in the Pacific's growing tech industry.
                 </p>
               </div>
-              <div className="w-full max-w-sm space-y-3">
+              <div className="w-full max-w-sm space-y-3 reveal-on-scroll">
                 <a
                   href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                  className="inline-flex h-14 items-center justify-center rounded-md bg-ruby-500 px-12 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring"
+                  className="inline-flex h-14 items-center justify-center rounded-md bg-ruby-500 px-12 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring animate-ripple touch-feedback"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Apply to Code School of Guam"
                   role="button"
                 >
                   Apply Now!
-                  <ChevronRight className="ml-2 h-6 w-6" />
+                  <ChevronRight className="ml-2 h-6 w-6 animate-bounce" />
                 </a>
                 <p className="text-sm text-gray-300">
                   Begin your journey today. No prior experience required.
@@ -444,20 +456,6 @@ export default function LandingPage() {
                   </p>
                 </CardContent>
               </Card>
-            </div>
-            
-            <div className="mt-8 text-center">
-              <a
-                href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 focus-ring"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Apply to Code School of Guam"
-                role="button"
-              >
-                Join Our Next Cohort
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </a>
             </div>
           </div>
         </section>
@@ -645,45 +643,45 @@ export default function LandingPage() {
               styles and schedules:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <Card className="hover-lift bg-gray-100">
+              <Card className="hover-lift bg-gray-100 reveal-on-scroll animate-tilt" data-tilt-effect>
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <BookOpen className="mr-2 h-5 w-5 text-red-500" />
+                    <BookOpen className="mr-2 h-5 w-5 text-red-500 animate-float" />
                     Live Class (Synchronous Learning)
                   </h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-600 mb-4">
-                    <li>4-month program (20-25 hours/week)</li>
-                    <li>
+                  <ul className="list-disc list-inside space-y-2 text-gray-600 mb-4" data-stagger-children>
+                    <li className="animate-stagger">4-month program (20-25 hours/week)</li>
+                    <li className="animate-stagger">
                       Monday – Thursday (6:00 PM – 9:00 PM), Saturday (8:00 AM –
                       4:00 PM)
                     </li>
-                    <li>
-                      <span className="font-semibold text-red-500">
+                    <li className="animate-stagger">
+                      <span className="font-semibold text-red-500 animate-pulse-slow">
                         Fully remote
                       </span>{" "}
                       live instructor-led classes via Zoom
                     </li>
-                    <li>Hands-on projects and exercises</li>
-                    <li>Access to recordings for one year</li>
-                    <li>Career support</li>
+                    <li className="animate-stagger">Hands-on projects and exercises</li>
+                    <li className="animate-stagger">Access to recordings for one year</li>
+                    <li className="animate-stagger">Career support</li>
                   </ul>
-                  <p className="font-bold text-gray-900">Tuition: $10,000</p>
+                  <p className="font-bold text-gray-900 animate-shimmer">Tuition: $10,000</p>
                 </CardContent>
               </Card>
-              <Card className="hover-lift bg-gray-100">
+              <Card className="hover-lift bg-gray-100 reveal-on-scroll animate-tilt" data-tilt-effect style={{ animationDelay: '0.2s' }}>
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <BookOpen className="mr-2 h-5 w-5 text-red-500" />
+                    <BookOpen className="mr-2 h-5 w-5 text-red-500 animate-float" style={{ animationDelay: '0.5s' }} />
                     Self-Paced Program (Asynchronous Learning)
                   </h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-600 mb-4">
-                    <li>6-month program</li>
-                    <li>Access to recorded lessons</li>
-                    <li>Mandatory weekly 1-hour instructor meetings</li>
-                    <li>Weekly project submissions</li>
-                    <li>Guidance throughout the program</li>
+                  <ul className="list-disc list-inside space-y-2 text-gray-600 mb-4" data-stagger-children>
+                    <li className="animate-stagger">6-month program</li>
+                    <li className="animate-stagger">Access to recorded lessons</li>
+                    <li className="animate-stagger">Mandatory weekly 1-hour instructor meetings</li>
+                    <li className="animate-stagger">Weekly project submissions</li>
+                    <li className="animate-stagger">Guidance throughout the program</li>
                   </ul>
-                  <p className="font-bold text-gray-900">Tuition: $12,000</p>
+                  <p className="font-bold text-gray-900 animate-shimmer">Tuition: $12,000</p>
                   <p className="text-sm text-gray-600 mt-2">
                     Coming soon after our initial cohorts
                   </p>
@@ -877,91 +875,59 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Timeline */}
-        <section
-          id="timeline"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gray-900 text-white relative overflow-hidden"
-        >
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
-              Program Timeline
-            </h2>
-            <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-ruby-500"></div>
-              <div className="space-y-8">
-                {[
-                  {
-                    weeks: "Pre-work",
-                    title: "Foundations",
-                    description:
-                      "Self-paced preparation to ensure all students start with a solid foundation.",
-                  },
-                  {
-                    weeks: "Weeks 1-4",
-                    title: "Ruby Fundamentals",
-                    description:
-                      "Dive into Ruby and Object-Oriented Programming concepts.",
-                  },
-                  {
-                    weeks: "Weeks 5-8",
-                    title: "Rails API Development",
-                    description:
-                      "Learn to build robust backend APIs with Ruby on Rails.",
-                  },
-                  {
-                    weeks: "Week 9",
-                    title: "Full-Stack Transition",
-                    description:
-                      "Bridge the gap between backend and frontend development.",
-                  },
-                  {
-                    weeks: "Weeks 10-11",
-                    title: "JavaScript & APIs",
-                    description:
-                      "Explore JavaScript and working with external APIs.",
-                  },
-                  {
-                    weeks: "Weeks 12-13",
-                    title: "React & Integration",
-                    description:
-                      "Master React and integrate it with your Rails backend.",
-                  },
-                  {
-                    weeks: "Week 14",
-                    title: "Advanced Topics",
-                    description:
-                      "Capstone planning, AI in software engineering, and Python introduction.",
-                  },
-                  {
-                    weeks: "Weeks 15-16",
-                    title: "Capstone Project",
-                    description:
-                      "Develop and present your full-stack capstone project.",
-                  },
-                ].map((item, index) => (
-                  <div key={index} className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-ruby-500 rounded-full"></div>
-                    <Card
-                      className={`hover-lift bg-gray-800 shadow-lg border-t-2 border-ruby-500 ${
-                        index % 2 === 0
-                          ? "ml-8 md:ml-0 md:mr-auto md:w-5/12"
-                          : "mr-8 md:mr-0 md:ml-auto md:w-5/12"
-                      }`}
-                    >
-                      <CardContent className="p-6">
-                        <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                          <Calendar className="mr-2 h-5 w-5 text-ruby-500" />
-                          {item.weeks}: {item.title}
-                        </h3>
-                        <p className="text-gray-200">{item.description}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Refined Timeline Section with Subtle Animations & Better Styling */}
+        <RefinedTimelineSection
+          timelineItems={[
+            {
+              weeks: "Pre-work",
+              title: "Foundations",
+              description:
+                "Self-paced preparation to ensure all students start with a solid foundation.",
+            },
+            {
+              weeks: "Weeks 1-4",
+              title: "Ruby Fundamentals",
+              description:
+                "Dive into Ruby and Object-Oriented Programming concepts.",
+            },
+            {
+              weeks: "Weeks 5-8",
+              title: "Rails API Development",
+              description:
+                "Learn to build robust backend APIs with Ruby on Rails.",
+            },
+            {
+              weeks: "Week 9",
+              title: "Full-Stack Transition",
+              description:
+                "Bridge the gap between backend and frontend development.",
+            },
+            {
+              weeks: "Weeks 10-11",
+              title: "JavaScript & APIs",
+              description:
+                "Explore JavaScript and working with external APIs.",
+            },
+            {
+              weeks: "Weeks 12-13",
+              title: "React & Integration",
+              description:
+                "Master React and integrate it with your Rails backend.",
+            },
+            {
+              weeks: "Week 14",
+              title: "Advanced Topics",
+              description:
+                "Capstone planning, AI in software engineering, and Python introduction.",
+            },
+            {
+              weeks: "Weeks 15-16",
+              title: "Capstone Project",
+              description:
+                "Develop and present your full-stack capstone project.",
+            },
+          ]}
+        />
 
         {/* Internship */}
         <section
@@ -1212,27 +1178,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* FAQ */}
-        <section
-          id="faq"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gray-100 relative overflow-hidden"
-        >
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900">
-              Frequently Asked Questions
-            </h2>
-            <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger className="text-left">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </section>
+        {/* Enhanced FAQ Section with Mobile Animations */}
+        <EnhancedFAQSection faqs={faqs} />
 
         {/* Policies */}
         <section
@@ -1498,15 +1445,16 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* Floating Apply Now Button */}
+      {/* Floating Apply Now Button - Enhanced for Mobile */}
       <div className="fixed bottom-4 right-4 z-50">
         <a
           href="https://forms.gle/bifqSWnbH74vLZ7v7"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
+          className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-5 py-3 text-sm font-medium text-white shadow-lg transition-all hover:bg-ruby-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 hover-lift animate-pulse-slow animate-ripple touch-feedback"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Apply to Code School of Guam"
         >
-          Apply Now
+          <span className="animate-shimmer">Apply Now</span>
         </a>
       </div>
     </div>
