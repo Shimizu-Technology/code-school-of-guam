@@ -2,6 +2,7 @@
 
 import "./globals.css"
 import { ReactNode } from "react"
+import { PostHogProvider } from './providers'
 
 export const metadata = {
   title: "Code School of Guam",
@@ -49,11 +50,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
       <body className="font-sans min-h-screen bg-background text-foreground">
         <noscript>You need to enable JavaScript to run this app.</noscript>
-        {/* 
+        {/*
           If you want a universal Header or Navbar, you can add it here.
-          e.g. <Header /> 
+          e.g. <Header />
         */}
-        <div id="root">{children}</div>
+        <PostHogProvider>
+          <div id="root">{children}</div>
+        </PostHogProvider>
       </body>
     </html>
   )
