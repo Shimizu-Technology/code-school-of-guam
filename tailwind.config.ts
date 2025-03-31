@@ -67,6 +67,19 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        ruby: {
+          50: "#fef2f2",
+          100: "#fee2e2",
+          200: "#fecaca",
+          300: "#fca5a5",
+          400: "#f87171",
+          500: "#cc0000", // Ruby on Rails red
+          600: "#b80000", // Darker Ruby red
+          700: "#a00000",
+          800: "#880000",
+          900: "#700000",
+          950: "#450000",
+        },
       },
       /* 
         Adjust border radius or add new breakpoints if desired. 

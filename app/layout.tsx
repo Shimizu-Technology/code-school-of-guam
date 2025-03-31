@@ -23,16 +23,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <link rel="icon" href="/CSG-logo.png" />
-        {/* Optional: Additional Open Graph tags for better social media sharing */}
-        {/*
-        <meta property="og:title" content="Code School of Guam" />
+        {/* Open Graph tags for better social media sharing */}
+        <meta property="og:title" content="Code School of Guam - Launch Your Tech Career" />
         <meta
           property="og:description"
-          content="Join the Code School of Guam and become a full-stack software developer."
+          content="Join Guam's first coding bootcamp and become a full-stack software developer. Remote classes, real-world projects, and career support."
         />
         <meta property="og:image" content="/CSG-logo.png" />
         <meta property="og:url" content="https://codeschoolofguam.com" />
-        */}
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
 
         {/* Apple Touch and PWA Manifest */}
         <link rel="apple-touch-icon" href="/CSG-logo.png" />

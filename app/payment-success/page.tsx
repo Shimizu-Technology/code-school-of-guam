@@ -74,7 +74,7 @@ const PaymentSuccess = () => {
         <div className="container mx-auto px-4">
           <Link
             href="/payment"
-            className="text-orange-500 hover:text-orange-400 flex items-center transition-colors"
+            className="text-ruby-500 hover:text-ruby-400 flex items-center transition-colors"
           >
             <ChevronLeft className="mr-2" />
             Back to Payment
@@ -151,7 +151,7 @@ const PaymentSuccess = () => {
             {/* Link to home */}
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-md bg-orange-600 px-6 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex items-center justify-center rounded-md bg-ruby-600 px-6 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-ruby-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
             >
               Return Home
             </Link>

@@ -19,7 +19,7 @@ const PaymentPage: FC = () => {
         <div className="container mx-auto px-4">
           <Link
             href="/"
-            className="text-orange-500 hover:text-orange-400 flex items-center transition-colors"
+            className="text-ruby-500 hover:text-ruby-400 flex items-center transition-colors"
           >
             <ChevronLeft className="mr-2" />
             Back to Home

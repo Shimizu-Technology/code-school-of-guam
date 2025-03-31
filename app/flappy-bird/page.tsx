@@ -15,7 +15,7 @@ export default function FlappyBirdPage() {
         <div className="container mx-auto px-4">
           <Link
             href="/"
-            className="text-orange-500 hover:text-orange-400 flex items-center transition-colors"
+            className="text-ruby-500 hover:text-ruby-400 flex items-center transition-colors"
           >
             <ChevronLeft className="mr-2" />
             Back to Home
@@ -63,7 +63,7 @@ export default function FlappyBirdPage() {
           </p>
           <Link
             href="/"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-ruby-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-ruby-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
           >
             Explore Our Courses
           </Link>

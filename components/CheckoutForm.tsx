@@ -151,7 +151,7 @@ export default function CheckoutForm({
   if (processingTo3DS) {
     return (
       <div className="text-center py-8">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto mb-4"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ruby-500 mx-auto mb-4"></div>
         <p className="text-white">Redirecting to secure payment page...</p>
         <p className="text-gray-400 text-sm mt-2">Please do not close this window.</p>
       </div>
@@ -190,7 +190,7 @@ export default function CheckoutForm({
       <button
         type="submit"
         disabled={!stripe || loading || !clientSecret}
-        className="w-full bg-orange-600 text-white py-2 px-4 rounded-md hover:bg-orange-700 transition-colors disabled:opacity-50"
+        className="w-full bg-ruby-600 text-white py-2 px-4 rounded-md hover:bg-ruby-700 transition-colors disabled:opacity-50"
       >
         {loading ? "Processing..." : `Pay $${amount}`}
       </button>

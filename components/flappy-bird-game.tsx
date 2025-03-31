@@ -309,7 +309,7 @@ export default function FlappyBirdGame() {
           {!gameStarted && (
             <Button
               onClick={startGame}
-              className="bg-orange-600 hover:bg-orange-700 text-white transition-colors"
+              className="bg-ruby-600 hover:bg-ruby-700 text-white transition-colors"
             >
               {score > 0 ? "Restart" : "Start"}
             </Button>

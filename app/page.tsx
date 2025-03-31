@@ -227,18 +227,18 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo / Title */}
             <Link className="flex items-center" href="#">
-              <Code className="h-8 w-8 text-orange-500" />
+              <Code className="h-8 w-8 text-ruby-500" />
               <span className="ml-2 text-xl font-bold">Code School of Guam</span>
             </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex space-x-2">
-              {navItems.slice(0, 5).map((item, index) => (
+            {/* Desktop Nav - Large Screens */}
+            <nav className="hidden xl:flex space-x-4">
+              {navItems.slice(0, 4).map((item, index) => (
                 <Link
                   key={index}
-                  className={`text-sm font-medium hover:text-orange-500 transition-colors duration-200 px-2 py-1 rounded-md ${
+                  className={`text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md ${
                     activeSection === item.href.slice(1)
-                      ? "text-orange-500 bg-gray-800"
+                      ? "text-red-500 bg-gray-800"
                       : ""
                   }`}
                   href={item.href}
@@ -248,17 +248,53 @@ export default function LandingPage() {
               ))}
             </nav>
 
-            {/* "More" menu (desktop) */}
-            <div className="hidden lg:block relative group">
-              <button className="text-sm font-medium hover:text-orange-500 transition-colors duration-200 px-2 py-1 rounded-md">
+            {/* Desktop Nav - Medium Screens */}
+            <nav className="hidden lg:flex xl:hidden space-x-3">
+              {navItems.slice(0, 2).map((item, index) => (
+                <Link
+                  key={index}
+                  className={`text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md ${
+                    activeSection === item.href.slice(1)
+                      ? "text-red-500 bg-gray-800"
+                      : ""
+                  }`}
+                  href={item.href}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* "More" menu (large screens) */}
+            <div className="hidden xl:block relative group">
+              <button className="text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md">
                 More
                 <ChevronDown className="inline-block ml-1 h-4 w-4" />
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                {navItems.slice(5).map((item, index) => (
+                {navItems.slice(4).map((item, index) => (
                   <Link
                     key={index}
-                    className="block px-4 py-2 text-sm text-white hover:bg-gray-800 hover:text-orange-500"
+                    className="block px-4 py-2 text-sm text-white hover:bg-gray-800 hover:text-red-500"
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* "More" menu (medium screens) */}
+            <div className="hidden lg:block xl:hidden relative group">
+              <button className="text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md">
+                More
+                <ChevronDown className="inline-block ml-1 h-4 w-4" />
+              </button>
+              <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                {navItems.slice(2).map((item, index) => (
+                  <Link
+                    key={index}
+                    className="block px-4 py-2 text-sm text-white hover:bg-gray-800 hover:text-red-500"
                     href={item.href}
                   >
                     {item.label}
@@ -270,7 +306,7 @@ export default function LandingPage() {
             {/* Mobile Nav (Sheet) */}
             <Sheet open={showNav} onOpenChange={setShowNav}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="lg:hidden">
+                <Button variant="ghost" size="icon" className="xl:hidden">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Toggle menu</span>
                 </Button>
@@ -280,7 +316,7 @@ export default function LandingPage() {
                   {navItems.map((item, index) => (
                     <Link
                       key={index}
-                      className="text-sm font-medium hover:text-orange-500 transition-colors duration-200"
+                      className="text-sm font-medium hover:text-ruby-500 transition-colors duration-200"
                       href={item.href}
                       onClick={closeNav}
                     >
@@ -297,44 +333,57 @@ export default function LandingPage() {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero / Landing Section */}
-        <section className="relative w-full py-16 md:py-24 lg:py-32 bg-gray-900 overflow-hidden">
+        <section className="relative w-full py-16 md:py-24 lg:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+          {/* Animated code-like background elements */}
           <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:40px_40px]" />
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-red-500 rounded-full filter blur-3xl animate-pulse"></div>
+            <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-blue-500 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          </div>
+          
+          {/* Abstract code pattern background */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent_70%)]"></div>
+          </div>
+          
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div
-              className={`flex flex-col items-center space-y-4 text-center ${
+              className={`flex flex-col items-center space-y-6 text-center ${
                 isVisible ? "fade-in" : ""
               }`}
             >
-              <div className="space-y-2">
-                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-white">
+              <div className="space-y-4">
+                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-lg">
                   Launch Your Tech Career in Guam
                 </h1>
-                <p className="mx-auto max-w-[700px] text-gray-400 md:text-xl/relaxed lg:text-2xl/relaxed">
-                  Join our{" "}
-                  <span className="font-semibold text-orange-500">
+                <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl/relaxed lg:text-2xl/relaxed">
+                  Join Guam's first coding bootcamp with our{" "}
+                  <span className="font-semibold text-ruby-500">
                     fully remote classes
                   </span>{" "}
-                  from anywhere and transform your passion for technology into a
-                  powerful career.
+                  and transform your passion for technology into a
+                  powerful career in the Pacific's growing tech industry.
                 </p>
               </div>
-              <div className="w-full max-w-sm space-y-2">
+              <div className="w-full max-w-sm space-y-3">
                 <a
                   href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
+                  className="inline-flex h-14 items-center justify-center rounded-md bg-ruby-500 px-12 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Apply to Code School of Guam"
+                  role="button"
                 >
                   Apply Now!
-                  <ChevronRight className="ml-2 h-4 w-4" />
+                  <ChevronRight className="ml-2 h-6 w-6" />
                 </a>
-                <p className="text-xs text-gray-400">
+                <p className="text-sm text-gray-300">
                   Begin your journey today. No prior experience required.
                 </p>
               </div>
             </div>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-gray-100 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-100 to-transparent"></div>
         </section>
 
         {/* About Section */}
@@ -343,7 +392,7 @@ export default function LandingPage() {
           className="w-full py-12 md:py-16 lg:py-20 relative overflow-hidden"
         >
           <div className="container mx-auto px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-4 text-gray-900 animate-slideUp">
               About the Code School of Guam
             </h2>
             <p className="text-lg text-gray-600 text-center mb-4">
@@ -352,22 +401,26 @@ export default function LandingPage() {
               focusing on Ruby on Rails for the backend and React.js for the
               frontend.
             </p>
-            <p className="text-lg text-gray-600 text-center mb-8">
+            <p className="text-lg text-gray-600 text-center mb-4">
               Our{" "}
-              <span className="font-semibold text-orange-500">
+              <span className="font-semibold text-ruby-500">
                 fully remote classes
               </span>{" "}
-              make high-quality coding education accessible to everyone,
-              regardless of location.
+              make high-quality coding education accessible to everyone across Guam,
+              from Hagåtña to Dededo, Yigo to Merizo, and beyond.
+            </p>
+            <p className="text-lg text-gray-600 text-center mb-8">
+              As Guam's tech ecosystem grows, we're committed to developing local talent
+              that can contribute to the island's digital transformation and economic diversification.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="hover-lift bg-white">
+              <Card className="hover-lift hover-glow bg-white shadow-lg border-t-4 border-ruby-500">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-2 flex items-center text-gray-900">
-                    <Rocket className="mr-2 h-5 w-5 text-orange-500" />
+                  <h3 className="text-xl font-bold mb-4 flex items-center text-gray-900">
+                    <Rocket className="mr-2 h-6 w-6 text-ruby-500" />
                     Our Mission
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-4">
                     To provide high-quality, accessible coding education to the
                     people of Guam and beyond, ensuring graduates are prepared
                     to enter the job market as software engineers. We aim to
@@ -376,13 +429,13 @@ export default function LandingPage() {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="hover-lift bg-white">
+              <Card className="hover-lift hover-glow bg-white shadow-lg border-t-4 border-ruby-500">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-bold mb-2 flex items-center text-gray-900">
-                    <Users className="mr-2 h-5 w-5 text-orange-500" />
+                  <h3 className="text-xl font-bold mb-4 flex items-center text-gray-900">
+                    <Users className="mr-2 h-6 w-6 text-ruby-500" />
                     Our Vision
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mb-4">
                     We envision transforming Guam into a tech hub by equipping
                     local residents with the skills and real-world experience
                     needed to succeed in the global software industry. By
@@ -391,6 +444,20 @@ export default function LandingPage() {
                   </p>
                 </CardContent>
               </Card>
+            </div>
+            
+            <div className="mt-8 text-center">
+              <a
+                href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 focus-ring"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Apply to Code School of Guam"
+                role="button"
+              >
+                Join Our Next Cohort
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </a>
             </div>
           </div>
         </section>
@@ -422,7 +489,7 @@ export default function LandingPage() {
                   href="https://forms.gle/bifqSWnbH74vLZ7v7"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-orange-500"
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-red-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500"
                 >
                   Apply Now
                 </a>
@@ -444,7 +511,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-800">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                    <CheckCircle className="mr-2 h-5 w-5 text-orange-500" />
+                    <CheckCircle className="mr-2 h-5 w-5 text-red-500" />
                     Fully Remote Classes
                   </h3>
                   <p className="text-gray-300">
@@ -456,7 +523,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-800">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                    <Users className="mr-2 h-5 w-5 text-orange-500" />
+                    <Users className="mr-2 h-5 w-5 text-red-500" />
                     Small Class Sizes
                   </h3>
                   <p className="text-gray-300">
@@ -468,7 +535,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-800">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                    <Briefcase className="mr-2 h-5 w-5 text-orange-500" />
+                    <Briefcase className="mr-2 h-5 w-5 text-red-500" />
                     Internship Opportunities
                   </h3>
                   <p className="text-gray-300">
@@ -499,7 +566,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Code className="mr-2 h-5 w-5 text-orange-500" />
+                    <Code className="mr-2 h-5 w-5 text-red-500" />
                     Ruby on Rails: A Powerful Back-End Framework
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600">
@@ -514,7 +581,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Code className="mr-2 h-5 w-5 text-orange-500" />
+                    <Code className="mr-2 h-5 w-5 text-red-500" />
                     React.js: Leading Front-End Technology
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600">
@@ -556,7 +623,7 @@ export default function LandingPage() {
             </p>
             <Link
               href="/flappy-bird"
-              className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
+              className="inline-flex h-10 items-center justify-center rounded-md bg-red-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
             >
               <GamepadIcon className="mr-2 h-4 w-4" />
               Play Flappy Bird
@@ -581,7 +648,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <BookOpen className="mr-2 h-5 w-5 text-orange-500" />
+                    <BookOpen className="mr-2 h-5 w-5 text-red-500" />
                     Live Class (Synchronous Learning)
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600 mb-4">
@@ -591,7 +658,7 @@ export default function LandingPage() {
                       4:00 PM)
                     </li>
                     <li>
-                      <span className="font-semibold text-orange-500">
+                      <span className="font-semibold text-red-500">
                         Fully remote
                       </span>{" "}
                       live instructor-led classes via Zoom
@@ -606,7 +673,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <BookOpen className="mr-2 h-5 w-5 text-orange-500" />
+                    <BookOpen className="mr-2 h-5 w-5 text-red-500" />
                     Self-Paced Program (Asynchronous Learning)
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600 mb-4">
@@ -633,7 +700,7 @@ export default function LandingPage() {
                 <Card className="hover-lift bg-white">
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
-                      <CheckCircle className="mr-2 h-5 w-5 text-orange-500" />
+                      <CheckCircle className="mr-2 h-5 w-5 text-red-500" />
                       Full Tuition Upfront
                     </h4>
                     <p className="text-gray-600">
@@ -645,7 +712,7 @@ export default function LandingPage() {
                 <Card className="hover-lift bg-white">
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
-                      <Calendar className="mr-2 h-5 w-5 text-orange-500" />
+                      <Calendar className="mr-2 h-5 w-5 text-red-500" />
                       4 Monthly Installments
                     </h4>
                     <p className="text-gray-600">
@@ -657,7 +724,7 @@ export default function LandingPage() {
                 <Card className="hover-lift bg-white">
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
-                      <Briefcase className="mr-2 h-5 w-5 text-orange-500" />
+                      <Briefcase className="mr-2 h-5 w-5 text-red-500" />
                       Bank Loan Options
                     </h4>
                     <ul className="list-disc list-inside text-gray-600 mb-2">
@@ -687,7 +754,7 @@ export default function LandingPage() {
                   $20,000, we’ve intentionally set our price lower to make our
                   program more accessible to motivated students in Guam and
                   beyond. Our{" "}
-                  <span className="font-semibold text-orange-500">
+                  <span className="font-semibold text-red-500">
                     fully remote format
                   </span>{" "}
                   allows us to keep costs down while still delivering a
@@ -708,56 +775,104 @@ export default function LandingPage() {
         {/* Curriculum */}
         <section
           id="curriculum"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gray-100 relative overflow-hidden"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-gray-100 to-white relative overflow-hidden"
         >
           <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900">
-              Our Curriculum
-            </h2>
-            <p className="text-lg text-gray-600 text-center mb-8">
-              Our comprehensive curriculum is designed to equip you with the
-              skills needed to succeed as a full-stack software engineer, all
-              through our{" "}
-              <span className="font-semibold text-orange-500">
-                fully remote learning platform
-              </span>
-              .
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="hover-lift bg-white">
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-4 text-gray-900">
+                Our Curriculum
+              </h2>
+              <p className="text-lg text-gray-600 mb-0">
+                Our comprehensive curriculum is designed to equip you with the
+                skills needed to succeed as a full-stack software engineer, all
+                through our{" "}
+                <span className="font-semibold text-ruby-500">
+                  fully remote learning platform
+                </span>
+                .
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              <Card className="hover-lift bg-white border-t-4 border-red-500 shadow-lg">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <GraduationCap className="mr-2 h-5 w-5 text-orange-500" />
+                    <GraduationCap className="mr-2 h-6 w-6 text-red-500" />
                     Core Program
                   </h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-600">
-                    <li>Ruby fundamentals</li>
-                    <li>Object-Oriented Programming</li>
-                    <li>Ruby on Rails framework</li>
-                    <li>Database design and SQL</li>
-                    <li>HTML, CSS, and JavaScript</li>
-                    <li>React.js</li>
-                    <li>RESTful API development</li>
-                    <li>Version control with Git and GitHub</li>
-                    <li>Testing and debugging</li>
-                    <li>Agile methodologies</li>
-                  </ul>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                    <div className="col-span-2 mb-2">
+                      <h4 className="font-semibold text-gray-800 mb-1">Programming Fundamentals</h4>
+                      <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
+                        <li>Ruby fundamentals</li>
+                        <li>Object-Oriented Programming</li>
+                      </ul>
+                    </div>
+                    <div className="col-span-2 sm:col-span-1 mb-2">
+                      <h4 className="font-semibold text-gray-800 mb-1">Backend Development</h4>
+                      <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
+                        <li>Ruby on Rails framework</li>
+                        <li>Database design and SQL</li>
+                        <li>RESTful API development</li>
+                      </ul>
+                    </div>
+                    <div className="col-span-2 sm:col-span-1 mb-2">
+                      <h4 className="font-semibold text-gray-800 mb-1">Frontend Development</h4>
+                      <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
+                        <li>HTML, CSS, and JavaScript</li>
+                        <li>React.js</li>
+                      </ul>
+                    </div>
+                    <div className="col-span-2 mb-2">
+                      <h4 className="font-semibold text-gray-800 mb-1">Professional Skills</h4>
+                      <ul className="list-disc list-inside space-y-1 text-gray-600 ml-2">
+                        <li>Version control with Git and GitHub</li>
+                        <li>Testing and debugging</li>
+                        <li>Agile methodologies</li>
+                      </ul>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
-              <Card className="hover-lift bg-white">
+              <Card className="hover-lift bg-white border-t-4 border-red-500 shadow-lg">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <GraduationCap className="mr-2 h-5 w-5 text-orange-500" />
+                    <GraduationCap className="mr-2 h-6 w-6 text-red-500" />
                     Program Structure
                   </h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-600">
-                    <li>Pre-Work: Self-paced foundational coding exercises</li>
-                    <li>Core Program: In-depth full-stack development</li>
-                    <li>Capstone Project: Build a full-stack application</li>
-                    <li>Optional Internship: Apply your skills in real projects</li>
-                  </ul>
+                  <div className="space-y-4">
+                    <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-blue-400">
+                      <h4 className="font-semibold text-gray-800">Pre-Work</h4>
+                      <p className="text-gray-600">Self-paced foundational coding exercises to prepare you for the program</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-green-400">
+                      <h4 className="font-semibold text-gray-800">Core Program</h4>
+                      <p className="text-gray-600">In-depth full-stack development with hands-on projects and mentorship</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-purple-400">
+                      <h4 className="font-semibold text-gray-800">Capstone Project</h4>
+                      <p className="text-gray-600">Build a full-stack application showcasing your skills to potential employers</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-ruby-500">
+                      <h4 className="font-semibold text-gray-800">Optional Internship</h4>
+                      <p className="text-gray-600">Apply your skills in real projects with local Guam businesses and tech companies</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
+            </div>
+            
+            <div className="text-center">
+              <a
+                href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Apply to Code School of Guam"
+              >
+                Start Your Coding Journey
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </a>
             </div>
           </div>
         </section>
@@ -772,7 +887,7 @@ export default function LandingPage() {
               Program Timeline
             </h2>
             <div className="relative">
-              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-orange-500"></div>
+              <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-ruby-500"></div>
               <div className="space-y-8">
                 {[
                   {
@@ -825,20 +940,20 @@ export default function LandingPage() {
                   },
                 ].map((item, index) => (
                   <div key={index} className="relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full"></div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-ruby-500 rounded-full"></div>
                     <Card
-                      className={`hover-lift bg-gray-800 ${
+                      className={`hover-lift bg-gray-800 shadow-lg border-t-2 border-ruby-500 ${
                         index % 2 === 0
                           ? "ml-8 md:ml-0 md:mr-auto md:w-5/12"
                           : "mr-8 md:mr-0 md:ml-auto md:w-5/12"
                       }`}
                     >
                       <CardContent className="p-6">
-                        <h3 className="text-xl font-bold mb-2 flex items-center">
-                          <Calendar className="mr-2 h-5 w-5 text-orange-500" />
+                        <h3 className="text-xl font-bold mb-2 flex items-center text-white">
+                          <Calendar className="mr-2 h-5 w-5 text-ruby-500" />
                           {item.weeks}: {item.title}
                         </h3>
-                        <p className="text-gray-300">{item.description}</p>
+                        <p className="text-gray-200">{item.description}</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -865,7 +980,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Briefcase className="mr-2 h-5 w-5 text-orange-500" />
+                    <Briefcase className="mr-2 h-5 w-5 text-ruby-500" />
                     Internship Details
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600">
@@ -881,7 +996,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <CheckCircle className="mr-2 h-5 w-5 text-orange-500" />
+                    <CheckCircle className="mr-2 h-5 w-5 text-ruby-500" />
                     Benefits of the Internship
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-600">
@@ -910,14 +1025,14 @@ export default function LandingPage() {
               Our commitment to your success extends beyond the classroom. We
               offer comprehensive career services to help you launch your tech
               career, all delivered{" "}
-              <span className="font-semibold text-orange-500">remotely</span>.
+              <span className="font-semibold text-ruby-500">remotely</span>.
               Our career services include:
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="hover-lift bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-gray-900">
-                    <Briefcase className="mr-2 h-5 w-5 text-orange-500" />
+                    <Briefcase className="mr-2 h-5 w-5 text-ruby-500" />
                     Resume Building
                   </h3>
                   <p className="text-gray-600">
@@ -929,7 +1044,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-gray-900">
-                    <Users className="mr-2 h-5 w-5 text-orange-500" />
+                    <Users className="mr-2 h-5 w-5 text-ruby-500" />
                     Interview Preparation
                   </h3>
                   <p className="text-gray-600">
@@ -941,7 +1056,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-white">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-gray-900">
-                    <Rocket className="mr-2 h-5 w-5 text-orange-500" />
+                    <Rocket className="mr-2 h-5 w-5 text-ruby-500" />
                     Job Search Strategies
                   </h3>
                   <p className="text-gray-600">
@@ -974,7 +1089,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-800">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-white">
-                    <CheckCircle className="mr-2 h-5 w-5 text-orange-500" />
+                    <CheckCircle className="mr-2 h-5 w-5 text-ruby-500" />
                     Application Steps
                   </h3>
                   <ol className="list-decimal list-inside space-y-2 text-gray-300">
@@ -988,7 +1103,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-800">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-white">
-                    <CheckCircle className="mr-2 h-5 w-5 text-orange-500" />
+                    <CheckCircle className="mr-2 h-5 w-5 text-ruby-500" />
                     What We Look For
                   </h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-300">
@@ -1007,7 +1122,7 @@ export default function LandingPage() {
             <div className="mt-12 text-center">
               <a
                 href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
+                className="inline-flex h-10 items-center justify-center rounded-md bg-ruby-500 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-ruby-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 hover-lift"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -1021,8 +1136,11 @@ export default function LandingPage() {
         {/* Founder */}
         <section
           id="founder"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gray-900 text-white relative overflow-hidden"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-gray-800 to-gray-900 text-white relative overflow-hidden"
         >
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent_70%)]"></div>
+          </div>
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
               About the Founder
@@ -1119,8 +1237,11 @@ export default function LandingPage() {
         {/* Policies */}
         <section
           id="policies"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gray-900 text-white relative overflow-hidden"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white relative overflow-hidden"
         >
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(204,0,0,0.05),transparent_70%)]"></div>
+          </div>
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8">
               Policies
@@ -1190,7 +1311,7 @@ export default function LandingPage() {
             <div className="mt-8 text-center">
               <a
                 href="https://docs.google.com/document/d/1d8J1ctT7iN_WoMdTpJYdM-2ngJY9UsWtVlVzhVou90Q/edit?usp=sharing"
-                className="text-orange-500 hover:underline"
+                className="text-red-500 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -1213,7 +1334,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Mail className="mr-2 h-5 w-5 text-orange-500" />
+                    <Mail className="mr-2 h-5 w-5 text-red-500" />
                     Email Us
                   </h3>
                   <p className="text-gray-600 mb-4">
@@ -1221,7 +1342,7 @@ export default function LandingPage() {
                   </p>
                   <a
                     href="mailto:codeschoolofguam@gmail.com"
-                    className="text-orange-500 hover:underline"
+                    className="text-red-500 hover:underline"
                   >
                     codeschoolofguam@gmail.com
                   </a>
@@ -1230,7 +1351,7 @@ export default function LandingPage() {
               <Card className="hover-lift bg-gray-100">
                 <CardContent className="p-6">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Phone className="mr-2 h-5 w-5 text-orange-500" />
+                    <Phone className="mr-2 h-5 w-5 text-red-500" />
                     Call Us
                   </h3>
                   <p className="text-gray-600 mb-4">
@@ -1238,7 +1359,7 @@ export default function LandingPage() {
                   </p>
                   <a
                     href="tel:+1674830219"
-                    className="text-orange-500 hover:underline"
+                    className="text-red-500 hover:underline"
                   >
                     +1 (671) 483-0219
                   </a>
@@ -1381,7 +1502,7 @@ export default function LandingPage() {
       <div className="fixed bottom-4 right-4 z-50">
         <a
           href="https://forms.gle/bifqSWnbH74vLZ7v7"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-orange-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
+          className="inline-flex h-10 items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover-lift"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -1391,3 +1512,4 @@ export default function LandingPage() {
     </div>
   )
 }
+

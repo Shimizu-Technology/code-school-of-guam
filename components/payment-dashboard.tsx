@@ -66,7 +66,7 @@ const PaymentDashboard: React.FC = () => {
               onClick={() => handlePaymentSelect(option.type)}
               className={`p-4 rounded-md transition-colors ${
                 isSelected
-                  ? "bg-orange-600 text-white"
+                  ? "bg-ruby-600 text-white"
                   : "bg-gray-800 hover:bg-gray-700"
               }`}
             >
