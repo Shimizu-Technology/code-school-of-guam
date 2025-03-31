@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ChevronLeft } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 
 interface PaymentDetails {
@@ -13,7 +13,8 @@ interface PaymentDetails {
   paymentType?: string;
 }
 
-const PaymentSuccess = () => {
+// Component that uses useSearchParams
+const PaymentDetailsContent = () => {
   const searchParams = useSearchParams();
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -68,6 +69,56 @@ const PaymentSuccess = () => {
   };
 
   return (
+    <>
+      {loading ? (
+        <div className="animate-pulse flex flex-col space-y-4">
+          <div className="h-4 bg-gray-700 rounded w-3/4 mx-auto"></div>
+          <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
+          <div className="h-4 bg-gray-700 rounded w-5/6 mx-auto"></div>
+        </div>
+      ) : paymentDetails ? (
+        <div className="bg-gray-700 rounded-md p-4 mb-6 text-left">
+          <h2 className="text-xl font-semibold mb-4 text-center">Payment Receipt</h2>
+          <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span className="text-gray-400">Payment ID:</span>
+              <span className="font-mono">{paymentDetails.id.substring(0, 8)}...</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Amount:</span>
+              <span className="font-semibold">${paymentDetails.amount}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Date:</span>
+              <span>{formatDate(paymentDetails.created)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-400">Status:</span>
+              <span className="text-green-500 font-semibold">
+                {paymentDetails.status === 'succeeded' ? 'Paid' : paymentDetails.status}
+              </span>
+            </div>
+            {paymentDetails.paymentType && (
+              <div className="flex justify-between">
+                <span className="text-gray-400">Payment For:</span>
+                <span>{paymentDetails.paymentType}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <p className="text-yellow-400 mb-6">
+          Payment confirmed, but details are not available.
+        </p>
+      )}
+    </>
+  );
+};
+
+// Main component
+const PaymentSuccess = () => {
+
+  return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       {/* Header */}
       <header className="bg-gray-800 py-4 shadow-md">
@@ -101,47 +152,16 @@ const PaymentSuccess = () => {
             </p>
           </div>
 
-          {loading ? (
+          {/* Wrap the component that uses useSearchParams in a Suspense boundary */}
+          <Suspense fallback={
             <div className="animate-pulse flex flex-col space-y-4">
               <div className="h-4 bg-gray-700 rounded w-3/4 mx-auto"></div>
               <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
               <div className="h-4 bg-gray-700 rounded w-5/6 mx-auto"></div>
             </div>
-          ) : paymentDetails ? (
-            <div className="bg-gray-700 rounded-md p-4 mb-6 text-left">
-              <h2 className="text-xl font-semibold mb-4 text-center">Payment Receipt</h2>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Payment ID:</span>
-                  <span className="font-mono">{paymentDetails.id.substring(0, 8)}...</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Amount:</span>
-                  <span className="font-semibold">${paymentDetails.amount}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Date:</span>
-                  <span>{formatDate(paymentDetails.created)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Status:</span>
-                  <span className="text-green-500 font-semibold">
-                    {paymentDetails.status === 'succeeded' ? 'Paid' : paymentDetails.status}
-                  </span>
-                </div>
-                {paymentDetails.paymentType && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Payment For:</span>
-                    <span>{paymentDetails.paymentType}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : (
-            <p className="text-yellow-400 mb-6">
-              Payment confirmed, but details are not available.
-            </p>
-          )}
+          }>
+            <PaymentDetailsContent />
+          </Suspense>
 
           <p className="text-gray-400 mb-8">
             You can now proceed with your course registration or return to the home page.

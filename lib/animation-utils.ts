@@ -124,10 +124,11 @@ export function setupTouchEffects() {
 
   function initTouchEffects() {
     document.querySelectorAll('.animate-ripple').forEach((element) => {
-      element.addEventListener('click', (e: MouseEvent) => {
+      element.addEventListener('click', (e) => {
+        const mouseEvent = e as MouseEvent;
         const rect = element.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = mouseEvent.clientX - rect.left;
+        const y = mouseEvent.clientY - rect.top;
         
         const ripple = document.createElement('span');
         ripple.classList.add('ripple-effect');

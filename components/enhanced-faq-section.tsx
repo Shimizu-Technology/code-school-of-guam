@@ -73,7 +73,7 @@ export function EnhancedFAQSection({ faqs }: EnhancedFAQSectionProps) {
         
         <div className="mt-8 text-center reveal-on-scroll">
           <p className="text-gray-600">
-            Don't see your question? Feel free to{" "}
+            Don&apos;t see your question? Feel free to{" "}
             <a 
               href="#contact" 
               className="text-ruby-500 hover:underline animate-pulse-slow touch-feedback"

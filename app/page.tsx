@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import {
   setupScrollAnimations,
   setupStaggeredAnimations,
@@ -14,17 +14,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import {
   ChevronRight,
   ChevronDown,
   Code,
-  Menu,
   Rocket,
   BookOpen,
   Users,
@@ -44,7 +36,6 @@ export default function LandingPage() {
   const [email, setEmail] = useState("")
   const [isVisible, setIsVisible] = useState(false)
   const [activeSection, setActiveSection] = useState("")
-  const [showNav, setShowNav] = useState(false) // Track nav visibility for mobile
 
   useEffect(() => {
     setIsVisible(true)
@@ -125,11 +116,6 @@ export default function LandingPage() {
     { href: "#contact", label: "Contact Us" },
     { href: "/payment", label: "Payment", isButton: true },
   ]
-
-  // Close the mobile nav after clicking a link
-  const closeNav = () => {
-    setShowNav(false)
-  }
 
   const faqs = [
     {
@@ -369,12 +355,12 @@ export default function LandingPage() {
                   Launch Your Tech Career in Guam
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl/relaxed lg:text-2xl/relaxed">
-                  Join Guam's first coding bootcamp with our{" "}
+                  Join Guam&apos;s first coding bootcamp with our{" "}
                   <span className="font-semibold text-ruby-500 animate-pulse-slow">
                     fully remote classes
                   </span>{" "}
                   and transform your passion for technology into a
-                  powerful career in the Pacific's growing tech industry.
+                  powerful career in the Pacific&apos;s growing tech industry.
                 </p>
               </div>
               <div className="w-full max-w-sm space-y-3 reveal-on-scroll">
@@ -422,8 +408,8 @@ export default function LandingPage() {
               from Hagåtña to Dededo, Yigo to Merizo, and beyond.
             </p>
             <p className="text-lg text-gray-600 text-center mb-8">
-              As Guam's tech ecosystem grows, we're committed to developing local talent
-              that can contribute to the island's digital transformation and economic diversification.
+              As Guam&apos;s tech ecosystem grows, we&apos;re committed to developing local talent
+              that can contribute to the island&apos;s digital transformation and economic diversification.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Card className="hover-lift hover-glow bg-white shadow-lg border-t-4 border-ruby-500">
