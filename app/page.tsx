@@ -448,35 +448,85 @@ export default function LandingPage() {
 
         <section
           id="next-cohort"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gray-50 relative overflow-hidden"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-gray-900 to-gray-800 text-white relative overflow-hidden"
         >
-          <div className="container mx-auto px-4 md:px-6">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-center text-gray-900 mb-4">
-              Next Cohort Starts July 28
-            </h2>
-            <div className="max-w-3xl mx-auto bg-white rounded-md shadow p-6 md:p-8">
-              <p className="text-lg text-gray-600 mb-4 text-center">
-                We’re currently one month into our pilot cohort, and we’re excited
-                to welcome our next class on <strong>Monday, July 28</strong>. The exact
-                schedule will be chosen based on majority preference among applicants:
+          {/* Animated background elements */}
+          <div className="absolute inset-0 bg-grid-white/[0.03] bg-[size:30px_30px]" />
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-1/3 left-1/4 w-48 h-48 bg-red-500 rounded-full filter blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/3 right-1/4 w-36 h-36 bg-blue-500 rounded-full filter blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+          </div>
+          
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="max-w-4xl mx-auto text-center mb-12 reveal-on-scroll">
+              <div className="inline-block px-3 py-1 bg-ruby-500/20 rounded-full text-ruby-500 text-sm font-medium mb-4">
+                Enrollment Open
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4 text-white drop-shadow-lg">
+                Next Cohort Starts <span className="text-ruby-500">July 28</span>
+              </h2>
+              <div className="w-24 h-1 bg-ruby-500 mx-auto mb-6 rounded-full"></div>
+              <p className="text-xl text-gray-200 mb-0">
+                Join our second class with special pricing!
               </p>
-              <ul className="list-disc list-inside text-gray-600 mb-4 mx-auto max-w-xl">
-                <li>Option 1: Monday – Friday, 5:30pm – 9:30pm</li>
-                <li>Option 2: Monday – Thursday, 6:00pm – 9:00pm; plus Saturday, 8:00am – 4:00pm</li>
-              </ul>
-              <p className="text-lg text-gray-600 mb-6 text-center">
-                Let us know which schedule works better for you when you apply, and
-                we’ll finalize it based on the majority preference.
-              </p>
-              <div className="text-center">
-                <a
-                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 items-center justify-center rounded-md bg-red-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-500"
-                >
-                  Apply Now
-                </a>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
+              {/* Info Card */}
+              <div className="md:col-span-2 bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-gray-700 hover-lift">
+                <div className="p-6 md:p-8">
+                  <div className="flex items-start mb-4">
+                    <Calendar className="h-8 w-8 text-ruby-500 mr-3 mt-1 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-xl font-bold mb-2">Class Schedule Options</h3>
+                      <p className="text-gray-300 mb-4">
+                        We're currently one month into our pilot cohort, and we're excited
+                        to welcome our next class on <span className="font-semibold text-white">Monday, July 28</span>.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-center p-3 bg-gray-700/50 rounded-lg border-l-4 border-ruby-500">
+                      <span className="font-medium text-white mr-2">Option 1:</span>
+                      <span className="text-gray-300">Monday – Friday, 5:30pm – 9:30pm</span>
+                    </div>
+                    <div className="flex items-center p-3 bg-gray-700/50 rounded-lg border-l-4 border-ruby-500">
+                      <span className="font-medium text-white mr-2">Option 2:</span>
+                      <span className="text-gray-300">Monday – Thursday, 6:00pm – 9:00pm; plus Saturday, 8:00am – 4:00pm</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-300 mb-0">
+                    Let us know which schedule works better for you when you apply, and
+                    we'll finalize it based on the majority preference.
+                  </p>
+                </div>
+              </div>
+              
+              {/* CTA Card */}
+              <div className="bg-ruby-600 rounded-xl shadow-xl overflow-hidden hover-lift">
+                <div className="p-6 md:p-8 flex flex-col h-full justify-between">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-3">Ready to Start Your Journey?</h3>
+                    <div className="w-16 h-1 bg-white/30 mb-4 rounded-full"></div>
+                    <p className="text-white/90 mb-6">
+                      Apply now to secure your spot in our July cohort and take advantage of our special 25% discount!
+                    </p>
+                  </div>
+                  
+                  <div className="mt-auto">
+                    <a
+                      href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex w-full h-12 items-center justify-center rounded-md bg-white text-ruby-700 px-6 text-base font-medium shadow-lg transition-all hover:bg-gray-100 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 animate-pulse hover:animate-none"
+                    >
+                      Apply Now
+                      <ChevronRight className="ml-2 h-5 w-5" />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -652,6 +702,10 @@ export default function LandingPage() {
                     <li className="animate-stagger">Career support</li>
                   </ul>
                   <p className="font-bold text-gray-900 animate-shimmer">Tuition: $10,000</p>
+                  <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
+                    <p className="font-semibold text-red-600">Special Offer: <span className="text-red-700">25% OFF</span> for our July cohort!</p>
+                    <p className="text-sm text-gray-700 mt-1">Join our second class starting July 28 and save $2,500 – that's only $7,500 for full tuition!</p>
+                  </div>
                 </CardContent>
               </Card>
               <Card className="hover-lift bg-gray-100 reveal-on-scroll animate-tilt" data-tilt-effect style={{ animationDelay: '0.2s' }}>
@@ -667,7 +721,6 @@ export default function LandingPage() {
                     <li className="animate-stagger">Weekly project submissions</li>
                     <li className="animate-stagger">Guidance throughout the program</li>
                   </ul>
-                  <p className="font-bold text-gray-900 animate-shimmer">Tuition: $12,000</p>
                   <p className="text-sm text-gray-600 mt-2">
                     Coming soon after our initial cohorts
                   </p>
@@ -729,13 +782,19 @@ export default function LandingPage() {
                 <h3 className="text-2xl font-bold mb-4 text-center">
                   Our Pricing Philosophy
                 </h3>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+                  <h4 className="text-xl font-bold text-red-700 mb-2 text-center">Limited Time Offer: 25% OFF July Cohort</h4>
+                  <p className="text-gray-700 text-center">
+                    To celebrate the launch of our second cohort, we're offering a special 25% discount for all students joining our July 28 class. You'll save $2,500 on tuition, bringing the cost down to just $7,500 – making our high-quality coding education even more accessible.
+                  </p>
+                </div>
                 <p className="text-lg text-gray-600 text-center">
                   At the Code School of Guam, we believe in making high-quality
                   coding education accessible. Our tuition reflects our
                   commitment to providing exceptional value through small class
                   sizes, personalized attention, and an optional internship
                   program. While comparable programs often charge $15,000 to
-                  $20,000, we’ve intentionally set our price lower to make our
+                  $20,000, we've intentionally set our price lower to make our
                   program more accessible to motivated students in Guam and
                   beyond. Our{" "}
                   <span className="font-semibold text-red-500">
