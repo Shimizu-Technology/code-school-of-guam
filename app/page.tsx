@@ -480,7 +480,7 @@ export default function LandingPage() {
                     <div>
                       <h3 className="text-xl font-bold mb-2">Class Schedule Options</h3>
                       <p className="text-gray-300 mb-4">
-                        We're currently one month into our pilot cohort, and we're excited
+                        We&apos;re currently one month into our pilot cohort, and we&apos;re excited
                         to welcome our next class on <span className="font-semibold text-white">Monday, July 28</span>.
                       </p>
                     </div>
@@ -499,7 +499,7 @@ export default function LandingPage() {
                   
                   <p className="text-gray-300 mb-0">
                     Let us know which schedule works better for you when you apply, and
-                    we'll finalize it based on the majority preference.
+                    we&apos;ll finalize it based on the majority preference.
                   </p>
                 </div>
               </div>
@@ -704,7 +704,7 @@ export default function LandingPage() {
                   <p className="font-bold text-gray-900 animate-shimmer">Tuition: $10,000</p>
                   <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-md">
                     <p className="font-semibold text-red-600">Special Offer: <span className="text-red-700">25% OFF</span> for our July cohort!</p>
-                    <p className="text-sm text-gray-700 mt-1">Join our second class starting July 28 and save $2,500 – that's only $7,500 for full tuition!</p>
+                    <p className="text-sm text-gray-700 mt-1">Join our second class starting July 28 and save $2,500 – that&apos;s only $7,500 for full tuition!</p>
                   </div>
                 </CardContent>
               </Card>
@@ -785,7 +785,7 @@ export default function LandingPage() {
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
                   <h4 className="text-xl font-bold text-red-700 mb-2 text-center">Limited Time Offer: 25% OFF July Cohort</h4>
                   <p className="text-gray-700 text-center">
-                    To celebrate the launch of our second cohort, we're offering a special 25% discount for all students joining our July 28 class. You'll save $2,500 on tuition, bringing the cost down to just $7,500 – making our high-quality coding education even more accessible.
+                    To celebrate the launch of our second cohort, we&apos;re offering a special 25% discount for all students joining our July 28 class. You&apos;ll save $2,500 on tuition, bringing the cost down to just $7,500 – making our high-quality coding education even more accessible.
                   </p>
                 </div>
                 <p className="text-lg text-gray-600 text-center">
@@ -794,7 +794,7 @@ export default function LandingPage() {
                   commitment to providing exceptional value through small class
                   sizes, personalized attention, and an optional internship
                   program. While comparable programs often charge $15,000 to
-                  $20,000, we've intentionally set our price lower to make our
+                  $20,000, we&apos;ve intentionally set our price lower to make our
                   program more accessible to motivated students in Guam and
                   beyond. Our{" "}
                   <span className="font-semibold text-red-500">
