@@ -146,7 +146,7 @@ export default function LandingPage() {
     {
       question: "How long do I have access to the class recordings?",
       answer:
-        "You will have access to all class recordings and materials for one full year from your start date, supporting your continued learning journey.",
+        "You will have lifetime access to all class recordings, in-class resources, and learning materials, supporting your continued learning journey indefinitely.",
     },
     {
       question: "Can I reach out for support after the program ends?",
@@ -698,7 +698,7 @@ export default function LandingPage() {
                       live instructor-led classes via Zoom
                     </li>
                     <li className="animate-stagger">Hands-on projects and exercises</li>
-                    <li className="animate-stagger">Access to recordings for one year</li>
+                    <li className="animate-stagger">Lifetime access to recordings and learning resources</li>
                     <li className="animate-stagger">Career support</li>
                   </ul>
                   <p className="font-bold text-gray-900 animate-shimmer">Tuition: $10,000</p>
