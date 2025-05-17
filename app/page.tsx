@@ -141,7 +141,7 @@ export default function LandingPage() {
     {
       question: "How does the internship work?",
       answer:
-        "The internship is an optional 2-month program where you work on real projects in an Agile environment. It enhances your resume and job readiness.",
+        "The internship is an optional 2-month program where you work on real projects in an Agile environment. After completion, we offer 2-3 guaranteed positions for top performers: 1-2 Teacher's Assistant positions for the next Code School cohort and one 6-month software engineering contract with Shimizu Technology.",
     },
     {
       question: "How long do I have access to the class recordings?",
@@ -378,6 +378,16 @@ export default function LandingPage() {
                 <p className="text-sm text-gray-300">
                   Begin your journey today. No prior experience required.
                 </p>
+                <div className="mt-6 flex flex-wrap justify-center gap-4">
+                  <div className="bg-gray-800 bg-opacity-70 rounded-lg px-4 py-2 flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                    <span className="text-white text-sm">Lifetime access to materials</span>
+                  </div>
+                  <div className="bg-gray-800 bg-opacity-70 rounded-lg px-4 py-2 flex items-center">
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                    <span className="text-white text-sm">2-3 guaranteed positions for top performers</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -570,14 +580,43 @@ export default function LandingPage() {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
                     <Briefcase className="mr-2 h-5 w-5 text-red-500" />
-                    Internship Opportunities
+                    Select Job Opportunities
                   </h3>
                   <p className="text-gray-300">
-                    Gain real-world experience through our optional internship
-                    program with local tech companies.
+                    After completing our internship, we offer 2-3 guaranteed positions for top performers including Teacher's Assistant roles and a software engineering contract.
                   </p>
                 </CardContent>
               </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Premium Benefits Highlight */}
+        <section className="w-full py-10 md:py-14 bg-gradient-to-r from-ruby-900 via-ruby-800 to-ruby-900 text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-grid-white/[0.03] bg-[size:20px_20px]"></div>
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-center mb-8">
+              Premium Benefits <span className="text-ruby-300">Included</span>
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-black bg-opacity-30 p-6 rounded-lg border border-ruby-500/30 hover:border-ruby-500/70 transition-all hover:transform hover:scale-105">
+                <h3 className="text-2xl font-bold mb-4 flex items-center">
+                  <Calendar className="mr-3 h-6 w-6 text-ruby-300" />
+                  Lifetime Access
+                </h3>
+                <p className="text-gray-200 text-lg">
+                  Unlike other programs that limit access, we provide <span className="font-bold text-ruby-300">lifetime access</span> to all class recordings, in-class resources, and learning materials—supporting your continued growth long after graduation.
+                </p>
+              </div>
+              <div className="bg-black bg-opacity-30 p-6 rounded-lg border border-ruby-500/30 hover:border-ruby-500/70 transition-all hover:transform hover:scale-105">
+                <h3 className="text-2xl font-bold mb-4 flex items-center">
+                  <Briefcase className="mr-3 h-6 w-6 text-ruby-300" />
+                  Guaranteed Job Opportunities
+                </h3>
+                <p className="text-gray-200 text-lg">
+                  After completing our internship, we offer <span className="font-bold text-ruby-300">2-3 guaranteed positions</span> for top performers: 1-2 Teacher's Assistant roles for the next cohort and one 6-month software engineering contract with Shimizu Technology.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -1015,7 +1054,9 @@ export default function LandingPage() {
                     <li>Build a network within the tech industry</li>
                     <li>Understand the software development lifecycle</li>
                     <li>Improve teamwork and communication skills</li>
-                    <li>Potential job offers from partner companies</li>
+                    <li>Select guaranteed positions for top performers:</li>
+                    <li className="ml-6">1-2 Teacher's Assistant positions for the next Code School of Guam cohort</li>
+                    <li className="ml-6">One 6-month contract software engineering position with Shimizu Technology</li>
                   </ul>
                 </CardContent>
               </Card>
