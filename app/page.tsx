@@ -141,7 +141,7 @@ export default function LandingPage() {
     {
       question: "How does the internship work?",
       answer:
-        "The internship is an optional 2-month program where you work on real projects in an Agile environment. After completion, we offer 2-3 guaranteed positions for top performers: 1-2 Teacher's Assistant positions for the next Code School cohort and one 6-month software engineering contract with Shimizu Technology.",
+        "The internship is an optional 2-month program where you work on real projects in an Agile environment. After completion, we offer 2-3 guaranteed positions for top performers: 1-2 Teacher&apos;s Assistant positions for the next Code School cohort and one 6-month software engineering contract with Shimizu Technology.",
     },
     {
       question: "How long do I have access to the class recordings?",
@@ -583,7 +583,7 @@ export default function LandingPage() {
                     Select Job Opportunities
                   </h3>
                   <p className="text-gray-300">
-                    After completing our internship, we offer 2-3 guaranteed positions for top performers including Teacher's Assistant roles and a software engineering contract.
+                    After completing our internship, we offer 2-3 guaranteed positions for top performers including Teacher&apos;s Assistant roles and a software engineering contract.
                   </p>
                 </CardContent>
               </Card>
@@ -614,7 +614,7 @@ export default function LandingPage() {
                   Guaranteed Job Opportunities
                 </h3>
                 <p className="text-gray-200 text-lg">
-                  After completing our internship, we offer <span className="font-bold text-ruby-300">2-3 guaranteed positions</span> for top performers: 1-2 Teacher's Assistant roles for the next cohort and one 6-month software engineering contract with Shimizu Technology.
+                  After completing our internship, we offer <span className="font-bold text-ruby-300">2-3 guaranteed positions</span> for top performers: 1-2 Teacher&apos;s Assistant roles for the next cohort and one 6-month software engineering contract with Shimizu Technology.
                 </p>
               </div>
             </div>
@@ -1055,7 +1055,7 @@ export default function LandingPage() {
                     <li>Understand the software development lifecycle</li>
                     <li>Improve teamwork and communication skills</li>
                     <li>Select guaranteed positions for top performers:</li>
-                    <li className="ml-6">1-2 Teacher's Assistant positions for the next Code School of Guam cohort</li>
+                    <li className="ml-6">1-2 Teacher&apos;s Assistant positions for the next Code School of Guam cohort</li>
                     <li className="ml-6">One 6-month contract software engineering position with Shimizu Technology</li>
                   </ul>
                 </CardContent>
