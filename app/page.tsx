@@ -27,6 +27,7 @@ import {
   CheckCircle,
   Calendar,
   GamepadIcon,
+  MessageCircle,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -777,11 +778,10 @@ export default function LandingPage() {
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
                       <CheckCircle className="mr-2 h-5 w-5 text-red-500" />
-                      Full Tuition Upfront
+                      Full Payment
                     </h4>
                     <p className="text-gray-600">
-                      Receive a discount when you pay in full—save more and
-                      simplify your enrollment!
+                      Pay the full tuition of US $7,500 upfront and simplify your enrollment!
                     </p>
                   </CardContent>
                 </Card>
@@ -789,11 +789,32 @@ export default function LandingPage() {
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
                       <Calendar className="mr-2 h-5 w-5 text-red-500" />
-                      4 Monthly Installments
+                      Four-Month Plan
                     </h4>
                     <p className="text-gray-600">
-                      Split your tuition into 4 equal payments, starting from
-                      the first month of class.
+                      Four monthly payments of US $1,750 each (total US $7,000 after deposit).
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="hover-lift bg-white">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center">
+                      <Calendar className="mr-2 h-5 w-5 text-red-500" />
+                      Six-Month Plan
+                    </h4>
+                    <p className="text-gray-600">
+                      Six monthly payments of US $1,200 each (total US $7,200 after deposit).
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="hover-lift bg-white">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center">
+                      <Calendar className="mr-2 h-5 w-5 text-red-500" />
+                      Eight-Month Plan
+                    </h4>
+                    <p className="text-gray-600">
+                      Eight monthly payments of US $925 each (total US $7,400 after deposit).
                     </p>
                   </CardContent>
                 </Card>
@@ -801,18 +822,24 @@ export default function LandingPage() {
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
                       <Briefcase className="mr-2 h-5 w-5 text-red-500" />
-                      Bank Loan Options
+                      Third-Party Financing
                     </h4>
-                    <ul className="list-disc list-inside text-gray-600 mb-2">
-                      <li>Get a personal loan from your bank of choice</li>
-                      <li>
-                        Use our partnership with PFC Finance for a streamlined
-                        loan process
-                      </li>
-                    </ul>
+                    <p className="text-gray-600 mb-2">
+                      PFC Finance Loan: Apply for a US $7,000 loan (after the US $500 deposit) through PFC Finance, either directly or with Code School of Guam serving as liaison.
+                    </p>
                     <p className="text-sm text-gray-500 italic mt-2">
-                      Note: If you’re interested in the PFC Finance option,
-                      please reach out to us for details.
+                      Note: If you&apos;re interested in the PFC Finance option, please reach out to us for details.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card className="hover-lift bg-white">
+                  <CardContent className="p-6">
+                    <h4 className="text-xl font-semibold mb-2 flex items-center">
+                      <MessageCircle className="mr-2 h-5 w-5 text-red-500" />
+                      Custom Payment Plan
+                    </h4>
+                    <p className="text-gray-600">
+                      If the standard options don&apos;t work for you, we&apos;re more than happy to work with you on a plan that fits your circumstances.
                     </p>
                   </CardContent>
                 </Card>
