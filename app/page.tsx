@@ -820,7 +820,7 @@ export default function LandingPage() {
                       Custom Solution
                     </h4>
                     <p className="text-gray-600">
-                      Need something different? We're happy to work with you on a plan that fits your circumstances.
+                      Need something different? We&apos;re happy to work with you on a plan that fits your circumstances.
                     </p>
                   </CardContent>
                 </Card>
