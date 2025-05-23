@@ -101,17 +101,18 @@ export default function LandingPage() {
   }
 
   const navItems = [
-    { href: "#about", label: "About Us" },
     { href: "#why-choose-us", label: "Why Choose Us" },
-    { href: "#why-ruby-react", label: "Why Ruby & React" },
-    { href: "#flappy-bird-demo", label: "Flappy Bird Demo" },
     { href: "#programs", label: "Programs & Pricing" },
     { href: "#curriculum", label: "Curriculum" },
+    { href: "#student-projects", label: "Student Projects" },
     { href: "#timeline", label: "Timeline" },
     { href: "#internship", label: "Internship" },
     { href: "#career", label: "Career Services" },
-    { href: "#admissions", label: "Admissions" },
+    { href: "#why-ruby-react", label: "Why Ruby & React" },
+    { href: "#flappy-bird-demo", label: "Flappy Bird Demo" },
+    { href: "#about", label: "About Us" },
     { href: "#founder", label: "About the Founder" },
+    { href: "#admissions", label: "Admissions" },
     { href: "#faq", label: "FAQs" },
     { href: "#policies", label: "Policies" },
     { href: "#contact", label: "Contact Us" },
@@ -356,37 +357,51 @@ export default function LandingPage() {
                   Launch Your Tech Career in Guam
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl/relaxed lg:text-2xl/relaxed">
-                  Join Guam&apos;s first coding bootcamp with our{" "}
-                  <span className="font-semibold text-ruby-500 animate-pulse-slow">
-                    fully remote classes
-                  </span>{" "}
-                  and transform your passion for technology into a
-                  powerful career in the Pacific&apos;s growing tech industry.
+                  <span className="font-semibold text-white">Become a Full-Stack Developer in 4 Months</span> with Guam&apos;s first coding bootcamp
+                </p>
+                <p className="mx-auto max-w-[700px] text-gray-300 md:text-lg/relaxed">
+                  Our <span className="font-semibold text-ruby-500 animate-pulse-slow">fully remote classes</span> make high-quality coding education accessible to everyone across the Pacific
                 </p>
               </div>
-              <div className="w-full max-w-sm space-y-3 reveal-on-scroll">
-                <a
-                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                  className="inline-flex h-14 items-center justify-center rounded-md bg-ruby-500 px-12 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring animate-ripple touch-feedback"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Apply to Code School of Guam"
-                  role="button"
-                >
-                  Apply Now!
-                  <ChevronRight className="ml-2 h-6 w-6 animate-bounce" />
-                </a>
-                <p className="text-sm text-gray-300">
-                  Begin your journey today. No prior experience required.
+              <div className="w-full max-w-md space-y-4 reveal-on-scroll">
+                <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+                  <a
+                    href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                    className="inline-flex h-14 items-center justify-center rounded-md bg-ruby-500 px-8 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring animate-ripple touch-feedback"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Apply to Code School of Guam"
+                    role="button"
+                  >
+                    Apply Now
+                    <ChevronRight className="ml-2 h-6 w-6 animate-bounce" />
+                  </a>
+                  <a
+                    href="#why-choose-us"
+                    className="inline-flex h-14 items-center justify-center rounded-md bg-gray-700 px-8 text-lg font-medium text-white shadow-lg transition-all hover:bg-gray-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50"
+                    aria-label="Learn more about Code School of Guam"
+                    role="button"
+                  >
+                    Learn More
+                  </a>
+                </div>
+                <p className="text-sm text-gray-300 mt-2">
+                  No prior coding experience required. Next cohort starts July 28.
                 </p>
-                <div className="mt-6 flex flex-wrap justify-center gap-4">
-                  <div className="bg-gray-800 bg-opacity-70 rounded-lg px-4 py-2 flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
-                    <span className="text-white text-sm">Lifetime access to materials</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-8 max-w-2xl mx-auto">
+                  <div className="bg-gray-800 bg-opacity-80 rounded-lg px-4 py-3 flex items-center">
+                    <CheckCircle className="h-6 w-6 text-green-400 mr-3 flex-shrink-0" />
+                    <div>
+                      <span className="text-white font-medium">Lifetime Access</span>
+                      <p className="text-gray-300 text-xs mt-1">To all class recordings and materials</p>
+                    </div>
                   </div>
-                  <div className="bg-gray-800 bg-opacity-70 rounded-lg px-4 py-2 flex items-center">
-                    <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
-                    <span className="text-white text-sm">2-3 guaranteed positions for top performers</span>
+                  <div className="bg-gray-800 bg-opacity-80 rounded-lg px-4 py-3 flex items-center">
+                    <Briefcase className="h-6 w-6 text-green-400 mr-3 flex-shrink-0" />
+                    <div>
+                      <span className="text-white font-medium">Job Opportunities</span>
+                      <p className="text-gray-300 text-xs mt-1">2-3 guaranteed positions for top performers</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -548,46 +563,74 @@ export default function LandingPage() {
           id="why-choose-us"
           className="w-full py-12 md:py-16 lg:py-20 bg-gray-900 text-white relative overflow-hidden"
         >
-          <div className="container mx-auto px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
-              Why Choose Code School of Guam?
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="hover-lift bg-gray-800">
-                <CardContent className="p-6">
+          <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px]"></div>
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
+                Why Choose Code School of Guam?
+              </h2>
+              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+                Join a supportive community of learners and gain the skills you need to launch your tech career
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+              <div className="rounded-xl overflow-hidden shadow-2xl transform transition-all hover:scale-[1.02] border-2 border-gray-700">
+                <Image
+                  src="/images/Chamorro-Chips-In-Person.png"
+                  alt="Code School of Guam students learning together during an in-person class session"
+                  width={800}
+                  height={600}
+                  className="w-full h-auto object-cover"
+                />
+                <div className="bg-gray-800 p-4 text-center">
+                  <p className="text-gray-300 text-sm italic">Our students collaborating during one of our special in-person sessions</p>
+                </div>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="bg-gray-800 bg-opacity-70 rounded-lg p-5 border-l-4 border-ruby-500 hover:transform hover:scale-105 transition-all">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                    <CheckCircle className="mr-2 h-5 w-5 text-red-500" />
-                    Fully Remote Classes
+                    <CheckCircle className="mr-3 h-6 w-6 text-ruby-500 flex-shrink-0" />
+                    <span>Fully Remote Learning with Optional In-Person Sessions</span>
                   </h3>
-                  <p className="text-gray-300">
-                    Learn from anywhere with our interactive online classes,
-                    designed for flexibility and accessibility.
+                  <p className="text-gray-300 ml-9">
+                    Our program is primarily delivered through interactive online classes, providing flexibility while still offering occasional in-person sessions when students want to collaborate face-to-face.
                   </p>
-                </CardContent>
-              </Card>
-              <Card className="hover-lift bg-gray-800">
-                <CardContent className="p-6">
+                </div>
+                
+                <div className="bg-gray-800 bg-opacity-70 rounded-lg p-5 border-l-4 border-ruby-500 hover:transform hover:scale-105 transition-all">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                    <Users className="mr-2 h-5 w-5 text-red-500" />
-                    Small Class Sizes
+                    <Users className="mr-3 h-6 w-6 text-ruby-500 flex-shrink-0" />
+                    <span>Small Class Sizes for Personalized Attention</span>
                   </h3>
-                  <p className="text-gray-300">
-                    Enjoy personalized attention with our small classes of
-                    maximum 10 students per cohort.
+                  <p className="text-gray-300 ml-9">
+                    With a maximum of 10 students per cohort, you&apos;ll receive individualized support and guidance throughout your learning journey.
                   </p>
-                </CardContent>
-              </Card>
-              <Card className="hover-lift bg-gray-800">
-                <CardContent className="p-6">
+                </div>
+                
+                <div className="bg-gray-800 bg-opacity-70 rounded-lg p-5 border-l-4 border-ruby-500 hover:transform hover:scale-105 transition-all">
                   <h3 className="text-xl font-bold mb-2 flex items-center text-white">
-                    <Briefcase className="mr-2 h-5 w-5 text-red-500" />
-                    Select Job Opportunities
+                    <Briefcase className="mr-3 h-6 w-6 text-ruby-500 flex-shrink-0" />
+                    <span>Guaranteed Job Opportunities for Top Performers</span>
                   </h3>
-                  <p className="text-gray-300">
-                    After completing our internship, we offer 2-3 guaranteed positions for top performers including Teacher&apos;s Assistant roles and a software engineering contract.
+                  <p className="text-gray-300 ml-9">
+                    After completing our internship, we offer 2-3 guaranteed positions for top performers: 1-2 Teacher&apos;s Assistant roles and one 6-month software engineering contract with Shimizu Technology.
                   </p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <a
+                href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Join Our Next Cohort
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </a>
             </div>
           </div>
         </section>
@@ -961,6 +1004,81 @@ export default function LandingPage() {
                 aria-label="Apply to Code School of Guam"
               >
                 Start Your Coding Journey
+                <ChevronRight className="ml-2 h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Student Capstone Presentations */}
+        <section
+          id="student-projects"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-100 relative overflow-hidden"
+        >
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <div className="inline-block px-3 py-1 bg-ruby-500/10 rounded-full text-ruby-700 text-sm font-medium mb-4">
+                Student Success
+              </div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-4 text-gray-900">
+                Capstone Presentations
+              </h2>
+              <p className="text-lg text-gray-600 mb-0">
+                Watch our students present their final projects and see the real-world skills they&apos;ve developed during our program.
+                These capstone projects demonstrate their ability to build complete applications from concept to deployment.
+              </p>
+            </div>
+            
+            <div className="max-w-5xl mx-auto mb-12 px-4 sm:px-6">
+              {/* YouTube video container with proper aspect ratio */}
+              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-gray-200">
+                <div style={{ paddingTop: '56.25%' }}> {/* 16:9 aspect ratio container */}
+                  <iframe 
+                    src="https://www.youtube.com/embed/MNzZeL33jiw?t=650" 
+                    title="Code School of Guam Capstone Presentations - Chamorro Chips (May 9th, 2025)" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
+                  ></iframe>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-500 italic">
+                  The Code School of Guam Capstone Presentations - Chamorro Chips (May 9th, 2025)
+                </p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-10">
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
+                <h3 className="text-xl font-bold mb-2 text-gray-900">Real-World Applications</h3>
+                <p className="text-gray-600">
+                  Students build projects that solve actual problems, often focusing on needs specific to Guam and the Pacific region.
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
+                <h3 className="text-xl font-bold mb-2 text-gray-900">Full-Stack Development</h3>
+                <p className="text-gray-600">
+                  Each project demonstrates proficiency in both frontend and backend technologies, including Ruby on Rails and React.
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all">
+                <h3 className="text-xl font-bold mb-2 text-gray-900">Professional Presentation</h3>
+                <p className="text-gray-600">
+                  Students gain valuable experience presenting their work and explaining technical concepts to diverse audiences.
+                </p>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <a
+                href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Apply Now and Build Your Own Project
                 <ChevronRight className="ml-2 h-5 w-5" />
               </a>
             </div>
