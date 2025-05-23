@@ -773,15 +773,15 @@ export default function LandingPage() {
               <h3 className="text-2xl font-bold mb-6 text-center">
                 Payment Options
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Card className="hover-lift bg-white">
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
                       <CheckCircle className="mr-2 h-5 w-5 text-red-500" />
-                      Full Payment
+                      Pay Upfront
                     </h4>
                     <p className="text-gray-600">
-                      Pay the full tuition of US $7,500 upfront and simplify your enrollment!
+                      Full payment of US $7,500 upfront
                     </p>
                   </CardContent>
                 </Card>
@@ -789,32 +789,13 @@ export default function LandingPage() {
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
                       <Calendar className="mr-2 h-5 w-5 text-red-500" />
-                      Four-Month Plan
+                      Monthly Installments
                     </h4>
                     <p className="text-gray-600">
-                      Four monthly payments of US $1,750 each (total US $7,000 after deposit).
+                      Choose from 4, 6, or 8-month payment plans
                     </p>
-                  </CardContent>
-                </Card>
-                <Card className="hover-lift bg-white">
-                  <CardContent className="p-6">
-                    <h4 className="text-xl font-semibold mb-2 flex items-center">
-                      <Calendar className="mr-2 h-5 w-5 text-red-500" />
-                      Six-Month Plan
-                    </h4>
-                    <p className="text-gray-600">
-                      Six monthly payments of US $1,200 each (total US $7,200 after deposit).
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card className="hover-lift bg-white">
-                  <CardContent className="p-6">
-                    <h4 className="text-xl font-semibold mb-2 flex items-center">
-                      <Calendar className="mr-2 h-5 w-5 text-red-500" />
-                      Eight-Month Plan
-                    </h4>
-                    <p className="text-gray-600">
-                      Eight monthly payments of US $925 each (total US $7,400 after deposit).
+                    <p className="text-sm text-gray-500 mt-2">
+                      Starting from US $925/month after deposit
                     </p>
                   </CardContent>
                 </Card>
@@ -824,11 +805,11 @@ export default function LandingPage() {
                       <Briefcase className="mr-2 h-5 w-5 text-red-500" />
                       Third-Party Financing
                     </h4>
-                    <p className="text-gray-600 mb-2">
-                      PFC Finance Loan: Apply for a US $7,000 loan (after the US $500 deposit) through PFC Finance, either directly or with Code School of Guam serving as liaison.
+                    <p className="text-gray-600">
+                      Apply for a loan through our partner PFC Finance
                     </p>
-                    <p className="text-sm text-gray-500 italic mt-2">
-                      Note: If you&apos;re interested in the PFC Finance option, please reach out to us for details.
+                    <p className="text-sm text-gray-500 mt-2">
+                      Contact us for details on this option
                     </p>
                   </CardContent>
                 </Card>
@@ -836,10 +817,10 @@ export default function LandingPage() {
                   <CardContent className="p-6">
                     <h4 className="text-xl font-semibold mb-2 flex items-center">
                       <MessageCircle className="mr-2 h-5 w-5 text-red-500" />
-                      Custom Payment Plan
+                      Custom Solution
                     </h4>
                     <p className="text-gray-600">
-                      If the standard options don&apos;t work for you, we&apos;re more than happy to work with you on a plan that fits your circumstances.
+                      Need something different? We're happy to work with you on a plan that fits your circumstances.
                     </p>
                   </CardContent>
                 </Card>
