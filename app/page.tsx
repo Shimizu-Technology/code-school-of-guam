@@ -329,7 +329,7 @@ export default function LandingPage() {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero / Landing Section */}
-        <section className="relative w-full py-16 md:py-24 lg:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+        <section className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
           {/* Animated code-like background elements */}
           <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:40px_40px]" />
           <div className="absolute inset-0 opacity-20">
@@ -352,51 +352,60 @@ export default function LandingPage() {
               }`}
               data-tilt-effect
             >
+              {/* Main heading and subheading */}
               <div className="space-y-4 reveal-on-scroll">
-                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-lg">
+                <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-lg">
                   Launch Your Tech Career in Guam
                 </h1>
-                <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl/relaxed lg:text-2xl/relaxed">
-                  <span className="font-semibold text-white">Become a Full-Stack Developer in 4 Months</span> with Guam&apos;s first coding bootcamp
-                </p>
-                <p className="mx-auto max-w-[700px] text-gray-300 md:text-lg/relaxed">
-                  Our <span className="font-semibold text-ruby-500 animate-pulse-slow">fully remote classes</span> make high-quality coding education accessible to everyone across the Pacific
-                </p>
+                <div className="mx-auto max-w-[700px]">
+                  <p className="text-xl font-semibold text-white mb-2">
+                    Become a Full-Stack Developer in 4 Months
+                  </p>
+                  <p className="text-gray-300 text-base md:text-lg">
+                    Our <span className="font-semibold text-ruby-500 animate-pulse-slow">fully remote classes</span> make high-quality coding education accessible to everyone across the Pacific
+                  </p>
+                </div>
               </div>
-              <div className="w-full max-w-md space-y-4 reveal-on-scroll">
-                <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+              
+              {/* CTA buttons */}
+              <div className="w-full max-w-xs sm:max-w-md space-y-6 reveal-on-scroll">
+                <div className="flex flex-col gap-3 w-full">
                   <a
                     href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                    className="inline-flex h-14 items-center justify-center rounded-md bg-ruby-500 px-8 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring animate-ripple touch-feedback"
+                    className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 animate-pulse hover:animate-none focus-ring animate-ripple touch-feedback w-full"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Apply to Code School of Guam"
                     role="button"
                   >
                     Apply Now
-                    <ChevronRight className="ml-2 h-6 w-6 animate-bounce" />
+                    <ChevronRight className="ml-2 h-5 w-5 animate-bounce" />
                   </a>
                   <a
                     href="#why-choose-us"
-                    className="inline-flex h-14 items-center justify-center rounded-md bg-gray-700 px-8 text-lg font-medium text-white shadow-lg transition-all hover:bg-gray-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50"
+                    className="flex h-12 items-center justify-center rounded-md bg-gray-700 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-gray-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50 w-full"
                     aria-label="Learn more about Code School of Guam"
                     role="button"
                   >
                     Learn More
                   </a>
                 </div>
-                <p className="text-sm text-gray-300 mt-2">
-                  No prior coding experience required. Next cohort starts July 28.
+                
+                <p className="text-sm text-gray-300 text-center">
+                  No prior coding experience required<br />
+                  <span className="font-medium">Next cohort starts July 28</span>
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-8 max-w-2xl mx-auto">
-                  <div className="bg-gray-800 bg-opacity-80 rounded-lg px-4 py-3 flex items-center">
+                
+                {/* Key benefits */}
+                <div className="space-y-3 w-full">
+                  <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg px-4 py-3 flex items-center">
                     <CheckCircle className="h-6 w-6 text-green-400 mr-3 flex-shrink-0" />
                     <div>
                       <span className="text-white font-medium">Lifetime Access</span>
                       <p className="text-gray-300 text-xs mt-1">To all class recordings and materials</p>
                     </div>
                   </div>
-                  <div className="bg-gray-800 bg-opacity-80 rounded-lg px-4 py-3 flex items-center">
+                  <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg px-4 py-3 flex items-center">
                     <Briefcase className="h-6 w-6 text-green-400 mr-3 flex-shrink-0" />
                     <div>
                       <span className="text-white font-medium">Job Opportunities</span>
