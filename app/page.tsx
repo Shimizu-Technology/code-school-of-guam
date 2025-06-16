@@ -27,6 +27,7 @@ import {
   Phone,
   CheckCircle,
   Calendar,
+  Clock,
   GamepadIcon,
   MessageCircle,
   Database,
@@ -419,17 +420,20 @@ export default function LandingPage() {
               data-tilt-effect
             >
               {/* Main heading and subheading */}
-              <div className="space-y-4 reveal-on-scroll">
+              <div className="space-y-6 reveal-on-scroll">
                 <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-lg">
                   Launch Your Tech Career in Guam
                 </h1>
-                <div className="mx-auto max-w-[700px]">
-                  <p className="text-xl font-semibold text-white mb-2">
-                    Become a Full-Stack Developer in 4 Months
+                <div className="mx-auto max-w-[700px] space-y-4">
+                  <p className="text-lg md:text-xl font-semibold text-white">
+                    Guam&apos;s First Coding Bootcamp • <span className="text-green-300">4-Month Program</span>
                   </p>
-                  <p className="text-gray-300 text-base md:text-lg mb-3">
-                    Our <span className="font-semibold text-ruby-500 animate-pulse-slow">fully remote classes</span> make high-quality coding education accessible to everyone across the Pacific
-                  </p>
+                  
+                  {/* Single most important urgency element */}
+                  <div className="inline-flex items-center px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-sm font-medium animate-pulse">
+                    ⚡ Only 10 Students Per Cohort • 3 Workshop Spots Left
+                  </div>
+                  
                   <p className="text-sm text-green-300 font-medium">
                     🚀 New to coding? Try our FREE hands-on workshop first!
                   </p>
@@ -437,48 +441,36 @@ export default function LandingPage() {
               </div>
               
               {/* CTA buttons */}
-              <div className="w-full max-w-xs sm:max-w-md space-y-6 reveal-on-scroll">
-                <div className="flex flex-col gap-3 w-full">
-                  <a
-                    href="#workshop"
-                    className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 w-full"
-                    aria-label="Learn about our free workshop"
-                    role="button"
-                  >
-                    Try Free Workshop - June 28th
-                    <ArrowDown className="ml-2 h-5 w-5" />
-                  </a>
-                  <a
-                    href="#programs"
-                    className="flex h-12 items-center justify-center rounded-md border-2 border-white/50 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-white/10 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 disabled:pointer-events-none disabled:opacity-50 w-full"
-                    aria-label="View bootcamp details"
-                    role="button"
-                  >
-                    View Bootcamp Details
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </a>
-                </div>
+              <div className="w-full max-w-sm mx-auto space-y-4 reveal-on-scroll">
+                <a
+                  href="#workshop"
+                  className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
+                  aria-label="Learn about our free workshop"
+                  role="button"
+                >
+                  Try Free Workshop - June 28th
+                  <ArrowDown className="ml-2 h-5 w-5" />
+                </a>
                 
-                <p className="text-sm text-gray-300 text-center">
-                  No coding experience required • Build 3 projects in 2½ hours<br />
-                  <span className="font-medium">🎁 First 3 workshop attendees can save $500 on July cohort</span>
-                </p>
-                
-                {/* Key benefits */}
-                <div className="space-y-3 w-full">
-                  <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg px-4 py-3 flex items-center">
-                    <CheckCircle className="h-6 w-6 text-green-400 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="text-white font-medium">Lifetime Access</span>
-                      <p className="text-gray-300 text-xs mt-1">To all class recordings and materials</p>
-                    </div>
-                  </div>
-                  <div className="bg-gray-800/90 backdrop-blur-sm rounded-lg px-4 py-3 flex items-center">
-                    <Briefcase className="h-6 w-6 text-green-400 mr-3 flex-shrink-0" />
-                    <div>
-                      <span className="text-white font-medium">Job Opportunities</span>
-                      <p className="text-gray-300 text-xs mt-1">2-3 guaranteed positions for top performers</p>
-                    </div>
+                <div className="text-center space-y-2">
+                  <p className="text-xs text-gray-300">
+                    No coding experience required • Build 3 projects in 2½ hours
+                  </p>
+                  <p className="text-sm font-medium text-yellow-300">
+                    🎁 First 3 workshop attendees save $500 on July cohort
+                  </p>
+                  
+                  {/* Secondary CTA - button style */}
+                  <div className="pt-3">
+                    <a
+                      href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center h-10 px-4 rounded-md border border-gray-500 bg-gray-800/50 text-sm text-gray-200 hover:bg-gray-700/50 hover:text-white transition-all w-full"
+                    >
+                      Apply Directly for July Cohort
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -591,7 +583,7 @@ export default function LandingPage() {
                     </p>
                   </div>
                   <p className="text-xs text-green-700 font-medium mt-2">
-                    ⚡ 47 spots remaining for June 28th
+                    ⚡ Limited spots remaining for June 28th
                   </p>
                 </div>
               </div>
@@ -698,6 +690,187 @@ export default function LandingPage() {
                   Try Free Workshop
                   <Rocket className="ml-2 h-4 w-4" />
                 </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Value & What's Included Section */}
+        <section className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center px-4 py-2 bg-green-100 border border-green-200 rounded-full text-green-800 text-sm font-medium mb-4">
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Complete Package Value
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4 text-gray-900">
+                What&apos;s Included — <span className="text-green-600">No Hidden Fees</span>
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-4">
+                For $7,500, you get everything you need to become a junior full-stack developer — plus lifetime support and guaranteed opportunities
+              </p>
+              
+              {/* Clean urgency reminder */}
+              <div className="inline-flex items-center px-3 py-1 bg-yellow-100 border border-yellow-200 rounded-full text-yellow-700 text-sm font-medium">
+                <Star className="h-4 w-4 mr-1" />
+                25% early bird discount - ends July 15th
+              </div>
+            </div>
+
+            {/* Value Comparison */}
+            <div className="max-w-5xl mx-auto mb-12">
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 md:p-8 border border-green-200 shadow-lg">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                  <div>
+                    <div className="text-3xl font-bold text-green-600 mb-2">$7,500</div>
+                    <div className="text-lg font-semibold text-gray-900 mb-1">Code School of Guam</div>
+                    <div className="text-sm text-gray-600">25% OFF • Regular $10,000</div>
+                  </div>
+                  <div className="flex items-center justify-center">
+                    <div className="text-gray-400 text-2xl font-bold">VS</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-bold text-red-500 mb-2">$16,000+</div>
+                    <div className="text-lg font-semibold text-gray-900 mb-1">U.S. Bootcamps</div>
+                    <div className="text-sm text-gray-600">Without internship guarantee</div>
+                  </div>
+                </div>
+                <div className="mt-6 text-center">
+                  <p className="text-lg font-semibold text-gray-900">
+                    🎯 <span className="text-green-600">Save over $8,500</span> while getting MORE value with our locally-focused program
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* What's Included Grid */}
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                {/* Core Program */}
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                      <GraduationCap className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">4½-Month Bootcamp</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    From zero to certified junior full-stack developer with live instruction and hands-on projects
+                  </p>
+                </div>
+
+                {/* Lifetime Access */}
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                      <CheckCircle className="h-6 w-6 text-green-600" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Lifetime Access</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    Every class recording, guide, and resource — plus future curriculum updates with AI and latest tech
+                  </p>
+                </div>
+
+                {/* Career Services */}
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                      <Briefcase className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Career Services</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    Continuous coaching: resumé building, LinkedIn optimization, mock interviews, and job search support
+                  </p>
+                </div>
+
+                {/* Guaranteed Internship */}
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                      <Star className="h-6 w-6 text-yellow-600" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Guaranteed Internship</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    10-week paid internship building real apps for Guam businesses — not just practice projects
+                  </p>
+                </div>
+
+                {/* Expert Network */}
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                      <Users className="h-6 w-6 text-indigo-600" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Expert Network</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    1-2 Q&A sessions with senior mainland engineers — grow your network and get industry insights
+                  </p>
+                </div>
+
+                {/* Post-Grad Opportunities */}
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all bg-gradient-to-br from-ruby-50 to-red-50 border-ruby-200">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-ruby-100 rounded-lg flex items-center justify-center mr-3">
+                      <Rocket className="h-6 w-6 text-ruby-600" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Post-Grad Opportunities</h3>
+                  </div>
+                  <p className="text-gray-600 text-sm">
+                    Paid TA roles at CSG + contract work with Shimizu Technology — continue earning while you learn
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Alumni Network Bonus */}
+              <div className="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl p-6 md:p-8 text-white">
+                <div className="text-center">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-3">
+                      <Users className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold">Growing Alumni Network</h3>
+                  </div>
+                  <p className="text-gray-300 text-lg mb-4">
+                    Join Guam&apos;s first coding bootcamp alumni network for ongoing support, referrals, and collaboration opportunities with local businesses
+                  </p>
+                  <div className="flex items-center justify-center text-sm text-gray-400">
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <span>Always expanding partnerships with large Guam businesses</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom CTA */}
+              <div className="text-center mt-12">
+                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 max-w-2xl mx-auto">
+                  <p className="text-gray-700 mb-4">
+                    <strong>Questions about payment options?</strong> We offer multiple flexible plans and are happy to work with you to find what fits your situation.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a
+                      href="https://forms.gle/yEEiCoYusQ6cUGFv8"
+                      className="inline-flex h-12 items-center justify-center rounded-md bg-green-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Try Free Workshop
+                    </a>
+                    <a
+                      href="#programs"
+                      className="inline-flex h-12 items-center justify-center rounded-md bg-gray-100 border border-gray-300 px-6 text-base font-medium text-gray-700 shadow-lg transition-all hover:bg-gray-200 hover:scale-105"
+                    >
+                      View Payment Plans
+                      <ChevronRight className="ml-2 h-5 w-5" />
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -824,7 +997,14 @@ export default function LandingPage() {
               <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4 text-gray-900">
                 Next Cohort Starts <span className="text-ruby-500">July 28</span>
               </h2>
-              <div className="w-24 h-1 bg-ruby-500 mx-auto mb-6 rounded-full"></div>
+              <div className="w-24 h-1 bg-ruby-500 mx-auto mb-4 rounded-full"></div>
+              
+              {/* Clean urgency element */}
+              <div className="inline-flex items-center px-3 py-1 bg-orange-100 border border-orange-200 rounded-full text-orange-700 text-sm font-medium mb-4">
+                <Clock className="h-4 w-4 mr-1" />
+                Early bird pricing ends July 15th
+              </div>
+              
               <p className="text-xl text-gray-600 mb-0">
                 4-month intensive bootcamp with <span className="font-semibold text-ruby-600">25% early bird discount</span>
               </p>
@@ -1145,180 +1325,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Value & What's Included Section */}
-        <section className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            {/* Section Header */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center px-4 py-2 bg-green-100 border border-green-200 rounded-full text-green-800 text-sm font-medium mb-4">
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Complete Package Value
-              </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4 text-gray-900">
-                What&apos;s Included — <span className="text-green-600">No Hidden Fees</span>
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                For $7,500, you get everything you need to become a junior full-stack developer — plus lifetime support and guaranteed opportunities
-              </p>
-            </div>
 
-            {/* Value Comparison */}
-            <div className="max-w-5xl mx-auto mb-12">
-              <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 md:p-8 border border-green-200 shadow-lg">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                  <div>
-                    <div className="text-3xl font-bold text-green-600 mb-2">$7,500</div>
-                    <div className="text-lg font-semibold text-gray-900 mb-1">Code School of Guam</div>
-                    <div className="text-sm text-gray-600">25% OFF • Regular $10,000</div>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <div className="text-gray-400 text-2xl font-bold">VS</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-red-500 mb-2">$16,000+</div>
-                    <div className="text-lg font-semibold text-gray-900 mb-1">U.S. Bootcamps</div>
-                    <div className="text-sm text-gray-600">Without internship guarantee</div>
-                  </div>
-                </div>
-                <div className="mt-6 text-center">
-                  <p className="text-lg font-semibold text-gray-900">
-                    🎯 <span className="text-green-600">Save over $8,500</span> while getting MORE value with our locally-focused program
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* What's Included Grid */}
-            <div className="max-w-6xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                {/* Core Program */}
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                      <GraduationCap className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900">4½-Month Bootcamp</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    From zero to certified junior full-stack developer with live instruction and hands-on projects
-                  </p>
-                </div>
-
-                {/* Lifetime Access */}
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                      <CheckCircle className="h-6 w-6 text-green-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900">Lifetime Access</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    Every class recording, guide, and resource — plus future curriculum updates with AI and latest tech
-                  </p>
-                </div>
-
-                {/* Career Services */}
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                      <Briefcase className="h-6 w-6 text-purple-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900">Career Services</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    Continuous coaching: resumé building, LinkedIn optimization, mock interviews, and job search support
-                  </p>
-                </div>
-
-                {/* Guaranteed Internship */}
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
-                      <Star className="h-6 w-6 text-yellow-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900">Guaranteed Internship</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    10-week paid internship building real apps for Guam businesses — not just practice projects
-                  </p>
-                </div>
-
-                {/* Expert Network */}
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
-                      <Users className="h-6 w-6 text-indigo-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900">Expert Network</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    1-2 Q&A sessions with senior mainland engineers — grow your network and get industry insights
-                  </p>
-                </div>
-
-                {/* Post-Grad Opportunities */}
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all bg-gradient-to-br from-ruby-50 to-red-50 border-ruby-200">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-ruby-100 rounded-lg flex items-center justify-center mr-3">
-                      <Rocket className="h-6 w-6 text-ruby-600" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900">Post-Grad Opportunities</h3>
-                  </div>
-                  <p className="text-gray-600 text-sm">
-                    Paid TA roles at CSG + contract work with Shimizu Technology — continue earning while you learn
-                  </p>
-                </div>
-
-              </div>
-
-              {/* Alumni Network Bonus */}
-              <div className="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 rounded-xl p-6 md:p-8 text-white">
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center mr-3">
-                      <Users className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold">Growing Alumni Network</h3>
-                  </div>
-                  <p className="text-gray-300 text-lg mb-4">
-                    Join Guam&apos;s first coding bootcamp alumni network for ongoing support, referrals, and collaboration opportunities with local businesses
-                  </p>
-                  <div className="flex items-center justify-center text-sm text-gray-400">
-                    <CheckCircle className="h-4 w-4 mr-2" />
-                    <span>Always expanding partnerships with large Guam businesses</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom CTA */}
-              <div className="text-center mt-12">
-                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 max-w-2xl mx-auto">
-                  <p className="text-gray-700 mb-4">
-                    <strong>Questions about payment options?</strong> We offer multiple flexible plans and are happy to work with you to find what fits your situation.
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a
-                      href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                      className="inline-flex h-12 items-center justify-center rounded-md bg-green-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Try Free Workshop
-                    </a>
-                    <a
-                      href="mailto:codeschoolofguam@gmail.com"
-                      className="inline-flex h-12 items-center justify-center rounded-md bg-gray-100 border border-gray-300 px-6 text-base font-medium text-gray-700 shadow-lg transition-all hover:bg-gray-200 hover:scale-105"
-                    >
-                      Ask About Payment Plans
-                      <Mail className="ml-2 h-5 w-5" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Why Ruby & React */}
         <section
@@ -2076,10 +2083,15 @@ export default function LandingPage() {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-6">
                 Ready to Start Your <span className="text-yellow-300">Coding Journey</span>?
               </h2>
-              <p className="text-xl text-ruby-100 mb-8 max-w-3xl mx-auto">
-                Join Guam&apos;s first coding bootcamp and transform your career in just 4 months. 
-                Don&apos;t wait – our July cohort is filling up fast!
+              <p className="text-xl text-ruby-100 mb-6 max-w-3xl mx-auto">
+                Join Guam&apos;s first coding bootcamp and transform your career in just 4 months.
               </p>
+              
+              {/* Clean urgency message */}
+              <div className="inline-flex items-center px-4 py-2 bg-white/10 border border-white/20 rounded-full text-yellow-300 text-sm font-medium mb-8">
+                <Users className="h-4 w-4 mr-1" />
+                7 out of 10 spots filled for July cohort
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-3xl mx-auto">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
