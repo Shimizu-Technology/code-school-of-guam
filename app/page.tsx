@@ -629,7 +629,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <blockquote className="text-gray-700 italic mb-4 flex-grow">
-                    "Clear mind and trust the process. CSG will match the effort that you give it, so at the end of the day, how bad do you want it?"
+                    &quot;Clear mind and trust the process. CSG will match the effort that you give it, so at the end of the day, how bad do you want it?&quot;
                   </blockquote>
                   <div className="flex text-yellow-400">
                     {"★".repeat(5)}
@@ -650,7 +650,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <blockquote className="text-gray-700 italic mb-4 flex-grow">
-                    "I am very very VERY glad I enrolled and finished it! Now, I constantly think about ways I could &apos;hack&apos; my daily life by creating apps. Leon was extremely helpful in answering all my questions and providing valuable guidance."
+                    &quot;I am very very VERY glad I enrolled and finished it! Now, I constantly think about ways I could &apos;hack&apos; my daily life by creating apps. Leon was extremely helpful in answering all my questions and providing valuable guidance.&quot;
                   </blockquote>
                   <div className="flex text-yellow-400">
                     {"★".repeat(5)}
@@ -671,7 +671,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <blockquote className="text-gray-700 italic mb-4 flex-grow">
-                    "The Code School of Guam provided me with a well-structured curriculum, expert guidance, and valuable opportunities to kick-start my career as a software engineer. Enrolling was the best decision I've ever made!"
+                    &quot;The Code School of Guam provided me with a well-structured curriculum, expert guidance, and valuable opportunities to kick-start my career as a software engineer. Enrolling was the best decision I&apos;ve ever made!&quot;
                   </blockquote>
                   <div className="flex text-yellow-400">
                     {"★".repeat(5)}
@@ -885,7 +885,7 @@ export default function LandingPage() {
                     
                     <p className="text-gray-600 text-sm">
                       Let us know which schedule works better for you when you apply, and
-                      we'll finalize it based on the majority preference.
+                      we&apos;ll finalize it based on the majority preference.
                     </p>
                   </div>
                 </div>
@@ -1370,7 +1370,7 @@ export default function LandingPage() {
               </h3>
               <p className="text-lg text-gray-600 text-center">
                 The programming concepts you learn are applicable to other
-                languages and frameworks. We emphasize "learning how to learn,"
+                languages and frameworks. We emphasize &quot;learning how to learn,&quot;
                 so you can adapt to new technologies throughout your career.
                 While our focus is on Rails and React, we also introduce you to
                 other languages like Python, demonstrating how to apply your
@@ -1636,9 +1636,9 @@ export default function LandingPage() {
             
             <div className="text-center space-y-4">
               <div className="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto mb-6">
-                <p className="text-gray-700 italic">
-                  "Seeing our students go from never having coded before to presenting professional applications in 4 months is incredibly rewarding. They&apos;re ready for real developer roles."
-                </p>
+                                  <p className="text-gray-700 italic">
+                    &quot;Seeing our students go from never having coded before to presenting professional applications in 4 months is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
+                  </p>
                 <div className="mt-3 text-sm text-gray-600">
                   - Leon Shimizu, Founder & Lead Instructor
                 </div>
