@@ -716,7 +716,7 @@ export default function LandingPage() {
                 What Makes Us Different
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4">
-                Guam's First <span className="text-ruby-500">Tech Bootcamp</span>
+                Guam&apos;s First <span className="text-ruby-500">Tech Bootcamp</span>
               </h2>
               <p className="text-lg text-gray-300 max-w-3xl mx-auto">
                 From complete beginner to job-ready developer - we&apos;re building Guam&apos;s tech ecosystem with personalized attention and real job opportunities
