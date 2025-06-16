@@ -151,13 +151,12 @@ export default function LandingPage() {
 
   const navItems = [
     { href: "#why-choose-us", label: "Why Choose Us" },
+    { href: "#what-youll-learn", label: "What You'll Learn" },
     { href: "#programs", label: "Programs & Pricing" },
-    { href: "#curriculum", label: "Curriculum" },
     { href: "#student-projects", label: "Student Projects" },
     { href: "#timeline", label: "Timeline" },
     { href: "#internship", label: "Internship" },
     { href: "#career", label: "Career Services" },
-    { href: "#why-ruby-react", label: "Why Ruby & React" },
     { href: "#flappy-bird-demo", label: "Flappy Bird Demo" },
     { href: "#about", label: "About Us" },
     { href: "#founder", label: "About the Founder" },
@@ -983,6 +982,228 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* What You'll Learn - Combined Ruby/React + Curriculum Overview */}
+        <section
+          id="what-youll-learn"
+          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50 relative overflow-hidden"
+        >
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
+                <Code className="h-4 w-4 mr-2" />
+                4-Month Journey
+              </div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4 text-gray-900">
+                What You&apos;ll Learn & Why
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Master Ruby on Rails and React.js - the perfect full-stack combination that opens doors to any tech career
+              </p>
+            </div>
+
+            {/* Tech Stack Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+              <Card className="hover-lift bg-white shadow-lg">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
+                    <Code className="mr-3 h-6 w-6 text-red-500" />
+                    Ruby on Rails: Backend Mastery
+                  </h3>
+                  <ul className="space-y-3 text-gray-600 mb-6">
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Beginner-friendly, readable syntax
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Rapid prototyping & development
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Used by Airbnb, GitHub, Shopify
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Convention over configuration
+                    </li>
+                  </ul>
+                  <div className="bg-red-50 rounded-lg p-4">
+                    <p className="text-sm text-red-700 font-medium">
+                      Perfect for building robust APIs and web applications
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover-lift bg-white shadow-lg">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
+                    <Code className="mr-3 h-6 w-6 text-blue-500" />
+                    React.js: Frontend Excellence
+                  </h3>
+                  <ul className="space-y-3 text-gray-600 mb-6">
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Most in-demand frontend framework
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Component-based architecture
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Used by Meta, Netflix, Airbnb
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Gateway to React Native (mobile)
+                    </li>
+                  </ul>
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <p className="text-sm text-blue-700 font-medium">
+                      Perfect pair with Rails APIs for full-stack development
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Tech Stack Visual */}
+            <div className="max-w-4xl mx-auto mb-12">
+              <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
+                <h3 className="text-xl font-bold text-center mb-6 text-gray-900">Your Complete Tech Stack</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      <span className="text-red-600 font-bold text-lg">Rb</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-900">Ruby</h4>
+                    <p className="text-sm text-gray-600">Programming Language</p>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      <span className="text-red-600 font-bold text-xs">Rails</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-900">Ruby on Rails</h4>
+                    <p className="text-sm text-gray-600">Backend Framework</p>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      <span className="text-blue-600 font-bold text-xs">React</span>
+                    </div>
+                    <h4 className="font-semibold text-gray-900">React</h4>
+                    <p className="text-sm text-gray-600">Frontend Framework</p>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      <Database className="h-6 w-6 text-green-600" />
+                    </div>
+                    <h4 className="font-semibold text-gray-900">PostgreSQL</h4>
+                    <p className="text-sm text-gray-600">Database</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Foundation Message */}
+            <div className="max-w-5xl mx-auto mb-12">
+              <div className="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-8 border border-gray-200">
+                <h3 className="text-2xl font-bold mb-6 text-center text-gray-900">
+                  Your Foundation for Any Tech Stack
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                  <div>
+                    <h4 className="text-lg font-semibold mb-3 text-gray-900 flex items-center">
+                      <Rocket className="mr-2 h-5 w-5 text-ruby-500" />
+                      Master Core Concepts
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Learn fundamental programming principles that transfer to any language. Once you understand variables, loops, functions, and object-oriented programming, switching languages becomes just learning new syntax.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold mb-3 text-gray-900 flex items-center">
+                      <Briefcase className="mr-2 h-5 w-5 text-blue-500" />
+                      Real-World Application
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      These are the exact technologies used at Shimizu Technology for your internship opportunities. You&apos;ll be job-ready from day one with the tools companies actually use.
+                    </p>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-gray-700 font-medium">
+                    <span className="text-ruby-600">Ruby + React</span> → Easy transition to <span className="text-blue-600">Python + Vue</span>, <span className="text-green-600">Java + Angular</span>, or any other stack
+                  </p>
+                </div>
+              </div>
+            </div>
+
+                         {/* Learning Path Preview */}
+             <div className="max-w-4xl mx-auto">
+               <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">Your 4-Month Learning Journey</h3>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-gray-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">PRE</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">Foundations</h4>
+                     <p className="text-sm text-gray-600">Self-paced preparation</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-blue-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">1-4</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">Ruby Fundamentals</h4>
+                     <p className="text-sm text-gray-600">Object-oriented programming</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-green-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">5-8</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">Rails API Development</h4>
+                     <p className="text-sm text-gray-600">Backend APIs & databases</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-orange-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">9</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">Full-Stack Rails</h4>
+                     <p className="text-sm text-gray-600">Complete web applications</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-purple-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">10-11</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">JavaScript</h4>
+                     <p className="text-sm text-gray-600">Frontend programming & APIs</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-indigo-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">12-13</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">React & Integration</h4>
+                     <p className="text-sm text-gray-600">Frontend + backend connection</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-pink-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">14</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">Advanced Topics</h4>
+                     <p className="text-sm text-gray-600">AI, Python intro, capstone planning</p>
+                   </div>
+                 </div>
+                 <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                   <div className="w-12 h-8 bg-ruby-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">15-16</div>
+                   <div className="flex-1">
+                     <h4 className="font-semibold text-gray-900">Capstone Project</h4>
+                     <p className="text-sm text-gray-600">Build & present your app</p>
+                   </div>
+                 </div>
+               </div>
+             </div>
+          </div>
+        </section>
+
         {/* Programs & Pricing Section */}
         <section
           id="programs"
@@ -1327,65 +1548,7 @@ export default function LandingPage() {
 
 
 
-        {/* Why Ruby & React */}
-        <section
-          id="why-ruby-react"
-          className="w-full py-12 md:py-16 lg:py-20 relative overflow-hidden"
-        >
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
-              Why We Teach Ruby on Rails and React.js
-            </h2>
-            <p className="text-lg text-gray-600 text-center mb-8">
-              At the Code School of Guam, we&apos;ve thoughtfully chosen Ruby on
-              Rails and React.js as the cornerstone of our curriculum. Here&apos;s
-              why:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="hover-lift bg-white">
-                <CardContent className="p-6">
-                  <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Code className="mr-2 h-5 w-5 text-red-500" />
-                    Ruby on Rails: A Powerful Back-End Framework
-                  </h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-600">
-                    <li>Beginner-Friendly Syntax</li>
-                    <li>Rapid Development</li>
-                    <li>Industry Adoption (Airbnb, GitHub, Shopify)</li>
-                    <li>Strong Community Support</li>
-                    <li>Real-World Instructor Expertise</li>
-                  </ul>
-                </CardContent>
-              </Card>
-              <Card className="hover-lift bg-white">
-                <CardContent className="p-6">
-                  <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
-                    <Code className="mr-2 h-5 w-5 text-red-500" />
-                    React.js: Leading Front-End Technology
-                  </h3>
-                  <ul className="list-disc list-inside space-y-2 text-gray-600">
-                    <li>High Demand</li>
-                    <li>Modern Development Practices</li>
-                    <li>Full-Stack Versatility (Rails + React)</li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="mt-8">
-              <h3 className="text-2xl font-bold mb-4 text-center">
-                Building a Strong Foundation
-              </h3>
-              <p className="text-lg text-gray-600 text-center">
-                The programming concepts you learn are applicable to other
-                languages and frameworks. We emphasize &quot;learning how to learn,&quot;
-                so you can adapt to new technologies throughout your career.
-                While our focus is on Rails and React, we also introduce you to
-                other languages like Python, demonstrating how to apply your
-                skills across different platforms.
-              </p>
-            </div>
-          </div>
-        </section>
+
 
         {/* Flappy Bird Demo */}
         <section
@@ -1412,144 +1575,7 @@ export default function LandingPage() {
 
 
 
-        {/* Condensed Curriculum */}
-        <section
-          id="curriculum"
-          className="w-full py-12 md:py-16 lg:py-20 bg-gradient-to-b from-gray-100 to-white relative overflow-hidden"
-        >
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
-                <Code className="h-4 w-4 mr-2" />
-                4-Month Journey
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4 text-gray-900">
-                From Beginner to Full-Stack Developer
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Comprehensive curriculum covering both <span className="font-semibold text-ruby-600">backend (Ruby/Rails)</span> and <span className="font-semibold text-ruby-600">frontend (React)</span> development
-              </p>
-            </div>
-            
-            {/* Tech Stack Visual */}
-            <div className="max-w-4xl mx-auto mb-12">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <span className="text-red-600 font-bold text-lg">Rb</span>
-                    </div>
-                  <h4 className="font-semibold text-gray-900">Ruby</h4>
-                  <p className="text-sm text-gray-600">Programming Language</p>
-                    </div>
-                <div className="text-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <span className="text-red-600 font-bold text-xs">Rails</span>
-                    </div>
-                  <h4 className="font-semibold text-gray-900">Ruby on Rails</h4>
-                  <p className="text-sm text-gray-600">Backend Framework</p>
-                    </div>
-                <div className="text-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <span className="text-blue-600 font-bold text-xs">React</span>
-                  </div>
-                  <h4 className="font-semibold text-gray-900">React</h4>
-                  <p className="text-sm text-gray-600">Frontend Framework</p>
-                    </div>
-                <div className="text-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Database className="h-6 w-6 text-green-600" />
-                    </div>
-                  <h4 className="font-semibold text-gray-900">PostgreSQL</h4>
-                  <p className="text-sm text-gray-600">Database</p>
-                    </div>
-                    </div>
-                  </div>
 
-            {/* Learning Path - Matching Timeline */}
-            <div className="max-w-4xl mx-auto mb-12">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-gray-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">PRE</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">Foundations</h4>
-                    <p className="text-sm text-gray-600">Self-paced preparation to ensure solid foundation</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-blue-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">1-4</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">Ruby Fundamentals</h4>
-                    <p className="text-sm text-gray-600">Dive into Ruby and Object-Oriented Programming</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-green-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">5-8</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">Rails API Development</h4>
-                    <p className="text-sm text-gray-600">Learn to build robust backend APIs with Ruby on Rails</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-orange-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">9</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">Full-Stack Transition</h4>
-                    <p className="text-sm text-gray-600">Bridge the gap between backend and frontend development</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-purple-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">10-11</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">JavaScript & APIs</h4>
-                    <p className="text-sm text-gray-600">Explore JavaScript and working with external APIs</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-indigo-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">12-13</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">React & Integration</h4>
-                    <p className="text-sm text-gray-600">Master React and integrate it with your Rails backend</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-pink-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">14</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">Advanced Topics</h4>
-                    <p className="text-sm text-gray-600">Capstone planning, AI in software engineering, Python intro</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-                  <div className="w-12 h-8 bg-ruby-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">15-16</div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">Capstone Project</h4>
-                    <p className="text-sm text-gray-600">Develop and present your full-stack capstone project</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="text-center space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                  className="inline-flex h-12 items-center justify-center rounded-md bg-green-600 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Try Free Workshop
-                </a>
-              <a
-                href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                  className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-8 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                  Apply for July Cohort
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </a>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Success Stories - Student Projects */}
         <section
