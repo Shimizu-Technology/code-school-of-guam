@@ -62,21 +62,6 @@ export default function CheckoutForm({
     createPaymentIntent();
   }, [amount, paymentType]);
 
-  // Check URL for payment_intent_client_secret on mount (for 3DS redirect)
-  useEffect(() => {
-    if (!stripe) return;
-
-    // Check if we returned from a redirect
-    const query = new URLSearchParams(window.location.search);
-    const clientSecret = query.get("payment_intent_client_secret");
-    const paymentIntentId = query.get("payment_intent");
-
-    if (clientSecret && paymentIntentId) {
-      // Handle the redirect completion
-      handleRedirectCompletion(clientSecret, paymentIntentId);
-    }
-  }, [stripe]);
-
   const handleRedirectCompletion = async (secret: string, intentId: string) => {
     if (!stripe) return;
 
@@ -93,6 +78,21 @@ export default function CheckoutForm({
     }
     setLoading(false);
   };
+
+  // Check URL for payment_intent_client_secret on mount (for 3DS redirect)
+  useEffect(() => {
+    if (!stripe) return;
+
+    // Check if we returned from a redirect
+    const query = new URLSearchParams(window.location.search);
+    const clientSecret = query.get("payment_intent_client_secret");
+    const paymentIntentId = query.get("payment_intent");
+
+    if (clientSecret && paymentIntentId) {
+      // Handle the redirect completion
+      handleRedirectCompletion(clientSecret, paymentIntentId);
+    }
+  }, [stripe, handleRedirectCompletion]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
