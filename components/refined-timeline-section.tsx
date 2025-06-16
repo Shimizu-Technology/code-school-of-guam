@@ -15,6 +15,8 @@ interface RefinedTimelineSectionProps {
 
 export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSectionProps) {
   const [activeItem, setActiveItem] = useState<number | null>(null)
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null)
+  const [expandedItem, setExpandedItem] = useState<number | null>(null)
   
   // Handle scroll-based activation with a more subtle approach
   useEffect(() => {
@@ -83,14 +85,43 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                 >
                   <div 
                     className={`bg-gray-800/80 backdrop-blur-sm rounded-lg p-6 shadow-md border-l-2 ${
-                      activeItem === index ? 'border-ruby-500' : 'border-gray-700'
-                    } hover:border-ruby-500 transition-all duration-300`}
+                      activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-gray-700'
+                    } hover:border-ruby-500 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer`}
+                    onMouseEnter={() => setHoveredItem(index)}
+                    onMouseLeave={() => setHoveredItem(null)}
+                    onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                   >
-                    <div className="flex items-center mb-3 text-gray-300">
-                      <span className="text-sm font-medium uppercase tracking-wider">{item.weeks}</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center text-gray-300">
+                        <span className="text-sm font-medium uppercase tracking-wider">{item.weeks}</span>
+                      </div>
+                      <div className={`text-ruby-400 transition-transform duration-200 ${
+                        expandedItem === index ? 'rotate-45' : ''
+                      }`}>
+                        +
+                      </div>
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
                     <p className="text-gray-300 text-sm">{item.description}</p>
+                    
+                    {expandedItem === index && (
+                      <div className="mt-4 pt-4 border-t border-gray-700 animate-fadeIn">
+                        <div className="text-xs text-gray-400 space-y-2">
+                          <div className="flex items-center">
+                            <span className="w-2 h-2 bg-ruby-500 rounded-full mr-2"></span>
+                            Interactive coding exercises
+                          </div>
+                          <div className="flex items-center">
+                            <span className="w-2 h-2 bg-ruby-500 rounded-full mr-2"></span>
+                            Live instructor support
+                          </div>
+                          <div className="flex items-center">
+                            <span className="w-2 h-2 bg-ruby-500 rounded-full mr-2"></span>
+                            Hands-on project work
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   
                   {/* Connector line - thinner and more subtle */}
@@ -130,15 +161,44 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                 {/* Content card - cleaner design */}
                 <div 
                   className={`bg-gray-800/90 backdrop-blur-sm rounded-lg p-4 shadow-sm border-l-2 ${
-                    activeItem === index ? 'border-ruby-500' : 'border-gray-700'
-                  } transition-all duration-300`}
+                    activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-gray-700'
+                  } hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer`}
+                  onMouseEnter={() => setHoveredItem(index)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                  onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                 >
-                  <div className="flex items-center mb-1">
-                    <Calendar className="mr-2 h-4 w-4 text-ruby-500/80" />
-                    <span className="text-xs font-medium uppercase tracking-wider text-gray-400">{item.weeks}</span>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center">
+                      <Calendar className="mr-2 h-4 w-4 text-ruby-500/80" />
+                      <span className="text-xs font-medium uppercase tracking-wider text-gray-400">{item.weeks}</span>
+                    </div>
+                    <div className={`text-ruby-400 text-sm transition-transform duration-200 ${
+                      expandedItem === index ? 'rotate-45' : ''
+                    }`}>
+                      +
+                    </div>
                   </div>
                   <h3 className="text-base font-semibold text-white mb-1">{item.title}</h3>
                   <p className="text-gray-300 text-xs leading-relaxed">{item.description}</p>
+                  
+                  {expandedItem === index && (
+                    <div className="mt-3 pt-3 border-t border-gray-700 animate-fadeIn">
+                      <div className="text-xs text-gray-400 space-y-1">
+                        <div className="flex items-center">
+                          <span className="w-1.5 h-1.5 bg-ruby-500 rounded-full mr-2"></span>
+                          Interactive exercises
+                        </div>
+                        <div className="flex items-center">
+                          <span className="w-1.5 h-1.5 bg-ruby-500 rounded-full mr-2"></span>
+                          Live support
+                        </div>
+                        <div className="flex items-center">
+                          <span className="w-1.5 h-1.5 bg-ruby-500 rounded-full mr-2"></span>
+                          Project work
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Connector line - thinner */}
