@@ -61,49 +61,8 @@ export default function LandingPage() {
       })
     }
 
-    // Workshop countdown timer
-    const updateCountdown = () => {
-      // Workshop date: June 28th, 2025 at 2:00 PM ChST (UTC+10)
-      const workshopDate = new Date('2025-06-28T14:00:00+10:00')
-      const now = new Date()
-      const timeLeft = workshopDate.getTime() - now.getTime()
-
-      if (timeLeft > 0) {
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
-
-        // Update DOM elements if they exist
-        const daysEl = document.getElementById('days')
-        const hoursEl = document.getElementById('hours')
-        const minutesEl = document.getElementById('minutes')
-        const secondsEl = document.getElementById('seconds')
-
-        if (daysEl) daysEl.textContent = days.toString().padStart(2, '0')
-        if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0')
-        if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0')
-        if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0')
-      } else {
-        // Workshop has passed
-        const daysEl = document.getElementById('days')
-        const hoursEl = document.getElementById('hours')
-        const minutesEl = document.getElementById('minutes')
-        const secondsEl = document.getElementById('seconds')
-
-        if (daysEl) daysEl.textContent = '00'
-        if (hoursEl) hoursEl.textContent = '00'
-        if (minutesEl) minutesEl.textContent = '00'
-        if (secondsEl) secondsEl.textContent = '00'
-      }
-    }
-
     // Initialize scroll position tracking
     window.addEventListener("scroll", handleScroll)
-    
-    // Start countdown timer
-    updateCountdown()
-    const countdownInterval = setInterval(updateCountdown, 1000)
     
     // Initialize all our animation utilities
     setupScrollAnimations()
@@ -119,7 +78,6 @@ export default function LandingPage() {
     
     return () => {
       window.removeEventListener("scroll", handleScroll)
-      clearInterval(countdownInterval)
     }
   }, [])
 
@@ -157,7 +115,7 @@ export default function LandingPage() {
     { href: "#timeline", label: "Timeline" },
     { href: "#internship", label: "Internship" },
     { href: "#career", label: "Career Services" },
-    { href: "#flappy-bird-demo", label: "Flappy Bird Demo" },
+    { href: "#flappy-bird-demo", label: "Demo Game" },
     { href: "#about", label: "About Us" },
     { href: "#founder", label: "About the Founder" },
     { href: "#admissions", label: "Admissions" },
@@ -173,11 +131,7 @@ export default function LandingPage() {
       answer:
         "No prior coding experience is required. Our program starts from the basics and builds up to advanced concepts.",
     },
-    {
-      question: "What&apos;s included in the free workshop on June 28th?",
-      answer:
-        "Our free workshop (2-4:30 PM ChST) is perfect for beginners! You&apos;ll build three hands-on projects: a Ruby chatbot, a to-do web app, and an AI-generated website. It&apos;s a great way to experience our teaching style and see if coding is right for you. Plus, the first 3 attendees who join our July cohort within 7 days save $500 on tuition!",
-    },
+
     {
       question: "Why do you teach Ruby on Rails instead of other programming languages?",
       answer:
@@ -430,11 +384,11 @@ export default function LandingPage() {
                   
                   {/* Single most important urgency element */}
                   <div className="inline-flex items-center px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-sm font-medium animate-pulse">
-                    ⚡ Only 10 Students Per Cohort • 3 Workshop Spots Left
+                    ⚡ Only 10 Students Per Cohort
                   </div>
                   
                   <p className="text-sm text-green-300 font-medium">
-                    🚀 New to coding? Try our FREE hands-on workshop first!
+                    🚀 Next cohort starts July 28th • Transform your career in 4 months
                   </p>
                 </div>
               </div>
@@ -442,33 +396,33 @@ export default function LandingPage() {
               {/* CTA buttons */}
               <div className="w-full max-w-sm mx-auto space-y-4 reveal-on-scroll">
                 <a
-                  href="#workshop"
+                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
-                  aria-label="Learn about our free workshop"
+                  aria-label="Apply for July cohort"
                   role="button"
                 >
-                  Try Free Workshop - June 28th
-                  <ArrowDown className="ml-2 h-5 w-5" />
+                  Apply for July Cohort
+                  <ChevronRight className="ml-2 h-5 w-5" />
                 </a>
                 
                 <div className="text-center space-y-2">
                   <p className="text-xs text-gray-300">
-                    No coding experience required • Build 3 projects in 2½ hours
+                    No coding experience required • From beginner to job-ready in 4 months
                   </p>
                   <p className="text-sm font-medium text-yellow-300">
-                    🎁 First 3 workshop attendees save $500 on July cohort
+                    🎁 25% Early Bird Discount - Save $2,500 (Ends July 15th)
                   </p>
                   
                   {/* Secondary CTA - button style */}
                   <div className="pt-3">
                     <a
-                      href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="#programs"
                       className="inline-flex items-center justify-center h-10 px-4 rounded-md border border-gray-500 bg-gray-800/50 text-sm text-gray-200 hover:bg-gray-700/50 hover:text-white transition-all w-full"
                     >
-                      Apply Directly for July Cohort
-                      <ChevronRight className="ml-1 h-4 w-4" />
+                      View Pricing & Payment Plans
+                      <ArrowDown className="ml-1 h-4 w-4" />
                     </a>
                   </div>
                 </div>
@@ -478,117 +432,7 @@ export default function LandingPage() {
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-100 to-transparent"></div>
         </section>
 
-        {/* Free Workshop Banner */}
-        <section id="workshop" className="w-full py-12 md:py-16 bg-gradient-to-b from-gray-100 to-white relative overflow-hidden border-b border-gray-200">
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Free Workshop
-                </div>
-                
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-                  Try Coding for <span className="text-ruby-500">FREE</span> - June 28th
-                </h2>
-                
-                <p className="text-lg md:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
-                  Build your <span className="font-bold text-gray-900">first chatbot, web app, and AI-generated site</span> — all in 2½ hours, right in your browser
-                </p>
 
-                {/* Live Countdown Timer */}
-                <div className="bg-gradient-to-r from-ruby-100 to-red-100 border border-ruby-200 rounded-lg p-4 max-w-lg mx-auto mb-6">
-                  <div className="text-ruby-700 font-semibold text-sm mb-2">Workshop starts in:</div>
-                  <div className="grid grid-cols-4 gap-2 text-center">
-                    <div className="bg-white rounded-md p-2 border border-ruby-200">
-                      <div className="text-xl font-bold text-ruby-600" id="days">--</div>
-                      <div className="text-xs text-ruby-600">DAYS</div>
-                    </div>
-                    <div className="bg-white rounded-md p-2 border border-ruby-200">
-                      <div className="text-xl font-bold text-ruby-600" id="hours">--</div>
-                      <div className="text-xs text-ruby-600">HRS</div>
-                    </div>
-                    <div className="bg-white rounded-md p-2 border border-ruby-200">
-                      <div className="text-xl font-bold text-ruby-600" id="minutes">--</div>
-                      <div className="text-xs text-ruby-600">MIN</div>
-                    </div>
-                    <div className="bg-white rounded-md p-2 border border-ruby-200">
-                      <div className="text-xl font-bold text-ruby-600" id="seconds">--</div>
-                      <div className="text-xs text-ruby-600">SEC</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Essential workshop details integrated into main content */}
-              <div className="text-center mb-8">
-                <div className="bg-white/80 backdrop-blur-sm rounded-lg p-4 max-w-md mx-auto border border-gray-200">
-                  <p className="text-gray-700 text-sm">
-                    <span className="font-semibold">Saturday, June 28th • 2:00-4:30 PM ChST</span><br/>
-                    Live on Zoom • Link sent 24h before
-                  </p>
-                </div>
-              </div>
-              
-              {/* Streamlined Project Overview */}
-              <div className="mb-8">
-                <h3 className="text-xl font-bold text-center mb-4 text-gray-900">Build 3 Real Projects in 2½ Hours</h3>
-                <div className="bg-white rounded-lg border border-gray-200 p-6 max-w-2xl mx-auto">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                    <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-2">
-                        <MessageCircle className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <h4 className="font-semibold text-gray-900 text-sm">Ruby Chatbot</h4>
-                      <p className="text-xs text-gray-600">Interactive programming</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-2">
-                        <CheckCircle className="h-6 w-6 text-green-600" />
-                      </div>
-                      <h4 className="font-semibold text-gray-900 text-sm">To-Do Web App</h4>
-                      <p className="text-xs text-gray-600">HTML & CSS basics</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-2">
-                        <Rocket className="h-6 w-6 text-purple-600" />
-                      </div>
-                      <h4 className="font-semibold text-gray-900 text-sm">AI-Generated Site</h4>
-                      <p className="text-xs text-gray-600">Modern AI tools</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Integrated CTA with bonus offer */}
-              <div className="text-center">
-                <a
-                  href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                  className="inline-flex h-16 items-center justify-center rounded-md bg-green-600 text-white px-12 text-xl font-bold shadow-xl transition-all hover:bg-green-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 animate-pulse hover:animate-none mb-4"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  🎉 Register for FREE Workshop
-                  <Calendar className="ml-3 h-6 w-6" />
-                </a>
-                
-                <div className="max-w-lg mx-auto">
-                  <p className="text-sm text-gray-600 mb-3">
-                    No coding experience required • 2½ hours of hands-on learning • Completely free
-                  </p>
-                  <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-3 mb-2">
-                    <p className="text-xs text-gray-700">
-                      <span className="font-bold text-yellow-700">🎁 Bonus:</span> First 3 attendees save $500 on July cohort!
-                    </p>
-                  </div>
-                  <p className="text-xs text-green-700 font-medium mt-2">
-                    ⚡ Limited spots remaining for June 28th
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Student Success Stories */}
         <section className="w-full py-12 md:py-16 lg:py-20 bg-gray-50 relative overflow-hidden">
@@ -678,15 +522,15 @@ export default function LandingPage() {
               </p>
               <div className="bg-gray-50 rounded-lg p-6 max-w-md mx-auto">
                 <p className="text-sm text-gray-700 mb-4">
-                  See if coding is right for you with our <strong>free workshop</strong> - no risk, no commitment required.
+                  Join our July 28th cohort and transform your career in just 4 months. <strong>Only 3 spots remaining!</strong>
                 </p>
                 <a
-                  href="https://forms.gle/yEEiCoYusQ6cUGFv8"
+                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
                   className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 text-white px-6 text-base font-medium shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Try Free Workshop
+                  Apply for July Cohort
                   <Rocket className="ml-2 h-4 w-4" />
                 </a>
               </div>
@@ -854,12 +698,12 @@ export default function LandingPage() {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <a
-                      href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                      className="inline-flex h-12 items-center justify-center rounded-md bg-green-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105"
+                      href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                      className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Try Free Workshop
+                      Apply for July Cohort
                     </a>
                     <a
                       href="#programs"
@@ -1313,14 +1157,6 @@ export default function LandingPage() {
                     
                     <div className="space-y-3">
                       <a
-                        href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                        className="block w-full h-10 flex items-center justify-center rounded-md bg-green-600 text-white text-sm font-medium shadow-lg transition-all hover:bg-green-700 hover:scale-105"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Try Free Workshop
-                      </a>
-                      <a
                         href="https://forms.gle/bifqSWnbH74vLZ7v7"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -1328,6 +1164,12 @@ export default function LandingPage() {
                       >
                         Apply for July Cohort
                         <ChevronRight className="ml-2 h-4 w-4" />
+                      </a>
+                      <a
+                        href="#contact"
+                        className="block w-full h-10 flex items-center justify-center rounded-md bg-ruby-700 text-white text-sm font-medium shadow-lg transition-all hover:bg-ruby-800 hover:scale-105"
+                      >
+                        Questions? Contact Us
                       </a>
                     </div>
                   </div>
@@ -1679,25 +1521,23 @@ export default function LandingPage() {
               
                             <div className="max-w-lg mx-auto">
                 <p className="text-sm text-gray-600 mb-4 text-center">
-                  Ready to create your own success story? Start with our beginner-friendly workshop.
+                  Ready to create your own success story? Join our July 28th cohort.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-green-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105 flex-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Try Free Workshop
-                    <Rocket className="ml-2 h-5 w-5" />
-                  </a>
-                  <a
                     href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 flex-1"
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105 flex-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Apply for July Cohort
+                    <Rocket className="ml-2 h-5 w-5" />
+                  </a>
+                  <a
+                    href="#programs"
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-gray-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-gray-700 hover:scale-105 flex-1"
+                  >
+                    View Pricing
                     <ChevronRight className="ml-2 h-5 w-5" />
                   </a>
                 </div>
@@ -2119,41 +1959,28 @@ export default function LandingPage() {
                 7 out of 10 spots filled for July cohort
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 max-w-3xl mx-auto">
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                  <div className="text-4xl font-bold text-yellow-300 mb-2">FREE</div>
-                  <div className="text-lg font-semibold mb-2">Workshop - June 28th</div>
-                  <div className="text-sm text-ruby-100 mb-4">Try coding risk-free • 2-4:30 PM ChST</div>
-                  <a
-                    href="https://forms.gle/yEEiCoYusQ6cUGFv8"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-green-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-green-700 hover:scale-105 w-full"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Try Free Workshop
-                  </a>
-                </div>
-                
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-                  <div className="text-4xl font-bold text-yellow-300 mb-2">$7,500</div>
-                  <div className="text-lg font-semibold mb-2">July Cohort (25% OFF)</div>
-                  <div className="text-sm text-ruby-100 mb-4">Start July 28th • Limited spots available</div>
+              <div className="max-w-lg mx-auto mb-12">
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20 text-center">
+                  <div className="text-5xl font-bold text-yellow-300 mb-3">$7,500</div>
+                  <div className="text-xl font-bold mb-2 text-white">July Cohort (25% OFF)</div>
+                  <div className="text-ruby-100 mb-2">Regular Price: <span className="line-through">$10,000</span></div>
+                  <div className="text-sm text-ruby-100 mb-6">Starts July 28th • Only 3 spots remaining</div>
                   <a
                     href="https://forms.gle/bifqSWnbH74vLZ7v7"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-white px-6 text-base font-medium text-ruby-700 shadow-lg transition-all hover:bg-gray-100 hover:scale-105 w-full"
+                    className="inline-flex h-14 items-center justify-center rounded-md bg-white px-8 text-lg font-bold text-ruby-700 shadow-lg transition-all hover:bg-gray-100 hover:scale-105 w-full mb-4"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Apply Now
-                    <ChevronRight className="ml-2 h-5 w-5" />
+                    Apply Now - Save $2,500
+                    <ChevronRight className="ml-2 h-6 w-6" />
                   </a>
+                  <p className="text-xs text-ruby-200">
+                    Early bird pricing ends July 15th
+                  </p>
                 </div>
               </div>
               
               <div className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/20 max-w-2xl mx-auto">
-                <p className="text-ruby-100 text-sm mb-3">
-                  <strong className="text-white">⚡ Early Bird Bonus:</strong> First 3 workshop attendees who apply within 7 days save an additional $500!
-                </p>
                 <div className="flex items-center justify-center space-x-6 text-xs text-ruby-200">
                   <div className="flex items-center">
                     <CheckCircle className="h-4 w-4 mr-1" />
@@ -2166,6 +1993,10 @@ export default function LandingPage() {
                   <div className="flex items-center">
                     <CheckCircle className="h-4 w-4 mr-1" />
                     Job Placement Support
+                  </div>
+                  <div className="flex items-center">
+                    <CheckCircle className="h-4 w-4 mr-1" />
+                    Flexible Payment Plans
                   </div>
                 </div>
               </div>
