@@ -41,20 +41,17 @@ export default function FlappyBirdGame() {
   const pipeSpawnTimerRef = useRef<number>(0)
   const animationFrameIdRef = useRef<number>(0)
 
-  // State
-  const [gameStarted, setGameStarted] = useState(false)
-  const [gameOverTextVisible, setGameOverTextVisible] = useState(false)
-  const [startTextVisible, setStartTextVisible] = useState(true)
+  // Game states: 'waiting', 'playing', 'gameOver'
+  const [gameState, setGameState] = useState<'waiting' | 'playing' | 'gameOver'>('waiting')
   const [score, setScore] = useState(0)
   const [highScore, setHighScore] = useState(0)
 
-  // For referencing gameStarted within callbacks
-  const gameStartedRef = useRef<boolean>(gameStarted)
+  // For referencing gameState within callbacks
+  const gameStateRef = useRef<'waiting' | 'playing' | 'gameOver'>(gameState)
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    gameStartedRef.current = gameStarted
-  }, [gameStarted])
+    gameStateRef.current = gameState
+  }, [gameState])
 
   const resetGame = () => {
     const canvas = canvasRef.current
@@ -71,15 +68,13 @@ export default function FlappyBirdGame() {
   }
 
   const startGame = () => {
-    if (!gameStartedRef.current) {
-      setGameStarted(true)
-      gameStartedRef.current = true
-      setStartTextVisible(false)
+    if (gameStateRef.current === 'waiting' || gameStateRef.current === 'gameOver') {
+      setGameState('playing')
       resetGame()
       generatePipe()
       lastTimeRef.current = performance.now()
     }
-    if (birdRef.current) {
+    if (birdRef.current && gameStateRef.current === 'playing') {
       birdRef.current.velocity = JUMP
     }
   }
@@ -114,9 +109,12 @@ export default function FlappyBirdGame() {
     if (!canvas || !ctx) return
 
     const resizeCanvas = () => {
-      // Responsive approach: maintain a reasonable max width for the game
-      const canvasWidth = Math.min(window.innerWidth - 20, 400)
-      const canvasHeight = canvasWidth * 1.5
+      // Mobile-first responsive approach
+      const isMobile = window.innerWidth < 768
+      const maxWidth = isMobile ? Math.min(window.innerWidth - 32, 360) : 400
+      const canvasWidth = maxWidth
+      const canvasHeight = canvasWidth * 1.4 // Slightly less tall for mobile
+      
       canvas.width = canvasWidth
       canvas.height = canvasHeight
 
@@ -130,8 +128,8 @@ export default function FlappyBirdGame() {
     window.addEventListener("resize", resizeCanvas)
     window.addEventListener("keydown", handleSpacebar)
 
-    // Auto-start on mount
-    startGame()
+    // Initialize bird position without starting the game
+    resetGame()
 
     const gameLoop = (time: number) => {
       const deltaTime = (time - lastTimeRef.current) / 1000
@@ -139,12 +137,15 @@ export default function FlappyBirdGame() {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      if (gameStartedRef.current) {
+      // Always draw the background
+      drawBackground(ctx)
+      
+      if (gameStateRef.current === 'playing') {
         updateGame(deltaTime)
         drawPipes(ctx)
         drawBird(ctx)
       } else {
-        // Draw the bird at its starting position
+        // Draw the bird at its starting position when waiting or game over
         drawBird(ctx)
       }
 
@@ -227,25 +228,89 @@ export default function FlappyBirdGame() {
   }
 
   const gameOver = () => {
-    setGameStarted(false)
-    gameStartedRef.current = false
-    setGameOverTextVisible(true)
+    setGameState('gameOver')
 
+    // Check and update high score
     if (score > highScore) {
-      setHighScore(score)
+      const newHighScore = score
+      setHighScore(newHighScore)
+      // Save high score to localStorage
+      try {
+        localStorage.setItem('flappyBirdHighScore', newHighScore.toString())
+      } catch (error) {
+        console.warn('Could not save high score to localStorage:', error)
+      }
     }
+  }
 
-    // Fade out "Game Over" after 2s
-    setTimeout(() => setGameOverTextVisible(false), 2000)
-    resetGame()
+  const drawBackground = (ctx: CanvasRenderingContext2D) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    // Sky gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
+    gradient.addColorStop(0, '#87CEEB')
+    gradient.addColorStop(1, '#98D8E8')
+    ctx.fillStyle = gradient
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    // Subtle clouds
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'
+    ctx.beginPath()
+    // Cloud 1
+    ctx.arc(canvas.width * 0.2, canvas.height * 0.2, 15, 0, 2 * Math.PI)
+    ctx.arc(canvas.width * 0.22, canvas.height * 0.18, 12, 0, 2 * Math.PI)
+    ctx.arc(canvas.width * 0.18, canvas.height * 0.18, 10, 0, 2 * Math.PI)
+    // Cloud 2
+    ctx.arc(canvas.width * 0.7, canvas.height * 0.15, 12, 0, 2 * Math.PI)
+    ctx.arc(canvas.width * 0.72, canvas.height * 0.13, 10, 0, 2 * Math.PI)
+    // Cloud 3
+    ctx.arc(canvas.width * 0.5, canvas.height * 0.3, 8, 0, 2 * Math.PI)
+    ctx.arc(canvas.width * 0.52, canvas.height * 0.28, 6, 0, 2 * Math.PI)
+    ctx.fill()
   }
 
   const drawBird = (ctx: CanvasRenderingContext2D) => {
     if (!birdRef.current) return
 
+    const bird = birdRef.current
+    
+    // Bird body (orange circle)
     ctx.fillStyle = "#FFA500"
     ctx.beginPath()
-    ctx.arc(birdRef.current.x, birdRef.current.y, 20, 0, 2 * Math.PI)
+    ctx.arc(bird.x, bird.y, 18, 0, 2 * Math.PI)
+    ctx.fill()
+    
+    // Bird outline
+    ctx.strokeStyle = "#FF8C00"
+    ctx.lineWidth = 2
+    ctx.stroke()
+    
+    // Wing
+    ctx.fillStyle = "#FF6347"
+    ctx.beginPath()
+    ctx.ellipse(bird.x - 5, bird.y - 5, 12, 8, -0.3, 0, 2 * Math.PI)
+    ctx.fill()
+    
+    // Eye
+    ctx.fillStyle = "white"
+    ctx.beginPath()
+    ctx.arc(bird.x + 8, bird.y - 5, 6, 0, 2 * Math.PI)
+    ctx.fill()
+    
+    // Pupil
+    ctx.fillStyle = "black"
+    ctx.beginPath()
+    ctx.arc(bird.x + 10, bird.y - 5, 3, 0, 2 * Math.PI)
+    ctx.fill()
+    
+    // Beak
+    ctx.fillStyle = "#FFD700"
+    ctx.beginPath()
+    ctx.moveTo(bird.x + 15, bird.y)
+    ctx.lineTo(bird.x + 25, bird.y - 3)
+    ctx.lineTo(bird.x + 25, bird.y + 3)
+    ctx.closePath()
     ctx.fill()
   }
 
@@ -260,60 +325,135 @@ export default function FlappyBirdGame() {
       }
 
       ctx.globalAlpha = pipe.opacity || 1
-      ctx.fillStyle = "#4CAF50"
+      
+      // Pipe gradient
+      const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0)
+      pipeGradient.addColorStop(0, "#4CAF50")
+      pipeGradient.addColorStop(0.5, "#66BB6A")
+      pipeGradient.addColorStop(1, "#388E3C")
+      ctx.fillStyle = pipeGradient
 
       // Top pipe
       ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top)
+      
+      // Top pipe cap
+      ctx.fillStyle = "#2E7D32"
+      ctx.fillRect(pipe.x - 5, pipe.top - 20, PIPE_WIDTH + 10, 20)
 
       // Bottom pipe
+      ctx.fillStyle = pipeGradient
       ctx.fillRect(
         pipe.x,
         pipe.top + PIPE_GAP,
         PIPE_WIDTH,
         canvas.height - pipe.top - PIPE_GAP
       )
+      
+      // Bottom pipe cap
+      ctx.fillStyle = "#2E7D32"
+      ctx.fillRect(pipe.x - 5, pipe.top + PIPE_GAP, PIPE_WIDTH + 10, 20)
 
       ctx.globalAlpha = 1
     })
   }
 
+  // Load high score from localStorage on component mount
+  useEffect(() => {
+    try {
+      const savedHighScore = localStorage.getItem('flappyBirdHighScore')
+      if (savedHighScore) {
+        const parsedScore = parseInt(savedHighScore, 10)
+        if (!isNaN(parsedScore) && parsedScore >= 0) {
+          setHighScore(parsedScore)
+        }
+      }
+    } catch (error) {
+      console.warn('Could not load high score from localStorage:', error)
+    }
+  }, [])
+
   return (
-    <div className="relative">
-      <Card className="w-full max-w-md mx-auto bg-gray-900 text-white">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            Flappy Bird
+    <div className="relative w-full">
+      <Card className="w-full mx-auto bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-ruby-600 to-red-600 text-center py-4">
+          <CardTitle className="text-xl md:text-2xl font-bold">
+            🐦 Flappy Bird
           </CardTitle>
+          <p className="text-ruby-100 text-sm mt-1">
+            Tap or press space to play!
+          </p>
         </CardHeader>
-        <CardContent>
+        
+        <CardContent className="relative p-4 md:p-6">
           <canvas
             ref={canvasRef}
-            className="border border-gray-700 rounded-md w-full"
+            className="border-2 border-gray-600 rounded-lg w-full cursor-pointer shadow-inner bg-sky-200"
             onClick={handleClick}
             onTouchStart={handleClick}
           />
-          {startTextVisible && (
-            <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-white animate-fadeIn pointer-events-none">
-              Tap or Press Space to Start
+          
+          {/* Game State Overlays */}
+          {gameState === 'waiting' && (
+            <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black bg-opacity-40 rounded-lg">
+              <div className="text-3xl md:text-4xl font-bold mb-4 animate-bounce">🐦</div>
+              <div className="text-lg md:text-xl font-bold mb-2 text-center">Ready to Fly?</div>
+              <div className="text-sm md:text-base opacity-90 text-center px-4">Tap anywhere or press Space to start</div>
             </div>
           )}
-          {gameOverTextVisible && (
-            <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-red-500 animate-fadeInOut pointer-events-none">
-              Game Over
+          
+          {gameState === 'gameOver' && (
+            <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black bg-opacity-50 rounded-lg">
+              <div className="text-2xl md:text-3xl font-bold text-red-400 mb-3">💥 Game Over!</div>
+              <div className="text-lg md:text-xl mb-2">Final Score: <span className="text-yellow-400 font-bold">{score}</span></div>
+              {score === highScore && score > 0 && (
+                <div className="text-yellow-400 text-sm md:text-base mb-3 animate-pulse">🎉 New High Score! 🎉</div>
+              )}
+              <div className="text-sm md:text-base opacity-90 text-center px-4">Tap to try again</div>
+            </div>
+          )}
+          
+          {/* Score display during gameplay */}
+          {gameState === 'playing' && (
+            <div className="absolute top-6 left-6 md:top-8 md:left-8">
+              <div className="bg-black bg-opacity-60 text-white font-bold text-xl md:text-2xl px-3 py-1 rounded-lg border border-white border-opacity-30">
+                {score}
+              </div>
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex justify-between items-center">
-          <div className="text-lg">Score: {score}</div>
-          <div className="text-lg">High Score: {highScore}</div>
-          {!gameStarted && (
-            <Button
-              onClick={startGame}
-              className="bg-ruby-600 hover:bg-ruby-700 text-white transition-colors"
-            >
-              {score > 0 ? "Restart" : "Start"}
-            </Button>
-          )}
+        
+        <CardFooter className="bg-gray-800 border-t border-gray-700 px-4 py-3 md:px-6 md:py-4">
+          <div className="flex justify-between items-center w-full">
+            <div className="text-sm md:text-base">
+              <span className="text-gray-400">Score:</span> <span className="font-bold text-white">{score}</span>
+            </div>
+            <div className="text-sm md:text-base">
+              <span className="text-gray-400">Best:</span> <span className="font-bold text-yellow-400">{highScore}</span>
+            </div>
+            <div className="flex gap-2">
+              {gameState !== 'playing' && (
+                <Button
+                  onClick={startGame}
+                  className="bg-ruby-600 hover:bg-ruby-700 text-white transition-all hover:scale-105 shadow-lg text-sm md:text-base px-4 py-2 md:px-6"
+                >
+                  {gameState === 'gameOver' ? "🔄 Play Again" : "🚀 Start Game"}
+                </Button>
+              )}
+              {highScore > 0 && (
+                <Button
+                  onClick={() => {
+                    localStorage.removeItem('flappyBirdHighScore')
+                    setHighScore(0)
+                  }}
+                  variant="outline"
+                  className="border-gray-600 text-gray-400 hover:text-white hover:border-gray-500 text-xs px-3 py-2"
+                  title="Reset high score"
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
+          </div>
         </CardFooter>
       </Card>
     </div>
