@@ -168,7 +168,7 @@ export default function LandingPage() {
         "Yes! Outstanding graduates may be invited to become paid teaching assistants for future cohorts, providing leadership experience and reinforcing your own learning.",
     },
     {
-      question: "Why is the tuition set at $10,000?",
+      question: "Why is the tuition set at $7,500?",
       answer:
         "We strive to provide high-quality education with personalized attention through small class sizes and offer real-world experience via internships. Our tuition reflects the value and unique opportunities we provide, while remaining more affordable than many comparable programs.",
     },
@@ -388,7 +388,7 @@ export default function LandingPage() {
                   </div>
                   
                   <p className="text-sm text-green-300 font-medium">
-                    🚀 Next cohort starts July 28th • Transform your career in 4 months
+                    🚀 2nd class in progress • Next cohort starts January 5th, 2025
                   </p>
                 </div>
               </div>
@@ -396,14 +396,14 @@ export default function LandingPage() {
               {/* CTA buttons */}
               <div className="w-full max-w-sm mx-auto space-y-4 reveal-on-scroll">
                 <a
-                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                  href="https://forms.gle/8vNXoqxCimxjfXkU6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
-                  aria-label="Apply for July cohort"
+                  aria-label="Apply for January cohort"
                   role="button"
                 >
-                  Apply for July Cohort
+                  Apply for January Cohort
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </a>
                 
@@ -412,7 +412,7 @@ export default function LandingPage() {
                     No coding experience required • From beginner to job-ready in 4 months
                   </p>
                   <p className="text-sm font-medium text-yellow-300">
-                    🎁 25% Early Bird Discount - Save $2,500 (Ends July 15th)
+                    💰 New Lower Tuition - Only $7,500 (25% less than before!)
                   </p>
                   
                   {/* Secondary CTA - button style */}
@@ -522,15 +522,15 @@ export default function LandingPage() {
               </p>
               <div className="bg-gray-50 rounded-lg p-6 max-w-md mx-auto">
                 <p className="text-sm text-gray-700 mb-4">
-                  Join our July 28th cohort and transform your career in just 4 months. <strong>Only 3 spots remaining!</strong>
+                  Join our January 5th, 2025 cohort and transform your career in just 4 months. <strong>Enrollment now open!</strong>
                 </p>
                 <a
-                  href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                  href="https://forms.gle/8vNXoqxCimxjfXkU6"
                   className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 text-white px-6 text-base font-medium shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Apply for July Cohort
+                  Apply for January Cohort
                   <Rocket className="ml-2 h-4 w-4" />
                 </a>
               </div>
@@ -554,10 +554,10 @@ export default function LandingPage() {
                 For $7,500, you get everything you need to become a junior full-stack developer — plus lifetime support and guaranteed opportunities
               </p>
               
-              {/* Clean urgency reminder */}
-              <div className="inline-flex items-center px-3 py-1 bg-yellow-100 border border-yellow-200 rounded-full text-yellow-700 text-sm font-medium">
+              {/* Clean pricing highlight */}
+              <div className="inline-flex items-center px-3 py-1 bg-green-100 border border-green-200 rounded-full text-green-700 text-sm font-medium">
                 <Star className="h-4 w-4 mr-1" />
-                25% early bird discount - ends July 15th
+                New lower tuition - 25% less than before!
               </div>
             </div>
 
@@ -568,7 +568,7 @@ export default function LandingPage() {
                   <div>
                     <div className="text-3xl font-bold text-green-600 mb-2">$7,500</div>
                     <div className="text-lg font-semibold text-gray-900 mb-1">Code School of Guam</div>
-                    <div className="text-sm text-gray-600">25% OFF • Regular $10,000</div>
+                    <div className="text-sm text-gray-600">New Lower Price • Was $10,000</div>
                   </div>
                   <div className="flex items-center justify-center">
                     <div className="text-gray-400 text-2xl font-bold">VS</div>
@@ -698,12 +698,12 @@ export default function LandingPage() {
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <a
-                      href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                      href="https://forms.gle/8vNXoqxCimxjfXkU6"
                       className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Apply for July Cohort
+                      Apply for January Cohort
                     </a>
                     <a
                       href="#programs"
@@ -1060,18 +1060,18 @@ export default function LandingPage() {
                 Enrollment Open
               </div>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4 text-gray-900">
-                Next Cohort Starts <span className="text-ruby-500">July 28</span>
+                Next Cohort Starts <span className="text-ruby-500">January 5, 2025</span>
               </h2>
               <div className="w-24 h-1 bg-ruby-500 mx-auto mb-4 rounded-full"></div>
               
-              {/* Clean urgency element */}
-              <div className="inline-flex items-center px-3 py-1 bg-orange-100 border border-orange-200 rounded-full text-orange-700 text-sm font-medium mb-4">
+              {/* Clean enrollment status */}
+              <div className="inline-flex items-center px-3 py-1 bg-green-100 border border-green-200 rounded-full text-green-700 text-sm font-medium mb-4">
                 <Clock className="h-4 w-4 mr-1" />
-                Early bird pricing ends July 15th
+                Enrollment now open
               </div>
               
               <p className="text-xl text-gray-600 mb-0">
-                4-month intensive bootcamp with <span className="font-semibold text-ruby-600">25% early bird discount</span>
+                4-month intensive bootcamp with <span className="font-semibold text-ruby-600">new lower tuition</span>
               </p>
             </div>
             
@@ -1139,30 +1139,30 @@ export default function LandingPage() {
                 <div className="bg-ruby-600 rounded-xl shadow-xl overflow-hidden hover-lift">
                   <div className="p-6 md:p-8 flex flex-col h-full justify-between">
                     <div>
-                      <h3 className="text-2xl font-bold mb-3 text-white">Special Pricing</h3>
+                      <h3 className="text-2xl font-bold mb-3 text-white">New Lower Tuition</h3>
                       <div className="w-16 h-1 bg-white/30 mb-4 rounded-full"></div>
                       
                       <div className="text-center mb-4">
                         <div className="text-2xl font-bold text-white/60 line-through">$10,000</div>
                         <div className="text-3xl font-bold text-white">$7,500</div>
-                        <div className="text-sm text-white/80">July Cohort Special</div>
+                        <div className="text-sm text-white/80">January 2025 Cohort</div>
                       </div>
                       
                       <div className="bg-white/20 rounded-lg p-3 mb-4">
                         <div className="text-white font-semibold text-sm text-center">
-                          🎉 Save $2,500 (25% OFF)
+                          💰 25% Lower Than Before!
                         </div>
                       </div>
                     </div>
                     
                     <div className="space-y-3">
                       <a
-                        href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                        href="https://forms.gle/8vNXoqxCimxjfXkU6"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex w-full h-10 items-center justify-center rounded-md bg-white text-ruby-700 px-6 text-sm font-medium shadow-lg transition-all hover:bg-gray-100 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
                       >
-                        Apply for July Cohort
+                        Apply for January Cohort
                         <ChevronRight className="ml-2 h-4 w-4" />
                       </a>
                       <a
@@ -1254,26 +1254,26 @@ export default function LandingPage() {
                       <Card className="hover:shadow-lg transition-all border-2 border-blue-200">
                         <CardContent className="p-6 text-center">
                           <h4 className="font-bold text-xl mb-2">4-Month Plan</h4>
-                          <p className="text-3xl font-bold text-blue-600 mb-2">$1,800</p>
+                          <p className="text-3xl font-bold text-blue-600 mb-2">$1,875</p>
                           <p className="text-sm text-gray-600 mb-4">per month</p>
-                          <p className="text-xs text-gray-500">Total: $7,700</p>
+                          <p className="text-xs text-gray-500">Total: $7,500</p>
                         </CardContent>
                       </Card>
                       <Card className="hover:shadow-lg transition-all border-2 border-green-200 bg-green-50">
                         <CardContent className="p-6 text-center">
                           <div className="bg-green-600 text-white text-xs px-2 py-1 rounded-full mb-2 inline-block">POPULAR</div>
                           <h4 className="font-bold text-xl mb-2">6-Month Plan</h4>
-                          <p className="text-3xl font-bold text-green-600 mb-2">$1,225</p>
+                          <p className="text-3xl font-bold text-green-600 mb-2">$1,250</p>
                           <p className="text-sm text-gray-600 mb-4">per month</p>
-                          <p className="text-xs text-gray-500">Total: $7,850</p>
+                          <p className="text-xs text-gray-500">Total: $7,500</p>
                         </CardContent>
                       </Card>
                       <Card className="hover:shadow-lg transition-all border-2 border-purple-200">
                         <CardContent className="p-6 text-center">
                           <h4 className="font-bold text-xl mb-2">8-Month Plan</h4>
-                          <p className="text-3xl font-bold text-purple-600 mb-2">$940</p>
+                          <p className="text-3xl font-bold text-purple-600 mb-2">$938</p>
                           <p className="text-sm text-gray-600 mb-4">per month</p>
-                          <p className="text-xs text-gray-500">Total: $8,020</p>
+                          <p className="text-xs text-gray-500">Total: $7,500</p>
                         </CardContent>
                       </Card>
                     </div>
@@ -1521,16 +1521,16 @@ export default function LandingPage() {
               
                             <div className="max-w-lg mx-auto">
                 <p className="text-sm text-gray-600 mb-4 text-center">
-                  Ready to create your own success story? Join our July 28th cohort.
+                  Ready to create your own success story? Join our January 5th, 2025 cohort.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                    href="https://forms.gle/8vNXoqxCimxjfXkU6"
                     className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105 flex-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Apply for July Cohort
+                    Apply for January Cohort
                     <Rocket className="ml-2 h-5 w-5" />
                   </a>
                   <a
@@ -1760,7 +1760,7 @@ export default function LandingPage() {
             </div>
             <div className="mt-12 text-center">
               <a
-                href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                href="https://forms.gle/8vNXoqxCimxjfXkU6"
                 className="inline-flex h-10 items-center justify-center rounded-md bg-ruby-500 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-ruby-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 hover-lift"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1956,26 +1956,26 @@ export default function LandingPage() {
               {/* Clean urgency message */}
               <div className="inline-flex items-center px-4 py-2 bg-white/10 border border-white/20 rounded-full text-yellow-300 text-sm font-medium mb-8">
                 <Users className="h-4 w-4 mr-1" />
-                7 out of 10 spots filled for July cohort
+                Enrollment now open for January 2025 cohort
               </div>
               
               <div className="max-w-lg mx-auto mb-12">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20 text-center">
                   <div className="text-5xl font-bold text-yellow-300 mb-3">$7,500</div>
-                  <div className="text-xl font-bold mb-2 text-white">July Cohort (25% OFF)</div>
-                  <div className="text-ruby-100 mb-2">Regular Price: <span className="line-through">$10,000</span></div>
-                  <div className="text-sm text-ruby-100 mb-6">Starts July 28th • Only 3 spots remaining</div>
+                  <div className="text-xl font-bold mb-2 text-white">January 2025 Cohort</div>
+                  <div className="text-ruby-100 mb-2">Previous Price: <span className="line-through">$10,000</span></div>
+                  <div className="text-sm text-ruby-100 mb-6">Starts January 5th, 2025 • Enrollment Open</div>
                   <a
-                    href="https://forms.gle/bifqSWnbH74vLZ7v7"
+                    href="https://forms.gle/8vNXoqxCimxjfXkU6"
                     className="inline-flex h-14 items-center justify-center rounded-md bg-white px-8 text-lg font-bold text-ruby-700 shadow-lg transition-all hover:bg-gray-100 hover:scale-105 w-full mb-4"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Apply Now - Save $2,500
+                    Apply Now
                     <ChevronRight className="ml-2 h-6 w-6" />
                   </a>
                   <p className="text-xs text-ruby-200">
-                    Early bird pricing ends July 15th
+                    New lower tuition - 25% less than before
                   </p>
                 </div>
               </div>
@@ -2184,7 +2184,7 @@ export default function LandingPage() {
       {/* Floating Apply Now Button - Enhanced for Mobile */}
       <div className="fixed bottom-4 right-4 z-50">
         <a
-          href="https://forms.gle/bifqSWnbH74vLZ7v7"
+          href="https://forms.gle/8vNXoqxCimxjfXkU6"
           className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 px-5 py-3 text-sm font-medium text-white shadow-lg transition-all hover:bg-ruby-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 disabled:pointer-events-none disabled:opacity-50 hover-lift animate-pulse-slow animate-ripple touch-feedback"
           target="_blank"
           rel="noopener noreferrer"
