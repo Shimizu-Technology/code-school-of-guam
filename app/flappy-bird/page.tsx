@@ -34,7 +34,7 @@ export default function FlappyBirdPage() {
             Flappy Bird <span className="text-ruby-600">Clone</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-            Experience what you can build! This game showcases the skills you'll master at Code School of Guam.
+            Experience what you can build! This game showcases the skills you&apos;ll master at Code School of Guam.
           </p>
           <p className="text-base text-gray-500 max-w-2xl mx-auto">
             Tap or press space to make the bird fly, avoid the pipes, and see how high you can score!
@@ -54,7 +54,7 @@ export default function FlappyBirdPage() {
                 How This Game Was Built
               </h2>
               <p className="text-ruby-100">
-                Real-world coding concepts you'll learn in our program
+                Real-world coding concepts you&apos;ll learn in our program
               </p>
             </div>
             
@@ -153,8 +153,8 @@ export default function FlappyBirdPage() {
                   From beginner to job-ready in just 4 months!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/"
+          <Link
+            href="/"
                     className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
                   >
                     View Our Program

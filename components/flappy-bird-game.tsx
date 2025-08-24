@@ -103,7 +103,6 @@ export default function FlappyBirdGame() {
   }
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const canvas = canvasRef.current
     const ctx = canvas?.getContext("2d")
     if (!canvas || !ctx) return
@@ -159,6 +158,7 @@ export default function FlappyBirdGame() {
       window.removeEventListener("resize", resizeCanvas)
       window.removeEventListener("keydown", handleSpacebar)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateGame = (deltaTime: number) => {
