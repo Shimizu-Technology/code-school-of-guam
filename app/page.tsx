@@ -388,7 +388,7 @@ export default function LandingPage() {
                   </div>
                   
                   <p className="text-sm text-green-300 font-medium">
-                    🚀 2nd class in progress • Next cohort starts January 5th, 2026
+                    🚀 2nd class in progress • Next cohort pre-work starts February 2nd, 2026
                   </p>
                 </div>
               </div>
@@ -522,7 +522,7 @@ export default function LandingPage() {
               </p>
               <div className="bg-gray-50 rounded-lg p-6 max-w-md mx-auto">
                 <p className="text-sm text-gray-700 mb-4">
-                  Join our January 5th, 2026 cohort and transform your career in just 4 months. <strong>Enrollment now open!</strong>
+                  Join our February 2026 cohort and transform your career in just 4 months. <strong>Enrollment now open!</strong>
                 </p>
                 <a
                   href="https://forms.gle/8vNXoqxCimxjfXkU6"
@@ -1060,7 +1060,7 @@ export default function LandingPage() {
                 Enrollment Open
               </div>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-4 text-gray-900">
-                Next Cohort Starts <span className="text-ruby-500">January 5, 2026</span>
+                Next Cohort Starts <span className="text-ruby-500">February 2, 2026</span>
               </h2>
               <div className="w-24 h-1 bg-ruby-500 mx-auto mb-4 rounded-full"></div>
               
@@ -1145,7 +1145,7 @@ export default function LandingPage() {
                       <div className="text-center mb-4">
                         <div className="text-2xl font-bold text-white/60 line-through">$10,000</div>
                         <div className="text-3xl font-bold text-white">$7,500</div>
-                        <div className="text-sm text-white/80">January 2026 Cohort</div>
+                        <div className="text-sm text-white/80">February 2026 Cohort</div>
                       </div>
                       
                       <div className="bg-white/20 rounded-lg p-3 mb-4">
@@ -1521,7 +1521,7 @@ export default function LandingPage() {
               
                             <div className="max-w-lg mx-auto">
                 <p className="text-sm text-gray-600 mb-4 text-center">
-                  Ready to create your own success story? Join our January 5th, 2026 cohort.
+                  Ready to create your own success story? Join our February 2026 cohort.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
@@ -1956,15 +1956,15 @@ export default function LandingPage() {
               {/* Clean urgency message */}
               <div className="inline-flex items-center px-4 py-2 bg-white/10 border border-white/20 rounded-full text-yellow-300 text-sm font-medium mb-8">
                 <Users className="h-4 w-4 mr-1" />
-                Enrollment now open for January 2026 cohort
+                Enrollment now open for February 2026 cohort
               </div>
               
               <div className="max-w-lg mx-auto mb-12">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/20 text-center">
                   <div className="text-5xl font-bold text-yellow-300 mb-3">$7,500</div>
-                  <div className="text-xl font-bold mb-2 text-white">January 2026 Cohort</div>
+                  <div className="text-xl font-bold mb-2 text-white">February 2026 Cohort</div>
                   <div className="text-ruby-100 mb-2">Previous Price: <span className="line-through">$10,000</span></div>
-                  <div className="text-sm text-ruby-100 mb-6">Starts January 5th, 2026 • Enrollment Open</div>
+                  <div className="text-sm text-ruby-100 mb-6">Pre-work starts February 2nd, 2026 • Enrollment Open</div>
                   <a
                     href="https://forms.gle/8vNXoqxCimxjfXkU6"
                     className="inline-flex h-14 items-center justify-center rounded-md bg-white px-8 text-lg font-bold text-ruby-700 shadow-lg transition-all hover:bg-gray-100 hover:scale-105 w-full mb-4"

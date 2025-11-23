@@ -149,7 +149,7 @@ export default function FlappyBirdPage() {
                   Ready to Build Your Own Games & Apps?
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Join our January 2026 cohort and learn to create interactive applications like this one. 
+                  Join our February 2026 cohort and learn to create interactive applications like this one. 
                   From beginner to job-ready in just 4 months!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
