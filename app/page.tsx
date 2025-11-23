@@ -378,6 +378,13 @@ export default function LandingPage() {
                 <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-lg">
                   Launch Your Tech Career in Guam
                 </h1>
+                
+                {/* New AI Curriculum Badge */}
+                <div className="inline-flex items-center px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-300 text-sm font-bold transform hover:scale-105 transition-all duration-300 cursor-default shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+                  <Brain className="mr-2 h-5 w-5" />
+                  Now including Python & AI Engineering Curriculum
+                </div>
+
                 <div className="mx-auto max-w-[700px] space-y-4">
                   <p className="text-lg md:text-xl font-semibold text-white">
                     Guam&apos;s First Coding Bootcamp • <span className="text-green-300">5-Week Pre-work + 15-Week Live Classes</span>
@@ -404,7 +411,7 @@ export default function LandingPage() {
                   aria-label="Apply for January cohort"
                   role="button"
                 >
-                  Apply for January Cohort
+                  Apply for February Cohort
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </a>
                 
@@ -531,7 +538,7 @@ export default function LandingPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Apply for January Cohort
+                  Apply for February Cohort
                   <Rocket className="ml-2 h-4 w-4" />
                 </a>
               </div>
@@ -704,7 +711,7 @@ export default function LandingPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Apply for January Cohort
+                      Apply for February Cohort
                     </a>
                     <a
                       href="#programs"
@@ -1202,7 +1209,7 @@ export default function LandingPage() {
                         rel="noopener noreferrer"
                         className="inline-flex w-full h-10 items-center justify-center rounded-md bg-white text-ruby-700 px-6 text-sm font-medium shadow-lg transition-all hover:bg-gray-100 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
                       >
-                        Apply for January Cohort
+                        Apply for February Cohort
                         <ChevronRight className="ml-2 h-4 w-4" />
                       </a>
                       <a
@@ -1570,7 +1577,7 @@ export default function LandingPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Apply for January Cohort
+                    Apply for February Cohort
                     <Rocket className="ml-2 h-5 w-5" />
                   </a>
                   <a
