@@ -32,6 +32,7 @@ import {
   MessageCircle,
   Database,
   Star,
+  Brain,
 } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -379,7 +380,7 @@ export default function LandingPage() {
                 </h1>
                 <div className="mx-auto max-w-[700px] space-y-4">
                   <p className="text-lg md:text-xl font-semibold text-white">
-                    Guam&apos;s First Coding Bootcamp • <span className="text-green-300">4-Month Program</span>
+                    Guam&apos;s First Coding Bootcamp • <span className="text-green-300">5-Week Pre-work + 15-Week Live Classes</span>
                   </p>
                   
                   {/* Single most important urgency element */}
@@ -409,7 +410,7 @@ export default function LandingPage() {
                 
                 <div className="text-center space-y-2">
                   <p className="text-xs text-gray-300">
-                    No coding experience required • From beginner to job-ready in 4 months
+                    No coding experience required • From beginner to job-ready in 20 weeks
                   </p>
                   <p className="text-sm font-medium text-yellow-300">
                     💰 New Lower Tuition - Only $7,500 (25% less than before!)
@@ -506,7 +507,7 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <blockquote className="text-gray-700 italic mb-4 flex-grow">
-                    &quot;The Code School of Guam provided me with a well-structured curriculum, expert guidance, and valuable opportunities to kick-start my career as a software engineer. Enrolling was the best decision I&apos;ve ever made!&quot;
+                    &quot;The Code School of Guam provided me with a comprehensive curriculum covering Ruby, Rails, React, and now Python & AI Engineering. The expert guidance and hands-on projects prepared me perfectly for my software engineering career!&quot;
                   </blockquote>
                   <div className="flex text-yellow-400">
                     {"★".repeat(5)}
@@ -522,7 +523,7 @@ export default function LandingPage() {
               </p>
               <div className="bg-gray-50 rounded-lg p-6 max-w-md mx-auto">
                 <p className="text-sm text-gray-700 mb-4">
-                  Join our February 2026 cohort and transform your career in just 4 months. <strong>Enrollment now open!</strong>
+                  Join our February 2026 cohort and transform your career with Ruby, Rails, React, Python & AI Engineering. <strong>Enrollment now open!</strong>
                 </p>
                 <a
                   href="https://forms.gle/8vNXoqxCimxjfXkU6"
@@ -835,18 +836,18 @@ export default function LandingPage() {
             <div className="text-center mb-12">
               <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
                 <Code className="h-4 w-4 mr-2" />
-                4-Month Journey
+                20-Week Journey
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-4 text-gray-900">
                 What You&apos;ll Learn & Why
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Master Ruby on Rails and React.js - the perfect full-stack combination that opens doors to any tech career
+                Master Ruby on Rails, React.js, and Python & AI - the comprehensive toolkit that opens doors to any tech career
               </p>
             </div>
 
             {/* Tech Stack Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
               <Card className="hover-lift bg-white shadow-lg">
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
@@ -910,13 +911,45 @@ export default function LandingPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              <Card className="hover-lift bg-white shadow-lg">
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold mb-4 flex items-center text-gray-900">
+                    <Brain className="mr-3 h-6 w-6 text-yellow-500" />
+                    Python & AI: Future Skills
+                  </h3>
+                  <ul className="space-y-3 text-gray-600 mb-6">
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Build Chatbots & RAG Systems
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      LLMs & Prompt Engineering
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      Agentic Systems & Evals
+                    </li>
+                    <li className="flex items-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      High-demand AI skillset
+                    </li>
+                  </ul>
+                  <div className="bg-yellow-50 rounded-lg p-4">
+                    <p className="text-sm text-yellow-700 font-medium">
+                      Create intelligent applications with the power of AI
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Tech Stack Visual */}
             <div className="max-w-4xl mx-auto mb-12">
               <div className="bg-white rounded-xl p-8 shadow-lg border border-gray-200">
                 <h3 className="text-xl font-bold text-center mb-6 text-gray-900">Your Complete Tech Stack</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
                     <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
                       <span className="text-red-600 font-bold text-lg">Rb</span>
@@ -944,6 +977,13 @@ export default function LandingPage() {
                     </div>
                     <h4 className="font-semibold text-gray-900">PostgreSQL</h4>
                     <p className="text-sm text-gray-600">Database</p>
+                  </div>
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      <Brain className="h-6 w-6 text-yellow-600" />
+                    </div>
+                    <h4 className="font-semibold text-gray-900">Python & AI</h4>
+                    <p className="text-sm text-gray-600">AI Engineering</p>
                   </div>
                 </div>
               </div>
@@ -977,7 +1017,7 @@ export default function LandingPage() {
                 </div>
                 <div className="text-center">
                   <p className="text-gray-700 font-medium">
-                    <span className="text-ruby-600">Ruby + React</span> → Easy transition to <span className="text-blue-600">Python + Vue</span>, <span className="text-green-600">Java + Angular</span>, or any other stack
+                    <span className="text-ruby-600">Ruby + Rails + React + Python & AI</span> → Complete full-stack foundation for any modern tech stack
                   </p>
                 </div>
               </div>
@@ -985,62 +1025,62 @@ export default function LandingPage() {
 
                          {/* Learning Path Preview */}
              <div className="max-w-4xl mx-auto">
-               <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">Your 4-Month Learning Journey</h3>
+               <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">Your 20-Week Learning Journey</h3>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
                    <div className="w-12 h-8 bg-gray-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">PRE</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">Foundations</h4>
-                     <p className="text-sm text-gray-600">Self-paced preparation</p>
+                     <h4 className="font-semibold text-gray-900">Foundations (5 Weeks)</h4>
+                     <p className="text-sm text-gray-600">Ruby & Web Fundamentals</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-blue-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">1-4</div>
+                   <div className="w-12 h-8 bg-blue-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">1-3</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">Ruby Fundamentals</h4>
-                     <p className="text-sm text-gray-600">Object-oriented programming</p>
+                     <h4 className="font-semibold text-gray-900">Ruby & Rails APIs</h4>
+                     <p className="text-sm text-gray-600">Backend Development</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-green-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">5-8</div>
+                   <div className="w-12 h-8 bg-green-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">4-5</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">Rails API Development</h4>
-                     <p className="text-sm text-gray-600">Backend APIs & databases</p>
+                     <h4 className="font-semibold text-gray-900">JS & React Intro</h4>
+                     <p className="text-sm text-gray-600">Frontend Fundamentals</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-orange-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">9</div>
+                   <div className="w-12 h-8 bg-orange-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">6</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">Full-Stack Rails</h4>
-                     <p className="text-sm text-gray-600">Complete web applications</p>
+                     <h4 className="font-semibold text-gray-900">GitHub Team Projects</h4>
+                     <p className="text-sm text-gray-600">Collaboration & Workflow</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-purple-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">10-11</div>
+                   <div className="w-12 h-8 bg-cyan-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">7</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">JavaScript</h4>
-                     <p className="text-sm text-gray-600">Frontend programming & APIs</p>
+                     <h4 className="font-semibold text-gray-900">Advanced Rails</h4>
+                     <p className="text-sm text-gray-600">Complex Associations</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-indigo-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">12-13</div>
+                   <div className="w-12 h-8 bg-purple-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">8-9</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">React & Integration</h4>
-                     <p className="text-sm text-gray-600">Frontend + backend connection</p>
+                     <h4 className="font-semibold text-gray-900">Frontend Deep Dive</h4>
+                     <p className="text-sm text-gray-600">Advanced React</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-pink-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">14</div>
+                   <div className="w-12 h-8 bg-indigo-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">10-13</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">Advanced Topics</h4>
-                     <p className="text-sm text-gray-600">AI, Python intro, capstone planning</p>
+                     <h4 className="font-semibold text-gray-900">Python & AI</h4>
+                     <p className="text-sm text-gray-600">LLMs, RAG & Agentic Systems</p>
                    </div>
                  </div>
                  <div className="flex items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                   <div className="w-12 h-8 bg-ruby-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">15-16</div>
+                   <div className="w-12 h-8 bg-ruby-500 rounded flex items-center justify-center text-white font-semibold text-xs mr-4">14-15</div>
                    <div className="flex-1">
-                     <h4 className="font-semibold text-gray-900">Capstone Project</h4>
-                     <p className="text-sm text-gray-600">Build & present your app</p>
+                     <h4 className="font-semibold text-gray-900">Capstone Projects</h4>
+                     <p className="text-sm text-gray-600">Full-Stack AI Apps</p>
                    </div>
                  </div>
                </div>
@@ -1071,7 +1111,7 @@ export default function LandingPage() {
               </div>
               
               <p className="text-xl text-gray-600 mb-0">
-                4-month intensive bootcamp with <span className="font-semibold text-ruby-600">new lower tuition</span>
+                20-week comprehensive program with <span className="font-semibold text-ruby-600">Ruby, Rails, React, Python & AI Engineering</span>
               </p>
             </div>
             
@@ -1086,7 +1126,7 @@ export default function LandingPage() {
                       <div>
                         <h3 className="text-xl font-bold mb-2 text-gray-900">Live Coding Bootcamp</h3>
                         <p className="text-gray-600 mb-4">
-                          4 months • Fully Remote • Max 10 Students
+                          20 weeks • Fully Remote • Max 10 Students • Ruby, Rails, React, Python & AI
                         </p>
                       </div>
                     </div>
@@ -1434,7 +1474,7 @@ export default function LandingPage() {
                 From Zero to <span className="text-ruby-500">Full-Stack Developer</span>
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Watch our first cohort students present their capstone projects. In just 4 months, they went from coding beginners to building production-ready applications.
+                Watch our first cohort students present their capstone projects. In 20 weeks, they went from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features.
               </p>
             </div>
 
@@ -1512,7 +1552,7 @@ export default function LandingPage() {
             <div className="text-center space-y-4">
               <div className="bg-gray-50 rounded-lg p-6 max-w-2xl mx-auto mb-6">
                                   <p className="text-gray-700 italic">
-                    &quot;Seeing our students go from never having coded before to presenting professional applications in 4 months is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
+                    &quot;Seeing our students go from never having coded before to presenting full-stack applications with AI features in 20 weeks is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
                   </p>
                 <div className="mt-3 text-sm text-gray-600">
                   - Leon Shimizu, Founder & Lead Instructor
@@ -1550,52 +1590,52 @@ export default function LandingPage() {
         <RefinedTimelineSection
           timelineItems={[
             {
-              weeks: "Pre-work",
-              title: "Foundations",
+              weeks: "Pre-work (5 weeks)",
+              title: "Programming Fundamentals with Ruby",
               description:
-                "Self-paced preparation to ensure all students start with a solid foundation.",
+                "Work with our pre-work instructor on programming fundamentals using Ruby, plus intro to HTML, CSS, and JavaScript.",
             },
             {
-              weeks: "Weeks 1-4",
-              title: "Ruby Fundamentals",
+              weeks: "Weeks 1-3",
+              title: "Ruby Review & Rails APIs",
               description:
-                "Dive into Ruby and Object-Oriented Programming concepts.",
+                "Review Ruby fundamentals, then dive into APIs and Ruby on Rails API development.",
             },
             {
-              weeks: "Weeks 5-8",
-              title: "Rails API Development",
+              weeks: "Weeks 4-5",
+              title: "JavaScript & React Introduction",
               description:
-                "Learn to build robust backend APIs with Ruby on Rails.",
+                "Master JavaScript fundamentals and introduction to React for frontend development.",
             },
             {
-              weeks: "Week 9",
-              title: "Full-Stack Transition",
+              weeks: "Week 6",
+              title: "GitHub Team Projects",
               description:
-                "Bridge the gap between backend and frontend development.",
+                "Collaborative development using Git and GitHub with team-based projects.",
             },
             {
-              weeks: "Weeks 10-11",
-              title: "JavaScript & APIs",
+              weeks: "Week 7",
+              title: "Advanced Rails Development",
               description:
-                "Explore JavaScript and working with external APIs.",
+                "Continue with Rails - advanced associations, authentication, and complex data relationships.",
             },
             {
-              weeks: "Weeks 12-13",
-              title: "React & Integration",
+              weeks: "Weeks 8-9",
+              title: "Frontend Development Deep Dive",
               description:
-                "Master React and integrate it with your Rails backend.",
+                "Advanced React concepts, state management, and building dynamic user interfaces.",
             },
             {
-              weeks: "Week 14",
-              title: "Advanced Topics",
+              weeks: "Weeks 10-13",
+              title: "Python & AI Engineering",
               description:
-                "Capstone planning, AI in software engineering, and Python introduction.",
+                "Deep dive into LLMs, building chatbots, RAG (Retrieval-Augmented Generation), Evals, and Agentic Systems.",
             },
             {
-              weeks: "Weeks 15-16",
-              title: "Capstone Project",
+              weeks: "Weeks 14-15",
+              title: "Capstone Projects",
               description:
-                "Develop and present your full-stack capstone project.",
+                "Design and build full-stack applications with Rails APIs, React frontends, and AI features.",
             },
           ]}
         />
@@ -1950,7 +1990,7 @@ export default function LandingPage() {
                 Ready to Start Your <span className="text-yellow-300">Coding Journey</span>?
               </h2>
               <p className="text-xl text-ruby-100 mb-6 max-w-3xl mx-auto">
-                Join Guam&apos;s first coding bootcamp and transform your career in just 4 months.
+                Join Guam&apos;s first coding bootcamp and master Ruby, Rails, React, Python & AI Engineering in 20 weeks.
               </p>
               
               {/* Clean urgency message */}

@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta property="og:title" content="Code School of Guam - Launch Your Tech Career" />
         <meta
           property="og:description"
-          content="Join Guam's first coding bootcamp and become a full-stack software developer. Remote classes, real-world projects, and career support."
+          content="Join Guam's first coding bootcamp and master Ruby, Rails, React, Python & AI Engineering. Remote classes, real-world projects, and career support."
         />
         <meta property="og:image" content="/CSG-logo.png" />
         <meta property="og:url" content="https://codeschoolofguam.com" />
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
         <meta
           name="keywords"
-          content="Code School, Guam, Programming, Software Development, Ruby on Rails, React.js"
+          content="Code School, Guam, Programming, Software Development, Ruby on Rails, React.js, Python, AI Engineering, Machine Learning"
         />
         <meta name="author" content="Code School of Guam" />
         <meta name="description" content="Guam's First Code School" />

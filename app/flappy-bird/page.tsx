@@ -150,7 +150,7 @@ export default function FlappyBirdPage() {
                 </h3>
                 <p className="text-gray-600 mb-4">
                   Join our February 2026 cohort and learn to create interactive applications like this one. 
-                  From beginner to job-ready in just 4 months!
+                  Master Ruby, Rails, React, Python & AI Engineering in 20 weeks!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
           <Link
