@@ -368,63 +368,66 @@ export default function LandingPage() {
           
           <div className="container mx-auto px-4 md:px-6 relative z-10">
             <div
-              className={`flex flex-col items-center space-y-6 text-center ${
+              className={`flex flex-col items-center space-y-8 md:space-y-6 text-center ${
                 isVisible ? "fade-in" : ""
               }`}
               data-tilt-effect
             >
               {/* Main heading and subheading */}
               <div className="space-y-6 reveal-on-scroll">
-                <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-lg">
+                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl text-white drop-shadow-lg px-2">
                   Launch Your Tech Career in Guam
                 </h1>
                 
                 {/* New AI Curriculum Badge */}
-                <div className="inline-flex items-center px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-300 text-sm font-bold transform hover:scale-105 transition-all duration-300 cursor-default shadow-[0_0_15px_rgba(234,179,8,0.3)]">
-                  <Brain className="mr-2 h-5 w-5" />
-                  Now including Python & AI Engineering Curriculum
+                <div className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-300 text-xs md:text-sm font-bold transform hover:scale-105 transition-all duration-300 cursor-default shadow-[0_0_15px_rgba(234,179,8,0.3)] mx-auto max-w-[90vw]">
+                  <Brain className="mr-2 h-4 w-4 md:h-5 md:w-5 flex-shrink-0" />
+                  <span className="truncate sm:whitespace-normal">Now including Python & AI Engineering</span>
                 </div>
 
-                <div className="mx-auto max-w-[700px] space-y-4">
-                  <p className="text-lg md:text-xl font-semibold text-white">
-                    Guam&apos;s First Coding Bootcamp • <span className="text-green-300">5-Week Pre-work + 15-Week Live Classes</span>
+                <div className="mx-auto max-w-[700px] space-y-4 px-4">
+                  <p className="text-lg md:text-xl font-semibold text-white leading-relaxed">
+                    Guam&apos;s First Coding Bootcamp
+                    <span className="hidden md:inline"> • </span>
+                    <span className="block md:inline text-green-300 mt-1 md:mt-0">5-Week Pre-work + 15-Week Live Classes</span>
                   </p>
                   
                   {/* Single most important urgency element */}
-                  <div className="inline-flex items-center px-4 py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-sm font-medium animate-pulse">
+                  <div className="inline-flex items-center px-3 py-1 md:px-4 md:py-2 bg-red-500/20 border border-red-500/30 rounded-full text-red-300 text-xs md:text-sm font-medium animate-pulse">
                     ⚡ Only 10 Students Per Cohort
                   </div>
                   
                   <p className="text-sm text-green-300 font-medium">
-                    🚀 2nd class in progress • Next cohort pre-work starts February 2nd, 2026
+                    <span className="hidden md:inline">🚀 2nd class in progress • </span>
+                    Next cohort pre-work starts February 2nd, 2026
                   </p>
                 </div>
               </div>
               
               {/* CTA buttons */}
-              <div className="w-full max-w-sm mx-auto space-y-4 reveal-on-scroll">
+              <div className="w-full max-w-sm mx-auto space-y-4 reveal-on-scroll px-4">
                 <a
                   href="https://forms.gle/8vNXoqxCimxjfXkU6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
-                  aria-label="Apply for January cohort"
+                  aria-label="Apply for February cohort"
                   role="button"
                 >
                   Apply for February Cohort
                   <ChevronRight className="ml-2 h-5 w-5" />
                 </a>
                 
-                <div className="text-center space-y-2">
-                  <p className="text-xs text-gray-300">
-                    No coding experience required • From beginner to job-ready in 20 weeks
+                <div className="text-center space-y-3 md:space-y-2">
+                  <p className="text-xs text-gray-400 md:text-gray-300">
+                    No coding experience required • From beginner to job-ready
                   </p>
                   <p className="text-sm font-medium text-yellow-300">
-                    💰 New Lower Tuition - Only $7,500 (25% less than before!)
+                    💰 Tuition: $7,500 <span className="hidden md:inline">(25% less than before!)</span>
                   </p>
                   
                   {/* Secondary CTA - button style */}
-                  <div className="pt-3">
+                  <div className="pt-2">
                     <a
                       href="#programs"
                       className="inline-flex items-center justify-center h-10 px-4 rounded-md border border-gray-500 bg-gray-800/50 text-sm text-gray-200 hover:bg-gray-700/50 hover:text-white transition-all w-full"
