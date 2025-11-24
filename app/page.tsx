@@ -1154,12 +1154,18 @@ export default function LandingPage() {
                     
                     <div className="space-y-4 mb-6">
                       <div className="flex items-center p-3 bg-gray-50 rounded-lg border-l-4 border-ruby-500">
-                        <span className="font-medium text-gray-900 mr-2">Option 1:</span>
-                        <span className="text-gray-700">Monday – Friday, 5:30pm – 9:30pm</span>
+                        <Calendar className="h-5 w-5 text-ruby-500 mr-3 flex-shrink-0" />
+                        <div>
+                          <span className="block font-bold text-gray-900">Live Classes:</span>
+                          <span className="text-gray-700">Monday – Thursday, 5:30pm – 9:30pm</span>
+                        </div>
                       </div>
-                      <div className="flex items-center p-3 bg-gray-50 rounded-lg border-l-4 border-ruby-500">
-                        <span className="font-medium text-gray-900 mr-2">Option 2:</span>
-                        <span className="text-gray-700">Monday – Thursday, 6:00pm – 9:00pm; plus Saturday, 8:00am – 4:00pm</span>
+                      <div className="flex items-center p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500">
+                        <Clock className="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />
+                        <div>
+                          <span className="block font-bold text-gray-900">3-Day Weekend:</span>
+                          <span className="text-gray-700">Homework & Deliberate Practice</span>
+                        </div>
                       </div>
                     </div>
 
@@ -1177,11 +1183,6 @@ export default function LandingPage() {
                         Job placement support + internship opportunities
                       </div>
                     </div>
-                    
-                    <p className="text-gray-600 text-sm">
-                      Let us know which schedule works better for you when you apply, and
-                      we&apos;ll finalize it based on the majority preference.
-                    </p>
                   </div>
                 </div>
                 
