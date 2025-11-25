@@ -422,9 +422,6 @@ export default function LandingPage() {
                   <p className="text-xs text-gray-400 md:text-gray-300">
                     No coding experience required • From beginner to job-ready
                   </p>
-                  <p className="text-sm font-medium text-yellow-300">
-                    💰 Tuition: $7,500 <span className="hidden md:inline">(25% less than before!)</span>
-                  </p>
                   
                   {/* Secondary CTA - button style */}
                   <div className="pt-2">
