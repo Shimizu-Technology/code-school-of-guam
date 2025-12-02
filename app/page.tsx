@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePostHog } from "posthog-js/react"
 import {
   setupScrollAnimations,
   setupStaggeredAnimations,
@@ -43,9 +44,50 @@ export default function LandingPage() {
   const [isVisible, setIsVisible] = useState(false)
   const [activeSection, setActiveSection] = useState("")
   const [activeTab, setActiveTab] = useState("overview")
+  const posthog = usePostHog()
+
+  // Tracking functions
+  const trackApplyClick = (location: string) => {
+    posthog?.capture('apply_button_clicked', {
+      location,
+      cohort: 'February 2026',
+      button_text: 'Apply for February Cohort'
+    })
+  }
+
+  const trackPricingClick = (location: string) => {
+    posthog?.capture('view_pricing_clicked', {
+      location,
+      scroll_to: 'programs_section'
+    })
+  }
+
+  const trackExternalLink = (destination: string, linkType: string) => {
+    posthog?.capture('external_link_clicked', {
+      destination,
+      link_type: linkType
+    })
+  }
+
+  const trackSectionView = (sectionName: string) => {
+    posthog?.capture('section_viewed', {
+      section: sectionName
+    })
+  }
 
   useEffect(() => {
     setIsVisible(true)
+
+    // Track scroll depth milestones
+    const scrollDepthTracked = {
+      '25': false,
+      '50': false,
+      '75': false,
+      '100': false
+    }
+
+    // Track section views
+    const sectionsViewed = new Set<string>()
 
     const handleScroll = () => {
       const sections = document.querySelectorAll("section[id]")
@@ -57,7 +99,28 @@ export default function LandingPage() {
           const sectionBottom = sectionTop + section.offsetHeight
           if (sectionTop <= scrollPosition && sectionBottom > scrollPosition) {
             setActiveSection(section.id)
+            
+            // Track section view (only once per section)
+            if (section.id && !sectionsViewed.has(section.id)) {
+              sectionsViewed.add(section.id)
+              trackSectionView(section.id)
+            }
           }
+        }
+      })
+
+      // Track scroll depth
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight
+      const scrolled = (window.scrollY / scrollHeight) * 100
+
+      Object.keys(scrollDepthTracked).forEach((milestone) => {
+        const depth = parseInt(milestone)
+        if (scrolled >= depth && !scrollDepthTracked[milestone as keyof typeof scrollDepthTracked]) {
+          scrollDepthTracked[milestone as keyof typeof scrollDepthTracked] = true
+          posthog?.capture('scroll_depth_reached', {
+            depth: `${depth}%`,
+            page: 'landing_page'
+          })
         }
       })
     }
@@ -80,7 +143,7 @@ export default function LandingPage() {
     return () => {
       window.removeEventListener("scroll", handleScroll)
     }
-  }, [])
+  }, [posthog])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -410,6 +473,7 @@ export default function LandingPage() {
                   href="https://forms.gle/8vNXoqxCimxjfXkU6"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackApplyClick('hero_section')}
                   className="flex h-14 items-center justify-center rounded-md bg-ruby-500 px-6 text-lg font-medium text-white shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
                   aria-label="Apply for February cohort"
                   role="button"
@@ -427,6 +491,7 @@ export default function LandingPage() {
                   <div className="pt-2">
                     <a
                       href="#programs"
+                      onClick={() => trackPricingClick('hero_section')}
                       className="inline-flex items-center justify-center h-10 px-4 rounded-md border border-gray-500 bg-gray-800/50 text-sm text-gray-200 hover:bg-gray-700/50 hover:text-white transition-all w-full"
                     >
                       View Pricing & Payment Plans
@@ -534,6 +599,7 @@ export default function LandingPage() {
                 </p>
                 <a
                   href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                  onClick={() => trackApplyClick('testimonials_section')}
                   className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-500 text-white px-6 text-base font-medium shadow-lg transition-all hover:bg-ruby-600 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 w-full"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -707,6 +773,7 @@ export default function LandingPage() {
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <a
                       href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                      onClick={() => trackApplyClick('value_section')}
                       className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -715,6 +782,7 @@ export default function LandingPage() {
                     </a>
                     <a
                       href="#programs"
+                      onClick={() => trackPricingClick('value_section')}
                       className="inline-flex h-12 items-center justify-center rounded-md bg-gray-100 border border-gray-300 px-6 text-base font-medium text-gray-700 shadow-lg transition-all hover:bg-gray-200 hover:scale-105"
                     >
                       View Payment Plans
@@ -1208,6 +1276,7 @@ export default function LandingPage() {
                         href="https://forms.gle/8vNXoqxCimxjfXkU6"
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => trackApplyClick('pricing_card')}
                         className="inline-flex w-full h-10 items-center justify-center rounded-md bg-white text-ruby-700 px-6 text-sm font-medium shadow-lg transition-all hover:bg-gray-100 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
                       >
                         Apply for February Cohort
@@ -1574,6 +1643,7 @@ export default function LandingPage() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                    onClick={() => trackApplyClick('student_projects_section')}
                     className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105 flex-1"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -2015,6 +2085,7 @@ export default function LandingPage() {
                   <div className="text-sm text-ruby-100 mb-6">Pre-work starts February 2nd, 2026 • Enrollment Open</div>
                   <a
                     href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                    onClick={() => trackApplyClick('final_cta_section')}
                     className="inline-flex h-14 items-center justify-center rounded-md bg-white px-8 text-lg font-bold text-ruby-700 shadow-lg transition-all hover:bg-gray-100 hover:scale-105 w-full mb-4"
                     target="_blank"
                     rel="noopener noreferrer"
