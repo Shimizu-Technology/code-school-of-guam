@@ -20,7 +20,6 @@ import {
   ChevronDown,
   Code,
   Rocket,
-  BookOpen,
   Users,
   Briefcase,
   GraduationCap,
@@ -30,7 +29,6 @@ import {
   Calendar,
   Clock,
   GamepadIcon,
-  MessageCircle,
   Database,
   Star,
   Brain,
@@ -159,13 +157,11 @@ export default function LandingPage() {
         "-4iZEmtDtCvBEn4gX"
       )
       .then(
-        (response) => {
-          console.log("SUCCESS!", response.status, response.text)
+        () => {
           alert("Subscription successful!")
           setEmail("") // Clear the email input
         },
-        (err) => {
-          console.log("FAILED...", err)
+        () => {
           alert("Subscription failed. Please try again.")
         }
       )
@@ -316,8 +312,16 @@ export default function LandingPage() {
         }
       `}</style>
 
+      {/* Skip to main content link for accessibility */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-ruby-600 focus:text-white focus:rounded-md focus:outline-none"
+      >
+        Skip to main content
+      </a>
+
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full bg-gray-900 text-white shadow-md">
+      <header className="sticky top-0 z-50 w-full bg-gray-900 text-white shadow-md" role="banner">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo / Title with Smooth Scroll */}
@@ -327,8 +331,9 @@ export default function LandingPage() {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              aria-label="Code School of Guam - Go to top"
             >
-              <Code className="h-8 w-8 text-ruby-500" />
+              <Code className="h-8 w-8 text-ruby-500" aria-hidden="true" />
               <span className="ml-2 text-xl font-bold text-white">Code School of Guam</span>
             </a>
 
@@ -368,9 +373,13 @@ export default function LandingPage() {
 
             {/* "More" menu (large screens) */}
             <div className="hidden xl:block relative group">
-              <button className="text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md">
+              <button 
+                className="text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md"
+                aria-label="More navigation options"
+                aria-haspopup="true"
+              >
                 More
-                <ChevronDown className="inline-block ml-1 h-4 w-4" />
+                <ChevronDown className="inline-block ml-1 h-4 w-4" aria-hidden="true" />
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 {navItems.slice(4).map((item, index) => (
@@ -387,9 +396,13 @@ export default function LandingPage() {
 
             {/* "More" menu (medium screens) */}
             <div className="hidden lg:block xl:hidden relative group">
-              <button className="text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md">
+              <button 
+                className="text-sm font-medium hover:text-red-500 transition-colors duration-200 px-2 py-1 rounded-md"
+                aria-label="More navigation options"
+                aria-haspopup="true"
+              >
                 More
-                <ChevronDown className="inline-block ml-1 h-4 w-4" />
+                <ChevronDown className="inline-block ml-1 h-4 w-4" aria-hidden="true" />
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 {navItems.slice(2).map((item, index) => (
@@ -411,7 +424,7 @@ export default function LandingPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1">
+      <main className="flex-1" id="main-content" role="main">
         {/* Hero / Landing Section */}
         <section className="relative w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
           {/* Animated code-like background elements */}
@@ -1299,7 +1312,7 @@ export default function LandingPage() {
               <h3 className="text-2xl font-bold mb-6 text-center text-gray-900">Flexible Payment Options</h3>
               
               {/* Tab Navigation */}
-              <div className="flex flex-wrap justify-center mb-8 bg-gray-100 rounded-lg p-1">
+              <div className="flex flex-wrap justify-center mb-8 bg-gray-100 rounded-lg p-1" role="tablist" aria-label="Payment options">
                 <button
                   onClick={() => setActiveTab("overview")}
                   className={`px-6 py-3 rounded-md font-medium transition-all ${
@@ -1307,6 +1320,10 @@ export default function LandingPage() {
                       ? "bg-white text-ruby-600 shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
+                  role="tab"
+                  aria-selected={activeTab === "overview"}
+                  aria-controls="tab-panel-overview"
+                  id="tab-overview"
                 >
                   Payment Overview
                 </button>
@@ -1317,6 +1334,10 @@ export default function LandingPage() {
                       ? "bg-white text-ruby-600 shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
+                  role="tab"
+                  aria-selected={activeTab === "installments"}
+                  aria-controls="tab-panel-installments"
+                  id="tab-installments"
                 >
                   Monthly Plans
                 </button>
@@ -1327,6 +1348,10 @@ export default function LandingPage() {
                       ? "bg-white text-ruby-600 shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
+                  role="tab"
+                  aria-selected={activeTab === "financing"}
+                  aria-controls="tab-panel-financing"
+                  id="tab-financing"
                 >
                   Financing Options
                 </button>
@@ -1335,7 +1360,12 @@ export default function LandingPage() {
               {/* Tab Content */}
               <div className="bg-white rounded-lg border border-gray-200 shadow-lg p-8 min-h-[300px]">
                 {activeTab === "overview" && (
-                  <div className="animate-fadeIn">
+                  <div 
+                    className="animate-fadeIn"
+                    role="tabpanel"
+                    id="tab-panel-overview"
+                    aria-labelledby="tab-overview"
+                  >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                       <div className="text-center p-4 bg-green-50 rounded-lg border border-green-200 hover:shadow-md transition-all">
                         <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
@@ -1366,7 +1396,12 @@ export default function LandingPage() {
                 )}
 
                 {activeTab === "installments" && (
-                  <div className="animate-fadeIn">
+                  <div 
+                    className="animate-fadeIn"
+                    role="tabpanel"
+                    id="tab-panel-installments"
+                    aria-labelledby="tab-installments"
+                  >
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                       <Card className="hover:shadow-lg transition-all border-2 border-blue-200">
                         <CardContent className="p-6 text-center">
@@ -1467,7 +1502,12 @@ export default function LandingPage() {
                 )}
 
                 {activeTab === "financing" && (
-                  <div className="animate-fadeIn">
+                  <div 
+                    className="animate-fadeIn"
+                    role="tabpanel"
+                    id="tab-panel-financing"
+                    aria-labelledby="tab-financing"
+                  >
                     <div className="text-center mb-6">
                       <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Briefcase className="h-8 w-8 text-purple-600" />
@@ -2190,7 +2230,7 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-6 bg-gray-900 text-white">
+      <footer className="w-full py-6 bg-gray-900 text-white" role="contentinfo">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
