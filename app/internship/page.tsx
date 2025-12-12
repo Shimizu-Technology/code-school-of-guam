@@ -314,7 +314,7 @@ export default function InternshipPage() {
             Start Your Journey
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join Code School of Guam and get access to real-world experience opportunities that most bootcamps can't offer.
+            Join Code School of Guam and get access to real-world experience opportunities that most bootcamps can&apos;t offer.
           </p>
           <a
             href="https://forms.gle/8vNXoqxCimxjfXkU6"
