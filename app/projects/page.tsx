@@ -102,7 +102,7 @@ export default function ProjectsPage() {
             From Zero to <span className="text-ruby-500">Full-Stack Developer</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Watch our first cohort students present their capstone projects. In 20 weeks, they went from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features.
+            Watch our students present their capstone projects. In 20 weeks, they go from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features. <span className="text-ruby-400 font-medium">11 graduates across 2 cohorts with a 100% completion rate.</span>
           </p>
         </div>
         {/* Fade to next section - dark to light */}
@@ -132,26 +132,69 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      {/* YouTube Video */}
+      {/* Capstone Videos */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-gray-200">
-              <div style={{ paddingTop: '56.25%' }}>
-                <iframe 
-                  src="https://www.youtube.com/embed/MNzZeL33jiw?t=650" 
-                  title="Code School of Guam Capstone Presentations - Chamorro Chips (May 9th, 2025)" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                  allowFullScreen
-                  className="absolute top-0 left-0 w-full h-full"
-                ></iframe>
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+              Capstone Presentations
+            </h2>
+            <p className="text-gray-600">
+              Watch our graduates present their final projects
+            </p>
+          </div>
+
+          {/* Two videos side by side on desktop, stacked on mobile */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Cohort 2 - December 2025 */}
+            <div>
+              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-ruby-200">
+                <div style={{ paddingTop: '56.25%' }}>
+                  <iframe 
+                    src="https://www.youtube.com/embed/bWuS_YuiRzI" 
+                    title="Code School of Guam Cohort 2 Capstone Presentations - December 2025" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
+                  ></iframe>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <span className="inline-flex items-center px-3 py-1 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-2">
+                  Latest
+                </span>
+                <p className="text-sm text-gray-600 font-medium">
+                  Cohort 2 Capstone Presentations
+                </p>
+                <p className="text-xs text-gray-500">
+                  December 2025 • 5 Graduates
+                </p>
               </div>
             </div>
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-500 italic">
-                First Cohort Capstone Presentations - May 2025
-              </p>
+
+            {/* Cohort 1 - May 2025 */}
+            <div>
+              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-gray-200">
+                <div style={{ paddingTop: '56.25%' }}>
+                  <iframe 
+                    src="https://www.youtube.com/embed/MNzZeL33jiw?t=650" 
+                    title="Code School of Guam Cohort 1 Capstone Presentations - May 2025" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                    className="absolute top-0 left-0 w-full h-full"
+                  ></iframe>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600 font-medium">
+                  Cohort 1 Capstone Presentations
+                </p>
+                <p className="text-xs text-gray-500">
+                  May 2025 • 6 Graduates
+                </p>
+              </div>
             </div>
           </div>
 
