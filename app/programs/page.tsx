@@ -184,7 +184,7 @@ export default function ProgramsPage() {
                 <Calendar className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Monthly Plans</h3>
-              <div className="text-3xl font-bold text-blue-600 mb-2">$940+</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">$950+</div>
               <p className="text-sm text-gray-600">4-8 month plans</p>
             </div>
 
