@@ -102,7 +102,7 @@ export default function ProjectsPage() {
             From Zero to <span className="text-ruby-500">Full-Stack Developer</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Watch our students present their capstone projects. In 20 weeks, they go from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features. <span className="text-ruby-400 font-medium">11 graduates across 2 cohorts with a 100% completion rate.</span>
+            Watch our students present their capstone projects. In under 6 months, they go from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features. <span className="text-ruby-400 font-medium">11 graduates across 2 cohorts with a 100% completion rate.</span>
           </p>
         </div>
         {/* Fade to next section - dark to light */}
@@ -232,7 +232,7 @@ export default function ProjectsPage() {
           {/* Founder Quote */}
           <div className="max-w-2xl mx-auto mt-12 bg-gray-50 rounded-lg p-6 text-center">
             <p className="text-gray-700 italic mb-3">
-              &quot;Seeing our students go from never having coded before to presenting full-stack applications with AI features in 20 weeks is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
+              &quot;Seeing our students go from never having coded before to presenting full-stack applications with AI features in just a few months is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
             </p>
             <p className="text-sm text-gray-600">
               - Leon Shimizu, Founder & Lead Instructor

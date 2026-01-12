@@ -17,7 +17,7 @@ export function SiteFooter() {
               <span>Code School of Guam</span>
             </div>
             <p className="text-gray-400 text-sm mb-4">
-              Guam&apos;s first coding bootcamp. From beginner to job-ready developer in 20 weeks.
+              Guam&apos;s first coding bootcamp. Learn to build AI-powered applications in under 6 months.
             </p>
             <div className="flex items-center space-x-2 text-sm text-gray-400">
               <span className="text-ruby-400">Partner:</span>

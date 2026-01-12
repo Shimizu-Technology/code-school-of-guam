@@ -267,7 +267,7 @@ function TestimonialCarousel() {
           </p>
           <div className="bg-white rounded-lg p-6 max-w-md mx-auto shadow-md">
             <p className="text-sm text-gray-700 mb-4">
-              Join our February 2026 cohort and transform your career with Ruby, Rails, React, Python & AI Engineering. <strong>Enrollment now open!</strong>
+              Join our March 2026 cohort and learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering. <strong>Only 1 class in 2026!</strong>
             </p>
             <a
               href="https://forms.gle/8vNXoqxCimxjfXkU6"
@@ -275,7 +275,7 @@ function TestimonialCarousel() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
             >
-              Apply for February Cohort
+              Apply for March Cohort
               <Rocket className="ml-2 h-4 w-4" />
             </a>
           </div>
@@ -299,15 +299,15 @@ export default function HomePage() {
         <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-ruby-500/20 border border-ruby-500/30 rounded-full text-ruby-300 text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium mb-6">
               <Brain className="h-4 w-4 mr-2" />
-              Now including Python & AI Engineering
+              🤖 NEW: Learn to Build AI Chatbots & RAG Systems
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Launch Your Tech Career
+              Learn to Build AI-Powered
               <br />
-              <span className="text-ruby-500">in Guam</span>
+              <span className="text-ruby-500">Applications</span>
             </h1>
 
             <p className="text-xl text-gray-300 mb-4">
@@ -315,18 +315,18 @@ export default function HomePage() {
             </p>
             
             <p className="text-2xl font-semibold text-green-400 mb-6">
-              5-Week Pre-work + 15-Week Live Classes
+              From Zero to AI-Capable Developer in Under 6 Months
             </p>
 
             {/* Key stats */}
             <div className="flex flex-wrap justify-center gap-6 mb-8">
               <div className="flex items-center gap-2 text-gray-300">
-                <Zap className="w-5 h-5 text-yellow-400" />
-                <span>Only 10 Students Per Cohort</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-300">
                 <Calendar className="w-5 h-5 text-blue-400" />
-                <span>Next cohort: February 2nd, 2026</span>
+                <span>Next cohort: March 2, 2026</span>
+              </div>
+              <div className="flex items-center gap-2 text-ruby-400 font-semibold">
+                <Zap className="w-5 h-5 text-yellow-400" />
+                <span>Only 1 class in 2026 — Limited spots!</span>
               </div>
             </div>
 
@@ -338,7 +338,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
               >
-                Apply for February Cohort
+                Apply for March Cohort
                 <ChevronRight className="ml-2 w-5 h-5" />
               </a>
               <Link
@@ -369,7 +369,7 @@ export default function HomePage() {
           <div className="text-center mb-12">
               <div className="inline-flex items-center px-3 py-1.5 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-4">
                 <Code className="w-4 h-4 mr-2" />
-                20-Week Journey
+                Under 6 Months
               </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               What You&apos;ll Learn & Why
@@ -585,10 +585,10 @@ export default function HomePage() {
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <GraduationCap className="h-6 w-6 text-blue-600" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">4½-Month Bootcamp</h3>
+                  <h3 className="text-lg font-bold text-gray-900">Under 6 Months</h3>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  From zero to certified junior full-stack developer with live instruction and hands-on projects
+                  From zero to AI-capable full-stack developer with live instruction and hands-on projects
                 </p>
               </div>
 
@@ -696,8 +696,11 @@ export default function HomePage() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Start Your Journey?
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Tuition: $7,500 — Flexible payment plans available. Next cohort starts February 2nd, 2026.
+          <p className="text-xl text-white/90 mb-4 max-w-2xl mx-auto">
+            Tuition: $7,500 — Flexible payment plans available. Next cohort starts March 2, 2026.
+          </p>
+          <p className="text-lg text-yellow-300 font-semibold mb-8">
+            ⚡ Only 1 class in 2026 — Don&apos;t miss it!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

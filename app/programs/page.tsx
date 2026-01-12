@@ -19,19 +19,19 @@ export default function ProgramsPage() {
       {/* Hero */}
       <section className="bg-gray-900 text-white py-16 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-green-500/20 border border-green-500/30 rounded-full text-green-400 text-sm font-medium mb-4">
+          <div className="inline-flex items-center px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-400 text-sm font-medium mb-4">
             <Calendar className="h-4 w-4 mr-2" />
-            Enrollment Open
+            Only 1 Class in 2026!
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Next Cohort Starts <span className="text-ruby-500">February 2, 2026</span>
+            Next Cohort Starts <span className="text-ruby-500">March 2, 2026</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-4">
-            20-week comprehensive program with <span className="text-white font-semibold">Ruby, Rails, React, Python & AI Engineering</span>
+            Comprehensive program (under 6 months) with <span className="text-white font-semibold">Ruby, Rails, React, Python & AI Engineering</span>
           </p>
           <div className="inline-flex items-center px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-green-400 text-sm font-medium">
             <CheckCircle className="h-4 w-4 mr-1" />
-            Enrollment now open
+            Enrollment now open — Limited spots
           </div>
         </div>
         {/* Fade to next section - dark to light */}
@@ -49,7 +49,7 @@ export default function ProgramsPage() {
                 Live Coding Bootcamp
               </h2>
               <p className="text-gray-600 mb-6">
-                20 weeks • Fully Remote • Max 10 Students • Ruby, Rails, React, Python & AI
+                Under 6 months • Fully Remote • Max 10 Students • Ruby, Rails, React, Python & AI
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-6">
@@ -102,7 +102,7 @@ export default function ProgramsPage() {
               <div className="mb-6">
                 <div className="text-gray-200 line-through text-lg">$10,000</div>
                 <div className="text-5xl font-bold mb-2">$7,500</div>
-                <div className="text-ruby-200">February 2026 Cohort</div>
+                <div className="text-ruby-200">March 2026 Cohort</div>
               </div>
 
               <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-8">
@@ -116,7 +116,7 @@ export default function ProgramsPage() {
                 rel="noopener noreferrer"
                 className="block w-full text-center px-6 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg font-medium transition-colors mb-4"
               >
-                Apply for February Cohort →
+                Apply for March Cohort →
               </a>
 
               <button className="block w-full text-center px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg font-medium transition-colors text-sm">

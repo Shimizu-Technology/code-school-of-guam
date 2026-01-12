@@ -15,6 +15,10 @@ const faqs = [
     answer: "No prior coding experience is required. Our program starts from the basics and builds up to advanced concepts."
   },
   {
+    question: "Why is there only 1 class in 2026?",
+    answer: "We're limiting to one cohort in 2026 for two reasons: First, high demand for our partner company Shimizu Technology keeps us busy with real client projects — which is actually great for students because it means you're learning from instructors who are actively building software. Second, we're completing a major curriculum upgrade to focus on AI Engineering, so students will now learn to build AI-powered applications with chatbots and RAG systems."
+  },
+  {
     question: "Why do you teach Ruby on Rails instead of other programming languages?",
     answer: "We have chosen Ruby on Rails because it's a powerful, beginner-friendly framework that allows for rapid development. It's used by many successful companies like Airbnb, GitHub, and Shopify. Our instructors have professional experience with Rails, ensuring high-quality teaching and real-world insights. Learning Rails provides a strong foundation, making it easier to pick up other languages in the future."
   },
@@ -166,7 +170,7 @@ export default function FAQPage() {
             Ready to start your coding journey?
           </h2>
           <p className="text-white/90 mb-6">
-            Join our February 2026 cohort and transform your career.
+            Join our March 2026 cohort and transform your career. Only 1 class this year!
           </p>
           <a
             href="https://forms.gle/8vNXoqxCimxjfXkU6"

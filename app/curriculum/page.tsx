@@ -14,9 +14,7 @@ import {
   Rocket,
   Users,
   GitBranch,
-  Zap,
-  Shield,
-  Server
+  Zap
 } from "lucide-react"
 
 const phases = [
@@ -30,46 +28,46 @@ const phases = [
       "HTML & CSS fundamentals",
       "JavaScript essentials",
       "Ruby programming basics",
-      "Self-paced learning modules"
+      "Self-paced with recorded lessons"
     ]
   },
   {
-    week: "Weeks 1-5",
-    title: "Backend Development",
+    week: "Weeks 1-9",
+    title: "Full-Stack Development (Rails & React)",
     color: "bg-ruby-500",
     borderColor: "border-ruby-500",
     topics: [
-      "Ruby deep dive",
-      "Object-oriented programming",
-      "Ruby on Rails framework",
-      "MVC architecture",
-      "Database design with PostgreSQL"
+      "Ruby deep dive & OOP",
+      "Ruby on Rails framework & APIs",
+      "Database design with PostgreSQL",
+      "React.js & component architecture",
+      "Authentication & deployment"
     ]
   },
   {
-    week: "Weeks 6-10",
-    title: "Frontend Development",
-    color: "bg-green-500",
-    borderColor: "border-green-500",
-    topics: [
-      "React.js fundamentals",
-      "Component-based architecture",
-      "State management",
-      "API integration",
-      "Full-stack applications"
-    ]
-  },
-  {
-    week: "Weeks 11-15",
-    title: "Python & AI Engineering",
+    week: "Weeks 10-14",
+    title: "AI Engineering",
     color: "bg-purple-500",
     borderColor: "border-purple-500",
     topics: [
-      "Python fundamentals",
-      "FastAPI framework",
-      "Machine learning basics",
-      "Working with AI APIs (OpenAI, etc.)",
-      "Capstone project"
+      "Python & FastAPI",
+      "OpenAI SDK & prompt engineering",
+      "RAG with Pinecone vector database",
+      "Building AI chatbots",
+      "AI-integrated applications"
+    ]
+  },
+  {
+    week: "Weeks 15-17",
+    title: "Capstone Project",
+    color: "bg-green-500",
+    borderColor: "border-green-500",
+    topics: [
+      "Build your own AI-integrated app",
+      "Full-stack project development",
+      "Code reviews & iteration",
+      "Deployment & portfolio prep",
+      "Final presentations"
     ]
   }
 ]
@@ -146,12 +144,12 @@ const technologies = [
     borderColor: "border-purple-200"
   },
   { 
-    name: "Authentication", 
-    category: "Security",
-    iconComponent: Shield,
-    iconColor: "text-green-600",
-    color: "bg-green-50",
-    borderColor: "border-green-200"
+    name: "Pinecone", 
+    category: "Vector DB",
+    iconComponent: Database,
+    iconColor: "text-teal-600",
+    color: "bg-teal-50",
+    borderColor: "border-teal-200"
   },
 ]
 
@@ -163,13 +161,13 @@ export default function CurriculumPage() {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
             <Code className="w-4 h-4 mr-2" />
-            20-Week Journey
+            Under 6 Months
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             What You&apos;ll Learn
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            From complete beginner to job-ready full-stack developer. Our curriculum covers everything you need to build modern web applications.
+            From complete beginner to AI-capable full-stack developer. Our curriculum covers everything you need to build modern AI-powered web applications.
           </p>
         </div>
         {/* Fade to next section - dark to light */}
@@ -288,7 +286,7 @@ export default function CurriculumPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Your 20-Week Learning Journey
+              Your 22-Week Learning Journey
             </h2>
           </div>
 
