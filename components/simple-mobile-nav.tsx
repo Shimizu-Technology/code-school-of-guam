@@ -71,7 +71,7 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
           
           <div className="mt-8 pt-4 border-t border-gray-800">
             <a
-              href="https://forms.gle/bifqSWnbH74vLZ7v7"
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               className="flex w-full items-center justify-center rounded-md bg-ruby-500 px-5 py-3 text-base font-medium text-white"
               target="_blank"
               rel="noopener noreferrer"

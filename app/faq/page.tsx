@@ -173,7 +173,7 @@ export default function FAQPage() {
             Join our March 2026 cohort and transform your career. Only 1 class this year!
           </p>
           <a
-            href="https://forms.gle/8vNXoqxCimxjfXkU6"
+            href="https://forms.gle/nJv8nAfxsvvLSbbq7"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"

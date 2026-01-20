@@ -270,7 +270,7 @@ function TestimonialCarousel() {
               Join our March 2026 cohort and learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering. <strong>Only 1 class in 2026!</strong>
             </p>
             <a
-              href="https://forms.gle/8vNXoqxCimxjfXkU6"
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
@@ -333,7 +333,7 @@ export default function HomePage() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
-                href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
@@ -704,7 +704,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://forms.gle/8vNXoqxCimxjfXkU6"
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"

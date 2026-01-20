@@ -111,7 +111,7 @@ export default function ProgramsPage() {
               </div>
 
               <a
-                href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block w-full text-center px-6 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg font-medium transition-colors mb-4"
@@ -216,7 +216,7 @@ export default function ProgramsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://forms.gle/8vNXoqxCimxjfXkU6"
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg font-medium transition-colors"
