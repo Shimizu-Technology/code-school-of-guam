@@ -85,6 +85,19 @@ const shimizuProjects = [
       "Real-time delivery tracking",
       "Available on iOS App Store"
     ]
+  },
+  {
+    title: "Cornerstone Accounting",
+    subtitle: "Tax & Accounting Platform",
+    description: "Full-service accounting platform that transformed Cornerstone's paper-based process into a streamlined digital system with client intake, workflow management, and admin dashboard.",
+    image: "/images/cornerstone-logo.jpeg",
+    link: "https://cornerstone-accounting.tax",
+    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
+    highlights: [
+      "8-step digital client intake form",
+      "Workflow & status dashboard",
+      "Employee time tracking system"
+    ]
   }
 ]
 
