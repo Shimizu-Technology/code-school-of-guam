@@ -6,7 +6,7 @@ Attendance is crucial for your success in the program.
 
 ### Requirements
 - Students are expected to attend all scheduled classes punctually
-- Classes are held Monday through Thursday, 5:30pm - 9:30pm (Guam Time)
+- Classes are held Monday through Thursday, 6:00pm - 9:00pm (Guam Time)
 
 ### Unexcused Absences
 - Missing more than three unexcused classes may result in dismissal from the program without a refund

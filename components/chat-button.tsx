@@ -31,7 +31,7 @@ export function ChatButton() {
 
       {/* Pulse animation when closed */}
       {!isOpen && (
-        <span className="fixed bottom-4 left-4 z-40 flex h-14 w-14">
+        <span aria-hidden="true" className="fixed bottom-4 left-4 z-40 flex h-14 w-14 pointer-events-none">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ruby-400 opacity-75"></span>
         </span>
       )}

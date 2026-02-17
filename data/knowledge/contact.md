@@ -62,7 +62,7 @@ All classes are conducted via Zoom, making world-class education accessible rega
 
 ## Office Hours
 
-While our classes are held Monday - Thursday evenings (5:30pm - 9:30pm), our administrative team is available:
+While our classes are held Monday - Thursday evenings (6:00pm - 9:00pm), our administrative team is available:
 
 **Monday - Saturday**: 9:00 AM - 5:00 PM ChST
 

@@ -7,18 +7,22 @@ let openai: OpenAI | null = null;
 
 function getPinecone(): Pinecone {
   if (!pinecone) {
-    pinecone = new Pinecone({
-      apiKey: process.env.PINECONE_API_KEY!,
-    });
+    const apiKey = process.env.PINECONE_API_KEY;
+    if (!apiKey) {
+      throw new Error('PINECONE_API_KEY environment variable is not set');
+    }
+    pinecone = new Pinecone({ apiKey });
   }
   return pinecone;
 }
 
 function getOpenAI(): OpenAI {
   if (!openai) {
-    openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY!,
-    });
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      throw new Error('OPENAI_API_KEY environment variable is not set');
+    }
+    openai = new OpenAI({ apiKey });
   }
   return openai;
 }

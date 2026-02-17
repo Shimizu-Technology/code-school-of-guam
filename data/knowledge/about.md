@@ -47,7 +47,7 @@ We envision transforming Guam into a tech hub by equipping local residents with 
 
 Leon Shimizu founded Code School of Guam with a mission to help others realize that a career in software engineering is attainable.
 
-> "Seeing our students go from never having coded before to presenting full-stack applications with AI features in 20 weeks is incredibly rewarding. They're ready for real developer roles."
+> "Seeing our students go from never having coded before to presenting full-stack applications with AI features in 22 weeks is incredibly rewarding. They're ready for real developer roles."
 
 Leon brings professional experience in software development and a passion for teaching. He's here to support students every step of the way.
 
@@ -119,5 +119,5 @@ Visit our Flappy Bird demo game at codeschoolofguam.com/flappy-bird to see the k
 - Responsive design principles
 - TypeScript for type safety
 
-Ready to build your own games and apps? Join our February 2026 cohort!
+Ready to build your own games and apps? Join our March 2026 cohort!
 

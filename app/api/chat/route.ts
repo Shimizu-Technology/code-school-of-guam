@@ -14,6 +14,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Reject overly long messages
+    if (message.length > 2000) {
+      return NextResponse.json(
+        { error: 'Message too long. Please keep it under 2000 characters.' },
+        { status: 400 }
+      );
+    }
+
+    // Validate history is an array
+    if (!Array.isArray(history)) {
+      return NextResponse.json(
+        { error: 'Invalid history format' },
+        { status: 400 }
+      );
+    }
+
     // Get relevant context from the knowledge base
     const context = await getRelevantContext(message);
 

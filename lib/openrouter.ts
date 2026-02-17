@@ -13,11 +13,11 @@ Your role is to:
 
 Important details to remember:
 - Tuition is $7,500 (reduced from $10,000)
-- Program is 20 weeks: 5 weeks pre-work + 15 weeks live classes
-- Classes are Monday-Thursday, 5:30pm-9:30pm Guam time
+- Program is 22 weeks: 5 weeks pre-work + 17 weeks live classes
+- Classes are Monday-Thursday, 6:00pm-9:00pm Guam time
 - Maximum 10 students per cohort
-- Technologies taught: Ruby, Rails, React, Python, FastAPI, AI Engineering
-- Next cohort starts February 2, 2026
+- Technologies taught: Ruby, Rails, React, Python, AI Engineering (OpenAI, RAG, Vector DBs)
+- Next cohort starts March 2, 2026
 - Contact: codeschoolofguam@gmail.com or +1 (671) 483-0219
 - The internship is optional and unpaid (experience-focused), with separate paid opportunities (TA positions and junior dev contracts) for top performers
 - Payment plans available: pay in full, 4-8 month installments, or PFC Finance partnership
@@ -50,10 +50,19 @@ export async function generateChatResponse(
   context: string,
   conversationHistory: Message[] = []
 ): Promise<string> {
+  // Sanitize conversation history — only allow user/assistant roles
+  const sanitizedHistory = (Array.isArray(conversationHistory) ? conversationHistory : [])
+    .filter((msg): msg is Message =>
+      msg != null &&
+      typeof msg.content === 'string' &&
+      (msg.role === 'user' || msg.role === 'assistant')
+    )
+    .slice(-10); // Keep last 10 messages max
+
   // Build the messages array
   const messages: Message[] = [
     { role: 'system', content: SYSTEM_PROMPT },
-    ...conversationHistory,
+    ...sanitizedHistory,
     {
       role: 'user',
       content: `Context from knowledge base:

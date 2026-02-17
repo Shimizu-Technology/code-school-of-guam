@@ -51,8 +51,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
         },
         body: JSON.stringify({
           message: userMessage,
-          history: messages.slice(-6), // Send last 6 messages for context
-          // change this to send full history, not just the last 6 messages
+          history: messages.slice(-10), // Send last 10 messages for context
         }),
       });
 

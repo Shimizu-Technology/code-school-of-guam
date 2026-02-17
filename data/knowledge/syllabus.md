@@ -8,7 +8,7 @@
 ## 1. Program Overview
 
 - **Duration**: 5 weeks Pre-Work + 17 weeks Live Class (22 weeks total, ~5.5 months)
-- **Class Schedule**: Mon – Fri, 6:00 PM – 9:30 PM (ChST/GMT+10)
+- **Class Schedule**: Mon – Thu, 6:00 PM – 9:00 PM (ChST/GMT+10)
 - Schedule may shift slightly if the majority of students require it; total contact hours remain unchanged.
 - **Total Weekly Hours**: 17.5 hrs live instruction + optional office hours/labs
 - **Structure**: Pre-Work → Core Curriculum → AI Engineering → AI Integration → Capstone → Demo Day → Internship & Mentorship
@@ -46,7 +46,7 @@ Led by Alanna Cruz (TA/Junior Software Engineer) with recordings and weekly chec
 | 10 | AI Foundations | LLMs, OpenAI SDK, basic chatbots |
 | 11 | AI Multi-turn | Conversation history, system prompts, personas |
 | 12 | RAG with Pinecone | Chunking, embeddings, semantic search |
-| 13 | Evals & FastAPI | Testing AI apps, converting to API |
+| 13 | Prompt & Context Engineering | Advanced prompting, context windows |
 | 14 | AI Integration | Connect AI chatbot to mini-capstone project |
 | 15-16 | Final Capstone | Individual full-stack projects |
 | 17 | Demo Day & Wrap-Up | Final presentations, peer & instructor feedback, career next steps |
@@ -63,7 +63,7 @@ Students build a full-stack application throughout the program, culminating in A
 
 ### AI Integration Features
 - Knowledge base with cooking tips, substitutions, techniques (RAG with Pinecone)
-- FastAPI chatbot service
+- AI-powered chatbot service
 - React chat widget (floating button → modal)
 - Context-aware responses (chatbot knows what recipe you're viewing)
 
@@ -71,7 +71,7 @@ Students build a full-stack application throughout the program, culminating in A
 ```
 React Frontend ──┬──► Rails API (CRUD, Auth)
                  │
-                 └──► FastAPI AI Service ──► Pinecone (RAG)
+                 └──► AI Service ──► Pinecone (RAG)
 ```
 
 ## 5. Final Capstone (Weeks 15-16)

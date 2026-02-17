@@ -2,12 +2,12 @@
 
 ## Current Enrollment Status
 
-**Enrollment is NOW OPEN** for the February 2026 Cohort!
+**Enrollment is NOW OPEN** for the March 2026 Cohort!
 
 ## Upcoming Cohort Details
 
-- **Cohort Name**: February 2026 Cohort
-- **Pre-work Start Date**: February 2, 2026
+- **Cohort Name**: March 2026 Cohort
+- **Pre-work Start Date**: March 2, 2026
 - **Class Size**: Maximum 10 students
 - **Format**: Fully remote via Zoom
 
@@ -49,7 +49,7 @@ Pay the $500 deposit to reserve your seat in the cohort.
 
 The program is designed for working professionals:
 
-- **Live Classes**: Monday - Thursday, 5:30pm - 9:30pm (Guam Time)
+- **Live Classes**: Monday - Thursday, 6:00pm - 9:00pm (Guam Time)
 - **Weekend Work**: 3-5 hours of homework
 - **3-Day Weekends**: Friday - Sunday for self-study
 
@@ -64,9 +64,9 @@ We intentionally keep cohorts small:
 
 ## Timeline
 
-### February 2026 Cohort
+### March 2026 Cohort
 1. **Now**: Applications open
-2. **Pre-work Begins**: February 2, 2026
+2. **Pre-work Begins**: March 2, 2026
 3. **Live Classes Begin**: After 5 weeks of pre-work
 4. **Program Ends**: Approximately June 2026
 5. **Internship**: Optional 2-month program after graduation

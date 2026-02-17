@@ -11,13 +11,13 @@ Provide graduating CSG students with hands-on, résumé-ready experience while d
 **Shimizu Technology** – Guam-based software development company
 
 ### Tech Stack
-- **Backend**: Ruby on Rails, Python/FastAPI
+- **Backend**: Ruby on Rails, Python/AI
 - **Frontend**: React.js, React Native, Next.js
 - **AI**: OpenAI SDK, Pinecone (RAG), LangChain
 
 ### Current Projects
-- **HafaGPT** – AI-powered Chamorro language learning platform (React + FastAPI)
-- **HafaRecipes** – AI-powered recipe management app (React Native + FastAPI)
+- **HafaGPT** – AI-powered Chamorro language learning platform (React + Python)
+- **HafaRecipes** – AI-powered recipe management app (React Native + Python)
 - **Airport Golf System** – Tournament registration and management (React + Rails)
 - **Hafaloha** – Restaurant ordering and POS system (React + Rails)
 - **Order Suite** – Online ordering platform for restaurants
@@ -74,7 +74,7 @@ Graduates who excel during the internship may be considered for:
 
 - Real production commits on live applications
 - Experience with Agile sprints, stand-ups, code reviews, and CI pipelines
-- Exposure to multiple tech stacks (Rails, React, FastAPI, React Native)
+- Exposure to multiple tech stacks (Rails, React, Python, React Native)
 - Professional references and résumé line ("Software Engineer Intern – Shimizu Technology LLC")
 - Portfolio projects with real user impact
 

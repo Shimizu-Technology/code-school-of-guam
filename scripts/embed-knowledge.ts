@@ -39,13 +39,23 @@ const SUB_CHUNK_OVERLAP = 200; // Overlap when sub-chunking large sections
 // Check for --clean flag
 const shouldClean = process.argv.includes('--clean');
 
+// Validate required env vars
+if (!process.env.PINECONE_API_KEY) {
+  console.error('❌ PINECONE_API_KEY is not set. Please add it to .env.local');
+  process.exit(1);
+}
+if (!process.env.OPENAI_API_KEY) {
+  console.error('❌ OPENAI_API_KEY is not set. Please add it to .env.local');
+  process.exit(1);
+}
+
 // Initialize clients
 const pinecone = new Pinecone({
-  apiKey: process.env.PINECONE_API_KEY!,
+  apiKey: process.env.PINECONE_API_KEY,
 });
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY,
   timeout: 60000, // 60 second timeout
   maxRetries: 3,
 });

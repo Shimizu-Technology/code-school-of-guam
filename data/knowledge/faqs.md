@@ -17,7 +17,7 @@ We recommend exploring free coding platforms like freeCodeCamp or Replit to get 
 All our classes are conducted fully remotely via Zoom. This allows you to participate in live, interactive sessions from anywhere with a reliable internet connection. Our online format provides flexibility and convenience while maintaining a high level of engagement and support. Optional in-person sessions may also be available.
 
 ### What is the class schedule?
-Live classes are Monday through Thursday, 5:30pm - 9:30pm (Guam time), with 3-5 hours of weekend homework. This schedule is designed for working professionals.
+Live classes are Monday through Thursday, 6:00pm - 9:00pm (Guam time), with 3-4 hours of weekend homework. This schedule is designed for working professionals.
 
 ### Is the program fully remote?
 Yes! All classes are conducted remotely via video conferencing, allowing you to learn from anywhere.
@@ -49,7 +49,7 @@ We are here to support you even after your cohort concludes. Feel free to reach 
 ## Pricing & Payment
 
 ### Why is the tuition set at $7,500?
-We strive to provide high-quality education with personalized attention through small class sizes and offer real-world experience via internships. Our tuition reflects the value and unique opportunities we provide, while remaining more affordable than many comparable programs. The tuition was recently reduced from $10,000 to $7,500 - a 25% discount.
+We strive to provide high-quality education with personalized attention through small class sizes and offer real-world experience via internships. Our tuition reflects the value and unique opportunities we provide, while remaining more affordable than many comparable programs. The tuition was recently reduced from $10,000 to $7,500.
 
 ### Do you offer payment plans?
 Yes, we offer monthly installment plans during the course duration. We have also partnered with PFC Finance for student loan options.

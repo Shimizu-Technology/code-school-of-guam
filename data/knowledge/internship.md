@@ -21,7 +21,7 @@ The Code School of Guam internship is an optional 10-week program where graduate
 - Introduction to the codebase
 
 ### Weeks 2-10: Sprint-Based Development
-- Weekly sprints with assigned tasks
+- Biweekly sprints with assigned tasks
 - Sprint planning meetings
 - Daily standups
 - Sprint retrospectives

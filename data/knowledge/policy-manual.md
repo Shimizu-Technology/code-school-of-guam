@@ -24,7 +24,7 @@
 Code School of Guam offers a comprehensive curriculum in full-stack software development with AI Engineering, focusing on:
 - **Backend**: Ruby on Rails (API mode)
 - **Frontend**: React.js
-- **AI Engineering**: Python, FastAPI, OpenAI SDK, RAG with Pinecone
+- **AI Engineering**: Python, OpenAI SDK, RAG with vector databases
 
 The program includes:
 - **Pre-Work (5 weeks)**: Self-paced learning with recordings and weekly check-ins
@@ -59,10 +59,10 @@ The program includes:
 #### Installment Plan
 - **Structure**: Monthly payments over the course duration
 - **Schedule**: First payment due by the Monday before pre-work begins. Subsequent payments due on the first Monday of each month.
-- **Total Cost**: $10,000
+- **Total Cost**: $7,500
 
 ### Installment Payment Terms
-- **Commitment to Pay**: Students who choose the installment plan are required to pay the full tuition amount of $10,000, regardless of continued participation
+- **Commitment to Pay**: Students who choose the installment plan are required to pay the full tuition amount of $7,500, regardless of continued participation
 - **Consequences of Non-Payment**:
   - If a payment is not made by the due date, a 3-day grace period will be provided
   - If payment is not received by the end of the grace period, the student will be removed from the program
@@ -81,7 +81,7 @@ The program includes:
 - **Weekly Class Time**: Approximately 17.5 hours live instruction
 
 ### Class Schedule
-- **Live Class (Mon – Fri)**: 6:00 PM – 9:30 PM (ChST/GMT+10)
+- **Live Class (Mon – Thu)**: 6:00 PM – 9:00 PM (ChST/GMT+10)
 - Short breaks every 50 minutes
 
 ### Teaching Methods

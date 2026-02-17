@@ -126,7 +126,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </main>
             <SiteFooter />
           </div>
-          <div id="root">{children}</div>
           {/* Chatbot - fixed position in bottom-left corner */}
           <ChatButton />
         </PostHogProvider>
