@@ -114,10 +114,10 @@ const technologies = [
   { 
     name: "Vite", 
     category: "Build Tool",
-    iconComponent: Zap,
-    iconColor: "text-yellow-500",
-    color: "bg-yellow-50",
-    borderColor: "border-yellow-200"
+    iconComponent: Rocket,
+    iconColor: "text-violet-500",
+    color: "bg-violet-50",
+    borderColor: "border-violet-200"
   },
   { 
     name: "PostgreSQL", 
