@@ -45,29 +45,29 @@ const phases = [
     ]
   },
   {
-    week: "Weeks 10-14",
+    week: "Weeks 10-12",
     title: "AI Engineering",
     color: "bg-purple-500",
     borderColor: "border-purple-500",
     topics: [
-      "Python & FastAPI",
-      "OpenAI SDK & prompt engineering",
-      "RAG with Pinecone vector database",
+      "Python fundamentals & OpenAI SDK",
       "Building AI chatbots",
+      "RAG systems with vector databases",
+      "Prompt & context engineering",
       "AI-integrated applications"
     ]
   },
   {
-    week: "Weeks 15-17",
+    week: "Weeks 13-17",
     title: "Capstone Project",
     color: "bg-green-500",
     borderColor: "border-green-500",
     topics: [
-      "Build your own AI-integrated app",
+      "Build your own AI-powered app",
       "Full-stack project development",
       "Code reviews & iteration",
       "Deployment & portfolio prep",
-      "Final presentations"
+      "Demo Day presentations"
     ]
   }
 ]
@@ -286,7 +286,7 @@ export default function CurriculumPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Your 22-Week Learning Journey
+              Your Learning Journey
             </h2>
           </div>
 
@@ -373,7 +373,7 @@ export default function CurriculumPage() {
                 <Clock className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-gray-900">Live Classes</h3>
                 <p className="text-gray-600 text-sm">
-                  Monday – Thursday, 5:30pm – 9:30pm (Guam time)
+                  Monday – Thursday, 6:00pm – 9:00pm (Guam time)
                 </p>
               </div>
               <div className="bg-white rounded-xl p-6 text-center shadow-md border border-gray-100">
