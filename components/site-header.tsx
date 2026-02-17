@@ -74,7 +74,7 @@ export function SiteHeader() {
           {/* CTA Button */}
           <div className="hidden xl:flex items-center">
             <a
-              href="https://forms.gle/8vNXoqxCimxjfXkU6"
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-2 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md text-sm font-medium transition-colors"
@@ -119,7 +119,7 @@ export function SiteHeader() {
               ))}
               <div className="pt-4 mt-4 border-t border-gray-800">
                 <a
-                  href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                  href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full text-center px-4 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium"

@@ -10,11 +10,11 @@ import { ChatButton } from '@/components/chat-button'
 
 export const metadata: Metadata = {
   title: {
-    default: "Code School of Guam - Learn Full-Stack Development & AI Engineering",
+    default: "Code School of Guam - Learn to Build AI-Powered Applications",
     template: "%s | Code School of Guam"
   },
-  description: "Guam's first coding bootcamp. Master Ruby, Rails, React, Python & AI Engineering in 20 weeks. Remote classes, real-world projects, and guaranteed job opportunities.",
-  keywords: "Code School, Guam, Programming, Software Development, Ruby on Rails, React.js, Python, AI Engineering, Machine Learning, Coding Bootcamp",
+  description: "Guam's first coding bootcamp. Learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering in under 6 months. Build chatbots, RAG systems, and full-stack web apps.",
+  keywords: "Code School, Guam, Programming, Software Development, Ruby on Rails, React.js, Python, AI Engineering, AI-powered applications, Coding Bootcamp, Learn to Code Guam 2026, Full-stack developer bootcamp",
   authors: [{ name: "Code School of Guam" }],
   creator: "Leon Shimizu",
   metadataBase: new URL('https://codeschoolofguam.com'),
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "Code School of Guam - Launch Your Tech Career",
-    description: "Join Guam's first coding bootcamp and master Ruby, Rails, React, Python & AI Engineering. Remote classes, real-world projects, and career support.",
+    title: "Code School of Guam - Learn to Build AI-Powered Applications",
+    description: "Join Guam's first coding bootcamp. Learn to build AI-powered applications with chatbots and RAG systems. Ruby, Rails, React, Python & AI Engineering in under 6 months.",
     url: 'https://codeschoolofguam.com',
     siteName: 'Code School of Guam',
     images: [
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Code School of Guam - Learn to Code",
-    description: "Guam's first coding bootcamp. Master Ruby, Rails, React, Python & AI Engineering.",
+    title: "Code School of Guam - Build AI-Powered Apps",
+    description: "Guam's first coding bootcamp. Learn to build AI-powered applications with chatbots and RAG systems. Only 1 class in 2026!",
     images: ['/CSG-Logo.png'],
   },
   robots: {
@@ -72,7 +72,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
   name: 'Code School of Guam',
-  description: "Guam's first coding bootcamp offering full-stack development and AI engineering courses.",
+  description: "Guam's first coding bootcamp. Learn to build AI-powered applications with full-stack development and AI engineering. March 2026 cohort now enrolling.",
   url: 'https://codeschoolofguam.com',
   logo: 'https://codeschoolofguam.com/CSG-Logo.png',
   image: 'https://codeschoolofguam.com/CSG-Logo.png',
@@ -94,8 +94,8 @@ const jsonLd = {
     itemListElement: [
       {
         '@type': 'Course',
-        name: 'Full-Stack Development Bootcamp',
-        description: 'Learn Ruby, Rails, React, Python & AI Engineering in 20 weeks',
+        name: 'Full-Stack Development & AI Engineering Bootcamp',
+        description: 'Learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering in under 6 months',
         provider: {
           '@type': 'Organization',
           name: 'Code School of Guam',

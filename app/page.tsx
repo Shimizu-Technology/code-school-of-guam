@@ -1,9 +1,11 @@
 "use client"
 
+import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { 
   ChevronRight, 
+  ChevronLeft,
   ArrowRight,
   Code, 
   Rocket, 
@@ -16,21 +18,36 @@ import {
   Zap,
   GraduationCap,
   Clock,
-  Database
+  Database,
+  Quote
 } from "lucide-react"
 
 // Student testimonials
 const testimonials = [
   {
+    name: "Junior O'Brien",
+    role: "Graduate - Cohort 2",
+    initial: "J",
+    quote: "I am extremely grateful to have been a part of the 2025 CSG cohort. Leon was flexible for me to join and continue to participate in the course despite some 'life' challenges that if not for his patience, I most likely would not have been able to begin or finish the course. I highly recommend CSG to anyone who is considering learning about coding. Leon and Alanna provided second to none support, guidance, and encouragement throughout my learning experience.",
+    color: "bg-purple-500"
+  },
+  {
+    name: "Ron Malu",
+    role: "Graduate - Cohort 2",
+    initial: "R",
+    quote: "Hands down awesome four months of class!!",
+    color: "bg-orange-500"
+  },
+  {
     name: "Noah Peredo",
-    role: "Graduate",
+    role: "Graduate - Cohort 1",
     initial: "N",
     quote: "Clear mind and trust the process. CSG will match the effort that you give it, so at the end of the day, how bad do you want it?",
     color: "bg-ruby-500"
   },
   {
     name: "Jessica Fernandez",
-    role: "Graduate",
+    role: "Graduate - Cohort 1",
     initial: "J",
     quote: "I am very very VERY glad I enrolled and finished it! Now, I constantly think about ways I could 'hack' my daily life by creating apps. Leon was extremely helpful in answering all my questions and providing valuable guidance.",
     color: "bg-green-500"
@@ -43,6 +60,230 @@ const testimonials = [
     color: "bg-blue-500"
   }
 ]
+
+// Testimonial Carousel Component
+function TestimonialCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
+  
+  // Touch/swipe handling
+  const touchStartX = useRef<number | null>(null)
+  const touchEndX = useRef<number | null>(null)
+  const minSwipeDistance = 50
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX
+    touchEndX.current = null
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return
+    
+    const distance = touchStartX.current - touchEndX.current
+    const isSwipe = Math.abs(distance) > minSwipeDistance
+    
+    if (isSwipe) {
+      if (distance > 0) {
+        // Swiped left -> go to next
+        nextSlide()
+      } else {
+        // Swiped right -> go to previous
+        prevSlide()
+      }
+    }
+    
+    // Reset
+    touchStartX.current = null
+    touchEndX.current = null
+  }
+
+  const changeSlide = useCallback((newIndex: number, direction: 'left' | 'right') => {
+    if (isAnimating) return
+    setIsAnimating(true)
+    setSlideDirection(direction)
+    
+    // After fade out, change slide
+    setTimeout(() => {
+      setCurrentIndex(newIndex)
+      // After a brief moment, fade back in
+      setTimeout(() => {
+        setIsAnimating(false)
+      }, 50)
+    }, 300)
+  }, [isAnimating])
+
+  const nextSlide = useCallback(() => {
+    const newIndex = (currentIndex + 1) % testimonials.length
+    changeSlide(newIndex, 'right')
+  }, [currentIndex, changeSlide])
+
+  const prevSlide = useCallback(() => {
+    const newIndex = (currentIndex - 1 + testimonials.length) % testimonials.length
+    changeSlide(newIndex, 'left')
+  }, [currentIndex, changeSlide])
+
+  const goToSlide = (index: number) => {
+    if (index === currentIndex) return
+    const direction = index > currentIndex ? 'right' : 'left'
+    changeSlide(index, direction)
+  }
+
+  // Auto-advance every 6 seconds
+  useEffect(() => {
+    if (isPaused || isAnimating) return
+    const timer = setInterval(nextSlide, 6000)
+    return () => clearInterval(timer)
+  }, [isPaused, isAnimating, nextSlide])
+
+  const current = testimonials[currentIndex]
+
+  // Dynamic text size based on quote length
+  const getQuoteStyle = (quote: string) => {
+    const length = quote.length
+    if (length < 80) {
+      // Very short quotes - larger, more impactful
+      return 'text-xl md:text-2xl'
+    } else if (length < 200) {
+      // Medium quotes - standard size
+      return 'text-lg md:text-xl'
+    } else {
+      // Long quotes - slightly smaller for readability
+      return 'text-base md:text-lg'
+    }
+  }
+
+  return (
+    <section 
+      className="py-16 md:py-20 bg-gray-50 relative"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
+            <Users className="h-4 w-4 mr-2" />
+            Student Success
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Hear from Our <span className="text-ruby-500">Graduates</span>
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            11 graduates across 2 cohorts with a 100% completion rate
+          </p>
+        </div>
+
+        {/* Carousel Container */}
+        <div className="max-w-3xl mx-auto">
+          <div className="relative">
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSlide}
+              disabled={isAnimating}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-ruby-500 hover:shadow-xl transition-all disabled:opacity-50"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={isAnimating}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-ruby-500 hover:shadow-xl transition-all disabled:opacity-50"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            {/* Testimonial Card - with touch/swipe support */}
+            <div 
+              className="bg-white rounded-2xl p-8 md:p-10 shadow-xl relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {/* Quote icon decoration */}
+              <Quote className="absolute top-4 right-4 w-12 h-12 text-ruby-100" />
+              
+              {/* Content with animation - min-height for consistency */}
+              <div 
+                className={`relative z-10 min-h-[280px] md:min-h-[240px] flex flex-col justify-center transition-all duration-300 ease-in-out ${
+                  isAnimating 
+                    ? `opacity-0 ${slideDirection === 'right' ? '-translate-x-4' : 'translate-x-4'}` 
+                    : 'opacity-100 translate-x-0'
+                }`}
+              >
+                {/* Stars */}
+                <div className="flex text-yellow-400 text-xl mb-6 justify-center">
+                  {"★★★★★"}
+                </div>
+
+                {/* Quote - dynamic size based on length */}
+                <blockquote className={`${getQuoteStyle(current.quote)} text-gray-700 text-center mb-8 leading-relaxed`}>
+                  &ldquo;{current.quote}&rdquo;
+                </blockquote>
+
+                {/* Author */}
+                <div className="flex items-center justify-center">
+                  <div 
+                    className={`w-14 h-14 ${current.color} rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg transition-colors duration-300`}
+                  >
+                    {current.initial}
+                  </div>
+                  <div className="ml-4 text-left">
+                    <h3 className="font-bold text-gray-900 text-lg">{current.name}</h3>
+                    <p className="text-gray-600">{current.role}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dot Indicators */}
+            <div className="flex justify-center mt-6 gap-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${
+                    index === currentIndex 
+                      ? 'bg-ruby-500 w-8' 
+                      : 'bg-gray-300 hover:bg-gray-400'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="text-center mt-12">
+          <p className="text-gray-600 mb-6">
+            Ready to join our next success story?
+          </p>
+          <div className="bg-white rounded-lg p-6 max-w-md mx-auto shadow-md">
+            <p className="text-sm text-gray-700 mb-4">
+              Join our March 2026 cohort and learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering. <strong>Only 1 class in 2026!</strong>
+            </p>
+            <a
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
+            >
+              Apply for March Cohort
+              <Rocket className="ml-2 h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 export default function HomePage() {
   return (
@@ -58,15 +299,15 @@ export default function HomePage() {
         <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-ruby-500/20 border border-ruby-500/30 rounded-full text-ruby-300 text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium mb-6">
               <Brain className="h-4 w-4 mr-2" />
-              Now including Python & AI Engineering
+              🤖 NEW: Learn to Build AI Chatbots & RAG Systems
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Launch Your Tech Career
+              Learn to Build AI-Powered
               <br />
-              <span className="text-ruby-500">in Guam</span>
+              <span className="text-ruby-500">Applications</span>
             </h1>
 
             <p className="text-xl text-gray-300 mb-4">
@@ -74,30 +315,30 @@ export default function HomePage() {
             </p>
             
             <p className="text-2xl font-semibold text-green-400 mb-6">
-              5-Week Pre-work + 15-Week Live Classes
+              From Zero to AI-Capable Developer in Under 6 Months
             </p>
 
             {/* Key stats */}
             <div className="flex flex-wrap justify-center gap-6 mb-8">
               <div className="flex items-center gap-2 text-gray-300">
-                <Zap className="w-5 h-5 text-yellow-400" />
-                <span>Only 10 Students Per Cohort</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-300">
                 <Calendar className="w-5 h-5 text-blue-400" />
-                <span>Next cohort: February 2nd, 2026</span>
+                <span>Next cohort: March 2, 2026</span>
+              </div>
+              <div className="flex items-center gap-2 text-ruby-400 font-semibold">
+                <Zap className="w-5 h-5 text-yellow-400" />
+                <span>Only 1 class in 2026 — Limited spots!</span>
               </div>
             </div>
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
-                href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
               >
-                Apply for February Cohort
+                Apply for March Cohort
                 <ChevronRight className="ml-2 w-5 h-5" />
               </a>
               <Link
@@ -119,82 +360,17 @@ export default function HomePage() {
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
       </section>
 
-      {/* STUDENT SUCCESS STORIES */}
-      <section className="py-16 md:py-20 bg-gray-50 relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
-              <Users className="h-4 w-4 mr-2" />
-              Student Success
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Hear from Our <span className="text-ruby-500">First Class</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Real stories from our pilot cohort graduates who transformed their careers through coding
-            </p>
-          </div>
-
-          {/* Uniform testimonial cards with flexbox */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <div 
-                key={index}
-                className={`bg-white rounded-xl p-6 shadow-lg border-l-4 flex flex-col h-full ${
-                  index === 0 ? 'border-ruby-500' : 
-                  index === 1 ? 'border-green-500' : 'border-blue-500'
-                } hover:shadow-xl transition-all hover:-translate-y-1`}
-              >
-                <div className="flex items-center mb-4">
-                  <div className={`w-12 h-12 ${testimonial.color} rounded-full flex items-center justify-center text-white font-bold text-lg`}>
-                    {testimonial.initial}
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="font-bold text-gray-900">{testimonial.name}</h3>
-                    <p className="text-sm text-gray-600">{testimonial.role}</p>
-                  </div>
-                </div>
-                <blockquote className="text-gray-700 italic flex-grow">
-                  &ldquo;{testimonial.quote}&rdquo;
-                </blockquote>
-                {/* Stars aligned at bottom */}
-                <div className="flex text-yellow-400 text-lg mt-4">
-                  {"★★★★★"}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">
-              Ready to join our next success story?
-            </p>
-            <div className="bg-white rounded-lg p-6 max-w-md mx-auto shadow-md">
-              <p className="text-sm text-gray-700 mb-4">
-                Join our February 2026 cohort and transform your career with Ruby, Rails, React, Python & AI Engineering. <strong>Enrollment now open!</strong>
-              </p>
-              <a
-                href="https://forms.gle/8vNXoqxCimxjfXkU6"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
-              >
-                Apply for February Cohort
-                <Rocket className="ml-2 h-4 w-4" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* STUDENT SUCCESS STORIES - Carousel */}
+      <TestimonialCarousel />
 
       {/* CURRICULUM PREVIEW - What You'll Learn (moved up before pricing) */}
       <section className="py-16 md:py-20 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1.5 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-4">
-              <Code className="w-4 h-4 mr-2" />
-              20-Week Journey
-            </div>
+              <div className="inline-flex items-center px-3 py-1.5 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-4">
+                <Code className="w-4 h-4 mr-2" />
+                Under 6 Months
+              </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               What You&apos;ll Learn & Why
             </h2>
@@ -344,13 +520,13 @@ export default function HomePage() {
           </div>
 
           <div className="text-center mt-8">
-            <Link
-              href="/curriculum"
-              className="inline-flex items-center px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors"
-            >
-              View Full Curriculum
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
+              <Link
+                href="/curriculum"
+                className="inline-flex items-center px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors"
+              >
+                View Full Curriculum
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
           </div>
         </div>
       </section>
@@ -409,10 +585,10 @@ export default function HomePage() {
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <GraduationCap className="h-6 w-6 text-blue-600" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900">4½-Month Bootcamp</h3>
+                  <h3 className="text-lg font-bold text-gray-900">Under 6 Months</h3>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  From zero to certified junior full-stack developer with live instruction and hands-on projects
+                  From zero to AI-capable full-stack developer with live instruction and hands-on projects
                 </p>
               </div>
 
@@ -426,8 +602,8 @@ export default function HomePage() {
                 <p className="text-gray-600 text-sm">
                   Forever access to all recordings, resources, and future curriculum updates
                 </p>
-              </div>
-
+            </div>
+            
               <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 hover:shadow-lg transition-all">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-ruby-100 rounded-lg flex items-center justify-center mr-3">
@@ -520,12 +696,15 @@ export default function HomePage() {
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Start Your Journey?
           </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Tuition: $7,500 — Flexible payment plans available. Next cohort starts February 2nd, 2026.
+          <p className="text-xl text-white/90 mb-4 max-w-2xl mx-auto">
+            Tuition: $7,500 — Flexible payment plans available. Next cohort starts March 2, 2026.
+          </p>
+          <p className="text-lg text-yellow-300 font-semibold mb-8">
+            ⚡ Only 1 class in 2026 — Don&apos;t miss it!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://forms.gle/8vNXoqxCimxjfXkU6"
+              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"

@@ -149,8 +149,8 @@ export default function FlappyBirdPage() {
                   Ready to Build Your Own Games & Apps?
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Join our February 2026 cohort and learn to create interactive applications like this one. 
-                  Master Ruby, Rails, React, Python & AI Engineering in 20 weeks!
+                  Join our March 2026 cohort and learn to create interactive applications like this one. 
+                  Master Ruby, Rails, React, Python & AI Engineering in under 6 months!
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
           <Link
@@ -160,7 +160,7 @@ export default function FlappyBirdPage() {
                     View Our Program
                   </Link>
                   <Link
-                    href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                    href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex h-12 items-center justify-center rounded-md border border-ruby-600 bg-white px-6 text-base font-medium text-ruby-600 shadow transition-all hover:bg-ruby-50 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"

@@ -17,7 +17,7 @@ export function SiteFooter() {
               <span>Code School of Guam</span>
             </div>
             <p className="text-gray-400 text-sm mb-4">
-              Guam&apos;s first coding bootcamp. From beginner to job-ready developer in 20 weeks.
+              Guam&apos;s first coding bootcamp. Learn to build AI-powered applications in under 6 months.
             </p>
             <div className="flex items-center space-x-2 text-sm text-gray-400">
               <span className="text-ruby-400">Partner:</span>
@@ -112,7 +112,7 @@ export function SiteFooter() {
             </ul>
             <div className="mt-6">
               <a
-                href="https://forms.gle/8vNXoqxCimxjfXkU6"
+                href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md text-sm font-medium transition-colors"

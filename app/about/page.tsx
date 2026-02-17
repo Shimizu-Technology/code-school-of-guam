@@ -15,7 +15,9 @@ import {
   Lightbulb,
   School,
   Sparkles,
-  CheckCircle
+  CheckCircle,
+  Brain,
+  Quote
 } from "lucide-react"
 
 export default function AboutPage() {
@@ -224,6 +226,84 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* UOG AI Workshop */}
+      <section className="py-16 md:py-20 bg-gray-50 relative">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
+                <Brain className="w-4 h-4 mr-2" />
+                Beyond the Bootcamp
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                AI Training for Organizations
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our expertise in AI isn&apos;t just for our students — we help organizations understand and leverage AI effectively.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="grid md:grid-cols-2">
+                {/* Image */}
+                <div className="relative h-64 md:h-auto">
+                  <Image
+                    src="/images/uog-intro-to-ai.jpeg"
+                    alt="UOG Intro to AI Workshop attendees"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="p-6 md:p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                      UOG
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900">University of Guam</h3>
+                      <p className="text-sm text-gray-500">July 2025</p>
+                    </div>
+                  </div>
+
+                  <h4 className="text-xl font-semibold text-gray-900 mb-3">
+                    Intro to AI Workshop
+                  </h4>
+                  <p className="text-gray-600 text-sm mb-4">
+                    A two-day seminar for UOG staff from the Office of the Senior Vice President &amp; Provost — covering AI fundamentals, practical applications, and important considerations.
+                  </p>
+
+                  {/* Topics */}
+                  <ul className="space-y-2 mb-5">
+                    <li className="flex items-start text-sm text-gray-600">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>What is AI &amp; how does ChatGPT work</span>
+                    </li>
+                    <li className="flex items-start text-sm text-gray-600">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>Practical use cases for work &amp; research</span>
+                    </li>
+                    <li className="flex items-start text-sm text-gray-600">
+                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                      <span>Risks: hallucinations, security, privacy</span>
+                    </li>
+                  </ul>
+
+                  {/* Quote */}
+                  <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+                    <Quote className="w-5 h-5 text-green-400 mb-2" />
+                    <p className="text-gray-700 text-sm italic">
+                      &quot;The staff are raving about the training!&quot;
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* The Vision */}
       <section className="py-16 md:py-20 bg-gradient-to-b from-gray-800 to-gray-900 text-white">
         <div className="container mx-auto px-4 md:px-6">
@@ -370,7 +450,7 @@ export default function AboutPage() {
             Become part of Guam&apos;s growing tech ecosystem. No prior experience required.
           </p>
           <a
-            href="https://forms.gle/8vNXoqxCimxjfXkU6"
+            href="https://forms.gle/nJv8nAfxsvvLSbbq7"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"

@@ -317,7 +317,7 @@ export default function InternshipPage() {
             Join Code School of Guam and get access to real-world experience opportunities that most bootcamps can&apos;t offer.
           </p>
           <a
-            href="https://forms.gle/8vNXoqxCimxjfXkU6"
+            href="https://forms.gle/nJv8nAfxsvvLSbbq7"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"
