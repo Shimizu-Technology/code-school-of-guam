@@ -2,7 +2,7 @@
 
 ## About the Program
 
-Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 20-week full-stack web development and AI engineering program. The program takes students from complete beginners to job-ready junior developers.
+Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 22-week full-stack web development and AI engineering program. The program takes students from complete beginners to job-ready junior developers.
 
 ## Program Structure
 
@@ -36,7 +36,7 @@ Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 20
 - **RAG Systems**: Retrieval-Augmented Generation for chatbots
 - **Agentic Systems & Evals**: Building intelligent AI agents
 
-## 20-Week Curriculum Timeline
+## 22-Week Curriculum Timeline
 
 ### Pre-Work Phase (5 Weeks)
 - Programming fundamentals using Ruby

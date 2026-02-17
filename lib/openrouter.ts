@@ -50,6 +50,11 @@ export async function generateChatResponse(
   context: string,
   conversationHistory: Message[] = []
 ): Promise<string> {
+  if (!process.env.OPENROUTER_API_KEY) {
+    console.error('OPENROUTER_API_KEY is not set');
+    return 'I apologize, but the chat service is not configured. Please contact codeschoolofguam@gmail.com for assistance.';
+  }
+
   // Sanitize conversation history — only allow user/assistant roles
   const sanitizedHistory = (Array.isArray(conversationHistory) ? conversationHistory : [])
     .filter((msg): msg is Message =>

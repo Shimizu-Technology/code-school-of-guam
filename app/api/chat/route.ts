@@ -2,8 +2,33 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getRelevantContext } from '@/lib/rag';
 import { generateChatResponse } from '@/lib/openrouter';
 
+// Simple in-memory rate limiter
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 20; // requests per minute
+const RATE_WINDOW = 60 * 1000; // 1 minute
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+    return false;
+  }
+  entry.count++;
+  return entry.count > RATE_LIMIT;
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting by IP
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please wait a moment and try again.' },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { message, history = [] } = body;
 
@@ -30,11 +55,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Sanitize history: validate and limit content length
+    const sanitizedHistory = history
+      .filter((msg: { role?: string; content?: string }) =>
+        msg && typeof msg.content === 'string' &&
+        (msg.role === 'user' || msg.role === 'assistant')
+      )
+      .map((msg: { role: string; content: string }) => ({
+        role: msg.role,
+        content: msg.content.slice(0, 2000),
+      }))
+      .slice(-10);
+
     // Get relevant context from the knowledge base
     const context = await getRelevantContext(message);
 
     // Generate response using DeepSeek via OpenRouter
-    const response = await generateChatResponse(message, context, history);
+    const response = await generateChatResponse(message, context, sanitizedHistory);
 
     return NextResponse.json({
       response,
@@ -60,4 +97,3 @@ export async function GET() {
     message: 'Code School of Guam Chatbot API',
   });
 }
-

@@ -68,7 +68,7 @@ We intentionally keep cohorts small:
 1. **Now**: Applications open
 2. **Pre-work Begins**: March 2, 2026
 3. **Live Classes Begin**: After 5 weeks of pre-work
-4. **Program Ends**: Approximately June 2026
+4. **Program Ends**: Approximately August 2026
 5. **Internship**: Optional 2-month program after graduation
 
 ## Frequently Asked Questions About Admissions

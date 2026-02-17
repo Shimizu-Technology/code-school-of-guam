@@ -77,7 +77,7 @@ To participate in the program, students must have access to a reliable computer 
 This program requires a substantial time commitment:
 
 - **Pre-work (5 weeks)**: Self-paced with weekly check-ins, approximately 10-15 hours per week
-- **Live Class (17 weeks)**: Approximately 17.5 hours of live class time per week (Mon-Thu evenings (6:00pm - 9:00pm)), plus an additional 5-10 hours of study and assignments
+- **Live Class (17 weeks)**: Approximately 12 hours of live class time per week (Mon-Thu evenings (6:00pm - 9:00pm)), plus an additional 5-10 hours of study and assignments
 
 By enrolling, you confirm that you are ready to dedicate the necessary time and effort to successfully complete the course.
 

@@ -214,7 +214,7 @@ async function generateEmbedding(text: string, retries = 3): Promise<number[]> {
         throw error;
       }
       console.log(`   ⏳ Retry ${attempt}/${retries} after error...`);
-      await new Promise((resolve) => setTimeout(resolve, 2000 * attempt)); // Exponential backoff
+      await new Promise((resolve) => setTimeout(resolve, 2000 * Math.pow(2, attempt - 1))); // Exponential backoff
     }
   }
   throw new Error('Failed after all retries');

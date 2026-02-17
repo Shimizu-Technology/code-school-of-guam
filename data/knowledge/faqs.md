@@ -63,5 +63,5 @@ Attendance is crucial. Missing more than three unexcused classes may result in d
 Yes. Full tuition (minus the non-refundable deposit) is refundable if you withdraw before the start of the second week. No refunds are issued from the second week onward.
 
 ### How can I access the full policies?
-You can view our detailed policies, including the Code of Conduct, Attendance Policy, and Refund Policy, in the Policies section of our website or at: docs.google.com/document/d/1d8J1ctT7iN_WoMdTpJYdM-2ngJY9UsWtVlVzhVou90Q
+You can view our detailed policies, including the Code of Conduct, Attendance Policy, and Refund Policy, in the Policies section of our website or at: https://docs.google.com/document/d/1d8J1ctT7iN_WoMdTpJYdM-2ngJY9UsWtVlVzhVou90Q
 
