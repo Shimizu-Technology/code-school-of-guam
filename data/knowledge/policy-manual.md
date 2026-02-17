@@ -78,7 +78,7 @@ The program includes:
 - **Total Length**: 22 weeks (~5.5 months)
 - **Pre-Work**: 5 weeks
 - **Live Class**: 17 weeks
-- **Weekly Class Time**: Approximately 17.5 hours live instruction
+- **Weekly Class Time**: Approximately 12 hours live instruction (4 days × 3 hrs)
 
 ### Class Schedule
 - **Live Class (Mon – Thu)**: 6:00 PM – 9:00 PM (ChST/GMT+10)

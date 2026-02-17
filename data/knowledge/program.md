@@ -9,7 +9,7 @@ Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 22
 - **Total Duration**: 22 weeks (5 weeks pre-work + 17 weeks live classes)
 - **Format**: Fully remote via Zoom with optional in-person sessions
 - **Class Size**: Maximum 10 students per cohort
-- **Weekly Commitment**: 20-25 hours per week
+- **Weekly Commitment**: 12-15 hours per week
 
 ## Schedule
 
@@ -64,7 +64,7 @@ Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 22
 - State management
 - Building dynamic user interfaces
 
-### Weeks 10-13: Python & AI Engineering
+### Weeks 10-12: Python & AI Engineering
 - Python fundamentals
 - OpenAI SDK & prompt engineering
 - Deep dive into LLMs
@@ -72,7 +72,7 @@ Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 22
 - RAG (Retrieval-Augmented Generation)
 - Evals and Agentic Systems
 
-### Weeks 14-15: Capstone Projects
+### Weeks 13-17: Capstone Projects & Demo Day
 - Design and build full-stack applications
 - Rails APIs with React frontends
 - AI-powered features

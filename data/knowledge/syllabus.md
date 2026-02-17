@@ -2,7 +2,7 @@
 
 **Cohort**: March 2 – August 4, 2026  
 **Format**: Online (Zoom)  
-**Contact Hours**: 350+  
+**Contact Hours**: 270+  
 **CEUs**: 35
 
 ## 1. Program Overview
@@ -10,7 +10,7 @@
 - **Duration**: 5 weeks Pre-Work + 17 weeks Live Class (22 weeks total, ~5.5 months)
 - **Class Schedule**: Mon – Thu, 6:00 PM – 9:00 PM (ChST/GMT+10)
 - Schedule may shift slightly if the majority of students require it; total contact hours remain unchanged.
-- **Total Weekly Hours**: 17.5 hrs live instruction + optional office hours/labs
+- **Total Weekly Hours**: 12 hrs live instruction (4 days × 3 hrs) + optional office hours/labs
 - **Structure**: Pre-Work → Core Curriculum → AI Engineering → AI Integration → Capstone → Demo Day → Internship & Mentorship
 - **Career Services**: Integrated weekly workshops + up to 6-month post-graduation support
 
@@ -58,7 +58,7 @@ Students build a full-stack application throughout the program, culminating in A
 ### The AI-Powered Cookbook (or Blog)
 - **Weeks 1-9**: Build Rails API + React frontend with authentication
 - **Week 9**: Deploy full-stack application
-- **Weeks 10-13**: Learn AI Engineering fundamentals separately
+- **Weeks 10-12**: Learn AI Engineering fundamentals separately
 - **Week 14**: Integrate AI chatbot into the cookbook app
 
 ### AI Integration Features
@@ -78,7 +78,7 @@ React Frontend ──┬──► Rails API (CRUD, Auth)
 
 - Build a production-ready full-stack application of your choice
 - **Required features**: authentication, CRUD, responsive UI, basic tests, deployment
-- **Optional**: AI integration using skills learned in the program
+- **Required**: AI-powered feature (e.g., chatbot, recommendation engine, or intelligent search)
 - Present to peers, instructors, and invited industry guests
 
 ## 6. Career Services (Continuous)

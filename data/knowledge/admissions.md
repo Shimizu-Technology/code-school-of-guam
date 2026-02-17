@@ -34,7 +34,7 @@ Pay the $500 deposit to reserve your seat in the cohort.
 - Our 5-week pre-work phase brings everyone up to speed
 
 ### What We Look For
-- **Commitment**: Willingness to dedicate 20-25 hours per week
+- **Commitment**: Willingness to dedicate 12-15 hours per week
 - **Motivation**: Genuine interest in learning to code
 - **Growth Mindset**: Openness to challenges and feedback
 - **Reliability**: Ability to attend classes consistently

@@ -2,13 +2,24 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getRelevantContext } from '@/lib/rag';
 import { generateChatResponse } from '@/lib/openrouter';
 
-// Simple in-memory rate limiter
+// Simple in-memory rate limiter with periodic cleanup
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 20; // requests per minute
 const RATE_WINDOW = 60 * 1000; // 1 minute
+const CLEANUP_INTERVAL = 5 * 60 * 1000; // Clean up every 5 minutes
+let lastCleanup = Date.now();
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
+
+  // Periodic cleanup of stale entries
+  if (now - lastCleanup > CLEANUP_INTERVAL) {
+    for (const [key, entry] of rateLimitMap) {
+      if (now > entry.resetTime) rateLimitMap.delete(key);
+    }
+    lastCleanup = now;
+  }
+
   const entry = rateLimitMap.get(ip);
   if (!entry || now > entry.resetTime) {
     rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_WINDOW });

@@ -57,6 +57,10 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
 
       const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(data.error || "Request failed");
+      }
+
       if (data.response) {
         setMessages((prev) => [
           ...prev,
