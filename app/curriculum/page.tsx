@@ -112,12 +112,12 @@ const technologies = [
     borderColor: "border-green-200"
   },
   { 
-    name: "FastAPI", 
-    category: "Framework",
-    iconComponent: Rocket,
-    iconColor: "text-teal-500",
-    color: "bg-teal-50",
-    borderColor: "border-teal-200"
+    name: "Vite", 
+    category: "Build Tool",
+    iconComponent: Zap,
+    iconColor: "text-yellow-500",
+    color: "bg-yellow-50",
+    borderColor: "border-yellow-200"
   },
   { 
     name: "PostgreSQL", 
@@ -144,8 +144,8 @@ const technologies = [
     borderColor: "border-purple-200"
   },
   { 
-    name: "Pinecone", 
-    category: "Vector DB",
+    name: "Vector DBs", 
+    category: "AI Infrastructure",
     iconComponent: Database,
     iconColor: "text-teal-600",
     color: "bg-teal-50",
