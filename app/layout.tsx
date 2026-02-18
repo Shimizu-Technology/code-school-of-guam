@@ -6,6 +6,7 @@ import { PostHogProvider } from './providers'
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Metadata, Viewport } from "next"
+import { ChatButton } from '@/components/chat-button'
 
 export const metadata: Metadata = {
   title: {
@@ -125,6 +126,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </main>
             <SiteFooter />
           </div>
+          {/* Chatbot - fixed position in bottom-left corner */}
+          <ChatButton />
         </PostHogProvider>
       </body>
     </html>
