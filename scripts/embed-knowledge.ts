@@ -301,7 +301,7 @@ async function embedKnowledge() {
     // Generate embeddings for each chunk
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
-      const id = `${file.filename.replace('.md', '')}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
+      const id = `${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
 
       try {
         const embedding = await generateEmbedding(chunk.text);

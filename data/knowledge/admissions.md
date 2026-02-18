@@ -2,11 +2,13 @@
 
 ## Current Enrollment Status
 
-**Enrollment is NOW OPEN** for the March 2026 Cohort!
+**Enrollment is NOW OPEN** for Cohort 3 (March 2026)!
+
+We have successfully completed 2 cohorts with 11 graduates and a 100% completion rate. The March 2026 cohort will be our third.
 
 ## Upcoming Cohort Details
 
-- **Cohort Name**: March 2026 Cohort
+- **Cohort**: Cohort 3 (March 2026)
 - **Pre-work Start Date**: March 2, 2026
 - **Class Size**: Maximum 10 students
 - **Format**: Fully remote via Zoom

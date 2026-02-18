@@ -25,10 +25,10 @@ We envision transforming Guam into a tech hub by equipping local residents with 
 - From Hagåtña to Dededo, Yigo to Merizo, and beyond
 - No commute required
 
-### Guaranteed Opportunities
-- Paid internship included
-- TA positions for top performers
-- 6-month contract opportunities with Shimizu Technology
+### Real-World Opportunities
+- Optional internship at Shimizu Technology (unpaid, experience-focused)
+- Paid TA positions for top performers
+- Junior developer contract opportunities with Shimizu Technology
 
 ### Lifetime Access
 - All recordings and resources forever
@@ -61,12 +61,27 @@ Code School of Guam is connected to Shimizu Technology, a local software develop
 - Job placement pathways
 - Real-world project experience
 
-## Student Success Stories
+## Cohort History
 
-### First Cohort Achievements
+Code School of Guam has completed 2 cohorts so far, with the 3rd cohort starting March 2, 2026.
+
+### Cohort 1 (2025)
 - **100% Completion Rate** - All students finished the program
-- **16 Weeks to Success** - From beginner to developer
+- **16 Weeks** - From beginner to developer
 - **8 Real Projects Built** - Hands-on applications
+
+### Cohort 2 (2025)
+- **100% Completion Rate** - Every student graduated
+- **22 Weeks** - Expanded program with AI Engineering added
+- Students built full-stack applications with AI-powered features
+
+### Overall Track Record
+- **11 graduates** across 2 cohorts
+- **100% completion rate** - Every student who enrolled has graduated
+- Graduates have gone on to TA roles, junior developer positions, and teaching roles
+- The upcoming March 2026 cohort will be Cohort 3
+
+## Student Success Stories
 
 ### Graduate Testimonials
 

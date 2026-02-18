@@ -90,10 +90,12 @@ Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 22
 
 ## Program Outcomes
 
-- 100% completion rate for first cohort
+- **11 graduates** across 2 completed cohorts
+- **100% completion rate** across all cohorts - every enrolled student has graduated
 - Students go from zero coding experience to building full-stack applications with AI features
 - Graduates are prepared for junior full-stack developer roles
 - Real projects addressing Guam-specific challenges
+- Alumni have gone on to TA roles, junior developer positions, and teaching roles
 
 ## Next Cohort
 
