@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { CountdownTimer } from "@/components/countdown-timer"
 import { 
   ChevronRight, 
   ChevronLeft,
@@ -301,7 +302,7 @@ export default function HomePage() {
             {/* Badge */}
             <div className="inline-flex items-center px-4 py-2 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium mb-6">
               <Brain className="h-4 w-4 mr-2" />
-              🤖 NEW: Learn to Build AI Chatbots & RAG Systems
+              NEW: Learn to Build AI Chatbots &amp; RAG Systems
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
@@ -329,6 +330,9 @@ export default function HomePage() {
                 <span>Only 1 class in 2026 — Limited spots!</span>
               </div>
             </div>
+
+            {/* Countdown Timer */}
+            <CountdownTimer />
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
