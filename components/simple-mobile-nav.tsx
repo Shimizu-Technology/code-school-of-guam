@@ -42,11 +42,11 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
       </SheetTrigger>
       <SheetContent 
         side="right" 
-        className="bg-gray-900 text-white p-0 w-[85%] sm:max-w-md"
+        className="bg-slate-900 text-white p-0 w-[85%] sm:max-w-md"
       >
-        <SheetHeader className="p-4 border-b border-gray-800">
+        <SheetHeader className="p-4 border-b border-slate-800">
           <SheetTitle className="text-white">Menu</SheetTitle>
-          <SheetDescription className="text-gray-400">
+          <SheetDescription className="text-slate-400">
             Navigation links for Code School of Guam
           </SheetDescription>
         </SheetHeader>
@@ -59,7 +59,7 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
                 className={`py-3 px-4 rounded-md ${
                   activeSection === item.href.slice(1)
                     ? "bg-ruby-500 text-white font-medium"
-                    : "text-gray-200 hover:bg-gray-800"
+                    : "text-slate-200 hover:bg-slate-800"
                 }`}
                 href={item.href}
                 onClick={closeNav}
@@ -69,7 +69,7 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
             ))}
           </div>
           
-          <div className="mt-8 pt-4 border-t border-gray-800">
+          <div className="mt-8 pt-4 border-t border-slate-800">
             <a
               href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               className="flex w-full items-center justify-center rounded-md bg-ruby-500 px-5 py-3 text-base font-medium text-white"

@@ -16,10 +16,10 @@ export function SiteFooter() {
               <span className="text-ruby-500 mr-2">&gt;</span>
               <span>Code School of Guam</span>
             </div>
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-slate-400 text-sm mb-4">
               Guam&apos;s first coding bootcamp. Learn to build AI-powered applications in under 6 months.
             </p>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
+            <div className="flex items-center space-x-2 text-sm text-slate-400">
               <span className="text-ruby-400">Partner:</span>
               <a 
                 href="https://shimizu-technology.com" 
@@ -38,22 +38,22 @@ export function SiteFooter() {
             <h3 className="font-semibold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/curriculum" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/curriculum" className="text-slate-400 hover:text-white transition-colors">
                   Curriculum
                 </Link>
               </li>
               <li>
-                <Link href="/programs" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/programs" className="text-slate-400 hover:text-white transition-colors">
                   Programs & Pricing
                 </Link>
               </li>
               <li>
-                <Link href="/projects" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/projects" className="text-slate-400 hover:text-white transition-colors">
                   Student Projects
                 </Link>
               </li>
               <li>
-                <Link href="/internship" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/internship" className="text-slate-400 hover:text-white transition-colors">
                   Internship Program
                 </Link>
               </li>
@@ -65,22 +65,22 @@ export function SiteFooter() {
             <h3 className="font-semibold mb-4 text-white">Resources</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/faq" className="text-slate-400 hover:text-white transition-colors">
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/about" className="text-slate-400 hover:text-white transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/payment" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/payment" className="text-slate-400 hover:text-white transition-colors">
                   Make a Payment
                 </Link>
               </li>
               <li>
-                <Link href="/flappy-bird" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/flappy-bird" className="text-slate-400 hover:text-white transition-colors">
                   Demo Game
                 </Link>
               </li>
@@ -94,7 +94,7 @@ export function SiteFooter() {
               <li>
                 <a 
                   href="mailto:codeschoolofguam@gmail.com" 
-                  className="flex items-center text-gray-400 hover:text-white transition-colors"
+                  className="flex items-center text-slate-400 hover:text-white transition-colors"
                 >
                   <Mail className="w-4 h-4 mr-2 text-ruby-500" />
                   codeschoolofguam@gmail.com
@@ -103,7 +103,7 @@ export function SiteFooter() {
               <li>
                 <a 
                   href="tel:+16714830219" 
-                  className="flex items-center text-gray-400 hover:text-white transition-colors"
+                  className="flex items-center text-slate-400 hover:text-white transition-colors"
                 >
                   <Phone className="w-4 h-4 mr-2 text-ruby-500" />
                   (671) 483-0219
@@ -124,7 +124,7 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
+        <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
           <p>© {new Date().getFullYear()} Code School of Guam. All rights reserved.</p>
           <p className="mt-2 md:mt-0">
             Built with ❤️ in Guam
