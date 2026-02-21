@@ -44,10 +44,10 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
   return (
     <section
       id="timeline"
-      className="w-full py-12 md:py-16 lg:py-20 bg-gray-900 text-white relative overflow-hidden"
+      className="w-full py-12 md:py-16 lg:py-20 bg-slate-900 text-white relative overflow-hidden"
     >
       {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-800"></div>
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12 reveal-on-scroll">
@@ -72,7 +72,7 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   className={`absolute left-1/2 transform -translate-x-1/2 w-3 h-3 rounded-full z-10 ${
                     activeItem === index 
                       ? 'bg-ruby-500 shadow-glow-sm' 
-                      : 'bg-gray-600'
+                      : 'bg-slate-600'
                   } transition-all duration-500`}
                 ></div>
                 
@@ -84,15 +84,15 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   transition-all duration-500 ease-in-out`}
                 >
                   <div 
-                    className={`bg-gray-800/80 backdrop-blur-sm rounded-lg p-6 shadow-md border-l-2 ${
-                      activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-gray-700'
+                    className={`bg-slate-800/80 backdrop-blur-sm rounded-lg p-6 shadow-md border-l-2 ${
+                      activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-slate-700'
                     } hover:border-ruby-500 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer`}
                     onMouseEnter={() => setHoveredItem(index)}
                     onMouseLeave={() => setHoveredItem(null)}
                     onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center text-gray-300">
+                      <div className="flex items-center text-slate-300">
                         <span className="text-sm font-medium uppercase tracking-wider">{item.weeks}</span>
                       </div>
                       <div className={`text-ruby-400 transition-transform duration-200 ${
@@ -102,11 +102,11 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                       </div>
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                    <p className="text-gray-300 text-sm">{item.description}</p>
+                    <p className="text-slate-300 text-sm">{item.description}</p>
                     
                     {expandedItem === index && (
-                      <div className="mt-4 pt-4 border-t border-gray-700 animate-fadeIn">
-                        <div className="text-xs text-gray-400 space-y-2">
+                      <div className="mt-4 pt-4 border-t border-slate-700 animate-fadeIn">
+                        <div className="text-xs text-slate-400 space-y-2">
                           <div className="flex items-center">
                             <span className="w-2 h-2 bg-ruby-500 rounded-full mr-2"></span>
                             Interactive coding exercises
@@ -127,7 +127,7 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   {/* Connector line - thinner and more subtle */}
                   <div 
                     className={`absolute top-1/2 transform -translate-y-1/2 h-px ${
-                      activeItem === index ? 'bg-ruby-500/70' : 'bg-gray-700'
+                      activeItem === index ? 'bg-ruby-500/70' : 'bg-slate-700'
                     } ${index % 2 === 0 ? 'right-0 w-10' : 'left-0 w-10'} 
                     transition-all duration-500`}
                   ></div>
@@ -154,14 +154,14 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   className={`absolute left-4 top-6 transform -translate-x-1/2 w-2 h-2 rounded-full ${
                     activeItem === index 
                       ? 'bg-ruby-500' 
-                      : 'bg-gray-600'
+                      : 'bg-slate-600'
                   } transition-all duration-300`}
                 ></div>
                 
                 {/* Content card - cleaner design */}
                 <div 
-                  className={`bg-gray-800/90 backdrop-blur-sm rounded-lg p-4 shadow-sm border-l-2 ${
-                    activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-gray-700'
+                  className={`bg-slate-800/90 backdrop-blur-sm rounded-lg p-4 shadow-sm border-l-2 ${
+                    activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-slate-700'
                   } hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer`}
                   onMouseEnter={() => setHoveredItem(index)}
                   onMouseLeave={() => setHoveredItem(null)}
@@ -170,7 +170,7 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center">
                       <Calendar className="mr-2 h-4 w-4 text-ruby-500/80" />
-                      <span className="text-xs font-medium uppercase tracking-wider text-gray-400">{item.weeks}</span>
+                      <span className="text-xs font-medium uppercase tracking-wider text-slate-400">{item.weeks}</span>
                     </div>
                     <div className={`text-ruby-400 text-sm transition-transform duration-200 ${
                       expandedItem === index ? 'rotate-45' : ''
@@ -179,11 +179,11 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                     </div>
                   </div>
                   <h3 className="text-base font-semibold text-white mb-1">{item.title}</h3>
-                  <p className="text-gray-300 text-xs leading-relaxed">{item.description}</p>
+                  <p className="text-slate-300 text-xs leading-relaxed">{item.description}</p>
                   
                   {expandedItem === index && (
-                    <div className="mt-3 pt-3 border-t border-gray-700 animate-fadeIn">
-                      <div className="text-xs text-gray-400 space-y-1">
+                    <div className="mt-3 pt-3 border-t border-slate-700 animate-fadeIn">
+                      <div className="text-xs text-slate-400 space-y-1">
                         <div className="flex items-center">
                           <span className="w-1.5 h-1.5 bg-ruby-500 rounded-full mr-2"></span>
                           Interactive exercises
@@ -204,7 +204,7 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                 {/* Connector line - thinner */}
                 <div 
                   className={`absolute left-4 top-6 w-8 h-px ${
-                    activeItem === index ? 'bg-ruby-500/60' : 'bg-gray-700/60'
+                    activeItem === index ? 'bg-ruby-500/60' : 'bg-slate-700/60'
                   } transition-all duration-300`}
                 ></div>
               </div>

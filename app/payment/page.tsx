@@ -13,9 +13,9 @@ const stripePromise: Promise<Stripe | null> = loadStripe(
 
 const PaymentPage: FC = () => {
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col">
       {/* Header */}
-      <header className="bg-gray-800 py-4 shadow-md">
+      <header className="bg-slate-800 py-4 shadow-md">
         <div className="container mx-auto px-4">
           <Link
             href="/"
@@ -29,10 +29,10 @@ const PaymentPage: FC = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 flex-1">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
           Payment Dashboard
         </h1>
-        <p className="text-lg text-gray-300 text-center mb-8 max-w-2xl mx-auto">
+        <p className="text-lg text-slate-300 text-center mb-8 max-w-2xl mx-auto">
           Manage your tuition payments below—choose your payment option (deposit,
           monthly installment, or full tuition) or enter a custom amount if
           needed.
@@ -44,39 +44,39 @@ const PaymentPage: FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6 mt-12">
+      <footer className="bg-slate-800 text-white py-6 mt-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">
               <h3 className="text-lg font-semibold">Code School of Guam</h3>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-slate-400">
                 Empowering Guam&apos;s tech future
               </p>
             </div>
             <div className="flex space-x-4">
               <Link
                 href="/#about"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-slate-400 hover:text-white transition-colors"
               >
                 About
               </Link>
               <Link
                 href="/#curriculum"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-slate-400 hover:text-white transition-colors"
               >
                 Courses
               </Link>
               <Link
                 href="/#contact"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
+                className="text-sm text-slate-400 hover:text-white transition-colors"
               >
                 Contact
               </Link>
             </div>
           </div>
-          <div className="mt-8 border-t border-gray-700 pt-4 text-center">
-            <p className="text-sm text-gray-400">
-              &copy; 2024 Code School of Guam. All rights reserved.
+          <div className="mt-8 border-t border-slate-700 pt-4 text-center">
+            <p className="text-sm text-slate-400">
+              &copy; 2025 Code School of Guam. All rights reserved.
             </p>
           </div>
         </div>
