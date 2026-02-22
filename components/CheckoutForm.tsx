@@ -153,7 +153,7 @@ export default function CheckoutForm({
       <div className="text-center py-8">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ruby-500 mx-auto mb-4"></div>
         <p className="text-white">Redirecting to secure payment page...</p>
-        <p className="text-gray-400 text-sm mt-2">Please do not close this window.</p>
+        <p className="text-slate-400 text-sm mt-2">Please do not close this window.</p>
       </div>
     );
   }
@@ -161,7 +161,7 @@ export default function CheckoutForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Card Element */}
-      <div className="bg-gray-800 p-4 rounded-md">
+      <div className="bg-slate-800 p-4 rounded-md">
         <CardElement
           options={{
             style: {
@@ -195,7 +195,7 @@ export default function CheckoutForm({
         {loading ? "Processing..." : `Pay $${amount}`}
       </button>
       
-      <p className="text-gray-400 text-xs text-center mt-4">
+      <p className="text-slate-400 text-xs text-center mt-4">
         Your payment is secure. We use Stripe for secure payment processing.
       </p>
     </form>

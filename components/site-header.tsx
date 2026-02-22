@@ -38,8 +38,8 @@ export function SiteHeader() {
     <header 
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? "bg-gray-900/95 backdrop-blur-md shadow-lg" 
-          : "bg-gray-900"
+          ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
+          : "bg-slate-900"
       }`}
     >
       <nav className="container mx-auto px-4 md:px-6">
@@ -63,7 +63,7 @@ export function SiteHeader() {
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   isActive(item.href)
                     ? "bg-ruby-500/20 text-ruby-400"
-                    : "text-gray-300 hover:text-white hover:bg-white/5"
+                    : "text-slate-300 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {item.label}
@@ -86,7 +86,7 @@ export function SiteHeader() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+            className="xl:hidden p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-md transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -101,7 +101,7 @@ export function SiteHeader() {
             className="fixed inset-0 bg-black/50 z-40 xl:hidden" 
             onClick={() => setMobileMenuOpen(false)} 
           />
-          <div className="xl:hidden absolute top-full left-0 w-full bg-gray-900 border-t border-gray-800 z-50">
+          <div className="xl:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-800 z-50">
             <div className="container mx-auto px-4 py-4 space-y-1">
               {mainNavItems.map((item) => (
                 <Link
@@ -111,13 +111,13 @@ export function SiteHeader() {
                   className={`block px-4 py-3 rounded-md text-base font-medium transition-colors ${
                     isActive(item.href)
                       ? "bg-ruby-500/20 text-ruby-400"
-                      : "text-gray-300 hover:text-white hover:bg-white/5"
+                      : "text-slate-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className="pt-4 mt-4 border-t border-gray-800">
+              <div className="pt-4 mt-4 border-t border-slate-800">
                 <a
                   href="https://forms.gle/nJv8nAfxsvvLSbbq7"
                   target="_blank"

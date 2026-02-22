@@ -72,35 +72,35 @@ const PaymentDetailsContent = () => {
     <>
       {loading ? (
         <div className="animate-pulse flex flex-col space-y-4">
-          <div className="h-4 bg-gray-700 rounded w-3/4 mx-auto"></div>
-          <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
-          <div className="h-4 bg-gray-700 rounded w-5/6 mx-auto"></div>
+          <div className="h-4 bg-slate-700 rounded w-3/4 mx-auto"></div>
+          <div className="h-4 bg-slate-700 rounded w-1/2 mx-auto"></div>
+          <div className="h-4 bg-slate-700 rounded w-5/6 mx-auto"></div>
         </div>
       ) : paymentDetails ? (
-        <div className="bg-gray-700 rounded-md p-4 mb-6 text-left">
+        <div className="bg-slate-700 rounded-xl p-4 mb-6 text-left">
           <h2 className="text-xl font-semibold mb-4 text-center">Payment Receipt</h2>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-400">Payment ID:</span>
+              <span className="text-slate-400">Payment ID:</span>
               <span className="font-mono">{paymentDetails.id.substring(0, 8)}...</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Amount:</span>
+              <span className="text-slate-400">Amount:</span>
               <span className="font-semibold">${paymentDetails.amount}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Date:</span>
+              <span className="text-slate-400">Date:</span>
               <span>{formatDate(paymentDetails.created)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Status:</span>
+              <span className="text-slate-400">Status:</span>
               <span className="text-green-500 font-semibold">
                 {paymentDetails.status === 'succeeded' ? 'Paid' : paymentDetails.status}
               </span>
             </div>
             {paymentDetails.paymentType && (
               <div className="flex justify-between">
-                <span className="text-gray-400">Payment For:</span>
+                <span className="text-slate-400">Payment For:</span>
                 <span>{paymentDetails.paymentType}</span>
               </div>
             )}
@@ -119,9 +119,9 @@ const PaymentDetailsContent = () => {
 const PaymentSuccess = () => {
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="min-h-screen bg-slate-900 text-white flex flex-col">
       {/* Header */}
-      <header className="bg-gray-800 py-4 shadow-md">
+      <header className="bg-slate-800 py-4 shadow-md">
         <div className="container mx-auto px-4">
           <Link
             href="/payment"
@@ -135,8 +135,8 @@ const PaymentSuccess = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12 flex-1 text-center flex flex-col items-center justify-center">
-        <div className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-2xl w-full">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
+        <div className="bg-slate-800 p-8 rounded-2xl shadow-lg max-w-2xl w-full">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
             Payment Successful!
           </h1>
           
@@ -146,7 +146,7 @@ const PaymentSuccess = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-lg text-gray-300 mb-4">
+            <p className="text-lg text-slate-300 mb-4">
               Thank you for your payment. Your transaction has been processed
               successfully.
             </p>
@@ -155,15 +155,15 @@ const PaymentSuccess = () => {
           {/* Wrap the component that uses useSearchParams in a Suspense boundary */}
           <Suspense fallback={
             <div className="animate-pulse flex flex-col space-y-4">
-              <div className="h-4 bg-gray-700 rounded w-3/4 mx-auto"></div>
-              <div className="h-4 bg-gray-700 rounded w-1/2 mx-auto"></div>
-              <div className="h-4 bg-gray-700 rounded w-5/6 mx-auto"></div>
+              <div className="h-4 bg-slate-700 rounded w-3/4 mx-auto"></div>
+              <div className="h-4 bg-slate-700 rounded w-1/2 mx-auto"></div>
+              <div className="h-4 bg-slate-700 rounded w-5/6 mx-auto"></div>
             </div>
           }>
             <PaymentDetailsContent />
           </Suspense>
 
-          <p className="text-gray-400 mb-8">
+          <p className="text-slate-400 mb-8">
             You can now proceed with your course registration or return to the home page.
           </p>
 
@@ -178,7 +178,7 @@ const PaymentSuccess = () => {
             {/* Email receipt button */}
             <button
               onClick={() => alert('Receipt email functionality will be implemented soon!')}
-              className="inline-flex items-center justify-center rounded-md bg-gray-700 px-6 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-gray-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+              className="inline-flex items-center justify-center rounded-md bg-slate-700 px-6 py-2 text-sm font-medium text-white shadow transition-colors hover:bg-slate-600 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
             >
               Email Receipt
             </button>
@@ -187,10 +187,10 @@ const PaymentSuccess = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6">
+      <footer className="bg-slate-800 text-white py-6">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm text-gray-400">
-            &copy; 2024 Code School of Guam. All rights reserved.
+          <p className="text-sm text-slate-400">
+            &copy; 2025 Code School of Guam. All rights reserved.
           </p>
         </div>
       </footer>
