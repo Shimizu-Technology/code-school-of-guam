@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Mail, Phone, ExternalLink } from "lucide-react"
+import { Mail, Phone, ExternalLink, Heart } from "lucide-react"
 
 export function SiteFooter() {
   return (
@@ -127,7 +127,7 @@ export function SiteFooter() {
         <div className="mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
           <p>© {new Date().getFullYear()} Code School of Guam. All rights reserved.</p>
           <p className="mt-2 md:mt-0">
-            Built with ❤️ in Guam
+            Built with <Heart className="inline h-4 w-4 text-red-500 fill-current mx-1" /> in Guam
           </p>
         </div>
       </div>
