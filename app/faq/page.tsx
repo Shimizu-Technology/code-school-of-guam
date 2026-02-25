@@ -15,6 +15,10 @@ const faqs = [
     answer: "No prior coding experience is required. Our program starts from the basics and builds up to advanced concepts."
   },
   {
+    question: "Is there an age requirement?",
+    answer: "There's no upper age limit — our students range from high schoolers to professionals in their 50s changing careers. For students under 18, we require parental consent. Everyone learns together and supports each other. There's no 'right age' to learn to code — just the right motivation."
+  },
+  {
     question: "Why is there only 1 class in 2026?",
     answer: "We're limiting to one cohort in 2026 for two reasons: First, high demand for our partner company Shimizu Technology keeps us busy with real client projects — which is actually great for students because it means you're learning from instructors who are actively building software. Second, we're completing a major curriculum upgrade to focus on AI Engineering, so students will now learn to build AI-powered applications with chatbots and RAG systems."
   },

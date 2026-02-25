@@ -8,6 +8,9 @@ Code School of Guam (CSG) is Guam's first AI-native coding bootcamp. We teach co
 ### Who is this for?
 Anyone interested in learning to code — no prior experience needed! Our students include career changers, recent graduates, professionals looking to add tech skills, and anyone curious about building software and AI applications. You just need a laptop, internet, and motivation.
 
+### Is there an age requirement?
+There's no upper age limit. For students under 18, we require parental consent. Our students range from high schoolers to professionals in their 50s changing careers. Everyone learns together and supports each other. There's no "right age" to learn to code — just the right motivation.
+
 ### Do I need any coding experience?
 No! We start from absolute zero. The 5-week pre-work phase builds your foundation before live classes begin. By the end, you'll be building full-stack applications with AI features.
 

@@ -178,7 +178,8 @@ function TestimonialCarousel() {
             Hear from Our <span className="text-ruby-500">Graduates</span>
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            11 graduates across 2 cohorts with a 100% completion rate
+            11 graduates across 2 cohorts with a 100% completion rate.
+            Students from high schoolers to career changers in their 50s — all are welcome.
           </p>
         </div>
 
