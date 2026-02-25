@@ -76,7 +76,7 @@ export default function FAQPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-gray-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
             <HelpCircle className="w-4 h-4 mr-2" />
@@ -85,16 +85,16 @@ export default function FAQPage() {
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             Frequently Asked Questions
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
             Everything you need to know about Code School of Guam
           </p>
         </div>
         {/* Fade to next section - dark to light */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-100 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-100 to-transparent"></div>
       </section>
 
       {/* FAQs - Card-based accordion like original */}
-      <section className="py-16 md:py-20 bg-gray-100 relative">
+      <section className="py-24 lg:py-32 bg-slate-100 relative">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,0,0,0.1),transparent_70%)]"></div>
@@ -106,15 +106,15 @@ export default function FAQPage() {
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="mb-4 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
+                className="mb-4 border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
               >
-                <AccordionTrigger className="text-left p-4 hover:bg-gray-50 data-[state=open]:bg-gray-50">
+                <AccordionTrigger className="text-left p-4 hover:bg-slate-50 data-[state=open]:bg-slate-50">
                   <div className="flex items-center">
                     <span className="text-ruby-500 font-semibold mr-2">Q:</span>
                     <span className="font-medium">{faq.question}</span>
                   </div>
                 </AccordionTrigger>
-                <AccordionContent className="p-4 pt-0 text-gray-600">
+                <AccordionContent className="p-4 pt-0 text-slate-600">
                   <div className="pl-6 border-l-2 border-ruby-500">
                     {faq.answer}
                   </div>
@@ -124,7 +124,7 @@ export default function FAQPage() {
           </Accordion>
 
           <div className="max-w-3xl mx-auto mt-8 text-center">
-            <p className="text-gray-600">
+            <p className="text-slate-600">
               Don&apos;t see your question? Feel free to{" "}
               <a href="mailto:codeschoolofguam@gmail.com" className="text-ruby-600 hover:text-ruby-700 font-medium hover:underline">
                 contact us
@@ -136,25 +136,25 @@ export default function FAQPage() {
       </section>
 
       {/* Still have questions - subtle background change, no fade needed */}
-      <section className="py-16 bg-gray-50 relative">
+      <section className="py-16 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-slate-900 mb-4">
             Still have questions?
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-slate-600 mb-6">
             We&apos;re here to help. Reach out anytime.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="mailto:codeschoolofguam@gmail.com"
-              className="inline-flex items-center justify-center px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-medium transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-medium transition-colors"
             >
               <Mail className="w-4 h-4 mr-2" />
               Email Us
             </a>
             <a
               href="tel:+16714830219"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-900 rounded-lg font-medium transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 rounded-lg font-medium transition-colors"
             >
               <Phone className="w-4 h-4 mr-2" />
               Call (671) 483-0219
@@ -176,7 +176,7 @@ export default function FAQPage() {
             href="https://forms.gle/nJv8nAfxsvvLSbbq7"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"
+            className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
           >
             Apply Now
           </a>

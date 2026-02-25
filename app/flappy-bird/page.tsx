@@ -177,7 +177,7 @@ export default function FlappyBirdPage() {
       {/* Footer */}
       <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-8 mt-16">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <p className="text-gray-300">&copy; 2024 Code School of Guam. All rights reserved.</p>
+          <p className="text-gray-300">&copy; 2025 Code School of Guam. All rights reserved.</p>
         </div>
       </footer>
     </div>

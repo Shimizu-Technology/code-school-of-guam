@@ -105,7 +105,7 @@ export default function ProjectsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-gray-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-green-500/20 text-green-400 rounded-full text-sm font-medium mb-4">
             <Trophy className="w-4 h-4 mr-2" />
@@ -114,45 +114,45 @@ export default function ProjectsPage() {
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
             From Zero to <span className="text-ruby-500">Full-Stack Developer</span>
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
             Watch our students present their capstone projects. In under 6 months, they go from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features. <span className="text-ruby-400 font-medium">11 graduates across 2 cohorts with a 100% completion rate.</span>
           </p>
         </div>
         {/* Fade to next section - dark to light */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-50 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </section>
 
       {/* Stats */}
-      <section className="py-8 bg-gray-50 border-b border-gray-200">
+      <section className="py-8 bg-slate-50 border-b border-slate-200">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto text-center">
             <div>
               <div className="text-3xl font-bold text-green-600">100%</div>
-              <div className="text-sm text-gray-600">Completion Rate</div>
-              <div className="text-xs text-gray-500">All students finished the program</div>
+              <div className="text-sm text-slate-600">Completion Rate</div>
+              <div className="text-xs text-slate-500">All students finished the program</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-blue-600">16</div>
-              <div className="text-sm text-gray-600">Weeks to Success</div>
-              <div className="text-xs text-gray-500">From beginner to developer</div>
+              <div className="text-sm text-slate-600">Weeks to Success</div>
+              <div className="text-xs text-slate-500">From beginner to developer</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-purple-600">8</div>
-              <div className="text-sm text-gray-600">Real Projects Built</div>
-              <div className="text-xs text-gray-500">Hands-on applications</div>
+              <div className="text-sm text-slate-600">Real Projects Built</div>
+              <div className="text-xs text-slate-500">Hands-on applications</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Capstone Videos */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-24 lg:py-32 bg-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
               Capstone Presentations
             </h2>
-            <p className="text-gray-600">
+            <p className="text-slate-600">
               Watch our graduates present their final projects
             </p>
           </div>
@@ -177,10 +177,10 @@ export default function ProjectsPage() {
                 <span className="inline-flex items-center px-3 py-1 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-2">
                   Latest
                 </span>
-                <p className="text-sm text-gray-600 font-medium">
+                <p className="text-sm text-slate-600 font-medium">
                   Cohort 2 Capstone Presentations
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-500">
                   December 2025 • 5 Graduates
                 </p>
               </div>
@@ -188,7 +188,7 @@ export default function ProjectsPage() {
 
             {/* Cohort 1 - May 2025 */}
             <div>
-              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-gray-200">
+              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-slate-200">
                 <div style={{ paddingTop: '56.25%' }}>
                   <iframe 
                     src="https://www.youtube.com/embed/MNzZeL33jiw?t=650" 
@@ -201,10 +201,10 @@ export default function ProjectsPage() {
                 </div>
               </div>
               <div className="mt-4 text-center">
-                <p className="text-sm text-gray-600 font-medium">
+                <p className="text-sm text-slate-600 font-medium">
                   Cohort 1 Capstone Presentations
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-slate-500">
                   May 2025 • 6 Graduates
                 </p>
               </div>
@@ -213,41 +213,41 @@ export default function ProjectsPage() {
 
           {/* Project Highlights */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
-            <div className="bg-gray-50 rounded-xl p-6 border-l-4 border-ruby-500">
+            <div className="bg-slate-50 rounded-2xl p-6 border-l-4 border-ruby-500">
               <div className="flex items-center mb-3">
                 <Code className="w-5 h-5 text-ruby-500 mr-2" />
-                <h3 className="font-semibold text-gray-900">Local Impact Projects</h3>
+                <h3 className="font-semibold text-slate-900">Local Impact Projects</h3>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-slate-600">
                 Students created apps addressing Guam-specific challenges, from tourism platforms to local business management tools.
               </p>
             </div>
-            <div className="bg-gray-50 rounded-xl p-6 border-l-4 border-green-500">
+            <div className="bg-slate-50 rounded-2xl p-6 border-l-4 border-green-500">
               <div className="flex items-center mb-3">
                 <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <h3 className="font-semibold text-gray-900">Industry-Ready Skills</h3>
+                <h3 className="font-semibold text-slate-900">Industry-Ready Skills</h3>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-slate-600">
                 Every project uses professional development practices: Git version control, database design, API integration, and responsive design.
               </p>
             </div>
-            <div className="bg-gray-50 rounded-xl p-6 border-l-4 border-blue-500">
+            <div className="bg-slate-50 rounded-2xl p-6 border-l-4 border-blue-500">
               <div className="flex items-center mb-3">
                 <Users className="w-5 h-5 text-blue-500 mr-2" />
-                <h3 className="font-semibold text-gray-900">Presentation Skills</h3>
+                <h3 className="font-semibold text-slate-900">Presentation Skills</h3>
               </div>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-slate-600">
                 Students present to industry professionals, gaining confidence in explaining technical concepts and business value.
               </p>
             </div>
           </div>
 
           {/* Founder Quote */}
-          <div className="max-w-2xl mx-auto mt-12 bg-gray-50 rounded-lg p-6 text-center">
-            <p className="text-gray-700 italic mb-3">
+          <div className="max-w-2xl mx-auto mt-12 bg-slate-50 rounded-lg p-6 text-center">
+            <p className="text-slate-700 italic mb-3">
               &quot;Seeing our students go from never having coded before to presenting full-stack applications with AI features in just a few months is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-slate-600">
               - Leon Shimizu, Founder & Lead Instructor
             </p>
           </div>
@@ -255,17 +255,17 @@ export default function ProjectsPage() {
       </section>
 
       {/* Shimizu Technology Projects */}
-      <section className="py-16 md:py-20 bg-gray-50">
+      <section className="py-24 lg:py-32 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/10 text-ruby-700 rounded-full text-sm font-medium mb-4">
               <Rocket className="w-4 h-4 mr-2" />
               Real-World Experience
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
               Projects Our Graduates Work On
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               Through our internship with{" "}
               <a 
                 href="https://shimizu-technology.com" 
@@ -283,11 +283,11 @@ export default function ProjectsPage() {
             {shimizuProjects.map((project, index) => (
               <div 
                 key={index}
-                className={`bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-lg transition-all ${project.featured ? 'ring-2 ring-ruby-200' : ''}`}
+                className={`bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-lg transition-all ${project.featured ? 'ring-2 ring-ruby-200' : ''}`}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                   {/* Image */}
-                  <div className="lg:col-span-1 h-64 lg:h-auto relative bg-gray-100">
+                  <div className="lg:col-span-1 h-64 lg:h-auto relative bg-slate-100">
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -306,17 +306,17 @@ export default function ProjectsPage() {
                   {/* Content */}
                   <div className="lg:col-span-2 p-6 lg:p-8">
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <h3 className="text-2xl font-bold text-gray-900">{project.title}</h3>
-                      <span className="text-gray-500">—</span>
-                      <span className="text-gray-600">{project.subtitle}</span>
+                      <h3 className="text-2xl font-bold text-slate-900">{project.title}</h3>
+                      <span className="text-slate-500">—</span>
+                      <span className="text-slate-600">{project.subtitle}</span>
                     </div>
                     
-                    <p className="text-gray-600 mb-4">{project.description}</p>
+                    <p className="text-slate-600 mb-4">{project.description}</p>
 
                     {/* Highlights */}
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                       {project.highlights.map((highlight, idx) => (
-                        <li key={idx} className="flex items-start text-sm text-gray-700">
+                        <li key={idx} className="flex items-start text-sm text-slate-700">
                           <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
                           {highlight}
                         </li>
@@ -328,7 +328,7 @@ export default function ProjectsPage() {
                       {project.technologies.map((tech, idx) => (
                         <span 
                           key={idx}
-                          className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
+                          className="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded"
                         >
                           {tech}
                         </span>
@@ -342,7 +342,7 @@ export default function ProjectsPage() {
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-md text-sm font-medium transition-colors"
+                          className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-sm font-medium transition-colors"
                         >
                           Visit Site
                           <ExternalLink className="w-3 h-3 ml-2" />
@@ -368,7 +368,7 @@ export default function ProjectsPage() {
 
           {/* Partner CTA */}
           <div className="mt-12 text-center">
-            <p className="text-gray-600 mb-4">
+            <p className="text-slate-600 mb-4">
               These projects are built and maintained by{" "}
               <a 
                 href="https://shimizu-technology.com" 
@@ -385,28 +385,28 @@ export default function ProjectsPage() {
       </section>
 
       {/* Testimonial */}
-      <section className="py-16 bg-gray-900 text-white">
+      <section className="py-16 bg-slate-900 text-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-3xl mx-auto text-center">
             <Quote className="w-12 h-12 text-ruby-500/50 mx-auto mb-6" />
-            <blockquote className="text-xl md:text-2xl leading-relaxed mb-6 text-gray-300">
+            <blockquote className="text-xl md:text-2xl leading-relaxed mb-6 text-slate-300">
               &ldquo;It was soooo incredible being able to see what was only a discussion of an idea, come to life. No doubt that the online ordering option is a valuable perk & adds to the VIP experience.&rdquo;
             </blockquote>
-            <p className="text-gray-400">
+            <p className="text-slate-400">
               — <span className="text-white font-medium">Hafaloha Owner</span>, on the system our team built
             </p>
             <div className="flex justify-center gap-8 mt-8 text-center">
               <div>
                 <div className="text-3xl font-bold text-ruby-400">850+</div>
-                <div className="text-sm text-gray-400">VIP Orders</div>
+                <div className="text-sm text-slate-400">VIP Orders</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-green-400">100%</div>
-                <div className="text-sm text-gray-400">Fulfillment</div>
+                <div className="text-sm text-slate-400">Fulfillment</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-400">Zero</div>
-                <div className="text-sm text-gray-400">Downtime</div>
+                <div className="text-sm text-slate-400">Downtime</div>
               </div>
             </div>
           </div>
@@ -414,17 +414,17 @@ export default function ProjectsPage() {
       </section>
 
       {/* Try It Yourself - Interactive Demos */}
-      <section className="py-16 md:py-20 bg-gray-50">
+      <section className="py-24 lg:py-32 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-10">
             <div className="inline-flex items-center px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
               <Rocket className="w-4 h-4 mr-2" />
               Interactive Demo
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">
               See What&apos;s Possible
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
               With the skills you learn at Code School of Guam, projects like this become possible. Built with React and core programming concepts from our curriculum.
             </p>
           </div>
@@ -432,15 +432,15 @@ export default function ProjectsPage() {
           <div className="max-w-md mx-auto">
             <Link
               href="/flappy-bird"
-              className="group block bg-white rounded-xl border border-gray-200 shadow-lg hover:shadow-xl transition-all overflow-hidden"
+              className="group block bg-white rounded-xl border border-slate-200 shadow-lg hover:shadow-xl transition-all overflow-hidden"
             >
               <div className="bg-gradient-to-br from-teal-500 to-cyan-600 p-8 text-center">
-                <div className="text-5xl mb-3">🐤</div>
+                <Rocket className="w-12 h-12 text-white/90 mb-3 mx-auto" />
                 <h3 className="text-xl font-bold text-white mb-1">Flappy Bird Clone</h3>
                 <p className="text-white/80 text-sm">Built with React & HTML5 Canvas</p>
               </div>
               <div className="p-6 text-center">
-                <p className="text-gray-600 text-sm mb-4">
+                <p className="text-slate-600 text-sm mb-4">
                   A fun example of what you can build with programming fundamentals — state management, game loops, collision detection, and responsive design.
                 </p>
                 <span className="inline-flex items-center text-ruby-600 font-medium group-hover:text-ruby-700">
@@ -451,14 +451,14 @@ export default function ProjectsPage() {
             </Link>
           </div>
 
-          <p className="text-center text-gray-500 text-sm mt-8">
+          <p className="text-center text-slate-500 text-sm mt-8">
             More interactive demos coming soon!
           </p>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-20 bg-ruby-600 text-white">
+      <section className="py-24 lg:py-32 bg-ruby-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Want to Build Real Projects?
@@ -471,7 +471,7 @@ export default function ProjectsPage() {
               href="https://forms.gle/nJv8nAfxsvvLSbbq7"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
             >
               Apply Now
             </a>
