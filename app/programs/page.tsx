@@ -54,8 +54,9 @@ export default function ProgramsPage() {
 
               <div className="grid grid-cols-2 gap-4 mb-6">
                 <div className="bg-slate-50 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-slate-900">15-16</div>
-                  <div className="text-sm text-slate-600">Hours/Week</div>
+                  <div className="text-xl font-bold text-slate-900">13.5</div>
+                  <div className="text-xs text-slate-600">Hours/Week</div>
+                  <div className="text-xs text-slate-500 mt-1">6 hrs live + 7.5 hrs async</div>
                 </div>
                 <div className="bg-slate-50 rounded-lg p-4 text-center">
                   <div className="text-2xl font-bold text-slate-900">Max 10</div>
@@ -68,14 +69,21 @@ export default function ProgramsPage() {
                   <div className="w-1 h-full bg-ruby-500 rounded mr-3 self-stretch"></div>
                   <div>
                     <h4 className="font-semibold text-slate-900">Live Classes:</h4>
-                    <p className="text-slate-600 text-sm">Monday – Thursday, 6:00pm – 9:00pm</p>
+                    <p className="text-slate-600 text-sm">Tue & Thu 6-9 PM (Live via Zoom)</p>
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <div className="w-1 h-full bg-slate-300 rounded mr-3 self-stretch"></div>
+                  <div className="w-1 h-full bg-blue-400 rounded mr-3 self-stretch"></div>
                   <div>
-                    <h4 className="font-semibold text-slate-900">3-Day Weekend:</h4>
-                    <p className="text-slate-600 text-sm">Homework & Deliberate Practice</p>
+                    <h4 className="font-semibold text-slate-900">Guided Practice:</h4>
+                    <p className="text-slate-600 text-sm">Mon / Wed / Fri (Async with exercises + recordings)</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="w-1 h-full bg-green-500 rounded mr-3 self-stretch"></div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900">Saturday:</h4>
+                    <p className="text-slate-600 text-sm">1-on-1 Mentorship with Lead Instructor</p>
                   </div>
                 </div>
               </div>
@@ -84,6 +92,10 @@ export default function ProgramsPage() {
                 <li className="flex items-center">
                   <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
                   Live instruction via Zoom + optional in-person sessions
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
+                  Cursor IDE Pro license included
                 </li>
                 <li className="flex items-center">
                   <CheckCircle className="w-4 h-4 text-green-500 mr-2" />

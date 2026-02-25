@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Bird, RefreshCw, Rocket, Trophy, XCircle } from "lucide-react"
 
 // Game Constants
 const GRAVITY = 15
@@ -374,10 +375,10 @@ export default function FlappyBirdGame() {
 
   return (
     <div className="relative w-full">
-      <Card className="w-full mx-auto bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl border-0 overflow-hidden">
+      <Card className="w-full mx-auto bg-gradient-to-b from-slate-900 to-slate-800 text-white shadow-2xl border-0 overflow-hidden">
         <CardHeader className="bg-gradient-to-r from-ruby-600 to-red-600 text-center py-4">
           <CardTitle className="text-xl md:text-2xl font-bold">
-            🐦 Flappy Bird
+            <Bird className="w-6 h-6 inline mr-2" /> Flappy Bird
           </CardTitle>
           <p className="text-ruby-100 text-sm mt-1">
             Tap or press space to play!
@@ -387,7 +388,7 @@ export default function FlappyBirdGame() {
         <CardContent className="relative p-4 md:p-6">
           <canvas
             ref={canvasRef}
-            className="border-2 border-gray-600 rounded-lg w-full cursor-pointer shadow-inner bg-sky-200"
+            className="border-2 border-slate-600 rounded-lg w-full cursor-pointer shadow-inner bg-sky-200"
             onClick={handleClick}
             onTouchStart={handleClick}
           />
@@ -395,7 +396,7 @@ export default function FlappyBirdGame() {
           {/* Game State Overlays */}
           {gameState === 'waiting' && (
             <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black bg-opacity-40 rounded-lg">
-              <div className="text-3xl md:text-4xl font-bold mb-4 animate-bounce">🐦</div>
+              <Bird className="w-10 h-10 md:w-12 md:h-12 text-yellow-400 mb-4 animate-bounce mx-auto" />
               <div className="text-lg md:text-xl font-bold mb-2 text-center">Ready to Fly?</div>
               <div className="text-sm md:text-base opacity-90 text-center px-4">Tap anywhere or press Space to start</div>
             </div>
@@ -403,10 +404,10 @@ export default function FlappyBirdGame() {
           
           {gameState === 'gameOver' && (
             <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black bg-opacity-50 rounded-lg">
-              <div className="text-2xl md:text-3xl font-bold text-red-400 mb-3">💥 Game Over!</div>
+              <div className="text-2xl md:text-3xl font-bold text-red-400 mb-3 flex items-center justify-center gap-2"><XCircle className="w-8 h-8" /> Game Over!</div>
               <div className="text-lg md:text-xl mb-2">Final Score: <span className="text-yellow-400 font-bold">{score}</span></div>
               {score === highScore && score > 0 && (
-                <div className="text-yellow-400 text-sm md:text-base mb-3 animate-pulse">🎉 New High Score! 🎉</div>
+                <div className="text-yellow-400 text-sm md:text-base mb-3 animate-pulse flex items-center justify-center gap-1"><Trophy className="w-4 h-4" /> New High Score! <Trophy className="w-4 h-4" /></div>
               )}
               <div className="text-sm md:text-base opacity-90 text-center px-4">Tap to try again</div>
             </div>
@@ -422,13 +423,13 @@ export default function FlappyBirdGame() {
           )}
         </CardContent>
         
-        <CardFooter className="bg-gray-800 border-t border-gray-700 px-4 py-3 md:px-6 md:py-4">
+        <CardFooter className="bg-slate-800 border-t border-slate-700 px-4 py-3 md:px-6 md:py-4">
           <div className="flex justify-between items-center w-full">
             <div className="text-sm md:text-base">
-              <span className="text-gray-400">Score:</span> <span className="font-bold text-white">{score}</span>
+              <span className="text-slate-400">Score:</span> <span className="font-bold text-white">{score}</span>
             </div>
             <div className="text-sm md:text-base">
-              <span className="text-gray-400">Best:</span> <span className="font-bold text-yellow-400">{highScore}</span>
+              <span className="text-slate-400">Best:</span> <span className="font-bold text-yellow-400">{highScore}</span>
             </div>
             <div className="flex gap-2">
               {gameState !== 'playing' && (
@@ -436,7 +437,7 @@ export default function FlappyBirdGame() {
                   onClick={startGame}
                   className="bg-ruby-600 hover:bg-ruby-700 text-white transition-all hover:scale-105 shadow-lg text-sm md:text-base px-4 py-2 md:px-6"
                 >
-                  {gameState === 'gameOver' ? "🔄 Play Again" : "🚀 Start Game"}
+                  {gameState === 'gameOver' ? <><RefreshCw className="w-4 h-4 mr-1 inline" /> Play Again</> : <><Rocket className="w-4 h-4 mr-1 inline" /> Start Game</>}
                 </Button>
               )}
               {highScore > 0 && (
@@ -446,7 +447,7 @@ export default function FlappyBirdGame() {
                     setHighScore(0)
                   }}
                   variant="outline"
-                  className="border-gray-600 text-gray-400 hover:text-white hover:border-gray-500 text-xs px-3 py-2"
+                  className="border-slate-600 text-slate-400 hover:text-white hover:border-slate-500 text-xs px-3 py-2"
                   title="Reset high score"
                 >
                   Reset

@@ -19,29 +19,55 @@ import {
 
 const phases = [
   {
-    week: "Pre-Work (5 Weeks)",
-    title: "Foundation Building",
+    week: "Weeks 1-3",
+    title: "Build Your Foundation",
     color: "bg-blue-500",
     borderColor: "border-blue-500",
     topics: [
-      "Command line basics & Git",
-      "HTML & CSS fundamentals",
-      "JavaScript essentials",
-      "Ruby programming basics",
-      "Self-paced with recorded lessons"
+      "No AI tools — learn fundamentals the hard way",
+      "Command line, Git, HTML, CSS, JavaScript",
+      "Ruby programming & OOP basics",
+      "Problem-solving & computational thinking",
+      "Build muscle memory with manual coding"
     ]
   },
   {
-    week: "Weeks 1-9",
-    title: "Full-Stack Development (Rails & React)",
+    week: "Weeks 4-5",
+    title: "AI as Study Buddy",
+    color: "bg-teal-500",
+    borderColor: "border-teal-500",
+    topics: [
+      "Introduce Cursor IDE + AI assistants",
+      "Use AI to understand concepts, not copy code",
+      "Learn to ask better questions",
+      "Ruby on Rails fundamentals",
+      "Database design with PostgreSQL"
+    ]
+  },
+  {
+    week: "Weeks 6-7",
+    title: "AI as Debugging Partner",
     color: "bg-ruby-500",
     borderColor: "border-ruby-500",
     topics: [
-      "Ruby deep dive & OOP",
-      "Ruby on Rails framework & APIs",
-      "Database design with PostgreSQL",
-      "React.js & component architecture",
-      "Authentication & deployment"
+      "Debug with AI, but understand every fix",
+      "Rails APIs & React.js frontends",
+      "Component architecture & state management",
+      "Authentication & deployment",
+      "Read AI output critically"
+    ]
+  },
+  {
+    week: "Weeks 8-9",
+    title: "AI as Coding Accelerator",
+    color: "bg-orange-500",
+    borderColor: "border-orange-500",
+    topics: [
+      "Scaffold projects with AI assistance",
+      "Test-driven development with AI",
+      "Review every line AI generates",
+      "Full-stack Rails + React applications",
+      "Speed up workflow without losing understanding"
     ]
   },
   {
@@ -50,21 +76,21 @@ const phases = [
     color: "bg-purple-500",
     borderColor: "border-purple-500",
     topics: [
+      "Learn how AI works under the hood",
       "Python fundamentals & OpenAI SDK",
-      "Building AI chatbots",
-      "RAG systems with vector databases",
-      "Prompt & context engineering",
-      "AI-integrated applications"
+      "Building AI chatbots & RAG systems",
+      "Prompt engineering & vector databases",
+      "Agentic systems & evals"
     ]
   },
   {
     week: "Weeks 13-17",
-    title: "Capstone Project",
+    title: "AI-Native Development",
     color: "bg-green-500",
     borderColor: "border-green-500",
     topics: [
-      "Build your own AI-powered app",
-      "Full-stack project development",
+      "Build apps with AI as a core feature",
+      "Capstone project development",
       "Code reviews & iteration",
       "Deployment & portfolio prep",
       "Demo Day presentations"
@@ -130,16 +156,24 @@ const technologies = [
     color: "bg-blue-50",
     borderColor: "border-blue-200"
   },
-  { 
-    name: "Git", 
+  {
+    name: "Git",
     category: "Tool",
     iconComponent: GitBranch,
     iconColor: "text-orange-500",
     color: "bg-orange-50",
     borderColor: "border-orange-200"
   },
-  { 
-    name: "OpenAI", 
+  {
+    name: "Cursor",
+    category: "AI IDE",
+    iconComponent: Code,
+    iconColor: "text-cyan-500",
+    color: "bg-cyan-50",
+    borderColor: "border-cyan-200"
+  },
+  {
+    name: "OpenAI",
     category: "AI",
     iconComponent: Brain,
     iconColor: "text-purple-500",
@@ -369,26 +403,33 @@ export default function CurriculumPage() {
               Class Format
             </h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
                 <Clock className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-slate-900">Live Classes</h3>
                 <p className="text-slate-600 text-sm">
-                  Monday – Thursday, 6:00pm – 9:00pm (Guam time)
+                  Tuesday & Thursday, 6:00-9:00 PM (Guam time)
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
+                <BookOpen className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
+                <h3 className="font-semibold mb-2 text-slate-900">Guided Practice</h3>
+                <p className="text-slate-600 text-sm">
+                  Monday, Wednesday, Friday (async with exercises + recordings)
+                </p>
+              </div>
+              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
+                <Users className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
+                <h3 className="font-semibold mb-2 text-slate-900">1-on-1 Mentorship</h3>
+                <p className="text-slate-600 text-sm">
+                  Saturday with Lead Instructor
                 </p>
               </div>
               <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
                 <Smartphone className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-slate-900">Fully Remote</h3>
                 <p className="text-slate-600 text-sm">
-                  Join from anywhere via Zoom with interactive sessions
-                </p>
-              </div>
-              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
-                <BookOpen className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2 text-slate-900">Lifetime Access</h3>
-                <p className="text-slate-600 text-sm">
-                  All recordings and materials available forever
+                  Via Zoom + structured online platform
                 </p>
               </div>
             </div>

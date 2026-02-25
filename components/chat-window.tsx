@@ -131,7 +131,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
 
   return (
     <div
-      className={`fixed bottom-20 left-4 right-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl transition-all duration-300 ease-out ${
+      className={`fixed bottom-20 left-4 right-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl transition-all duration-300 ease-out ${
         isExpanded
           ? "sm:left-auto sm:h-[600px] sm:w-[600px]"
           : "sm:left-auto sm:h-[500px] sm:w-[400px]"
@@ -183,7 +183,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             <div
               className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full ${
                 message.role === "user"
-                  ? "bg-gray-700 text-white"
+                  ? "bg-slate-700 text-white"
                   : "bg-ruby-100 text-ruby-600"
               }`}
             >
@@ -200,8 +200,8 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
                 isExpanded ? "max-w-[85%]" : "max-w-[80%]"
               } ${
                 message.role === "user"
-                  ? "rounded-2xl rounded-tr-md bg-gray-700 px-3.5 py-2.5 text-white"
-                  : "rounded-2xl rounded-tl-md bg-gray-50 px-3.5 py-2.5 text-gray-800 border border-gray-100"
+                  ? "rounded-2xl rounded-tr-md bg-slate-700 px-3.5 py-2.5 text-white"
+                  : "rounded-2xl rounded-tl-md bg-slate-50 px-3.5 py-2.5 text-slate-800 border border-slate-100"
               }`}
             >
               {message.role === "assistant" ? (
@@ -222,7 +222,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
                         <p className="mb-2 last:mb-0">{children}</p>
                       ),
                       strong: ({ children }) => (
-                        <strong className="font-semibold text-gray-900">{children}</strong>
+                        <strong className="font-semibold text-slate-900">{children}</strong>
                       ),
                       ul: ({ children }) => (
                         <ul className="mb-2 ml-4 list-disc space-y-0.5 last:mb-0">
@@ -238,7 +238,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
                         <li className="leading-relaxed">{children}</li>
                       ),
                       code: ({ children }) => (
-                        <code className="rounded bg-gray-200 px-1 py-0.5 text-xs font-mono">
+                        <code className="rounded bg-slate-200 px-1 py-0.5 text-xs font-mono">
                           {children}
                         </code>
                       ),
@@ -262,9 +262,9 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-ruby-100 text-ruby-600">
               <Bot className="h-3.5 w-3.5" />
             </div>
-            <div className="flex items-center gap-2 rounded-2xl rounded-tl-md bg-gray-50 border border-gray-100 px-3.5 py-2.5">
+            <div className="flex items-center gap-2 rounded-2xl rounded-tl-md bg-slate-50 border border-slate-100 px-3.5 py-2.5">
               <Loader2 className="h-4 w-4 animate-spin text-ruby-600" />
-              <span className="text-[13px] text-gray-500">Thinking...</span>
+              <span className="text-[13px] text-slate-500">Thinking...</span>
             </div>
           </div>
         )}
@@ -273,7 +273,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
       </div>
 
       {/* Input */}
-      <div className="border-t border-gray-100 bg-gray-50/50 p-3">
+      <div className="border-t border-slate-100 bg-slate-50/50 p-3">
         <div className="flex gap-2">
           <input
             ref={inputRef}
@@ -283,18 +283,18 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             onKeyDown={handleKeyDown}
             placeholder="Type your message..."
             disabled={isLoading}
-            className="flex-1 rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-sm focus:border-ruby-500 focus:outline-none focus:ring-1 focus:ring-ruby-500 disabled:bg-gray-50 disabled:cursor-not-allowed"
+            className="flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm focus:border-ruby-500 focus:outline-none focus:ring-1 focus:ring-ruby-500 disabled:bg-slate-50 disabled:cursor-not-allowed"
           />
           <button
             onClick={sendMessage}
             disabled={!input.trim() || isLoading}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-ruby-600 text-white transition-all duration-200 hover:bg-ruby-700 hover:shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-ruby-600 text-white transition-all duration-200 hover:bg-ruby-700 hover:shadow-md disabled:bg-slate-300 disabled:cursor-not-allowed disabled:shadow-none"
             aria-label="Send message"
           >
             <Send className="h-4 w-4" />
           </button>
         </div>
-        <p className="mt-2 text-center text-[11px] text-gray-400">
+        <p className="mt-2 text-center text-[11px] text-slate-400">
           Powered by AI &middot; Answers based on CSG information
         </p>
       </div>

@@ -32,31 +32,30 @@ const shimizuProjects = [
     featured: true
   },
   {
-    title: "Håfa Recipes",
-    subtitle: "AI-Powered Recipe Extraction",
-    description: "Mobile app that uses AI to transform cooking videos from TikTok, YouTube, and Instagram into structured, organized recipes. Features video extraction, photo OCR, and AI recipe chat.",
-    image: "/images/HafaRecipes-icon.png",
-    link: "https://hafa-recipes.com",
-    appStoreLink: "https://apps.apple.com/us/app/recipe-extractor-gu/id6755892896",
-    technologies: ["React Native", "Expo", "FastAPI", "OpenAI Whisper", "Gemini", "GPT-4o"],
+    title: "Hafaloha",
+    subtitle: "AI-Powered Ordering Platform",
+    description: "AI-powered ordering platform for Hawaiian retail and food businesses. Full-stack Rails + React with EasyPost shipping, Stripe payments, and real-time order management.",
+    image: "/images/hafaloha_hero.jpg",
+    link: "https://hafaloha-orders.com",
+    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe", "EasyPost", "Redis"],
     highlights: [
-      "Video-to-recipe AI extraction",
-      "Multi-image OCR for handwritten recipes",
-      "Available on iOS App Store"
+      "850+ VIP orders at concert event",
+      "EasyPost shipping & Stripe payments",
+      "Real-time order management"
     ],
     featured: true
   },
   {
-    title: "Hafaloha Orders",
-    subtitle: "Online Ordering & VIP Platform",
-    description: "Complete online ordering and VIP platform for Hafaloha. Successfully handled 850+ VIP orders at a live concert with zero downtime and 100% order fulfillment.",
-    image: "/images/hafaloha_hero.jpg",
-    link: "https://hafaloha-orders.com",
-    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe", "Redis"],
+    title: "Three Squares Grill",
+    subtitle: "Multi-Location Restaurant System",
+    description: "Full ordering system for a multi-location restaurant. Online ordering, POS, admin dashboard, and wholesale management.",
+    image: "/images/three-squares-grill.jpg",
+    link: "https://threesquaresgrill.com",
+    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe"],
     highlights: [
-      "850+ VIP orders at concert event",
-      "Real-time order management",
-      "Expanding to retail & wholesale"
+      "Online ordering & POS integration",
+      "Admin dashboard & analytics",
+      "Wholesale management system"
     ],
     featured: true
   },
@@ -266,16 +265,16 @@ export default function ProjectsPage() {
               Projects Our Graduates Work On
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Through our internship with{" "}
-              <a 
-                href="https://shimizu-technology.com" 
-                target="_blank" 
+              During their internship with{" "}
+              <a
+                href="https://shimizu-technology.com"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-ruby-600 hover:text-ruby-700 font-medium"
               >
                 Shimizu Technology
               </a>
-              , graduates contribute to production applications used by real businesses.
+              , students work on real client projects like these — shipping production code for actual businesses from day one.
             </p>
           </div>
 

@@ -28,7 +28,7 @@ export function EnhancedFAQSection({ faqs }: EnhancedFAQSectionProps) {
   return (
     <section
       id="faq"
-      className="w-full py-12 md:py-16 lg:py-20 bg-gray-100 relative overflow-hidden"
+      className="w-full py-12 md:py-16 lg:py-20 bg-slate-100 relative overflow-hidden"
     >
       {/* Mobile-optimized background patterns */}
       <div className="absolute inset-0 opacity-5">
@@ -36,7 +36,7 @@ export function EnhancedFAQSection({ faqs }: EnhancedFAQSectionProps) {
       </div>
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-gray-900 reveal-on-scroll">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-slate-900 reveal-on-scroll">
           Frequently Asked Questions
         </h2>
         
@@ -50,11 +50,11 @@ export function EnhancedFAQSection({ faqs }: EnhancedFAQSectionProps) {
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              className="animate-stagger mb-4 border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300 touch-feedback"
+              className="animate-stagger mb-4 border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300 touch-feedback"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <AccordionTrigger 
-                className="text-left p-4 hover:bg-gray-50 data-[state=open]:bg-gray-50"
+                className="text-left p-4 hover:bg-slate-50 data-[state=open]:bg-slate-50"
                 onClick={() => handleItemClick(`item-${index}`)}
               >
                 <div className="flex items-center">
@@ -62,7 +62,7 @@ export function EnhancedFAQSection({ faqs }: EnhancedFAQSectionProps) {
                   <span className="font-medium">{faq.question}</span>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="p-4 pt-0 text-gray-600 animate-slideUp">
+              <AccordionContent className="p-4 pt-0 text-slate-600 animate-slideUp">
                 <div className="pl-6 border-l-2 border-ruby-500">
                   {faq.answer}
                 </div>
@@ -72,7 +72,7 @@ export function EnhancedFAQSection({ faqs }: EnhancedFAQSectionProps) {
         </Accordion>
         
         <div className="mt-8 text-center reveal-on-scroll">
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Don&apos;t see your question? Feel free to{" "}
             <a 
               href="#contact" 

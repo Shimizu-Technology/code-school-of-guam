@@ -52,7 +52,7 @@ const PaymentDashboard: React.FC = () => {
       <h2 className="text-2xl md:text-3xl font-bold mb-4 text-center">
         Select a Payment Option
       </h2>
-      <p className="text-gray-300 text-center mb-6">
+      <p className="text-slate-300 text-center mb-6">
         Click an option below or choose &quot;Other&quot; for a custom amount.
       </p>
 
@@ -67,7 +67,7 @@ const PaymentDashboard: React.FC = () => {
               className={`p-4 rounded-md transition-colors ${
                 isSelected
                   ? "bg-ruby-600 text-white"
-                  : "bg-gray-800 hover:bg-gray-700"
+                  : "bg-slate-800 hover:bg-slate-700"
               }`}
             >
               <h3 className="font-semibold mb-1">{option.type}</h3>
@@ -93,7 +93,7 @@ const PaymentDashboard: React.FC = () => {
             id="custom-amount"
             value={customAmount || ""}
             onChange={handleCustomAmountChange}
-            className="p-2 w-full md:max-w-sm bg-gray-800 text-white rounded-md"
+            className="p-2 w-full md:max-w-sm bg-slate-800 text-white rounded-md"
             placeholder="Enter amount in USD"
           />
 
@@ -108,7 +108,7 @@ const PaymentDashboard: React.FC = () => {
             id="description"
             value={description === "Payment for Other" ? "" : description}
             onChange={handleDescriptionChange}
-            className="p-2 w-full md:max-w-sm bg-gray-800 text-white rounded-md"
+            className="p-2 w-full md:max-w-sm bg-slate-800 text-white rounded-md"
             placeholder="e.g., partial payment"
           />
         </div>
