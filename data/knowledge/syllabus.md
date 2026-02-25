@@ -1,125 +1,104 @@
 # Code School of Guam - General Syllabus
 
-**Cohort**: March 2 – August 4, 2026  
-**Format**: Online (Zoom)  
-**Contact Hours**: 270+  
-**CEUs**: 35
+**Cohort 3**: March 2 – August 3, 2026
+**Format**: Hybrid (Live + Async) via Zoom
+**Total Program Hours**: 300+
+**CEUs**: 30
 
 ## 1. Program Overview
 
 - **Duration**: 5 weeks Pre-Work + 17 weeks Live Class (22 weeks total, ~5.5 months)
-- **Class Schedule**: Mon – Thu, 6:00 PM – 9:00 PM (ChST/GMT+10)
-- Schedule may shift slightly if the majority of students require it; total contact hours remain unchanged.
-- **Total Weekly Hours**: 12 hrs live instruction (4 days × 3 hrs) + optional office hours/labs
-- **Structure**: Pre-Work → Core Curriculum → AI Engineering → AI Integration → Capstone → Demo Day → Internship & Mentorship
-- **Career Services**: Integrated weekly workshops + up to 6-month post-graduation support
+- **Live Class Schedule**: Tuesday & Thursday, 6:00 PM – 9:00 PM (ChST/GMT+10)
+- **Saturday 1-on-1s**: Individual sessions with Lead Instructor
+- **Async Days**: Monday, Wednesday, Friday — structured self-paced work with exercises and recordings
+- **Format**: Online via Zoom (with potential for in-person sessions if all students agree)
+- **Structure**: Pre-Work → Full-Stack Web Development → AI Engineering → AI Integration Capstone → Demo Day → Internship & Mentorship
+- **Career Services**: Integrated workshops + up to 6-month post-graduation support
 
-## 2. Pre-Work (5 Weeks: March 2 – April 6)
+**What Makes Us Different:** AI isn't an add-on — it's woven into the entire program through our 6-phase AI progression. By graduation, you'll build AI-powered applications, not just traditional CRUD apps. And our hybrid format gives you the structure of live instruction with the flexibility to learn at your own pace.
 
-Led by Alanna Cruz (TA/Junior Software Engineer) with recordings and weekly check-ins.
+## 2. Hybrid Format
 
-### Objectives
-- Install development environment (Ruby, VS Code, Git, WSL/macOS Terminal)
-- Learn programming basics in Ruby
-- Introduction to web technologies
+### Live Days (Tuesday & Thursday, 6–9 PM)
+- New concepts taught by your instructor via Zoom
+- Live coding demos, exercises, and Q&A
 
-### Topics
-- Variables, data types, conditionals, loops
-- Simple Ruby scripts & CLI I/O
-- Git fundamentals & GitHub account setup
-- HTML, CSS, and JavaScript basics
-- Environment setup and troubleshooting
+### Async Days (Monday, Wednesday, Friday)
+- Structured assignments posted in the learning platform (CSG Prework Grader)
+- Watch assigned lesson recordings (15–30 min each)
+- Complete required exercises with auto-grading
+- Post completion in Slack — your instructor reviews and gives feedback
 
-## 3. Core Curriculum (Weeks 1 – 17)
+### Saturday 1-on-1s
+- Individual sessions with Leon (Lead Instructor)
+- Review your progress, work through blockers, plan your week
+- 30–60 minutes per student
 
-| Week | Section | Key Concepts & Skills |
-|------|---------|----------------------|
-| 1 | Ruby & Rails Intro | Ruby basics, MVC architecture, APIs, Intro to Rails |
-| 2 | Rails CRUD | Models, CRUD operations, RESTful conventions |
-| 3 | Rails Advanced | Validations, Migrations, Associations (Has Many) |
-| 4 | JavaScript & React | JS basics, React intro, useState/useEffect |
-| 5 | React Basics | Modals, Forms, CSS frameworks (TailwindCSS) |
-| 6 | Auth Backend | Career Services, Authentication (Rails + JWT) |
-| 7 | Auth & Authorization | Authorization, finishing backend auth |
-| 8 | Auth Frontend | React auth, React Router, Has Many Through |
-| 9 | Deploy & Python | Deploy full app (Render + Netlify), Python intro |
-| 10 | AI Foundations | LLMs, OpenAI SDK, basic chatbots |
-| 11 | AI Multi-turn | Conversation history, system prompts, personas |
-| 12 | RAG with Pinecone | Chunking, embeddings, semantic search |
-| 13 | Prompt & Context Engineering | Advanced prompting, context windows |
-| 14 | AI Integration | Connect AI chatbot to mini-capstone project |
-| 15-16 | Final Capstone | Individual full-stack projects |
-| 17 | Demo Day & Wrap-Up | Final presentations, peer & instructor feedback, career next steps |
+## 3. Pre-Work Phase (5 Weeks: March 2 – April 6)
 
-## 4. Mini-Capstone Project (Built Throughout)
+Led by Alanna Cruz (Instructor/Junior Software Engineer).
 
-Students build a full-stack application throughout the program, culminating in AI integration:
+**Schedule:**
+- Tuesday & Thursday, 6:00 PM – 7:30 PM — Live sessions via Zoom (shorter than main class)
+- Saturday — 1-on-1 with Leon (30–45 min per student)
+- Monday, Wednesday, Friday — Async exercises
 
-### The AI-Powered Cookbook (or Blog)
-- **Weeks 1-9**: Build Rails API + React frontend with authentication
-- **Week 9**: Deploy full-stack application
-- **Weeks 10-12**: Learn AI Engineering fundamentals separately
-- **Week 14**: Integrate AI chatbot into the cookbook app
+**Topics:** Variables, data types, conditionals, loops, Ruby scripts, Git, HTML/CSS/JS basics, environment setup.
 
-### AI Integration Features
-- Knowledge base with cooking tips, substitutions, techniques (RAG with Pinecone)
-- AI-powered chatbot service
-- React chat widget (floating button → modal)
-- Context-aware responses (chatbot knows what recipe you're viewing)
+## 4. AI-as-a-Tool Philosophy (6 Phases)
 
-### Architecture
-```
-React Frontend ──┬──► Rails API (CRUD, Auth)
-                 │
-                 └──► AI Service ──► Pinecone (RAG)
-```
+- **Phase 1 (Weeks 1-3): Build Your Foundation** — No AI tools. Learn fundamentals the hard way.
+- **Phase 2 (Weeks 4-5): AI as Study Buddy** — Introduce Cursor IDE. Use AI to understand, not copy.
+- **Phase 3 (Weeks 6-7): AI as Debugging Partner** — Debug with AI, but understand every fix.
+- **Phase 4 (Weeks 8-9): AI as Coding Accelerator** — Scaffold, test, review every line.
+- **Phase 5 (Weeks 10-12): AI Engineering** — Learn how AI works under the hood.
+- **Phase 6 (Weeks 13-17): AI-Native Development** — Build apps with AI as a core feature.
 
-## 5. Final Capstone (Weeks 15-16)
+## 5. 17-Week Calendar
 
-- Build a production-ready full-stack application of your choice
-- **Required features**: authentication, CRUD, responsive UI, basic tests, deployment
-- **Required**: AI-powered feature (e.g., chatbot, recommendation engine, or intelligent search)
-- Present to peers, instructors, and invited industry guests
+| Week | Topic | AI Phase |
+|------|-------|----------|
+| 1 | Ruby Fundamentals | No AI Tools |
+| 2 | Ruby Fundamentals II (OOP, testing) | No AI Tools |
+| 3 | Rails API (MVC, REST, PostgreSQL) | No AI Tools |
+| 4 | JavaScript & React Intro | AI as Study Buddy (Cursor introduced) |
+| 5 | React CRUD | AI as Study Buddy |
+| 6 | Authentication & Authorization | AI as Debugging Partner |
+| 7 | Advanced Rails & Team Mini-Project | AI as Debugging Partner |
+| 8 | Mini-Capstone | AI as Coding Accelerator |
+| 9 | Deploy & React Polish (Tailwind, Render, Netlify) | AI as Coding Accelerator |
+| 10 | AI Engineering: LLMs & Chatbots (Python, OpenAI) | AI Engineering |
+| 11 | AI Engineering: RAG & Evals (Pinecone, embeddings) | AI Engineering |
+| 12 | Prompt Engineering & Agents (function calling, MCP) | AI Engineering |
+| 13 | AI Integration Capstone Prep | AI-Native Development |
+| 14-16 | Individual Capstones | AI-Native Development |
+| 17 | Demo Day & Career Launch | AI-Native Development |
 
-## 6. Career Services (Continuous)
+## 6. Program Hours
 
-- Weekly workshops: résumé & cover letter writing, LinkedIn optimization, personal branding, white-boarding & technical interviews, salary negotiation
-- Mock interviews with instructors and external engineers
-- Job-search strategy & networking (local & remote)
-- Post-grad support: email/Slack check-ins, résumé refresh, referral help (up to 6 months)
+| Component | Hours/Week | Weeks | Total |
+|-----------|-----------|-------|-------|
+| Live instruction (Tue/Thu) | 6 | 17 | 102 |
+| Saturday 1-on-1s | 1.5 | 17 | 25.5 |
+| Structured async (Mon/Wed/Fri) | 7.5 | 17 | 127.5 |
+| Prework live (Tue/Thu) | 3 | 5 | 15 |
+| Prework Saturday 1-on-1s | 0.75 | 5 | 3.75 |
+| Prework async (Mon/Wed/Fri) | 6 | 5 | 30 |
+| **Total** | | | **303.75** |
 
-## 7. Internship & Mentorship (Post-Graduation)
+## 7. Technologies
 
-- **Duration**: 10-week internship with Shimizu Technology LLC
-- **Projects**: Real production work on HafaGPT, HafaRecipes, Airport System, and client applications
-- **Structure**: Agile sprints, code reviews, daily stand-ups
-- **Mentorship**: Weekly one-on-one sessions with senior engineers
+Ruby, Ruby on Rails, JavaScript, React, HTML/CSS, Tailwind CSS, PostgreSQL, Python, OpenAI API, Pinecone, Git/GitHub, VS Code, Cursor IDE (Pro license included), Render, Netlify.
 
-## 8. Policies & Expectations
+## 8. Assessment
 
-- **Attendance**: Live participation expected; notify staff of unavoidable absences
-- **Code of Conduct**: Respectful, harassment-free learning environment; violations may lead to dismissal
-- **Assessment**: Weekly assignments 20% • Mid-course quizzes 10% • Capstone 50% • Participation 20%
-- **Academic Honesty**: Original work required; AI tools permitted with understanding and proper citation
+- Weekly assignments: 20%
+- Mid-course quizzes: 10%
+- Capstone project: 50%
+- Participation: 20%
 
-## 9. Resources
+## 9. Contact
 
-- Recorded class videos (accessible during the course and indefinitely after)
-- Private GitHub org with starter repos, solution branches, and reading lists
-- Cloud development tools: Render, Netlify, Pinecone
-- Slack workspace for 24/7 peer & instructor support
-
-## 10. Technical Requirements
-
-- Laptop capable of running VS Code + Docker (8 GB RAM minimum, 16 GB recommended)
-- Stable internet (5 Mbps+)
-- macOS (recommended), Windows 11 + WSL2, or Linux accepted
-
-## 11. Contact
-
-- **Email**: codeschoolofguam@gmail.com
-- **Phone**: (671) 483-0219
-- **Website**: codeschoolofguam.com
-
-We're excited to guide you from fundamentals to full-stack fluency with AI integration—and into your first professional projects. Welcome to the Code School of Guam!
-
+- Email: codeschoolofguam@gmail.com
+- Phone: (671) 483-0219
+- Website: codeschoolofguam.com
