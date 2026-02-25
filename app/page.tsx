@@ -23,8 +23,7 @@ import {
   Quote,
   Target,
   Bot,
-  UtensilsCrossed,
-  PartyPopper
+  UtensilsCrossed
 } from "lucide-react"
 
 // Student testimonials
@@ -318,7 +317,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-xl text-slate-300 mb-4">
-              Guam&apos;s First Coding Bootcamp
+              Guam&apos;s First AI-Native Coding Bootcamp — Hybrid Format
             </p>
             
             <p className="text-2xl font-semibold text-green-400 mb-6">
@@ -330,6 +329,10 @@ export default function HomePage() {
               <div className="flex items-center gap-2 text-slate-300">
                 <Calendar className="w-5 h-5 text-blue-400" />
                 <span>Next cohort: March 2, 2026</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-300">
+                <Clock className="w-5 h-5 text-green-400" />
+                <span>12+ Hours/Week Live + Structured Async Practice</span>
               </div>
               <div className="flex items-center gap-2 text-ruby-400 font-semibold">
                 <Zap className="w-5 h-5 text-yellow-400" />
@@ -598,7 +601,7 @@ export default function HomePage() {
                   <h3 className="text-lg font-bold text-slate-900">Under 6 Months</h3>
                 </div>
                 <p className="text-slate-600 text-sm">
-                  From zero to AI-capable full-stack developer with live instruction and hands-on projects
+                  From zero to AI-capable full-stack developer with live instruction, hands-on projects, and Cursor IDE Pro license included
                 </p>
               </div>
 
@@ -678,14 +681,14 @@ export default function HomePage() {
                 <p className="text-sm text-slate-400">AI-powered Chamorro language learning platform</p>
               </div>
               <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all">
-                <UtensilsCrossed className="w-8 h-8 text-orange-400 mb-2" />
-                <h3 className="font-semibold mb-1">Håfa Recipes</h3>
-                <p className="text-sm text-slate-400">iOS app with 4.9-star rating on App Store</p>
+                <Rocket className="w-8 h-8 text-orange-400 mb-2" />
+                <h3 className="font-semibold mb-1">Hafaloha</h3>
+                <p className="text-sm text-slate-400">AI-powered ordering platform for retail and food businesses</p>
               </div>
               <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all">
-                <PartyPopper className="w-8 h-8 text-yellow-400 mb-2" />
-                <h3 className="font-semibold mb-1">Hafaloha Orders</h3>
-                <p className="text-sm text-slate-400">Handled 850+ VIP orders at live concert</p>
+                <UtensilsCrossed className="w-8 h-8 text-yellow-400 mb-2" />
+                <h3 className="font-semibold mb-1">Three Squares Grill</h3>
+                <p className="text-sm text-slate-400">Full ordering system for a multi-location restaurant</p>
               </div>
             </div>
 

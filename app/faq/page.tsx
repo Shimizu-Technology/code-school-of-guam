@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     question: "Are the classes held in-person or online?",
-    answer: "All our classes are conducted fully remotely via Zoom. This allows you to participate in live, interactive sessions from anywhere with a reliable internet connection. Our online format provides flexibility and convenience while maintaining a high level of engagement and support."
+    answer: "All classes are fully remote via Zoom + a structured online platform. Live sessions are Tuesday & Thursday 6-9 PM, guided async practice runs Monday/Wednesday/Friday, and Saturday is reserved for 1-on-1 mentorship with the Lead Instructor."
   },
   {
     question: "How does the internship work?",
@@ -45,6 +45,18 @@ const faqs = [
   {
     question: "Are there opportunities to become a teaching assistant?",
     answer: "Yes! Outstanding graduates may be invited to become paid teaching assistants for future cohorts, providing leadership experience and reinforcing your own learning."
+  },
+  {
+    question: "What is the hybrid format?",
+    answer: "Our hybrid format combines live instruction with structured async practice for maximum learning. Live classes are Tuesday & Thursday from 6-9 PM via Zoom. Monday, Wednesday, and Friday feature guided async practice with exercises, coding challenges, and recorded walkthroughs. Saturday is dedicated to 1-on-1 mentorship sessions with the Lead Instructor. This format gives you 13.5 hours of structured learning per week while offering more flexibility than a traditional daily schedule."
+  },
+  {
+    question: "What AI tools will I learn?",
+    answer: "You'll learn to use Cursor IDE (Pro license included), ChatGPT, the OpenAI API, Pinecone vector databases, and LangChain concepts. Our progressive AI curriculum starts with no AI tools in the first few weeks so you build a strong foundation, then gradually introduces AI as a study buddy, debugging partner, coding accelerator, and finally teaches you to build AI-powered applications from scratch."
+  },
+  {
+    question: "Do I need to know anything about AI before starting?",
+    answer: "No! We teach AI from scratch with a progressive approach. You'll start by learning coding fundamentals without any AI tools, then gradually learn to use AI effectively as you advance through the program. By the end, you'll be building full applications with AI features like chatbots and RAG systems. No prior AI knowledge required."
   },
   {
     question: "Why is the tuition set at $7,500?",

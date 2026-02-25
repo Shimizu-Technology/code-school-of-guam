@@ -32,7 +32,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
           {String(value).padStart(2, "0")}
         </span>
       </div>
-      <span className="text-xs sm:text-sm text-gray-400 mt-2 uppercase tracking-wider">
+      <span className="text-xs sm:text-sm text-slate-400 mt-2 uppercase tracking-wider">
         {label}
       </span>
     </div>
@@ -79,7 +79,7 @@ export function CountdownTimer() {
 
   return (
     <div className="text-center py-6">
-      <div className="inline-flex items-center gap-2 text-gray-400 text-sm mb-4">
+      <div className="inline-flex items-center gap-2 text-slate-400 text-sm mb-4">
         <Clock className="h-4 w-4" />
         <span>Cohort 3 starts March 2, 2026</span>
       </div>

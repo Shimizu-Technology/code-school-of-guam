@@ -24,7 +24,7 @@ export function ChatButton() {
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-4 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
           isOpen
-            ? "bg-gray-700 text-white hover:bg-gray-800 focus:ring-gray-500"
+            ? "bg-slate-700 text-white hover:bg-slate-800 focus:ring-slate-500"
             : "bg-ruby-600 text-white hover:bg-ruby-700 focus:ring-ruby-500"
         }`}
         aria-label={isOpen ? "Close chat" : "Open chat"}
