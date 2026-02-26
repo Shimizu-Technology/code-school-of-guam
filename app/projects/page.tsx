@@ -49,15 +49,15 @@ const shimizuProjects = [
     title: "Three Squares Grill",
     subtitle: "Multi-Location Restaurant System",
     description: "Full ordering system for a multi-location restaurant. Online ordering, POS, admin dashboard, and wholesale management.",
-    image: "/images/three-squares-grill.jpg",
-    link: "https://threesquaresgrill.com",
+    image: "/images/three-squares-grill.svg",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe"],
     highlights: [
       "Online ordering & POS integration",
       "Admin dashboard & analytics",
       "Wholesale management system"
     ],
-    featured: true
+    featured: true,
+    comingSoon: true
   },
   {
     title: "GIAA Golf Tournament",
@@ -293,10 +293,17 @@ export default function ProjectsPage() {
                       fill
                       className={`object-contain p-8 ${project.image.includes('hafaloha') ? 'object-cover p-0' : ''}`}
                     />
-                    {project.featured && (
+                    {project.featured && !project.comingSoon && (
                       <div className="absolute top-4 left-4">
                         <span className="px-3 py-1 bg-ruby-500 text-white text-xs font-semibold rounded-full flex items-center">
                           <Star className="w-3 h-3 mr-1" /> Featured
+                        </span>
+                      </div>
+                    )}
+                    {project.comingSoon && (
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-full flex items-center">
+                          <Rocket className="w-3 h-3 mr-1" /> Coming Soon
                         </span>
                       </div>
                     )}
@@ -336,7 +343,7 @@ export default function ProjectsPage() {
 
                     {/* Links */}
                     <div className="flex flex-wrap gap-3">
-                      {project.link && (
+                      {project.link && !project.comingSoon && (
                         <a
                           href={project.link}
                           target="_blank"
@@ -346,6 +353,12 @@ export default function ProjectsPage() {
                           Visit Site
                           <ExternalLink className="w-3 h-3 ml-2" />
                         </a>
+                      )}
+                      {project.comingSoon && (
+                        <span className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-700 rounded-md text-sm font-medium">
+                          <Rocket className="w-3 h-3 mr-2" />
+                          Coming Soon
+                        </span>
                       )}
                       {project.appStoreLink && (
                         <a
