@@ -686,10 +686,11 @@ export default function HomePage() {
                 <h3 className="font-semibold mb-1">Hafaloha</h3>
                 <p className="text-sm text-slate-400">AI-powered ordering platform for retail and food businesses</p>
               </div>
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all">
+              <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all relative">
                 <UtensilsCrossed className="w-8 h-8 text-yellow-400 mb-2" />
                 <h3 className="font-semibold mb-1">Three Squares Grill</h3>
                 <p className="text-sm text-slate-400">Full ordering system for a multi-location restaurant</p>
+                <span className="absolute top-3 right-3 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full font-medium">Coming Soon</span>
               </div>
             </div>
 
