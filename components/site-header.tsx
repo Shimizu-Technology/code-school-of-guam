@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Menu, X, ChevronDown } from "lucide-react"
@@ -45,13 +46,17 @@ export function SiteHeader() {
       <nav className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="flex items-center text-white font-bold text-lg">
-              <span className="text-ruby-500 mr-1">&lt;</span>
-              <span className="text-ruby-400">/</span>
-              <span className="text-ruby-500 mr-2">&gt;</span>
-              <span className="group-hover:text-ruby-400 transition-colors">Code School of Guam</span>
-            </div>
+          <Link href="/" className="flex items-center space-x-3 group">
+            <Image
+              src="/CSG-Logo.png"
+              alt="Code School of Guam"
+              width={40}
+              height={40}
+              className="rounded-md flex-shrink-0"
+            />
+            <span className="text-white font-bold text-lg group-hover:text-ruby-400 transition-colors">
+              Code School of Guam
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

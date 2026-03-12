@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Mail, Phone, ExternalLink, Heart } from "lucide-react"
 
 export function SiteFooter() {
@@ -10,11 +11,15 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center text-white font-bold text-lg mb-4">
-              <span className="text-ruby-500 mr-1">&lt;</span>
-              <span className="text-ruby-400">/</span>
-              <span className="text-ruby-500 mr-2">&gt;</span>
-              <span>Code School of Guam</span>
+            <div className="flex items-center space-x-3 mb-4">
+              <Image
+                src="/CSG-Logo.png"
+                alt="Code School of Guam"
+                width={40}
+                height={40}
+                className="rounded-md flex-shrink-0"
+              />
+              <span className="text-white font-bold text-lg">Code School of Guam</span>
             </div>
             <p className="text-slate-400 text-sm mb-4">
               Guam&apos;s first coding bootcamp. Learn to build AI-powered applications in under 6 months.
