@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { CountdownTimer } from "@/components/countdown-timer"
+import { CohortProgressSection } from "@/components/cohort-progress"
 import { 
   ChevronRight, 
   ChevronLeft,
@@ -376,6 +377,9 @@ export default function HomePage() {
 
       {/* STUDENT SUCCESS STORIES - Carousel */}
       <TestimonialCarousel />
+
+      {/* COHORT 3 IN SESSION - Progress section */}
+      <CohortProgressSection />
 
       {/* CURRICULUM PREVIEW - What You'll Learn (moved up before pricing) */}
       <section className="py-24 lg:py-32 bg-white relative">
