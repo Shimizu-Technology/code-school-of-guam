@@ -1,9 +1,11 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { ArrowRight } from "lucide-react"
 
 const COHORT_START = new Date("2026-03-02")
 const TOTAL_WEEKS = 22
+const WAITLIST_FORM = "https://forms.gle/nJv8nAfxsvvLSbbq7"
 
 function getCurrentWeek(): number {
   const now = new Date()
@@ -13,8 +15,17 @@ function getCurrentWeek(): number {
 }
 
 export function CohortProgressSection() {
-  const currentWeek = getCurrentWeek()
+  // useState(1) as SSR-safe default; updated in useEffect to avoid hydration mismatch
+  const [currentWeek, setCurrentWeek] = useState(1)
+
+  useEffect(() => {
+    setCurrentWeek(getCurrentWeek())
+  }, [])
+
   const progressPercent = Math.round((currentWeek / TOTAL_WEEKS) * 100)
+
+  // Hide section once cohort has completed
+  if (currentWeek >= TOTAL_WEEKS) return null
 
   return (
     <section className="py-16 bg-slate-50">
@@ -73,7 +84,9 @@ export function CohortProgressSection() {
             <ArrowRight className="w-4 h-4" />
           </a>
           <a
-            href="#waitlist"
+            href={WAITLIST_FORM}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 border border-slate-200 text-slate-900 font-semibold px-6 py-3 rounded-lg hover:bg-slate-100 transition-colors"
           >
             Join Cohort 4 Waitlist

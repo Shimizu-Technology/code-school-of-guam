@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { CountdownTimer } from "@/components/countdown-timer"
 import { CohortProgressSection } from "@/components/cohort-progress"
 import { 
   ChevronRight, 
@@ -341,9 +340,6 @@ export default function HomePage() {
                 <span>Cohort 4 waitlist now open — spots are limited!</span>
               </div>
             </div>
-
-            {/* Countdown Timer */}
-            <CountdownTimer />
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
