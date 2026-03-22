@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { CountdownTimer } from "@/components/countdown-timer"
+import { CohortProgressSection } from "@/components/cohort-progress"
 import { 
   ChevronRight, 
   ChevronLeft,
@@ -274,7 +274,7 @@ function TestimonialCarousel() {
           </p>
           <div className="bg-white rounded-lg p-6 max-w-md mx-auto shadow-md">
             <p className="text-sm text-slate-700 mb-4">
-              Join our March 2026 cohort and learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering. <strong>Only 1 class in 2026!</strong>
+              Cohort 3 is <strong>live and running!</strong> We&apos;re now accepting early interest for Cohort 4. Join the waitlist and be first in line.
             </p>
             <a
               href="https://forms.gle/nJv8nAfxsvvLSbbq7"
@@ -282,7 +282,7 @@ function TestimonialCarousel() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
             >
-              Apply for March Cohort
+              Join the Cohort 4 Waitlist
               <Rocket className="ml-2 h-4 w-4" />
             </a>
           </div>
@@ -329,7 +329,7 @@ export default function HomePage() {
             <div className="flex flex-wrap justify-center gap-6 mb-8">
               <div className="flex items-center gap-2 text-slate-300">
                 <Calendar className="w-5 h-5 text-blue-400" />
-                <span>Next cohort: March 2, 2026</span>
+                <span>Cohort 3 is live — started March 2, 2026</span>
               </div>
               <div className="flex items-center gap-2 text-slate-300">
                 <Clock className="w-5 h-5 text-green-400" />
@@ -337,12 +337,9 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-2 text-ruby-400 font-semibold">
                 <Zap className="w-5 h-5 text-yellow-400" />
-                <span>Only 1 class in 2026 — Limited spots!</span>
+                <span>Cohort 4 waitlist now open — spots are limited!</span>
               </div>
             </div>
-
-            {/* Countdown Timer */}
-            <CountdownTimer />
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -352,7 +349,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
               >
-                Apply for March Cohort
+                Join Cohort 4 Waitlist
                 <ChevronRight className="ml-2 w-5 h-5" />
               </a>
               <Link
@@ -376,6 +373,9 @@ export default function HomePage() {
 
       {/* STUDENT SUCCESS STORIES - Carousel */}
       <TestimonialCarousel />
+
+      {/* COHORT 3 IN SESSION - Progress section */}
+      <CohortProgressSection />
 
       {/* CURRICULUM PREVIEW - What You'll Learn (moved up before pricing) */}
       <section className="py-24 lg:py-32 bg-white relative">
@@ -712,10 +712,10 @@ export default function HomePage() {
             Ready to Start Your Journey?
           </h2>
           <p className="text-xl text-white/90 mb-4 max-w-2xl mx-auto">
-            Tuition: $7,500 — Flexible payment plans available. Next cohort starts March 2, 2026.
+            Tuition: $7,500 — Flexible payment plans available. Cohort 4 coming later in 2026.
           </p>
           <p className="text-lg text-yellow-300 font-semibold mb-8 flex items-center justify-center gap-2">
-            <Zap className="w-5 h-5 fill-current" /> Only 1 class in 2026 — Don&apos;t miss it!
+            <Zap className="w-5 h-5 fill-current" /> Cohort 3 is underway — join the waitlist for Cohort 4!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -724,7 +724,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
             >
-              Apply Now
+              Join Cohort 4 Waitlist
               <ChevronRight className="ml-2 w-5 h-5" />
             </a>
             <Link
