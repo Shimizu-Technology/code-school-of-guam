@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "Code School of Guam - Learn to Build AI-Powered Applications",
     template: "%s | Code School of Guam"
   },
-  description: "Guam's first coding bootcamp. Learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering in under 6 months. March 2026 cohort now enrolling. Build chatbots, RAG systems, and full-stack web apps.",
+  description: "Guam's first coding bootcamp. Learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering in under 6 months. The 2026 cohort is underway. Build chatbots, RAG systems, and full-stack web apps.",
   keywords: "Code School, Guam, Programming, Software Development, Ruby on Rails, React.js, Python, AI Engineering, AI-powered applications, Coding Bootcamp, Learn to Code Guam 2026, Full-stack developer bootcamp",
   authors: [{ name: "Code School of Guam" }],
   creator: "Leon Shimizu",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Code School of Guam - Build AI-Powered Apps",
-    description: "Guam's first coding bootcamp. Learn to build AI-powered applications with chatbots and RAG systems. Only 1 class in 2026!",
+    description: "Guam's first coding bootcamp. Learn to build AI-powered applications with chatbots and RAG systems. The 2026 cohort is underway.",
     images: ['/CSG-Logo.png'],
   },
   robots: {
@@ -72,7 +72,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
   name: 'Code School of Guam',
-  description: "Guam's first coding bootcamp. Learn to build AI-powered applications with full-stack development and AI engineering. March 2026 cohort now enrolling.",
+  description: "Guam's first coding bootcamp. Learn to build AI-powered applications with full-stack development and AI engineering. The 2026 cohort is underway.",
   url: 'https://codeschoolofguam.com',
   logo: 'https://codeschoolofguam.com/CSG-Logo.png',
   image: 'https://codeschoolofguam.com/CSG-Logo.png',

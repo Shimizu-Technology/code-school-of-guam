@@ -2,38 +2,35 @@
 
 ## Current Enrollment Status
 
-**Enrollment is NOW OPEN** for Cohort 3 (March 2026)!
+**Applications are closed for the 2026 cohort.**
 
-We have successfully completed 2 cohorts with 11 graduates and a 100% completion rate. The March 2026 cohort will be our third.
+The only Code School of Guam cohort in 2026 started on March 2, 2026 and is now underway. We are not accepting late enrollment for this cohort.
 
-## Upcoming Cohort Details
+We have successfully completed 2 cohorts with 11 graduates and a 100% completion rate. The current 2026 cohort is Cohort 3.
+
+## Current Cohort Details
 
 - **Cohort**: Cohort 3 (March 2026)
 - **Pre-work Start Date**: March 2, 2026
+- **Status**: In progress
 - **Class Size**: Maximum 10 students
 - **Format**: Fully remote via Zoom
 
-## How to Apply
+## Future Cohort Updates
 
-### Step 1: Submit Application
-Complete our online application form:
-**https://forms.gle/8vNXoqxCimxjfXkU6**
+Prospective students who want to hear about future opportunities should contact Code School of Guam directly:
 
-### Step 2: Application Review
-Our team will review your application and reach out to schedule a brief conversation.
+- **Email**: codeschoolofguam@gmail.com
+- **Phone**: +1 (671) 483-0219
 
-### Step 3: Enrollment Decision
-Qualified applicants will receive an enrollment offer.
-
-### Step 4: Secure Your Spot
-Pay the $500 deposit to reserve your seat in the cohort.
+Please do not tell prospective students that they can apply for the March 2026 cohort. That cohort has already started.
 
 ## Admission Requirements
 
 ### No Prior Experience Required
 - Complete beginners are welcome
 - No coding experience necessary
-- Our 5-week pre-work phase brings everyone up to speed
+- The 5-week pre-work phase is designed to bring everyone up to speed
 
 ### What We Look For
 - **Commitment**: Willingness to dedicate 12-15 hours per week
@@ -67,34 +64,27 @@ We intentionally keep cohorts small:
 ## Timeline
 
 ### March 2026 Cohort
-1. **Now**: Applications open
-2. **Pre-work Begins**: March 2, 2026
-3. **Live Classes Begin**: After 5 weeks of pre-work
-4. **Program Ends**: Approximately August 2026
-5. **Internship**: Optional 2-month program after graduation
+1. **Pre-work Began**: March 2, 2026
+2. **Live Classes Begin**: After 5 weeks of pre-work
+3. **Program Ends**: Approximately August 2026
+4. **Internship**: Optional 2-month program after graduation
 
 ## Frequently Asked Questions About Admissions
 
-### Is there an application deadline?
-We accept applications on a rolling basis until the cohort is full. Apply early to secure your spot - we only accept 10 students!
+### Is enrollment open right now?
+No. Applications are closed for the only 2026 cohort because it has already started.
+
+### Can I join the 2026 cohort late?
+No. Late enrollment is not permitted after the program has started.
+
+### How can I learn about future cohorts?
+Contact codeschoolofguam@gmail.com or call +1 (671) 483-0219 and ask to receive future cohort updates.
 
 ### Is there an interview?
-We conduct brief conversations with applicants to understand your goals and ensure the program is a good fit.
-
-### Can I defer my enrollment?
-Please contact us to discuss deferment options if your circumstances change.
-
-### What if the cohort is full?
-You'll be placed on our waitlist and notified of the next available cohort.
-
-## Ready to Apply?
-
-Start your coding journey today:
-**https://forms.gle/8vNXoqxCimxjfXkU6**
+When enrollment is open, we conduct brief conversations with applicants to understand their goals and ensure the program is a good fit.
 
 ## Questions?
 
 Contact us:
 - **Email**: codeschoolofguam@gmail.com
 - **Phone**: +1 (671) 483-0219
-

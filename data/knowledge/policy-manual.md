@@ -43,6 +43,8 @@ The program includes:
 - **Financial Commitment**: Ability to pay tuition via selected payment options
 
 ### Application Steps
+Applications are closed for the 2026 cohort because the cohort has already started. When enrollment is open, the admissions process is:
+
 1. **Application Form**: Complete the online form at codeschoolofguam.com
 2. **Schedule an Interview**: An acknowledgment email will be sent upon application submission. Schedule a brief interview to discuss program details and fit.
 3. **Enrollment**:
@@ -225,4 +227,3 @@ For inquiries:
 - **Website**: codeschoolofguam.com
 
 This document outlines the policies and procedures of the Code School of Guam. All students and staff are expected to familiarize themselves with its contents.
-

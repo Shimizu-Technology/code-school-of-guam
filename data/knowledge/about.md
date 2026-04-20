@@ -63,7 +63,7 @@ Code School of Guam is connected to Shimizu Technology, a local software develop
 
 ## Cohort History
 
-Code School of Guam has completed 2 cohorts so far, with the 3rd cohort starting March 2, 2026.
+Code School of Guam has completed 2 cohorts so far, and the 3rd cohort started March 2, 2026.
 
 ### Cohort 1 (2025)
 - **100% Completion Rate** - All students finished the program
@@ -79,7 +79,7 @@ Code School of Guam has completed 2 cohorts so far, with the 3rd cohort starting
 - **11 graduates** across 2 cohorts
 - **100% completion rate** - Every student who enrolled has graduated
 - Graduates have gone on to TA roles, junior developer positions, and teaching roles
-- The upcoming March 2026 cohort will be Cohort 3
+- Cohort 3 started March 2, 2026 and is the only 2026 cohort
 
 ## Student Success Stories
 
@@ -134,5 +134,4 @@ Visit our Flappy Bird demo game at codeschoolofguam.com/flappy-bird to see the k
 - Responsive design principles
 - TypeScript for type safety
 
-Ready to build your own games and apps? Join our March 2026 cohort!
-
+Ready to build your own games and apps? Contact Code School of Guam for future cohort updates.

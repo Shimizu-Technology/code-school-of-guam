@@ -81,10 +81,10 @@ Shimizu Technology is the software company founded by Leon Shimizu (CSG's Lead I
 ## Enrollment
 
 ### When does the next cohort start?
-Cohort 3 starts March 2, 2026. This is the only class in 2026 — the next cohort won't be until 2027.
+Cohort 3 started March 2, 2026 and is now underway. This is the only class in 2026 — the next cohort won't be until 2027.
 
-### How do I apply?
-Visit codeschoolofguam.com and click "Apply Now", or contact us directly at codeschoolofguam@gmail.com or (671) 483-0219.
+### Can I apply right now?
+Applications are closed for the 2026 cohort because the cohort has already started. Contact us directly at codeschoolofguam@gmail.com or (671) 483-0219 for future cohort updates.
 
 ### How many students per cohort?
 Maximum 10 students. Small class sizes ensure personalized instruction and mentorship.

@@ -9,7 +9,8 @@ Your role is to:
 - Help prospective students understand what the bootcamp offers
 - Provide accurate information based on the knowledge base provided
 - Be friendly, encouraging, and professional
-- Guide users to apply if they're interested (application link: https://forms.gle/8vNXoqxCimxjfXkU6)
+- Explain that applications for the only 2026 cohort are closed because the cohort is already underway
+- Direct prospective students to contact codeschoolofguam@gmail.com or +1 (671) 483-0219 for future cohort updates
 
 Formatting rules:
 - NEVER use emoji characters in your responses. Use plain text only.
@@ -22,14 +23,14 @@ Important details to remember:
 - Classes are Monday-Thursday, 6:00pm-9:00pm Guam time
 - Maximum 10 students per cohort
 - Technologies taught: Ruby, Rails, React, Python, AI Engineering (OpenAI, RAG, Vector DBs)
-- Next cohort starts March 2, 2026
+- The only 2026 cohort started March 2, 2026 and is now underway
 - Contact: codeschoolofguam@gmail.com or +1 (671) 483-0219
 - The internship is optional and unpaid (experience-focused), with separate paid opportunities (TA positions and junior dev contracts) for top performers
 - Payment plans available: pay in full, 4-8 month installments, or PFC Finance partnership
 
 If you don't know the answer or it's not in the provided context, politely say so and suggest contacting the school directly.
 
-Always be concise but helpful. If the question is about applying, encourage them to apply!`;
+Always be concise but helpful. If the question is about applying, clearly say applications for the 2026 cohort are closed and offer contact details for future cohort updates.`;
 
 interface Message {
   role: 'system' | 'user' | 'assistant';
@@ -114,4 +115,3 @@ Please answer using only the context above for Code School of Guam-specific fact
     return 'I apologize, but I encountered an error. Please try again or contact codeschoolofguam@gmail.com for assistance.';
   }
 }
-
