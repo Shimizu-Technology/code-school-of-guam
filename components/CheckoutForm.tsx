@@ -2,24 +2,23 @@
 "use client"
 
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
-import {
-  StripeCardElement,
-  PaymentMethodResult,
-  StripePaymentElementOptions,
-  PaymentIntentResult
-} from "@stripe/stripe-js"
 import { useState, FormEvent, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import type { PaymentOption } from "@/lib/payment-options"
 
 interface CheckoutFormProps {
-  amount: number
-  paymentType: string
+  displayAmount: number
+  paymentOption: PaymentOption
+  customAmount?: number
+  customDescription?: string
   onSuccess: () => void
 }
 
 export default function CheckoutForm({
-  amount,
-  paymentType,
+  displayAmount,
+  paymentOption,
+  customAmount,
+  customDescription,
   onSuccess,
 }: CheckoutFormProps) {
   const stripe = useStripe()
@@ -28,12 +27,11 @@ export default function CheckoutForm({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [clientSecret, setClientSecret] = useState<string | null>(null)
-  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
   const [processingTo3DS, setProcessingTo3DS] = useState(false)
 
   // Create PaymentIntent when component mounts or amount changes
   useEffect(() => {
-    if (amount <= 0) return;
+    if (displayAmount <= 0) return;
 
     const createPaymentIntent = async () => {
       try {
@@ -41,8 +39,9 @@ export default function CheckoutForm({
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            amount,
-            paymentType,
+            paymentOption,
+            customAmount,
+            customDescription,
           }),
         });
 
@@ -52,7 +51,6 @@ export default function CheckoutForm({
 
         const data = await response.json();
         setClientSecret(data.clientSecret);
-        setPaymentIntentId(data.paymentIntentId);
       } catch (err) {
         setError("Failed to initialize payment. Please try again.");
         console.error("Error creating payment intent:", err);
@@ -60,24 +58,7 @@ export default function CheckoutForm({
     };
 
     createPaymentIntent();
-  }, [amount, paymentType]);
-
-  const handleRedirectCompletion = async (secret: string, intentId: string) => {
-    if (!stripe) return;
-
-    setLoading(true);
-    const { error, paymentIntent } = await stripe.retrievePaymentIntent(secret);
-
-    if (error) {
-      setError(error.message || "Payment failed. Please try again.");
-    } else if (paymentIntent.status === "succeeded") {
-      // Payment successful
-      router.push("/payment-success");
-    } else if (paymentIntent.status === "requires_payment_method") {
-      setError("Your payment was not successful, please try again.");
-    }
-    setLoading(false);
-  };
+  }, [customAmount, customDescription, displayAmount, paymentOption]);
 
   // Check URL for payment_intent_client_secret on mount (for 3DS redirect)
   useEffect(() => {
@@ -89,10 +70,23 @@ export default function CheckoutForm({
     const paymentIntentId = query.get("payment_intent");
 
     if (clientSecret && paymentIntentId) {
-      // Handle the redirect completion
-      handleRedirectCompletion(clientSecret, paymentIntentId);
+      const handleRedirectCompletion = async () => {
+        setLoading(true);
+        const { error, paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+
+        if (error) {
+          setError(error.message || "Payment failed. Please try again.");
+        } else if (paymentIntent.status === "succeeded") {
+          router.push("/payment-success");
+        } else if (paymentIntent.status === "requires_payment_method") {
+          setError("Your payment was not successful, please try again.");
+        }
+        setLoading(false);
+      };
+
+      handleRedirectCompletion();
     }
-  }, [stripe, handleRedirectCompletion]);
+  }, [router, stripe]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -192,7 +186,7 @@ export default function CheckoutForm({
         disabled={!stripe || loading || !clientSecret}
         className="w-full bg-ruby-600 text-white py-2 px-4 rounded-md hover:bg-ruby-700 transition-colors disabled:opacity-50"
       >
-        {loading ? "Processing..." : `Pay $${amount}`}
+        {loading ? "Processing..." : `Pay $${displayAmount}`}
       </button>
       
       <p className="text-slate-400 text-xs text-center mt-4">

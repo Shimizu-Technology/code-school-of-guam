@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import {
+  CUSTOM_PAYMENT_LIMITS,
+  PAYMENT_OPTIONS,
+  isFixedPaymentOption,
+  sanitizePaymentDescription,
+} from '@/lib/payment-options';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-09-30.acacia',
@@ -13,7 +19,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
  */
 export async function POST(req: Request) {
   try {
-    const { paymentMethodId, paymentIntentId, amount, paymentType } = await req.json();
+    const {
+      paymentMethodId,
+      paymentIntentId,
+      paymentOption,
+      customAmount,
+      customDescription,
+    } = await req.json();
 
     // Case 1: Confirm an existing payment intent
     if (paymentIntentId) {
@@ -56,6 +68,37 @@ export async function POST(req: Request) {
     
     // Case 2: Create and confirm a new payment intent (legacy flow)
     if (paymentMethodId) {
+      let amount: number;
+      let paymentType: string;
+
+      if (isFixedPaymentOption(paymentOption)) {
+        const option = PAYMENT_OPTIONS[paymentOption];
+        amount = option.amount;
+        paymentType = option.description;
+      } else if (paymentOption === 'other') {
+        amount = Number(customAmount);
+        paymentType = sanitizePaymentDescription(customDescription);
+      } else {
+        return NextResponse.json({
+          success: false,
+          error: 'Invalid payment option',
+          code: 'invalid_payment_option'
+        }, { status: 400 });
+      }
+
+      if (
+        !Number.isFinite(amount) ||
+        !Number.isInteger(amount) ||
+        amount < CUSTOM_PAYMENT_LIMITS.min ||
+        amount > CUSTOM_PAYMENT_LIMITS.max
+      ) {
+        return NextResponse.json({
+          success: false,
+          error: `Invalid amount. Payments must be between $${CUSTOM_PAYMENT_LIMITS.min} and $${CUSTOM_PAYMENT_LIMITS.max}.`,
+          code: 'invalid_amount'
+        }, { status: 400 });
+      }
+
       const paymentIntent = await stripe.paymentIntents.create({
         amount: amount * 100, // Convert to cents
         currency: 'usd',
@@ -65,6 +108,7 @@ export async function POST(req: Request) {
         return_url: `${process.env.NEXT_PUBLIC_BASE_URL || ''}/payment-success`,
         metadata: {
           paymentType,
+          paymentOption,
         },
       });
 
