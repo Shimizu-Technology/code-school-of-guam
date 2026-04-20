@@ -170,15 +170,13 @@ export default function FAQPage() {
             Ready to start your coding journey?
           </h2>
           <p className="text-white/90 mb-6">
-            Join our March 2026 cohort and transform your career. Only 1 class this year!
+            Our only 2026 cohort is underway. Contact us for future cohort updates.
           </p>
           <a
-            href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"
           >
-            Apply Now
+            Request Future Updates
           </a>
         </div>
       </section>

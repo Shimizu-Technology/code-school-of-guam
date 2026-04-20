@@ -21,17 +21,17 @@ export default function ProgramsPage() {
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-400 text-sm font-medium mb-4">
             <Calendar className="h-4 w-4 mr-2" />
-            Only 1 Class in 2026!
+            2026 Cohort Is Underway
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Next Cohort Starts <span className="text-ruby-500">March 2, 2026</span>
+            Cohort 3 Started <span className="text-ruby-500">March 2, 2026</span>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-4">
             Comprehensive program (under 6 months) with <span className="text-white font-semibold">Ruby, Rails, React, Python & AI Engineering</span>
           </p>
           <div className="inline-flex items-center px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-green-400 text-sm font-medium">
             <CheckCircle className="h-4 w-4 mr-1" />
-            Enrollment now open — Limited spots
+            Applications are closed for the 2026 cohort
           </div>
         </div>
         {/* Fade to next section - dark to light */}
@@ -102,7 +102,7 @@ export default function ProgramsPage() {
               <div className="mb-6">
                 <div className="text-gray-200 line-through text-lg">$10,000</div>
                 <div className="text-5xl font-bold mb-2">$7,500</div>
-                <div className="text-ruby-200">March 2026 Cohort</div>
+                <div className="text-ruby-200">Current 2026 Cohort</div>
               </div>
 
               <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-8">
@@ -111,12 +111,10 @@ export default function ProgramsPage() {
               </div>
 
               <a
-                href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
                 className="block w-full text-center px-6 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg font-medium transition-colors mb-4"
               >
-                Apply for March Cohort →
+                Request Future Updates →
               </a>
 
               <button className="block w-full text-center px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg font-medium transition-colors text-sm">
@@ -216,12 +214,10 @@ export default function ProgramsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
               className="inline-flex items-center justify-center px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg font-medium transition-colors"
             >
-              Apply Now
+              Request Future Updates
             </a>
             <Link
               href="/faq"

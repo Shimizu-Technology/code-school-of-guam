@@ -74,12 +74,10 @@ export function SiteHeader() {
           {/* CTA Button */}
           <div className="hidden xl:flex items-center">
             <a
-              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
               className="px-5 py-2 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md text-sm font-medium transition-colors"
             >
-              Apply Now
+              Future Cohort Updates
             </a>
           </div>
 
@@ -119,12 +117,10 @@ export function SiteHeader() {
               ))}
               <div className="pt-4 mt-4 border-t border-gray-800">
                 <a
-                  href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
                   className="block w-full text-center px-4 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium"
                 >
-                  Apply Now
+                  Future Cohort Updates
                 </a>
               </div>
             </div>
@@ -134,4 +130,3 @@ export function SiteHeader() {
     </header>
   )
 }
-

@@ -2,42 +2,48 @@
 
 import React, { useState } from "react"
 import CheckoutForm from "./CheckoutForm"
+import {
+  CUSTOM_PAYMENT_LIMITS,
+  PAYMENT_OPTIONS,
+  PaymentOption,
+} from "@/lib/payment-options"
 
 const PaymentDashboard: React.FC = () => {
-  const [selectedPayment, setSelectedPayment] = useState<string | null>(null)
+  const [selectedPayment, setSelectedPayment] = useState<PaymentOption | null>(null)
   const [customAmount, setCustomAmount] = useState<number | null>(null)
-  const [description, setDescription] = useState<string>("Payment for Other") // Default description
+  const [description, setDescription] = useState<string>("")
   const [showForm, setShowForm] = useState(false)
 
   const paymentOptions = [
-    { type: "Deposit", amount: 500 },
-    { type: "Monthly Installment", amount: 2500 },
-    { type: "Full Tuition", amount: 10000 },
-    { type: "Other", amount: null },
+    { key: "deposit" as const, type: PAYMENT_OPTIONS.deposit.label, amount: PAYMENT_OPTIONS.deposit.amount },
+    { key: "monthlyInstallment" as const, type: PAYMENT_OPTIONS.monthlyInstallment.label, amount: PAYMENT_OPTIONS.monthlyInstallment.amount },
+    { key: "fullTuition" as const, type: PAYMENT_OPTIONS.fullTuition.label, amount: PAYMENT_OPTIONS.fullTuition.amount },
+    { key: "other" as const, type: "Other", amount: null },
   ]
 
-  const handlePaymentSelect = (type: string) => {
-    setSelectedPayment(type)
+  const handlePaymentSelect = (option: PaymentOption) => {
+    setSelectedPayment(option)
     setShowForm(true)
 
-    if (type !== "Other") {
-      setCustomAmount(null) // Reset custom amount if "Other" is not selected
-      setDescription(`Payment for ${type}`)
+    if (option !== "other") {
+      setCustomAmount(null)
+      setDescription("")
     } else {
-      setDescription("Payment for Other") // Reset description for "Other"
+      setDescription("")
     }
   }
 
   const handleCustomAmountChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setCustomAmount(Number(event.target.value))
+    const value = Number(event.target.value)
+    setCustomAmount(Number.isFinite(value) ? value : null)
   }
 
   const handleDescriptionChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setDescription(event.target.value || "Payment for Other")
+    setDescription(event.target.value)
   }
 
   const handlePaymentSuccess = () => {
@@ -53,17 +59,18 @@ const PaymentDashboard: React.FC = () => {
         Select a Payment Option
       </h2>
       <p className="text-gray-300 text-center mb-6">
-        Click an option below or choose &quot;Other&quot; for a custom amount.
+        For enrolled students only. Choose an approved option below or use
+        &quot;Other&quot; for an agreed custom payment.
       </p>
 
       {/* Payment Option Buttons */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         {paymentOptions.map((option) => {
-          const isSelected = selectedPayment === option.type
+          const isSelected = selectedPayment === option.key
           return (
             <button
-              key={option.type}
-              onClick={() => handlePaymentSelect(option.type)}
+              key={option.key}
+              onClick={() => handlePaymentSelect(option.key)}
               className={`p-4 rounded-md transition-colors ${
                 isSelected
                   ? "bg-ruby-600 text-white"
@@ -80,7 +87,7 @@ const PaymentDashboard: React.FC = () => {
       </div>
 
       {/* Custom Amount & Description Fields */}
-      {selectedPayment === "Other" && (
+      {selectedPayment === "other" && (
         <div className="mb-8 text-center">
           <label
             htmlFor="custom-amount"
@@ -91,10 +98,13 @@ const PaymentDashboard: React.FC = () => {
           <input
             type="number"
             id="custom-amount"
+            min={CUSTOM_PAYMENT_LIMITS.min}
+            max={CUSTOM_PAYMENT_LIMITS.max}
+            step={1}
             value={customAmount || ""}
             onChange={handleCustomAmountChange}
             className="p-2 w-full md:max-w-sm bg-gray-800 text-white rounded-md"
-            placeholder="Enter amount in USD"
+            placeholder={`Enter $${CUSTOM_PAYMENT_LIMITS.min}-$${CUSTOM_PAYMENT_LIMITS.max}`}
           />
 
           <label
@@ -106,7 +116,7 @@ const PaymentDashboard: React.FC = () => {
           <input
             type="text"
             id="description"
-            value={description === "Payment for Other" ? "" : description}
+            value={description}
             onChange={handleDescriptionChange}
             className="p-2 w-full md:max-w-sm bg-gray-800 text-white rounded-md"
             placeholder="e.g., partial payment"
@@ -118,16 +128,18 @@ const PaymentDashboard: React.FC = () => {
       {showForm && selectedPayment && (
         <div className="mt-8">
           <h3 className="text-xl font-bold mb-4 text-center">
-            Make Payment: {selectedPayment}
+            Make Payment: {paymentOptions.find((opt) => opt.key === selectedPayment)?.type}
           </h3>
           <CheckoutForm
-            amount={
-              selectedPayment === "Other"
+            displayAmount={
+              selectedPayment === "other"
                 ? customAmount || 0
-                : paymentOptions.find((opt) => opt.type === selectedPayment)
+                : paymentOptions.find((opt) => opt.key === selectedPayment)
                     ?.amount || 0
             }
-            paymentType={description}
+            paymentOption={selectedPayment}
+            customAmount={customAmount || undefined}
+            customDescription={description}
             onSuccess={handlePaymentSuccess}
           />
         </div>

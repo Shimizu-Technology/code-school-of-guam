@@ -2,7 +2,7 @@
 
 ## Tuition
 
-- **Current Price**: $7,500 (March 2026 Cohort)
+- **Current Price**: $7,500 (2026 Cohort)
 - **Previous Price**: $10,000
 - **Savings**: 25% lower than before - save $2,500!
 
@@ -82,4 +82,3 @@ Contact us to discuss flexible payment options:
 - **Phone**: +1 (671) 483-0219
 
 We're happy to work with you to find a payment plan that fits your situation.
-

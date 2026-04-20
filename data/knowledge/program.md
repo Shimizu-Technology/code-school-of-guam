@@ -97,9 +97,9 @@ Code School of Guam is Guam's first coding bootcamp, offering a comprehensive 22
 - Real projects addressing Guam-specific challenges
 - Alumni have gone on to TA roles, junior developer positions, and teaching roles
 
-## Next Cohort
+## Current Cohort
 
-- **Start Date**: March 2, 2026 (pre-work begins)
-- **Enrollment**: Now open
-- **Application**: Apply at forms.gle/8vNXoqxCimxjfXkU6
-
+- **Start Date**: March 2, 2026 (pre-work began)
+- **Status**: The only 2026 cohort is underway
+- **Enrollment**: Closed for the 2026 cohort
+- **Future Updates**: Contact codeschoolofguam@gmail.com or +1 (671) 483-0219

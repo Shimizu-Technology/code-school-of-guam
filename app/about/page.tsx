@@ -450,12 +450,10 @@ export default function AboutPage() {
             Become part of Guam&apos;s growing tech ecosystem. No prior experience required.
           </p>
           <a
-            href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-gray-100 rounded-lg text-lg font-medium transition-all"
           >
-            Apply Now
+            Request Future Updates
           </a>
         </div>
       </section>

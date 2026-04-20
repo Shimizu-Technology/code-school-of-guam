@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Clock, Rocket } from "lucide-react"
+import { Clock, GraduationCap } from "lucide-react"
 
 const TARGET_DATE = new Date("2026-03-02T00:00:00+10:00").getTime()
 
@@ -68,9 +68,9 @@ export function CountdownTimer() {
     return (
       <div className="text-center py-6">
         <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/20 border border-green-500/30 rounded-full">
-          <Rocket className="h-5 w-5 text-green-400" />
+          <GraduationCap className="h-5 w-5 text-green-400" />
           <span className="text-lg font-semibold text-green-400">
-            Cohort 3 has started!
+            The 2026 cohort is underway
           </span>
         </div>
       </div>
@@ -81,7 +81,7 @@ export function CountdownTimer() {
     <div className="text-center py-6">
       <div className="inline-flex items-center gap-2 text-gray-400 text-sm mb-4">
         <Clock className="h-4 w-4" />
-        <span>Cohort 3 starts March 2, 2026</span>
+        <span>Cohort 3 started March 2, 2026</span>
       </div>
       <div className="flex justify-center gap-3 sm:gap-4">
         <TimeUnit value={timeLeft.days} label="Days" />

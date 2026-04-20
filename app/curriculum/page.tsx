@@ -409,12 +409,10 @@ export default function CurriculumPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
               className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all"
             >
-              Apply Now
+              Request Future Updates
             </a>
             <Link
               href="/programs"

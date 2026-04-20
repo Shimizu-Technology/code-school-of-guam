@@ -2,7 +2,7 @@
 
 ## Get in Touch
 
-We're here to help! Whether you have questions about our program, need assistance with enrollment, or just want to learn more, don't hesitate to reach out.
+We're here to help! Whether you have questions about our program, payments, future cohort updates, or just want to learn more, don't hesitate to reach out.
 
 ## Email
 
@@ -40,17 +40,18 @@ Follow us for:
 - Tech tips and resources
 - Community events
 
-## Apply to the Program
+## Future Cohort Updates
 
-Ready to start your coding journey?
+Applications are closed for the only 2026 cohort because it has already started. To hear about future Code School of Guam opportunities, contact us directly.
 
-**Application Form**: https://forms.gle/8vNXoqxCimxjfXkU6
+- **Email**: codeschoolofguam@gmail.com
+- **Phone**: +1 (671) 483-0219
 
 ## Stay Updated
 
 Subscribe to our email list on our website to receive:
 - Program announcements
-- Early enrollment notifications
+- Future enrollment notifications
 - Tech industry news
 - Workshop invitations
 
@@ -83,4 +84,3 @@ While our classes are held Monday - Thursday evenings (6:00pm - 9:00pm), our adm
 - Anything else about Code School of Guam!
 
 Don't see your question answered? Feel free to contact us directly!
-
