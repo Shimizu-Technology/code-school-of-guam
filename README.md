@@ -29,13 +29,9 @@ To get the application running locally, follow these steps:
    NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
    NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
    NEXT_PUBLIC_EMAILJS_USER_ID=your_emailjs_user_id
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-   STRIPE_SECRET_KEY=your_stripe_secret_key
    ```
 
-   Replace the values with your actual **EmailJS** credentials and **Stripe** API keys. To get your Stripe API keys:
-   - Log in to the [Stripe Dashboard](https://dashboard.stripe.com).
-   - Go to **Developers > API keys** to retrieve your `pk_test_xxx` (publishable key) and `sk_test_xxx` (secret key) for test mode.
+   Replace the values with your actual **EmailJS** credentials.
 
 4. Run the development server:
    ```bash
@@ -43,44 +39,6 @@ To get the application running locally, follow these steps:
    ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
-
-## Stripe Integration
-
-This project uses **Stripe** to handle payments. The Stripe integration includes preset payment options for deposits, monthly installments, and full tuition, as well as a custom payment amount option for users who need to send a different amount.
-
-### .env.local Configuration for Stripe
-
-In your `.env.local` file, you will need to add your **Stripe** API keys as follows:
-
-```bash
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-STRIPE_SECRET_KEY=your_stripe_secret_key
-```
-
-Ensure you are using the **test keys** (`pk_test_xxx` and `sk_test_xxx`) while developing and testing. When you deploy your site for production, you should switch to the **live keys** (`pk_live_xxx` and `sk_live_xxx`).
-
-### Testing with Stripe Test Cards
-
-When running the app in test mode, you can use the following test card details to simulate various payment scenarios:
-
-- **Successful Payment (Visa)**:  
-  Card Number: `4242 4242 4242 4242`  
-  Expiration Date: Any future date (e.g., 12/34)  
-  CVC: Any 3 digits (e.g., 123)
-
-- **Card Declined**:  
-  Card Number: `4000 0000 0000 9995`
-
-- **Insufficient Funds**:  
-  Card Number: `4000 0000 0000 0341`
-
-- **Incorrect CVC**:  
-  Card Number: `4000 0000 0000 0101`
-
-- **Expired Card**:  
-  Card Number: `4000 0000 0000 0069`
-
-For more test card numbers and details, refer to Stripe's [Testing documentation](https://stripe.com/docs/testing).
 
 ## Building for Production
 
@@ -111,7 +69,7 @@ To deploy:
 ## Key Features
 
 - Responsive design
-- Stripe integration for payments (Deposits, Monthly Installments, Full Tuition, and Custom Payments)
+- AI chatbot for admissions and program questions
 - Flappy Bird game demo
 - Contact form with EmailJS integration
 - FAQ accordion
