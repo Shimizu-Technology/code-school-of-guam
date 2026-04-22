@@ -270,19 +270,17 @@ function TestimonialCarousel() {
         {/* CTA */}
         <div className="text-center mt-12">
           <p className="text-slate-600 mb-6">
-            Ready to join our next success story?
+            Want updates on future cohorts?
           </p>
           <div className="bg-white rounded-lg p-6 max-w-md mx-auto shadow-md">
             <p className="text-sm text-slate-700 mb-4">
-              Join our March 2026 cohort and learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering. <strong>Only 1 class in 2026!</strong>
+              Our only 2026 cohort is already underway. Reach out and we&apos;ll keep you posted on future Code School of Guam opportunities.
             </p>
             <a
-              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
               className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
             >
-              Apply for March Cohort
+              Request Future Updates
               <Rocket className="ml-2 h-4 w-4" />
             </a>
           </div>
@@ -329,7 +327,7 @@ export default function HomePage() {
             <div className="flex flex-wrap justify-center gap-6 mb-8">
               <div className="flex items-center gap-2 text-slate-300">
                 <Calendar className="w-5 h-5 text-blue-400" />
-                <span>Next cohort: March 2, 2026</span>
+                <span>2026 cohort started March 2</span>
               </div>
               <div className="flex items-center gap-2 text-slate-300">
                 <Clock className="w-5 h-5 text-green-400" />
@@ -337,7 +335,7 @@ export default function HomePage() {
               </div>
               <div className="flex items-center gap-2 text-ruby-400 font-semibold">
                 <Zap className="w-5 h-5 text-yellow-400" />
-                <span>Only 1 class in 2026 — Limited spots!</span>
+                <span>Only 1 class in 2026 — Now underway</span>
               </div>
             </div>
 
@@ -347,12 +345,10 @@ export default function HomePage() {
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
-                href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
                 className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
               >
-                Apply for March Cohort
+                Request Future Updates
                 <ChevronRight className="ml-2 w-5 h-5" />
               </a>
               <Link
@@ -712,19 +708,17 @@ export default function HomePage() {
             Ready to Start Your Journey?
           </h2>
           <p className="text-xl text-white/90 mb-4 max-w-2xl mx-auto">
-            Tuition: $7,500 — Flexible payment plans available. Next cohort starts March 2, 2026.
+            Tuition: $7,500 — Flexible payment plans available for enrolled students.
           </p>
           <p className="text-lg text-yellow-300 font-semibold mb-8 flex items-center justify-center gap-2">
-            <Zap className="w-5 h-5 fill-current" /> Only 1 class in 2026 — Don&apos;t miss it!
+            <Zap className="w-5 h-5 fill-current" /> Only 1 class in 2026 — now in progress.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
             >
-              Apply Now
+              Request Future Updates
               <ChevronRight className="ml-2 w-5 h-5" />
             </a>
             <Link

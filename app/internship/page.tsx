@@ -321,12 +321,10 @@ export default function InternshipPage() {
             Join Code School of Guam and get access to real-world experience opportunities that most bootcamps can&apos;t offer.
           </p>
           <a
-            href="https://forms.gle/nJv8nAfxsvvLSbbq7"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
           >
-            Apply Now
+            Request Future Updates
           </a>
         </div>
       </section>
