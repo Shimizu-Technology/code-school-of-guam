@@ -5,9 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/payment/', '/payment-success/'],
+      disallow: ['/api/'],
     },
     sitemap: 'https://codeschoolofguam.com/sitemap.xml',
   }
 }
-

@@ -80,11 +80,6 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/payment" className="text-slate-400 hover:text-white transition-colors">
-                  Make a Payment
-                </Link>
-              </li>
-              <li>
                 <Link href="/flappy-bird" className="text-slate-400 hover:text-white transition-colors">
                   Demo Game
                 </Link>
