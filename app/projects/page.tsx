@@ -8,7 +8,6 @@ import {
   ExternalLink, 
   Star,
   CheckCircle,
-  Smartphone,
   Code,
   Rocket,
   Quote,
@@ -28,7 +27,6 @@ type ShimizuProject = {
   gradient?: string
   icon?: React.ReactNode
   link?: string
-  appStoreLink?: string
   technologies: string[]
   highlights: string[]
   featured?: boolean
@@ -458,17 +456,7 @@ export default function ProjectsPage() {
                           Coming Soon
                         </span>
                       )}
-                      {project.appStoreLink && (
-                        <a
-                          href={project.appStoreLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
-                        >
-                          <Smartphone className="w-3 h-3 mr-2" />
-                          App Store
-                        </a>
-                      )}
+
                     </div>
                   </div>
                 </div>
