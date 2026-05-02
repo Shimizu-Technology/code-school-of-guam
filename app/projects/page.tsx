@@ -14,9 +14,7 @@ import {
   Users,
   Trophy,
   GraduationCap,
-  HeartHandshake,
-  Clock,
-  Mic
+  HeartHandshake
 } from "lucide-react"
 
 type ShimizuProject = {
@@ -39,8 +37,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Hafa Code",
     subtitle: "Student Coding Playground",
     description: "A lightweight Replit alternative built for Code School of Guam, FD students, alumni, and anyone learning to code without heavy setup or distracting AI features.",
-    gradient: "from-sky-500 to-indigo-700",
-    icon: <Code className="w-16 h-16 text-white/90" />,
+    image: "/images/hafa-code-icon.svg",
     link: "https://hafa-code.netlify.app",
     technologies: ["React", "TypeScript", "WASM", "Ruby", "Monaco"],
     highlights: [
@@ -97,8 +94,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "AIRE Services",
     subtitle: "Live Business Operations App",
     description: "A production operations platform for AIRE Services Guam, already used by employees for clock-in/clock-out and daily workflows.",
-    gradient: "from-cyan-500 to-slate-800",
-    icon: <Clock className="w-16 h-16 text-white/90" />,
+    image: "/images/aire-logo.png",
     link: "https://aire-services-guam.netlify.app",
     technologies: ["React", "Rails", "PostgreSQL", "Clerk"],
     highlights: [
@@ -178,8 +174,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Typr",
     subtitle: "Voice-to-Text Tool",
     description: "A coming-soon local-first dictation app inspired by Superwhisper and Wispr Flow — a good example of the team building tools for itself.",
-    gradient: "from-slate-700 to-slate-950",
-    icon: <Mic className="w-16 h-16 text-white/90" />,
+    image: "/images/typr-icon.png",
     technologies: ["Tauri", "Rust", "Whisper", "TypeScript"],
     highlights: [
       "Local Whisper-powered dictation",
