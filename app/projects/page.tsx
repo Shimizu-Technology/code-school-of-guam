@@ -2,61 +2,146 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import type React from "react"
 import { 
   ArrowRight, 
   ExternalLink, 
   Star,
   CheckCircle,
-  Smartphone,
   Code,
   Rocket,
   Quote,
   Users,
-  Trophy
+  Trophy,
+  GraduationCap,
+  HeartHandshake
 } from "lucide-react"
 
-// Shimizu Technology projects that graduates work on
-const shimizuProjects = [
+type ShimizuProject = {
+  title: string
+  subtitle: string
+  description: string
+  image?: string
+  gradient?: string
+  icon?: React.ReactNode
+  link?: string
+  technologies: string[]
+  highlights: string[]
+  featured?: boolean
+  comingSoon?: boolean
+}
+
+// Shimizu Technology projects that students learn around and graduates can contribute to
+const shimizuProjects: ShimizuProject[] = [
+  {
+    title: "Hafa Code",
+    subtitle: "Student Coding Playground",
+    description: "A lightweight Replit alternative built for Code School of Guam, FD students, alumni, and anyone learning to code without heavy setup or distracting AI features.",
+    image: "/images/hafa-code-icon.svg",
+    link: "https://hafa-code.netlify.app",
+    technologies: ["React", "TypeScript", "WASM", "Ruby", "Monaco"],
+    highlights: [
+      "Ruby, JavaScript, and HTML/CSS/JS in the browser",
+      "Simple local projects with optional cloud sync",
+      "Built as a real tool students can use and understand"
+    ],
+    featured: true
+  },
+  {
+    title: "CSG Learning Hub",
+    subtitle: "Code School Learning Platform",
+    description: "The private learning platform behind Code School of Guam: prework, class content, workshops, recordings, grading, progress tracking, and cohort management.",
+    gradient: "from-ruby-500 to-slate-900",
+    icon: <GraduationCap className="w-16 h-16 text-white/90" />,
+    link: "https://learn.codeschoolofguam.com",
+    technologies: ["React", "Rails", "Clerk", "PostgreSQL", "TypeScript"],
+    highlights: [
+      "Lessons, exercises, recordings, and workshops",
+      "Student progress and instructor workflows",
+      "Real production platform powering the school"
+    ],
+    featured: true
+  },
   {
     title: "HåfaGPT",
     subtitle: "Chamorro Language Learning Platform",
-    description: "A comprehensive AI-powered platform for learning Chamorro, the indigenous language of Guam and the Mariana Islands. Features an AI tutor, interactive flashcards, quizzes, games, and bilingual stories.",
+    description: "A comprehensive AI-powered platform for learning Chamorro, the indigenous language of Guam and the Mariana Islands.",
     image: "/images/HafaGPT-icon1.png",
     link: "https://hafagpt.com",
     technologies: ["React", "TypeScript", "FastAPI", "Python", "PostgreSQL", "OpenAI"],
     highlights: [
       "45,000+ knowledge chunks in RAG system",
-      "10,000+ word searchable dictionary",
-      "24 bilingual stories with tap-to-translate"
+      "Searchable dictionary, stories, quizzes, and games",
+      "Guam-first AI product with cultural impact"
     ],
     featured: true
   },
   {
-    title: "Hafaloha",
-    subtitle: "AI-Powered Ordering Platform",
-    description: "AI-powered ordering platform for Hawaiian retail and food businesses. Full-stack Rails + React with EasyPost shipping, Stripe payments, and real-time order management.",
+    title: "Cornerstone Payroll",
+    subtitle: "Guam Payroll Platform",
+    description: "A Guam-specific payroll application built as a better local alternative to generic mainland payroll tools and QuickBooks-heavy workflows.",
+    image: "/images/cornerstone-logo.jpeg",
+    link: "https://cornerstone-payroll.netlify.app",
+    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
+    highlights: [
+      "Payroll runs, pay periods, and approvals",
+      "Guam tax and reporting workflows",
+      "Check printing and employee records"
+    ],
+    featured: true
+  },
+  {
+    title: "AIRE Services",
+    subtitle: "Live Business Operations App",
+    description: "A production operations platform for AIRE Services Guam, already used by employees for clock-in/clock-out and daily workflows.",
+    image: "/images/aire-logo.png",
+    link: "https://aire-services-guam.netlify.app",
+    technologies: ["React", "Rails", "PostgreSQL", "Clerk"],
+    highlights: [
+      "Employee time clock and attendance",
+      "Approval and operations dashboards",
+      "Payroll-oriented summaries and exports"
+    ]
+  },
+  {
+    title: "Hafaloha Orders",
+    subtitle: "Production Ordering Platform",
+    description: "Online ordering, retail, VIP event sales, shipping, and admin workflows for a real business with real customers and high-volume event fulfillment.",
     image: "/images/hafaloha_hero.jpg",
     link: "https://hafaloha-orders.com",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe", "EasyPost", "Redis"],
     highlights: [
       "850+ VIP orders at concert event",
-      "EasyPost shipping & Stripe payments",
+      "EasyPost shipping and Stripe payments",
       "Real-time order management"
-    ],
-    featured: true
+    ]
+  },
+  {
+    title: "Golf for Wishes",
+    subtitle: "Make-A-Wish Event Platform",
+    description: "Registration and event management platform for Make-A-Wish Guam & CNMI, supporting charity events from signup through tournament day.",
+    gradient: "from-sky-400 to-blue-700",
+    icon: <HeartHandshake className="w-16 h-16 text-white/90" />,
+    link: "https://golfforwishes.com",
+    technologies: ["React", "Ruby on Rails", "Stripe", "ActionCable"],
+    highlights: [
+      "Team registration and payments",
+      "Sponsor and raffle management",
+      "Admin tools for event-day operations"
+    ]
   },
   {
     title: "Three Squares Grill",
-    subtitle: "Multi-Location Restaurant System",
-    description: "Full ordering system for a multi-location restaurant. Online ordering, POS, admin dashboard, and wholesale management.",
+    subtitle: "Restaurant & Catering System",
+    description: "Coming-soon ordering platform for Three Squares and B&G Pacific, designed around catering, dine-in/takeout, and local restaurant operations.",
     image: "/images/three-squares-grill.svg",
+    link: "https://three-squares-web.netlify.app",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe"],
     highlights: [
-      "Online ordering & POS integration",
-      "Admin dashboard & analytics",
-      "Wholesale management system"
+      "Catering and bulk ordering flows",
+      "Admin dashboard and order management",
+      "Built for multi-location operations"
     ],
-    featured: true,
     comingSoon: true
   },
   {
@@ -73,30 +158,30 @@ const shimizuProjects = [
     ]
   },
   {
-    title: "Guahan Grocer",
-    subtitle: "Grocery Delivery Platform",
-    description: "Guam's answer to Instacart — a local grocery delivery platform connecting shoppers with stores across the island.",
-    image: "/images/Guahan-Grocer-Logo.png",
-    appStoreLink: "https://apps.apple.com/us/app/guahan-grocer/id6749652653",
-    technologies: ["React Native", "Ruby on Rails", "PostgreSQL", "AWS"],
-    highlights: [
-      "Multi-store grocery browsing",
-      "Real-time delivery tracking",
-      "Available on iOS App Store"
-    ]
-  },
-  {
     title: "Cornerstone Accounting",
     subtitle: "Tax & Accounting Platform",
-    description: "Full-service accounting platform that transformed Cornerstone's paper-based process into a streamlined digital system with client intake, workflow management, and admin dashboard.",
+    description: "Full-service accounting platform that transformed Cornerstone's paper-based process into a streamlined digital system with client intake and workflow management.",
     image: "/images/cornerstone-logo.jpeg",
     link: "https://cornerstone-accounting.tax",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
     highlights: [
-      "8-step digital client intake form",
-      "Workflow & status dashboard",
-      "Employee time tracking system"
+      "Digital client intake workflows",
+      "Workflow and status dashboards",
+      "Recurring operations and time tracking"
     ]
+  },
+  {
+    title: "Typr",
+    subtitle: "Voice-to-Text Tool",
+    description: "A coming-soon local-first dictation app inspired by Superwhisper and Wispr Flow — a good example of the team building tools for itself.",
+    image: "/images/typr-icon.png",
+    technologies: ["Tauri", "Rust", "Whisper", "TypeScript"],
+    highlights: [
+      "Local Whisper-powered dictation",
+      "App-aware paste and replace workflows",
+      "Built for developers and operators"
+    ],
+    comingSoon: true
   }
 ]
 
@@ -274,7 +359,7 @@ export default function ProjectsPage() {
               >
                 Shimizu Technology
               </a>
-              , students work on real client projects like these — shipping production code for actual businesses from day one.
+              , students learn around real production applications like these — the kind of software actual businesses, students, and community organizations depend on.
             </p>
           </div>
 
@@ -286,13 +371,19 @@ export default function ProjectsPage() {
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                   {/* Image */}
-                  <div className="lg:col-span-1 h-64 lg:h-auto relative bg-slate-100">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className={`object-contain p-8 ${project.image.includes('hafaloha') ? 'object-cover p-0' : ''}`}
-                    />
+                  <div className="lg:col-span-1 h-64 lg:h-auto relative bg-slate-100 overflow-hidden">
+                    {project.image ? (
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className={`object-contain p-8 ${project.image.includes('hafaloha') ? 'object-cover p-0' : ''}`}
+                      />
+                    ) : (
+                      <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${project.gradient || 'from-slate-600 to-slate-900'}`}>
+                        {project.icon}
+                      </div>
+                    )}
                     {project.featured && !project.comingSoon && (
                       <div className="absolute top-4 left-4">
                         <span className="px-3 py-1 bg-ruby-500 text-white text-xs font-semibold rounded-full flex items-center">
@@ -360,17 +451,7 @@ export default function ProjectsPage() {
                           Coming Soon
                         </span>
                       )}
-                      {project.appStoreLink && (
-                        <a
-                          href={project.appStoreLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium transition-colors"
-                        >
-                          <Smartphone className="w-3 h-3 mr-2" />
-                          App Store
-                        </a>
-                      )}
+
                     </div>
                   </div>
                 </div>
