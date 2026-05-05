@@ -13,8 +13,7 @@ import {
   Quote,
   Users,
   Trophy,
-  GraduationCap,
-  HeartHandshake
+  GraduationCap
 } from "lucide-react"
 
 type ShimizuProject = {
@@ -120,8 +119,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Golf for Wishes",
     subtitle: "Make-A-Wish Event Platform",
     description: "Registration and event management platform for Make-A-Wish Guam & CNMI, supporting charity events from signup through tournament day.",
-    gradient: "from-sky-400 to-blue-700",
-    icon: <HeartHandshake className="w-16 h-16 text-white/90" />,
+    image: "/images/golf-for-wishes-logo.png",
     link: "https://golfforwishes.com",
     technologies: ["React", "Ruby on Rails", "Stripe", "ActionCable"],
     highlights: [
