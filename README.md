@@ -26,12 +26,17 @@ To get the application running locally, follow these steps:
 
 3. Create a `.env.local` file in the root directory and add the following environment variables:
    ```bash
-   NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
-   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
-   NEXT_PUBLIC_EMAILJS_USER_ID=your_emailjs_user_id
+   PINECONE_API_KEY=your_pinecone_api_key
+   PINECONE_INDEX=csg-knowledge
+   OPENAI_API_KEY=your_openai_api_key
+   OPENROUTER_API_KEY=your_openrouter_api_key
+
+   # Optional analytics
+   NEXT_PUBLIC_POSTHOG_KEY=your_posthog_key
+   NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
    ```
 
-   Replace the values with your actual **EmailJS** credentials.
+   Replace the values with your actual chatbot and analytics credentials.
 
 4. Run the development server:
    ```bash
