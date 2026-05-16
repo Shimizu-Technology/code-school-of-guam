@@ -35,7 +35,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Hafa Code",
     subtitle: "Student Coding Playground",
     description: "A lightweight Replit alternative built for Code School of Guam, FD students, alumni, and anyone learning to code without heavy setup or distracting AI features.",
-    image: "/images/hafa-code.svg",
+    image: "/images/hafa-code-logo.png",
     link: "https://hafa-code.netlify.app",
     technologies: ["React", "TypeScript", "WASM", "Ruby", "Monaco"],
     highlights: [
@@ -49,7 +49,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "CSG Learning Hub",
     subtitle: "Code School Learning Platform",
     description: "The private learning platform behind Code School of Guam: prework, class content, workshops, recordings, grading, progress tracking, and cohort management.",
-    image: "/images/csg-learning-hub.svg",
+    image: "/CSG-Logo.png",
     link: "https://learn.codeschoolofguam.com",
     technologies: ["React", "Rails", "Clerk", "PostgreSQL", "TypeScript"],
     highlights: [
@@ -117,7 +117,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Golf for Wishes",
     subtitle: "Make-A-Wish Event Platform",
     description: "Registration and event management platform for Make-A-Wish Guam & CNMI, supporting charity events from signup through tournament day.",
-    image: "/images/make-a-wish-guam.svg",
+    image: "/images/make-a-wish-logo-blue.png",
     link: "https://golfforwishes.com",
     technologies: ["React", "Ruby on Rails", "Stripe", "ActionCable"],
     highlights: [
