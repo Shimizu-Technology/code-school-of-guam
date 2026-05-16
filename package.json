@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint app components lib --ext .ts,.tsx"
+    "lint": "next lint"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.15.9",
