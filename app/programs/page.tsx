@@ -129,9 +129,12 @@ export default function ProgramsPage() {
                 Request Future Updates →
               </a>
 
-              <button className="block w-full text-center px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg font-medium transition-colors text-sm">
+              <a
+                href="mailto:codeschoolofguam@gmail.com?subject=Question%20About%20Code%20School%20of%20Guam"
+                className="block w-full text-center px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg font-medium transition-colors text-sm"
+              >
                 Questions? Contact Us
-              </button>
+              </a>
             </div>
           </div>
         </div>

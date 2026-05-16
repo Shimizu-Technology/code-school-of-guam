@@ -12,8 +12,7 @@ import {
   Rocket,
   Quote,
   Users,
-  Trophy,
-  GraduationCap
+  Trophy
 } from "lucide-react"
 
 type ShimizuProject = {
@@ -36,7 +35,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Hafa Code",
     subtitle: "Student Coding Playground",
     description: "A lightweight Replit alternative built for Code School of Guam, FD students, alumni, and anyone learning to code without heavy setup or distracting AI features.",
-    image: "/images/hafa-code-icon.svg",
+    image: "/images/hafa-code-logo.png",
     link: "https://hafa-code.netlify.app",
     technologies: ["React", "TypeScript", "WASM", "Ruby", "Monaco"],
     highlights: [
@@ -50,8 +49,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "CSG Learning Hub",
     subtitle: "Code School Learning Platform",
     description: "The private learning platform behind Code School of Guam: prework, class content, workshops, recordings, grading, progress tracking, and cohort management.",
-    gradient: "from-ruby-500 to-slate-900",
-    icon: <GraduationCap className="w-16 h-16 text-white/90" />,
+    image: "/CSG-Logo.png",
     link: "https://learn.codeschoolofguam.com",
     technologies: ["React", "Rails", "Clerk", "PostgreSQL", "TypeScript"],
     highlights: [
@@ -79,7 +77,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Cornerstone Payroll",
     subtitle: "Guam Payroll Platform",
     description: "A Guam-specific payroll application built as a better local alternative to generic mainland payroll tools and QuickBooks-heavy workflows.",
-    image: "/images/cornerstone-logo.jpeg",
+    image: "/images/cornerstone-payroll-cp.svg",
     link: "https://cornerstone-payroll.netlify.app",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
     highlights: [
@@ -119,7 +117,7 @@ const shimizuProjects: ShimizuProject[] = [
     title: "Golf for Wishes",
     subtitle: "Make-A-Wish Event Platform",
     description: "Registration and event management platform for Make-A-Wish Guam & CNMI, supporting charity events from signup through tournament day.",
-    image: "/images/golf-for-wishes-logo.png",
+    image: "/images/make-a-wish-logo-blue.png",
     link: "https://golfforwishes.com",
     technologies: ["React", "Ruby on Rails", "Stripe", "ActionCable"],
     highlights: [
