@@ -112,10 +112,10 @@ export function SiteFooter() {
             </ul>
             <div className="mt-6">
               <a
-                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+                href="/interest"
                 className="inline-flex items-center px-4 py-2 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md text-sm font-medium transition-colors"
               >
-                Future Cohort Updates
+                Next Cohort Interest
               </a>
             </div>
           </div>

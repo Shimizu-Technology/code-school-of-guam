@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { CountdownTimer } from "@/components/countdown-timer"
 import { 
   ChevronRight, 
   ChevronLeft,
@@ -12,7 +11,6 @@ import {
   Rocket, 
   Users, 
   Briefcase, 
-  Calendar,
   CheckCircle,
   Star,
   Brain,
@@ -277,10 +275,10 @@ function TestimonialCarousel() {
               Our only 2026 cohort is already underway. Reach out and we&apos;ll keep you posted on future Code School of Guam opportunities.
             </p>
             <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+              href="/interest"
               className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
             >
-              Request Future Updates
+              Join the Interest List
               <Rocket className="ml-2 h-4 w-4" />
             </a>
           </div>
@@ -323,32 +321,24 @@ export default function HomePage() {
               From Zero to AI-Capable Developer in Under 6 Months
             </p>
 
-            {/* Key stats */}
             <div className="flex flex-wrap justify-center gap-6 mb-8">
               <div className="flex items-center gap-2 text-slate-300">
-                <Calendar className="w-5 h-5 text-blue-400" />
-                <span>2026 cohort started March 2</span>
+                <GraduationCap className="w-5 h-5 text-blue-400" />
+                <span>Cohort 3 is underway</span>
               </div>
               <div className="flex items-center gap-2 text-slate-300">
                 <Clock className="w-5 h-5 text-green-400" />
                 <span>12+ Hours/Week Live + Structured Async Practice</span>
               </div>
-              <div className="flex items-center gap-2 text-ruby-400 font-semibold">
-                <Zap className="w-5 h-5 text-yellow-400" />
-                <span>Only 1 class in 2026 — Now underway</span>
-              </div>
             </div>
-
-            {/* Countdown Timer */}
-            <CountdownTimer />
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
-                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+                href="/interest"
                 className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
               >
-                Request Future Updates
+                Join the Interest List
                 <ChevronRight className="ml-2 w-5 h-5" />
               </a>
               <Link
@@ -715,10 +705,10 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+              href="/interest"
               className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
             >
-              Request Future Updates
+              Join the Interest List
               <ChevronRight className="ml-2 w-5 h-5" />
             </a>
             <Link

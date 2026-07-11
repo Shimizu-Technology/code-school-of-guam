@@ -71,11 +71,11 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
           
           <div className="mt-8 pt-4 border-t border-slate-800">
             <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+              href="/interest"
               className="flex w-full items-center justify-center rounded-md bg-ruby-500 px-5 py-3 text-base font-medium text-white"
               onClick={closeNav}
             >
-              Future Cohort Updates
+              Next Cohort Interest
             </a>
           </div>
         </div>
