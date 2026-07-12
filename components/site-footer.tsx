@@ -30,7 +30,7 @@ export function SiteFooter() {
             <div className="mt-4 space-y-3 text-sm"><a href="mailto:codeschoolofguam@gmail.com" className="flex items-center gap-2 text-slate-300 hover:text-white"><Mail className="h-4 w-4 text-ruby-400" />codeschoolofguam@gmail.com</a><a href="tel:+16714830219" className="flex items-center gap-2 text-slate-300 hover:text-white"><Phone className="h-4 w-4 text-ruby-400" />(671) 483-0219</a></div>
           </div>
         </div>
-        <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:justify-between"><span>© {new Date().getFullYear()} Code School of Guam</span><span>Built in Guam</span></div>
+        <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:justify-between"><span>© Code School of Guam</span><span>Built in Guam</span></div>
       </div>
     </footer>
   )
