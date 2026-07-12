@@ -79,10 +79,10 @@ export function SiteHeader() {
           {/* CTA Button */}
           <div className="hidden xl:flex items-center">
             <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+              href="/interest"
               className="px-5 py-2 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md text-sm font-medium transition-colors"
             >
-              Future Cohort Updates
+              Next Cohort Interest
             </a>
           </div>
 
@@ -122,10 +122,10 @@ export function SiteHeader() {
               ))}
               <div className="pt-4 mt-4 border-t border-slate-800">
                 <a
-                  href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+                  href="/interest"
                   className="block w-full text-center px-4 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium"
                 >
-                  Future Cohort Updates
+                  Next Cohort Interest
                 </a>
               </div>
             </div>
