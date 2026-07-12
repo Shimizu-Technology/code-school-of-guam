@@ -28,7 +28,7 @@ export function SiteHeader() {
 
   useEffect(() => setMobileMenuOpen(false), [pathname])
 
-  const isActive = (href: string) => pathname.startsWith(href)
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
   return (
     <header className={`sticky top-0 z-50 border-b border-white/10 bg-[#0b1220]/95 text-white backdrop-blur-xl transition-shadow ${scrolled ? "shadow-lg shadow-slate-950/10" : ""}`}>

@@ -28,7 +28,7 @@ export function ChatButton() {
       {isOpen && <ChatWindow onClose={() => setIsOpen(false)} />}
 
       {/* Compact, safe-area-aware help control */}
-      {isVisible && <button
+      {(isVisible || isOpen) && <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 md:h-14 md:w-14 ${
           isOpen
@@ -44,7 +44,7 @@ export function ChatButton() {
         )}
       </button>}
 
-      {/* Pulse animation when closed — fades out after a few seconds */}
+      {/* Desktop-only pulse: keep the mobile control quiet and out of the content hierarchy. */}
       {isVisible && !isOpen && showPulse && (
         <span aria-hidden="true" className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-40 hidden h-12 w-12 pointer-events-none md:flex md:h-14 md:w-14">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ruby-400 opacity-75"></span>
