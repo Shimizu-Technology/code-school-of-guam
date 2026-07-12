@@ -123,10 +123,10 @@ export default function ProgramsPage() {
               </div>
 
               <a
-                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+                href="/interest"
                 className="block w-full text-center px-6 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg font-medium transition-colors mb-4"
               >
-                Request Future Updates →
+                Join the Interest List →
               </a>
 
               <a
@@ -229,10 +229,10 @@ export default function ProgramsPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+              href="/interest"
               className="inline-flex items-center justify-center px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg font-medium transition-colors"
             >
-              Request Future Updates
+              Join the Interest List
             </a>
             <Link
               href="/faq"

@@ -97,10 +97,10 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+                href="/interest"
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-ruby-500"
               >
-                Request future cohort updates <ArrowRight className="h-4 w-4" />
+                Join the interest list <ArrowRight className="h-4 w-4" />
               </a>
               <Link href="/programs" className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10">
                 Explore the program <ArrowUpRight className="h-4 w-4" />
@@ -256,7 +256,7 @@ export default function HomePage() {
       <section className="bg-ruby-700 py-16 text-white md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
           <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The 2026 cohort is underway. Join the update list to hear about the next opportunity.</p></div>
-          <a href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates" className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-bold text-ruby-800 transition hover:-translate-y-0.5">Request future updates <ArrowRight className="h-4 w-4" /></a>
+          <a href="/interest" className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-bold text-ruby-800 transition hover:-translate-y-0.5">Join the interest list <ArrowRight className="h-4 w-4" /></a>
         </div>
       </section>
     </div>

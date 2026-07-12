@@ -47,8 +47,8 @@ export function SiteHeader() {
             ))}
           </div>
 
-          <a href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates" className="hidden items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-ruby-500 xl:inline-flex">
-            Future cohorts <ArrowUpRight className="h-4 w-4" />
+          <a href="/interest" className="hidden items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-ruby-500 xl:inline-flex">
+            Next cohort interest <ArrowUpRight className="h-4 w-4" />
           </a>
 
           <button onClick={() => setMobileMenuOpen((open) => !open)} className="rounded-md p-2 text-slate-300 hover:bg-white/10 hover:text-white xl:hidden" aria-label="Toggle menu" aria-expanded={mobileMenuOpen}>
@@ -65,7 +65,7 @@ export function SiteHeader() {
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href} className={`block rounded-md px-4 py-3 font-semibold ${isActive(item.href) ? "bg-white/10 text-white" : "text-slate-300"}`}>{item.label}</Link>
               ))}
-              <a href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates" className="mt-4 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white">Request future updates <ArrowUpRight className="h-4 w-4" /></a>
+              <a href="/interest" className="mt-4 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white">Join the interest list <ArrowUpRight className="h-4 w-4" /></a>
             </div>
           </div>
         </>
