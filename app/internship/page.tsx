@@ -24,13 +24,13 @@ export default function InternshipPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-blue-500/20 text-blue-400 rounded-full text-sm font-medium mb-4">
             <Rocket className="w-4 h-4 mr-2" />
             Optional Program
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
             Real-World Experience for <span className="text-ruby-500">Every Graduate</span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
@@ -42,7 +42,7 @@ export default function InternshipPage() {
       </section>
 
       {/* Why We Created This - The Story */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -50,12 +50,12 @@ export default function InternshipPage() {
                 <Heart className="w-4 h-4 mr-2" />
                 Our Mission
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              <h2 className="font-serif text-4xl md:text-5xl font-semibold text-slate-900 mb-4">
                 Why We Built This Program
               </h2>
             </div>
 
-            <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8 md:p-10 border border-slate-200">
+            <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-8 md:p-10 border border-slate-200">
               <div className="flex items-start mb-6">
                 <div className="w-12 h-12 bg-ruby-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 mr-4">
                   L
@@ -103,7 +103,7 @@ export default function InternshipPage() {
       </section>
 
       {/* How The Internship Works */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -120,7 +120,7 @@ export default function InternshipPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
                 <div className="flex items-center mb-3">
                   <Calendar className="w-5 h-5 text-blue-500 mr-2" />
                   <h3 className="font-bold text-slate-900">10 Weeks</h3>
@@ -130,7 +130,7 @@ export default function InternshipPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
                 <div className="flex items-center mb-3">
                   <Code className="w-5 h-5 text-green-500 mr-2" />
                   <h3 className="font-bold text-slate-900">Real Projects</h3>
@@ -149,7 +149,7 @@ export default function InternshipPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
                 <div className="flex items-center mb-3">
                   <Users className="w-5 h-5 text-purple-500 mr-2" />
                   <h3 className="font-bold text-slate-900">Team Environment</h3>
@@ -159,7 +159,7 @@ export default function InternshipPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
                 <div className="flex items-center mb-3">
                   <CheckCircle className="w-5 h-5 text-ruby-500 mr-2" />
                   <h3 className="font-bold text-slate-900">100% Optional</h3>
@@ -170,7 +170,7 @@ export default function InternshipPage() {
               </div>
             </div>
 
-            <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100 text-center">
+            <div className="bg-blue-50 rounded-xl p-6 border border-blue-100 text-center">
               <p className="text-blue-800">
                 <span className="font-semibold">Note:</span> The internship is unpaid, but the experience and portfolio projects you gain are invaluable for landing your first tech job.
               </p>
@@ -180,7 +180,7 @@ export default function InternshipPage() {
       </section>
 
       {/* Paid Opportunities */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -197,7 +197,7 @@ export default function InternshipPage() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-200">
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
                 <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
@@ -221,7 +221,7 @@ export default function InternshipPage() {
                 </ul>
               </div>
 
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
                 <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
                   <Building2 className="w-6 h-6 text-white" />
                 </div>
@@ -265,7 +265,7 @@ export default function InternshipPage() {
       </section>
 
       {/* What You'll Work On */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -277,22 +277,22 @@ export default function InternshipPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            <div className="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white rounded-xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
               <Bot className="w-10 h-10 text-purple-500 mx-auto mb-4" />
               <h3 className="font-semibold mb-2">AI Applications</h3>
               <p className="text-sm text-slate-600">RAG systems, chatbots, ML integrations</p>
             </div>
-            <div className="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white rounded-xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
               <Smartphone className="w-10 h-10 text-blue-500 mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Mobile Apps</h3>
               <p className="text-sm text-slate-600">React Native apps for iOS & Android</p>
             </div>
-            <div className="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white rounded-xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
               <ShoppingCart className="w-10 h-10 text-green-500 mx-auto mb-4" />
               <h3 className="font-semibold mb-2">E-commerce</h3>
               <p className="text-sm text-slate-600">Online ordering & payment systems</p>
             </div>
-            <div className="bg-white rounded-2xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
+            <div className="bg-white rounded-xl p-6 text-center border border-slate-100 shadow-sm hover:shadow-md transition-all">
               <ClipboardList className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
               <h3 className="font-semibold mb-2">Registration Systems</h3>
               <p className="text-sm text-slate-600">Event registration & admin dashboards</p>
@@ -312,9 +312,9 @@ export default function InternshipPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 lg:py-32 bg-ruby-600 text-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-ruby-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
             Start Your Journey
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">

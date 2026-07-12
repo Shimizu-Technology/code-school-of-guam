@@ -1,733 +1,262 @@
-"use client"
-
-import { useState, useEffect, useCallback, useRef } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { CountdownTimer } from "@/components/countdown-timer"
-import { 
-  ChevronRight, 
-  ChevronLeft,
+import {
   ArrowRight,
-  Code, 
-  Rocket, 
-  Users, 
-  Briefcase, 
-  Calendar,
-  CheckCircle,
-  Star,
+  ArrowUpRight,
   Brain,
-  Zap,
+  Code2,
   GraduationCap,
-  Clock,
-  Database,
+  Laptop,
   Quote,
-  Target,
-  Bot,
-  UtensilsCrossed
+  Rocket,
+  Users,
 } from "lucide-react"
 
-// Student testimonials
-const testimonials = [
+const graduateStories = [
   {
-    name: "Junior O'Brien",
-    role: "Graduate - Cohort 2",
-    initial: "J",
-    quote: "I am extremely grateful to have been a part of the 2025 CSG cohort. Leon was flexible for me to join and continue to participate in the course despite some 'life' challenges that if not for his patience, I most likely would not have been able to begin or finish the course. I highly recommend CSG to anyone who is considering learning about coding. Leon and Alanna provided second to none support, guidance, and encouragement throughout my learning experience.",
-    color: "bg-purple-500"
-  },
-  {
-    name: "Ron Malu",
-    role: "Graduate - Cohort 2",
-    initial: "R",
-    quote: "Hands down awesome four months of class!!",
-    color: "bg-orange-500"
-  },
-  {
+    quote: "CSG matched the effort I gave it. Trust the process and keep showing up.",
     name: "Noah Peredo",
-    role: "Graduate - Cohort 1",
+    role: "Cohort 1 graduate",
     initial: "N",
-    quote: "Clear mind and trust the process. CSG will match the effort that you give it, so at the end of the day, how bad do you want it?",
-    color: "bg-ruby-500"
   },
   {
+    quote: "Now I constantly think about ways I can improve daily life by creating apps.",
     name: "Jessica Fernandez",
-    role: "Graduate - Cohort 1",
+    role: "Cohort 1 graduate",
     initial: "J",
-    quote: "I am very very VERY glad I enrolled and finished it! Now, I constantly think about ways I could 'hack' my daily life by creating apps. Leon was extremely helpful in answering all my questions and providing valuable guidance.",
-    color: "bg-green-500"
   },
   {
-    name: "Alanna Cruz",
-    role: "Software Engineer",
-    initial: "A",
-    quote: "The Code School of Guam provided me with a comprehensive curriculum covering Ruby, Rails, React, and now Python & AI Engineering. The expert guidance and hands-on projects prepared me perfectly for my software engineering career!",
-    color: "bg-blue-500"
-  }
+    quote: "The support, guidance, and encouragement throughout the program were second to none.",
+    name: "Junior O’Brien",
+    role: "Cohort 2 graduate",
+    initial: "J",
+  },
 ]
 
-// Testimonial Carousel Component
-function TestimonialCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
-  
-  // Touch/swipe handling
-  const touchStartX = useRef<number | null>(null)
-  const touchEndX = useRef<number | null>(null)
-  const minSwipeDistance = 50
+const curriculum = [
+  {
+    icon: Code2,
+    label: "Full-stack foundation",
+    title: "Ruby, Rails & React",
+    copy: "Build responsive interfaces, production APIs, databases, authentication, and deployed applications.",
+  },
+  {
+    icon: Brain,
+    label: "AI engineering",
+    title: "Python, RAG & Agents",
+    copy: "Understand modern AI systems and build chatbots, retrieval workflows, prompts, evaluations, and agents.",
+  },
+  {
+    icon: Rocket,
+    label: "Professional practice",
+    title: "Ship Real Products",
+    copy: "Work with Git, code reviews, product constraints, deployment, presentations, and production-quality expectations.",
+  },
+]
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-    touchEndX.current = null
-  }
+const projects = [
+  {
+    title: "HåfaGPT",
+    category: "Chamorro language learning",
+    image: "/images/HafaGPT-icon1.png",
+    href: "https://hafagpt.com",
+    surface: "bg-[#f4ede1]",
+  },
+  {
+    title: "Hafa Code",
+    category: "Student coding playground",
+    image: "/images/hafa-code-logo.png",
+    href: "https://hafa-code.netlify.app",
+    surface: "bg-[#f8efe0]",
+  },
+  {
+    title: "CSG Learning Hub",
+    category: "School learning platform",
+    image: "/CSG-Logo.png",
+    href: "https://learn.codeschoolofguam.com",
+    surface: "bg-[#101827]",
+  },
+]
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX
-  }
-
-  const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) return
-    
-    const distance = touchStartX.current - touchEndX.current
-    const isSwipe = Math.abs(distance) > minSwipeDistance
-    
-    if (isSwipe) {
-      if (distance > 0) {
-        // Swiped left -> go to next
-        nextSlide()
-      } else {
-        // Swiped right -> go to previous
-        prevSlide()
-      }
-    }
-    
-    // Reset
-    touchStartX.current = null
-    touchEndX.current = null
-  }
-
-  const changeSlide = useCallback((newIndex: number, direction: 'left' | 'right') => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    setSlideDirection(direction)
-    
-    // After fade out, change slide
-    setTimeout(() => {
-      setCurrentIndex(newIndex)
-      // After a brief moment, fade back in
-      setTimeout(() => {
-        setIsAnimating(false)
-      }, 50)
-    }, 300)
-  }, [isAnimating])
-
-  const nextSlide = useCallback(() => {
-    const newIndex = (currentIndex + 1) % testimonials.length
-    changeSlide(newIndex, 'right')
-  }, [currentIndex, changeSlide])
-
-  const prevSlide = useCallback(() => {
-    const newIndex = (currentIndex - 1 + testimonials.length) % testimonials.length
-    changeSlide(newIndex, 'left')
-  }, [currentIndex, changeSlide])
-
-  const goToSlide = (index: number) => {
-    if (index === currentIndex) return
-    const direction = index > currentIndex ? 'right' : 'left'
-    changeSlide(index, direction)
-  }
-
-  // Auto-advance every 6 seconds
-  useEffect(() => {
-    if (isPaused || isAnimating) return
-    const timer = setInterval(nextSlide, 6000)
-    return () => clearInterval(timer)
-  }, [isPaused, isAnimating, nextSlide])
-
-  const current = testimonials[currentIndex]
-
-  // Dynamic text size based on quote length
-  const getQuoteStyle = (quote: string) => {
-    const length = quote.length
-    if (length < 80) {
-      // Very short quotes - larger, more impactful
-      return 'text-xl md:text-2xl'
-    } else if (length < 200) {
-      // Medium quotes - standard size
-      return 'text-lg md:text-xl'
-    } else {
-      // Long quotes - slightly smaller for readability
-      return 'text-base md:text-lg'
-    }
-  }
-
+export default function HomePage() {
   return (
-    <section 
-      className="py-24 lg:py-32 bg-slate-50 relative"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-    >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-ruby-500/10 border border-ruby-500/20 rounded-full text-ruby-700 text-sm font-medium mb-4">
-            <Users className="h-4 w-4 mr-2" />
-            Student Success
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-            Hear from Our <span className="text-ruby-500">Graduates</span>
-          </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            11 graduates across 2 cohorts with a 100% completion rate.
-            Students from high schoolers to career changers in their 50s — all are welcome.
-          </p>
-        </div>
-
-        {/* Carousel Container */}
-        <div className="max-w-3xl mx-auto">
-          <div className="relative">
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevSlide}
-              disabled={isAnimating}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-ruby-500 hover:shadow-xl transition-all disabled:opacity-50"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-            <button
-              onClick={nextSlide}
-              disabled={isAnimating}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:text-ruby-500 hover:shadow-xl transition-all disabled:opacity-50"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-            </button>
-
-            {/* Testimonial Card - with touch/swipe support */}
-            <div 
-              className="bg-white rounded-2xl p-8 md:p-10 shadow-xl relative overflow-hidden cursor-grab active:cursor-grabbing select-none"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {/* Quote icon decoration */}
-              <Quote className="absolute top-4 right-4 w-12 h-12 text-ruby-100" />
-              
-              {/* Content with animation - min-height for consistency */}
-              <div 
-                className={`relative z-10 min-h-[280px] md:min-h-[240px] flex flex-col justify-center transition-all duration-300 ease-in-out ${
-                  isAnimating 
-                    ? `opacity-0 ${slideDirection === 'right' ? '-translate-x-4' : 'translate-x-4'}` 
-                    : 'opacity-100 translate-x-0'
-                }`}
-              >
-                {/* Stars */}
-                <div className="flex text-yellow-400 mb-6 justify-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-current" />
-                  ))}
-                </div>
-
-                {/* Quote - dynamic size based on length */}
-                <blockquote className={`${getQuoteStyle(current.quote)} text-slate-700 text-center mb-8 leading-relaxed`}>
-                  &ldquo;{current.quote}&rdquo;
-                </blockquote>
-
-                {/* Author */}
-                <div className="flex items-center justify-center">
-                  <div 
-                    className={`w-14 h-14 ${current.color} rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg transition-colors duration-300`}
-                  >
-                    {current.initial}
-                  </div>
-                  <div className="ml-4 text-left">
-                    <h3 className="font-bold text-slate-900 text-lg">{current.name}</h3>
-                    <p className="text-slate-600">{current.role}</p>
-                  </div>
-                </div>
-              </div>
+    <div className="flex flex-col bg-[#fbfaf7]">
+      <section className="relative overflow-hidden bg-[#0b1220] text-white">
+        <div className="csg-grid absolute inset-0 opacity-30" />
+        <div className="absolute -right-32 top-10 h-[420px] w-[420px] rounded-full bg-ruby-600/15 blur-[120px]" />
+        <div className="container relative z-10 mx-auto grid gap-12 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-28">
+          <div>
+            <div className="csg-label flex items-center gap-3 text-ruby-300">
+              <span className="h-px w-8 bg-ruby-400" /> Guam&apos;s first coding bootcamp
             </div>
+            <h1 className="mt-6 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl lg:text-[5.15rem]">
+              Learn to build software that matters.
+            </h1>
+            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
+              Go from complete beginner to AI-capable full-stack developer in under six months—with live instruction, structured practice, and real production experience.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-ruby-500"
+              >
+                Request future cohort updates <ArrowRight className="h-4 w-4" />
+              </a>
+              <Link href="/programs" className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10">
+                Explore the program <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <p className="mt-5 text-sm text-slate-400">No prior coding experience required.</p>
+          </div>
 
-            {/* Dot Indicators */}
-            <div className="flex justify-center mt-6 gap-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    index === currentIndex 
-                      ? 'bg-ruby-500 w-8' 
-                      : 'bg-slate-300 hover:bg-slate-400'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
+          <aside className="rounded-xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur sm:p-8">
+            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
+              <span className="h-2 w-2 rounded-full bg-emerald-400" /> 2026 cohort is underway
+            </div>
+            <div className="mt-7 divide-y divide-white/10 border-y border-white/10">
+              {[
+                ["Under 6 months", "Program length"],
+                ["12+ hours", "Live + structured practice each week"],
+                ["10 students", "Maximum cohort size"],
+                ["Remote", "Live from Guam via Zoom"],
+              ].map(([value, label]) => (
+                <div key={label} className="grid grid-cols-[0.75fr_1.25fr] gap-4 py-4">
+                  <span className="font-bold text-white">{value}</span>
+                  <span className="text-sm text-slate-400">{label}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-sm leading-relaxed text-slate-400">Join the update list and we&apos;ll contact you first when the next cohort is planned.</p>
+          </aside>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-white">
+        <div className="container mx-auto grid grid-cols-3 px-4 py-6 text-center sm:px-8">
+          {[["11", "graduates"], ["100%", "completion"], ["2", "cohorts"]].map(([value, label]) => (
+            <div key={label} className="border-r border-slate-200 px-2 last:border-r-0">
+              <div className="text-2xl font-bold text-slate-950 md:text-3xl">{value}</div>
+              <div className="csg-label mt-1 text-[9px] text-slate-500 sm:text-[10px]">{label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-16 md:py-24 lg:py-28">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div>
+              <p className="csg-label text-ruby-700">Graduate stories</p>
+              <h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">A small program with personal support.</h2>
+            </div>
+            <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">Students have joined us from high school, career transitions, and entirely different industries. The common thread is consistent effort and a willingness to build.</p>
+          </div>
+
+          <div className="mt-12 grid overflow-hidden rounded-xl border border-slate-200 bg-slate-200 lg:grid-cols-3">
+            {graduateStories.map((story) => (
+              <article key={story.name} className="flex min-h-72 flex-col bg-white p-7 md:p-8">
+                <Quote className="h-6 w-6 text-ruby-600" />
+                <blockquote className="mt-6 flex-1 font-serif text-2xl leading-snug text-slate-900">“{story.quote}”</blockquote>
+                <div className="mt-8 flex items-center gap-3 border-t border-slate-100 pt-5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">{story.initial}</div>
+                  <div><div className="font-bold text-slate-900">{story.name}</div><div className="text-xs text-slate-500">{story.role}</div></div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-white py-16 md:py-24 lg:py-28">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="max-w-3xl">
+            <p className="csg-label text-ruby-700">The curriculum</p>
+            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">Fundamentals first. AI with understanding.</h2>
+            <p className="mt-5 text-lg leading-relaxed text-slate-600">You will learn to think through software problems before using AI to accelerate the work. Every tool is introduced with context, constraints, and responsibility.</p>
+          </div>
+
+          <div className="mt-12 divide-y divide-slate-200 border-y border-slate-200">
+            {curriculum.map((item, index) => {
+              const Icon = item.icon
+              return (
+                <article key={item.title} className="grid gap-4 py-7 md:grid-cols-[70px_0.75fr_1.25fr] md:items-start md:gap-8 md:py-9">
+                  <div className="flex items-center gap-3"><span className="csg-label text-[10px] text-slate-400">0{index + 1}</span><Icon className="h-5 w-5 text-ruby-600 md:hidden" /></div>
+                  <div><div className="csg-label text-[10px] text-ruby-700">{item.label}</div><h3 className="mt-2 text-2xl font-bold text-slate-950">{item.title}</h3></div>
+                  <p className="max-w-2xl leading-relaxed text-slate-600">{item.copy}</p>
+                </article>
+              )
+            })}
+          </div>
+          <Link href="/curriculum" className="mt-8 inline-flex items-center gap-2 font-bold text-ruby-700">Explore the full curriculum <ArrowRight className="h-4 w-4" /></Link>
+        </div>
+      </section>
+
+      <section className="bg-[#0b1220] py-16 text-white md:py-24 lg:py-28">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
+            <div>
+              <p className="csg-label text-ruby-300">The learning journey</p>
+              <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight md:text-5xl">Build capability in deliberate stages.</h2>
+              <p className="mt-5 leading-relaxed text-slate-300">AI becomes more useful as your own understanding grows. The program is structured around that progression.</p>
+            </div>
+            <div className="divide-y divide-white/10 border-y border-white/10">
+              {[
+                ["01", "Foundation", "Code manually. Learn the terminal, Git, web fundamentals, Ruby, and problem solving."],
+                ["02", "Full-stack", "Build Rails APIs, React interfaces, PostgreSQL databases, and deployed applications."],
+                ["03", "AI engineering", "Add Python, model APIs, retrieval, agents, prompts, and evaluation workflows."],
+                ["04", "Capstone", "Design, build, explain, and present a complete product you can stand behind."],
+              ].map(([number, title, copy]) => (
+                <div key={number} className="grid gap-2 py-5 sm:grid-cols-[70px_150px_1fr] sm:gap-6">
+                  <span className="csg-label text-[10px] text-ruby-300">{number}</span><strong>{title}</strong><span className="text-sm leading-relaxed text-slate-400">{copy}</span>
+                </div>
               ))}
             </div>
           </div>
         </div>
+      </section>
 
-        {/* CTA */}
-        <div className="text-center mt-12">
-          <p className="text-slate-600 mb-6">
-            Want updates on future cohorts?
-          </p>
-          <div className="bg-white rounded-lg p-6 max-w-md mx-auto shadow-md">
-            <p className="text-sm text-slate-700 mb-4">
-              Our only 2026 cohort is already underway. Reach out and we&apos;ll keep you posted on future Code School of Guam opportunities.
-            </p>
-            <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
-              className="inline-flex items-center justify-center w-full px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium transition-colors"
-            >
-              Request Future Updates
-              <Rocket className="ml-2 h-4 w-4" />
-            </a>
+      <section className="py-16 md:py-24 lg:py-28">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div><p className="csg-label text-ruby-700">Real production context</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">Learn around products people use.</h2></div>
+            <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">Through our partnership with Shimizu Technology, students see how professional software is scoped, built, reviewed, and supported beyond the classroom.</p>
           </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-export default function HomePage() {
-  return (
-    <div className="flex flex-col">
-      {/* HERO SECTION */}
-      <section className="relative bg-slate-900 text-white overflow-hidden">
-        {/* Background decorations */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-ruby-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl" />
-        </div>
-        
-        <div className="container mx-auto px-4 md:px-6 py-16 md:py-24 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium mb-6">
-              <Brain className="h-4 w-4 mr-2" />
-              NEW: Learn to Build AI Chatbots &amp; RAG Systems
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Learn to Build AI-Powered
-              <br />
-              <span className="text-ruby-500">Applications</span>
-            </h1>
-
-            <p className="text-xl text-slate-300 mb-4">
-              Guam&apos;s First AI-Native Coding Bootcamp — Hybrid Format
-            </p>
-            
-            <p className="text-2xl font-semibold text-green-400 mb-6">
-              From Zero to AI-Capable Developer in Under 6 Months
-            </p>
-
-            {/* Key stats */}
-            <div className="flex flex-wrap justify-center gap-6 mb-8">
-              <div className="flex items-center gap-2 text-slate-300">
-                <Calendar className="w-5 h-5 text-blue-400" />
-                <span>2026 cohort started March 2</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-300">
-                <Clock className="w-5 h-5 text-green-400" />
-                <span>12+ Hours/Week Live + Structured Async Practice</span>
-              </div>
-              <div className="flex items-center gap-2 text-ruby-400 font-semibold">
-                <Zap className="w-5 h-5 text-yellow-400" />
-                <span>Only 1 class in 2026 — Now underway</span>
-              </div>
-            </div>
-
-            {/* Countdown Timer */}
-            <CountdownTimer />
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <a
-                href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
-                className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all hover:scale-105 shadow-lg"
-              >
-                Request Future Updates
-                <ChevronRight className="ml-2 w-5 h-5" />
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {projects.map((project) => (
+              <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div className={`flex aspect-[4/3] items-center justify-center p-12 ${project.surface}`}><Image src={project.image} alt={project.title} width={220} height={220} className="h-full w-full object-contain transition duration-500 group-hover:scale-105" /></div>
+                <div className="flex items-end justify-between gap-4 p-5"><div><h3 className="text-lg font-bold text-slate-950">{project.title}</h3><p className="mt-1 text-sm text-slate-500">{project.category}</p></div><ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-ruby-600" /></div>
               </a>
-              <Link
-                href="/programs"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg text-lg font-medium transition-all"
-              >
-                View Pricing & Payment Plans
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </div>
-
-            <p className="text-slate-400">
-              No coding experience required • From beginner to job-ready
-            </p>
+            ))}
           </div>
+          <Link href="/projects" className="mt-8 inline-flex items-center gap-2 font-bold text-ruby-700">See graduate presentations and projects <ArrowRight className="h-4 w-4" /></Link>
         </div>
-        
-        {/* Fade to next section - dark to light transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </section>
 
-      {/* STUDENT SUCCESS STORIES - Carousel */}
-      <TestimonialCarousel />
-
-      {/* CURRICULUM PREVIEW - What You'll Learn (moved up before pricing) */}
-      <section className="py-24 lg:py-32 bg-white relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-              <div className="inline-flex items-center px-3 py-1.5 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-4">
-                <Code className="w-4 h-4 mr-2" />
-                Under 6 Months
-              </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-              What You&apos;ll Learn & Why
-            </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              Master Ruby on Rails, React.js, and Python & AI - the comprehensive toolkit that opens doors to any tech career
-            </p>
+      <section className="border-y border-slate-200 bg-white py-16 md:py-24 lg:py-28">
+        <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div>
+            <p className="csg-label text-ruby-700">Transparent tuition</p>
+            <h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-6xl">$7,500</h2>
+            <p className="mt-3 text-lg text-slate-600">Complete program tuition. Flexible payment options are available.</p>
           </div>
-
-          {/* Tech Stack Cards - Uniform with flexbox */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-            <div className="bg-slate-50 rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-all flex flex-col h-full">
-              <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
-                <Code className="mr-3 h-6 w-6 text-red-500" />
-                Ruby on Rails: Backend Mastery
-              </h3>
-              <ul className="space-y-3 text-slate-600 flex-grow">
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Beginner-friendly, readable syntax
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Rapid prototyping & development
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Used by Airbnb, GitHub, Shopify
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Convention over configuration
-                </li>
-              </ul>
-              {/* Bottom aligned colored box */}
-              <div className="bg-red-50 rounded-lg p-4 mt-6">
-                <p className="text-sm text-red-700 font-medium">
-                  Perfect for building robust APIs and web applications
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-slate-50 rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-all flex flex-col h-full">
-              <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
-                <Code className="mr-3 h-6 w-6 text-blue-500" />
-                React.js: Frontend Excellence
-              </h3>
-              <ul className="space-y-3 text-slate-600 flex-grow">
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Most in-demand frontend framework
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Component-based architecture
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Used by Meta, Netflix, Airbnb
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Gateway to React Native (mobile)
-                </li>
-              </ul>
-              {/* Bottom aligned colored box */}
-              <div className="bg-blue-50 rounded-lg p-4 mt-6">
-                <p className="text-sm text-blue-700 font-medium">
-                  Perfect pair with Rails APIs for full-stack development
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-slate-50 rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-all flex flex-col h-full">
-              <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
-                <Brain className="mr-3 h-6 w-6 text-purple-500" />
-                Python & AI: Future Skills
-              </h3>
-              <ul className="space-y-3 text-slate-600 flex-grow">
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Build Chatbots & RAG Systems
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  LLMs & Prompt Engineering
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Agentic Systems & Evals
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  High-demand AI skillset
-                </li>
-              </ul>
-              {/* Bottom aligned colored box */}
-              <div className="bg-purple-50 rounded-lg p-4 mt-6">
-                <p className="text-sm text-purple-700 font-medium">
-                  Create intelligent applications with the power of AI
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Tech Stack Visual */}
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-slate-50 rounded-2xl p-8 shadow-lg border border-slate-200">
-              <h3 className="text-xl font-bold text-center mb-6 text-slate-900">Your Complete Tech Stack</h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <span className="text-red-600 font-bold text-lg">Rb</span>
-                  </div>
-                  <h4 className="font-semibold text-slate-900">Ruby</h4>
-                  <p className="text-xs text-slate-600">Programming Language</p>
-                </div>
-                <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <span className="text-red-600 font-bold text-xs">Rails</span>
-                  </div>
-                  <h4 className="font-semibold text-slate-900">Ruby on Rails</h4>
-                  <p className="text-xs text-slate-600">Backend Framework</p>
-                </div>
-                <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <span className="text-blue-600 font-bold text-xs">React</span>
-                  </div>
-                  <h4 className="font-semibold text-slate-900">React</h4>
-                  <p className="text-xs text-slate-600">Frontend Framework</p>
-                </div>
-                <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Database className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h4 className="font-semibold text-slate-900">PostgreSQL</h4>
-                  <p className="text-xs text-slate-600">Database</p>
-                </div>
-                <div className="text-center p-4 bg-white rounded-lg">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Brain className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <h4 className="font-semibold text-slate-900">Python & AI</h4>
-                  <p className="text-xs text-slate-600">AI Engineering</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-              <Link
-                href="/curriculum"
-                className="inline-flex items-center px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-medium transition-colors"
-              >
-                View Full Curriculum
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[
+              [GraduationCap, "Under six months", "Live teaching and structured practice"],
+              [Laptop, "Lifetime access", "Recordings, resources, and updates"],
+              [Users, "Real experience", "Optional internship and paid opportunities"],
+            ].map(([Icon, title, copy]) => {
+              const FeatureIcon = Icon as typeof GraduationCap
+              return <div key={String(title)} className="border-t-2 border-ruby-600 pt-5"><FeatureIcon className="h-5 w-5 text-ruby-700" /><h3 className="mt-4 font-bold text-slate-950">{String(title)}</h3><p className="mt-2 text-sm leading-relaxed text-slate-500">{String(copy)}</p></div>
+            })}
           </div>
         </div>
       </section>
 
-      {/* VALUE COMPARISON - What's Included (moved down after curriculum) */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-green-100 border border-green-200 rounded-full text-green-800 text-sm font-medium mb-4">
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Complete Package Value
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-              What&apos;s Included — <span className="text-green-600">No Hidden Fees</span>
-            </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-4">
-              For $7,500, you get everything you need to become a junior full-stack developer — plus lifetime support and guaranteed opportunities
-            </p>
-            <div className="inline-flex items-center px-3 py-1 bg-green-100 border border-green-200 rounded-full text-green-700 text-sm font-medium">
-              <Star className="h-4 w-4 mr-1" />
-              New lower tuition - 25% less than before!
-            </div>
-          </div>
-
-          {/* Price Comparison Card */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 md:p-8 border border-green-200 shadow-lg">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div>
-                  <div className="text-4xl font-bold text-green-600 mb-2">$7,500</div>
-                  <div className="text-lg font-semibold text-slate-900 mb-1">Code School of Guam</div>
-                  <div className="text-sm text-slate-600">New Lower Price • Was $10,000</div>
-                </div>
-                <div className="flex items-center justify-center">
-                  <div className="text-slate-400 text-2xl font-bold">VS</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-red-500 mb-2">$16,000+</div>
-                  <div className="text-lg font-semibold text-slate-900 mb-1">U.S. Bootcamps</div>
-                  <div className="text-sm text-slate-600">Without internship guarantee</div>
-                </div>
-              </div>
-              <div className="mt-6 text-center">
-                <p className="text-lg font-semibold text-slate-900 flex items-center justify-center gap-2">
-                  <Target className="w-5 h-5 text-ruby-500 flex-shrink-0" /> <span className="text-green-600">Save over $8,500</span> while getting MORE value with our locally-focused program
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* What's Included Grid */}
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg p-6 shadow-md border border-slate-200 hover:shadow-lg transition-all">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <GraduationCap className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900">Under 6 Months</h3>
-                </div>
-                <p className="text-slate-600 text-sm">
-                  From zero to AI-capable full-stack developer with live instruction, hands-on projects, and Cursor IDE Pro license included
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg p-6 shadow-md border border-slate-200 hover:shadow-lg transition-all">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                    <Clock className="h-6 w-6 text-green-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900">Lifetime Access</h3>
-                </div>
-                <p className="text-slate-600 text-sm">
-                  Forever access to all recordings, resources, and future curriculum updates
-                </p>
-            </div>
-            
-              <div className="bg-white rounded-lg p-6 shadow-md border border-slate-200 hover:shadow-lg transition-all">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-ruby-100 rounded-lg flex items-center justify-center mr-3">
-                    <Briefcase className="h-6 w-6 text-ruby-600" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900">Real Experience + Paid Roles</h3>
-                </div>
-                <p className="text-slate-600 text-sm">
-                  Optional internship for real-world experience, plus paid TA and junior dev positions for top performers
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center mt-8">
-            <Link
-              href="/programs"
-              className="inline-flex items-center text-ruby-600 hover:text-ruby-700 font-medium"
-            >
-              View full pricing details
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-        
-        {/* Fade to next section - light to dark transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-900 to-transparent"></div>
-      </section>
-
-      {/* INTERNSHIP HIGHLIGHT */}
-      <section className="py-24 lg:py-32 bg-slate-900 text-white relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center px-3 py-1.5 bg-green-500/20 text-green-400 rounded-full text-sm font-medium mb-4">
-              <Briefcase className="w-4 h-4 mr-2" />
-              Real-World Experience
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Experience That Gets You Hired
-            </h2>
-            <p className="text-xl text-slate-300 mb-4 max-w-3xl mx-auto">
-              Employers want engineers with experience — but new engineers can&apos;t get experience if no one gives them a chance. We solved that problem.
-            </p>
-            <p className="text-lg text-slate-400 mb-8 max-w-3xl mx-auto">
-              We started{" "}
-              <a 
-                href="https://shimizu-technology.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-ruby-400 hover:text-ruby-300 font-semibold underline underline-offset-2"
-              >
-                Shimizu Technology
-              </a>
-              {" "}to be the company that gives them that chance — real production applications that build the portfolio employers want to see.
-            </p>
-
-            {/* Project examples */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all">
-                <Bot className="w-8 h-8 text-purple-400 mb-2" />
-                <h3 className="font-semibold mb-1">HåfaGPT</h3>
-                <p className="text-sm text-slate-400">AI-powered Chamorro language learning platform</p>
-              </div>
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all">
-                <Rocket className="w-8 h-8 text-orange-400 mb-2" />
-                <h3 className="font-semibold mb-1">Hafaloha</h3>
-                <p className="text-sm text-slate-400">AI-powered ordering platform for retail and food businesses</p>
-              </div>
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all relative">
-                <UtensilsCrossed className="w-8 h-8 text-yellow-400 mb-2" />
-                <h3 className="font-semibold mb-1">Three Squares Grill</h3>
-                <p className="text-sm text-slate-400">Full ordering system for a multi-location restaurant</p>
-                <span className="absolute top-3 right-3 px-2 py-0.5 bg-amber-500/20 text-amber-400 text-xs rounded-full font-medium">Coming Soon</span>
-              </div>
-            </div>
-
-            <Link
-              href="/projects"
-              className="inline-flex items-center px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg font-medium transition-colors"
-            >
-              See Graduate Projects
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING CTA - final section, no fade needed */}
-      <section className="py-24 lg:py-32 bg-gradient-to-br from-ruby-600 to-ruby-700 text-white">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Ready to Start Your Journey?
-          </h2>
-          <p className="text-xl text-white/90 mb-4 max-w-2xl mx-auto">
-            Tuition: $7,500 — Flexible payment plans available for enrolled students.
-          </p>
-          <p className="text-lg text-yellow-300 font-semibold mb-8 flex items-center justify-center gap-2">
-            <Zap className="w-5 h-5 fill-current" /> Only 1 class in 2026 — now in progress.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
-            >
-              Request Future Updates
-              <ChevronRight className="ml-2 w-5 h-5" />
-            </a>
-            <Link
-              href="/programs"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-lg text-lg font-medium transition-all"
-            >
-              View Payment Options
-            </Link>
-          </div>
+      <section className="bg-ruby-700 py-16 text-white md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The 2026 cohort is underway. Join the update list to hear about the next opportunity.</p></div>
+          <a href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates" className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-bold text-ruby-800 transition hover:-translate-y-0.5">Request future updates <ArrowRight className="h-4 w-4" /></a>
         </div>
       </section>
     </div>

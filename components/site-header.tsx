@@ -1,17 +1,15 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
+import { useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Menu, X, ChevronDown } from "lucide-react"
+import { ArrowUpRight, Menu, X } from "lucide-react"
 
-const mainNavItems = [
-  { href: "/", label: "Home" },
+const navItems = [
   { href: "/curriculum", label: "Curriculum" },
-  { href: "/programs", label: "Programs & Pricing" },
-  { href: "/projects", label: "Projects" },
+  { href: "/programs", label: "Program & Tuition" },
+  { href: "/projects", label: "Student Work" },
   { href: "/internship", label: "Internship" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
@@ -23,111 +21,51 @@ export function SiteHeader() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 16)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const isActive = (href: string) => {
-    if (href === "/") return pathname === "/"
-    return pathname.startsWith(href)
-  }
+  useEffect(() => setMobileMenuOpen(false), [pathname])
+
+  const isActive = (href: string) => pathname.startsWith(href)
 
   return (
-    <header 
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? "bg-slate-900/95 backdrop-blur-md shadow-lg" 
-          : "bg-slate-900"
-      }`}
-    >
-      <nav className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <Image
-              src="/CSG-Logo.png"
-              alt="Code School of Guam"
-              width={40}
-              height={40}
-              className="rounded-md flex-shrink-0"
-            />
-            <span className="text-white font-bold text-lg group-hover:text-ruby-400 transition-colors">
-              Code School of Guam
-            </span>
+    <header className={`sticky top-0 z-50 border-b border-white/10 bg-[#0b1220]/95 text-white backdrop-blur-xl transition-shadow ${scrolled ? "shadow-lg shadow-slate-950/10" : ""}`}>
+      <nav className="container mx-auto px-4 sm:px-8">
+        <div className="flex h-[72px] items-center justify-between gap-5">
+          <Link href="/" className="flex min-w-0 items-center gap-3">
+            <Image src="/CSG-Logo.png" alt="Code School of Guam" width={36} height={36} className="h-9 w-9 flex-shrink-0 rounded-md border border-white/10 object-cover" />
+            <span className="truncate text-base font-bold tracking-tight sm:text-lg">Code School of Guam</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden xl:flex items-center space-x-1">
-            {mainNavItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  isActive(item.href)
-                    ? "bg-ruby-500/20 text-ruby-400"
-                    : "text-slate-300 hover:text-white hover:bg-white/5"
-                }`}
-              >
+          <div className="hidden items-center gap-0.5 xl:flex">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} className={`rounded-md px-3 py-2 text-sm font-semibold transition ${isActive(item.href) ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5 hover:text-white"}`}>
                 {item.label}
               </Link>
             ))}
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden xl:flex items-center">
-            <a
-              href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
-              className="px-5 py-2 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md text-sm font-medium transition-colors"
-            >
-              Future Cohort Updates
-            </a>
-          </div>
+          <a href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates" className="hidden items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-ruby-500 xl:inline-flex">
+            Future cohorts <ArrowUpRight className="h-4 w-4" />
+          </a>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="xl:hidden p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <button onClick={() => setMobileMenuOpen((open) => !open)} className="rounded-md p-2 text-slate-300 hover:bg-white/10 hover:text-white xl:hidden" aria-label="Toggle menu" aria-expanded={mobileMenuOpen}>
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <>
-          <div 
-            className="fixed inset-0 bg-black/50 z-40 xl:hidden" 
-            onClick={() => setMobileMenuOpen(false)} 
-          />
-          <div className="xl:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-800 z-50">
-            <div className="container mx-auto px-4 py-4 space-y-1">
-              {mainNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                    isActive(item.href)
-                      ? "bg-ruby-500/20 text-ruby-400"
-                      : "text-slate-300 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  {item.label}
-                </Link>
+          <button className="fixed inset-0 top-[72px] z-40 bg-slate-950/60 xl:hidden" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" />
+          <div className="absolute left-0 top-full z-50 w-full border-t border-white/10 bg-[#0b1220] px-4 py-4 xl:hidden">
+            <div className="mx-auto max-w-2xl space-y-1">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href} className={`block rounded-md px-4 py-3 font-semibold ${isActive(item.href) ? "bg-white/10 text-white" : "text-slate-300"}`}>{item.label}</Link>
               ))}
-              <div className="pt-4 mt-4 border-t border-slate-800">
-                <a
-                  href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates"
-                  className="block w-full text-center px-4 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-md font-medium"
-                >
-                  Future Cohort Updates
-                </a>
-              </div>
+              <a href="mailto:codeschoolofguam@gmail.com?subject=Future%20Cohort%20Updates" className="mt-4 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white">Request future updates <ArrowUpRight className="h-4 w-4" /></a>
             </div>
           </div>
         </>

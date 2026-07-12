@@ -24,13 +24,13 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
             <Heart className="w-4 h-4 mr-2" />
             Our Story
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
             Anyone Can Do This
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
@@ -41,7 +41,7 @@ export default function AboutPage() {
       </section>
 
       {/* The Origin Story */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -49,12 +49,12 @@ export default function AboutPage() {
                 <Lightbulb className="w-4 h-4 mr-2" />
                 Why We Exist
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              <h2 className="font-serif text-4xl md:text-5xl font-semibold text-slate-900 mb-4">
                 Bringing Opportunity Home
               </h2>
             </div>
 
-            <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl p-8 md:p-10 border border-slate-200 mb-8">
+            <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl p-8 md:p-10 border border-slate-200 mb-8">
               <div className="space-y-4 text-slate-700 leading-relaxed">
                 <p>
                   Growing up in Guam, I never knew coding was something I could do. I thought software engineering was for the smartest people in the world — not for someone like me. It wasn&apos;t until I moved to the states and discovered coding bootcamps that I realized: <span className="font-semibold text-slate-900">anyone can learn this.</span>
@@ -91,7 +91,7 @@ export default function AboutPage() {
       </section>
 
       {/* Graduate Spotlights */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
@@ -109,7 +109,7 @@ export default function AboutPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Alanna Cruz */}
-              <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg">
+              <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
                     A
@@ -133,7 +133,7 @@ export default function AboutPage() {
               </div>
 
               {/* Audreana Lett */}
-              <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-lg">
+              <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-20 h-20 bg-[#800000] rounded-full flex items-center justify-center text-[#FFD700] text-3xl font-bold flex-shrink-0">
                     A
@@ -161,7 +161,7 @@ export default function AboutPage() {
       </section>
 
       {/* Community Impact - FD Partnership */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -177,7 +177,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-[#800000]/5 to-[#FFD700]/10 rounded-2xl p-8 border border-[#800000]/20">
+            <div className="bg-gradient-to-br from-[#800000]/5 to-[#FFD700]/10 rounded-xl p-8 border border-[#800000]/20">
               {/* Audreana's Achievement */}
               <div className="text-center mb-8 pb-8 border-b border-[#800000]/20">
                 <div className="inline-flex items-center px-3 py-1.5 bg-[#800000] text-[#FFD700] rounded-full text-sm font-medium mb-4">
@@ -227,7 +227,7 @@ export default function AboutPage() {
       </section>
 
       {/* UOG AI Workshop */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
@@ -243,7 +243,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="grid md:grid-cols-2">
                 {/* Image */}
                 <div className="relative h-64 md:h-auto">
@@ -305,21 +305,21 @@ export default function AboutPage() {
       </section>
 
       {/* The Vision */}
-      <section className="py-24 lg:py-32 bg-gradient-to-b from-slate-800 to-slate-900 text-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-gradient-to-b from-slate-800 to-slate-900 text-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
               <Target className="w-4 h-4 mr-2" />
               Our Vision
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-6">
               Guam Can Be a Tech Hub
             </h2>
             <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
               For as long as I can remember, Guam has been behind when it comes to technology. But it doesn&apos;t have to stay that way.
             </p>
             
-            <div className="bg-white/5 rounded-2xl p-8 border border-white/10 text-left mb-8">
+            <div className="bg-white/5 rounded-xl p-8 border border-white/10 text-left mb-8">
               <p className="text-slate-300 mb-4">
                 Here&apos;s what I&apos;ve discovered: <span className="text-white font-semibold">opportunity is everywhere on Guam</span>. There&apos;s so much work that needs custom software solutions — I can&apos;t take it all on myself. The problem isn&apos;t lack of opportunity. The problem is that people don&apos;t know we can build these things <span className="italic">here</span>.
               </p>
@@ -329,14 +329,14 @@ export default function AboutPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <Rocket className="w-8 h-8 text-ruby-400 mb-3" />
                 <h3 className="text-lg font-bold mb-2">Our Mission</h3>
                 <p className="text-slate-400 text-sm">
                   Provide high-quality, accessible coding education to the people of Guam, ensuring graduates are prepared for real software engineering careers.
                 </p>
               </div>
-              <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+              <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                 <Target className="w-8 h-8 text-ruby-400 mb-3" />
                 <h3 className="text-lg font-bold mb-2">The Goal</h3>
                 <p className="text-slate-400 text-sm">
@@ -349,7 +349,7 @@ export default function AboutPage() {
       </section>
 
       {/* About the Founder */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
@@ -389,7 +389,7 @@ export default function AboutPage() {
       </section>
 
       {/* Shimizu Technology Partnership */}
-      <section className="py-24 lg:py-32 bg-slate-50">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -399,7 +399,7 @@ export default function AboutPage() {
               Employers want experience, but new engineers can&apos;t get experience if no one gives them a chance. We created Shimizu Technology to be that company — ensuring every graduate has access to real-world projects.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white rounded-2xl p-6 border-l-4 border-blue-500 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border-l-4 border-blue-500 shadow-sm">
                 <div className="flex items-center mb-2">
                   <Rocket className="w-5 h-5 text-blue-500 mr-2" />
                   <h3 className="font-semibold text-slate-900">Optional Internship</h3>
@@ -408,7 +408,7 @@ export default function AboutPage() {
                   10-week experience-focused program working on real production apps — build your portfolio
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-6 border-l-4 border-green-500 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border-l-4 border-green-500 shadow-sm">
                 <div className="flex items-center mb-2">
                   <GraduationCap className="w-5 h-5 text-green-500 mr-2" />
                   <h3 className="font-semibold text-slate-900">TA Positions</h3>
@@ -417,7 +417,7 @@ export default function AboutPage() {
                   Paid teaching assistant roles for the next cohort — reinforce your skills while earning
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-6 border-l-4 border-purple-500 shadow-sm">
+              <div className="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-sm">
                 <div className="flex items-center mb-2">
                   <Briefcase className="w-5 h-5 text-purple-500 mr-2" />
                   <h3 className="font-semibold text-slate-900">Junior Dev Roles</h3>
@@ -441,9 +441,9 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 lg:py-32 bg-ruby-600 text-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-ruby-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
             Join Our Community
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">

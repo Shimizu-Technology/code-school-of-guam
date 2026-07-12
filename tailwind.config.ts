@@ -31,7 +31,8 @@ module.exports = {
         to match your Google Font (e.g., 'Inter'). 
       */
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Manrope", "sans-serif"],
+        serif: ["Newsreader", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

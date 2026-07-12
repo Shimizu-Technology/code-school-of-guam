@@ -17,13 +17,13 @@ export default function ProgramsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-400 text-sm font-medium mb-4">
             <Calendar className="h-4 w-4 mr-2" />
             2026 Cohort Is Underway
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
             Cohort 3 Started <span className="text-ruby-500">March 2, 2026</span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-4">
@@ -39,11 +39,11 @@ export default function ProgramsPage() {
       </section>
 
       {/* Main Pricing Section */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Program Details */}
-            <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-md">
+            <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-md">
               <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
                 <GraduationCap className="w-6 h-6 mr-3 text-ruby-500" />
                 Live Coding Bootcamp
@@ -109,7 +109,7 @@ export default function ProgramsPage() {
             </div>
 
             {/* Pricing Card */}
-            <div className="bg-gradient-to-br from-ruby-500 to-ruby-600 rounded-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-ruby-500 to-ruby-600 rounded-xl p-8 text-white">
               <h2 className="text-xl font-bold mb-6">New Lower Tuition</h2>
               <div className="mb-6">
                 <div className="text-slate-200 line-through text-lg">$10,000</div>
@@ -141,10 +141,10 @@ export default function ProgramsPage() {
       </section>
 
       {/* Price Comparison */}
-      <section className="py-24 lg:py-32 bg-slate-50">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 md:p-8 border border-green-200 shadow-lg">
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 md:p-8 border border-green-200 shadow-sm">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
                 <div>
                   <div className="text-4xl font-bold text-green-600 mb-2">$7,500</div>
@@ -171,7 +171,7 @@ export default function ProgramsPage() {
       </section>
 
       {/* Payment Options */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -183,7 +183,7 @@ export default function ProgramsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="bg-slate-50 rounded-2xl p-6 text-center border border-slate-200">
+            <div className="bg-slate-50 rounded-xl p-6 text-center border border-slate-200">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
@@ -192,7 +192,7 @@ export default function ProgramsPage() {
               <p className="text-sm text-slate-600">One-time payment</p>
             </div>
 
-            <div className="bg-slate-50 rounded-2xl p-6 text-center border border-slate-200">
+            <div className="bg-slate-50 rounded-xl p-6 text-center border border-slate-200">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-6 h-6 text-blue-600" />
               </div>
@@ -201,7 +201,7 @@ export default function ProgramsPage() {
               <p className="text-sm text-slate-600">4-8 month plans</p>
             </div>
 
-            <div className="bg-slate-50 rounded-2xl p-6 text-center border border-slate-200">
+            <div className="bg-slate-50 rounded-xl p-6 text-center border border-slate-200">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <CreditCard className="w-6 h-6 text-purple-600" />
               </div>
