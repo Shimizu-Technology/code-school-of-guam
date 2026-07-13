@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: "Next Cohort Interest List",
   description: "Get notified when Code School of Guam confirms its next coding bootcamp cohort.",
   alternates: { canonical: "/interest" },
+  openGraph: {
+    title: "Next Cohort Interest List | Code School of Guam",
+    description: "Get notified when Code School of Guam confirms its next coding bootcamp cohort.",
+    url: "/interest",
+  },
 }
 
 export default function InterestPage() {
