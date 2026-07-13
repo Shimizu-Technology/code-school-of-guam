@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { ChatWindow } from "./chat-window";
 
@@ -8,12 +8,23 @@ export function ChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [showPulse, setShowPulse] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const hasOpenedRef = useRef(false);
+
+  const toggleChat = () => {
+    if (!isOpen) hasOpenedRef.current = true;
+    setIsOpen((open) => !open);
+  };
 
   // Stop the pulse animation after 5 seconds
   useEffect(() => {
     const timer = setTimeout(() => setShowPulse(false), 5000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isOpen && hasOpenedRef.current) launcherRef.current?.focus();
+  }, [isOpen]);
 
   useEffect(() => {
     const handleScroll = () => setIsVisible(window.scrollY > 520);
@@ -29,7 +40,8 @@ export function ChatButton() {
 
       {/* Compact, safe-area-aware help control */}
       {(isVisible || isOpen) && <button
-        onClick={() => setIsOpen(!isOpen)}
+        ref={launcherRef}
+        onClick={toggleChat}
         className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 md:h-14 md:w-14 ${
           isOpen
             ? "bg-slate-700 text-white hover:bg-slate-800 focus:ring-slate-500"

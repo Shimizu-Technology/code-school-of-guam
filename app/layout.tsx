@@ -28,10 +28,10 @@ export const metadata: Metadata = {
     siteName: 'Code School of Guam',
     images: [
       {
-        url: '/CSG-Logo.png',
-        width: 512,
-        height: 512,
-        alt: 'Code School of Guam Logo',
+        url: '/images/code-school-social-card.png',
+        width: 1200,
+        height: 630,
+        alt: 'Code School of Guam — learn to build software that matters',
       },
     ],
     locale: 'en_US',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Code School of Guam - Build AI-Powered Apps",
     description: "Guam's first coding bootcamp. Learn to build AI-powered applications with chatbots and RAG systems. The 2026 cohort is underway.",
-    images: ['/CSG-Logo.png'],
+    images: ['/images/code-school-social-card.png'],
   },
   robots: {
     index: true,
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#000000',
+  themeColor: '#0b1220',
 }
 
 // JSON-LD Structured Data
