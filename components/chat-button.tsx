@@ -4,15 +4,19 @@ import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { ChatWindow } from "./chat-window";
 
+const CHAT_VISIBILITY_SCROLL_Y = 520;
+
 export function ChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [showPulse, setShowPulse] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const hasOpenedRef = useRef(false);
+  const preserveLauncherRef = useRef(false);
 
   const closeChat = () => {
-    // Keep the launcher mounted until focus has safely returned to it.
+    // Protect the launcher from momentum-scroll updates until focus returns.
+    preserveLauncherRef.current = true;
     setIsVisible(true);
     setIsOpen(false);
   };
@@ -34,11 +38,21 @@ export function ChatButton() {
   }, []);
 
   useEffect(() => {
-    if (!isOpen && hasOpenedRef.current) launcherRef.current?.focus();
+    if (!isOpen && hasOpenedRef.current) {
+      launcherRef.current?.focus();
+      preserveLauncherRef.current = false;
+    }
   }, [isOpen]);
 
   useEffect(() => {
-    const handleScroll = () => setIsVisible(window.scrollY > 520);
+    const handleScroll = () => {
+      const launcherIsFocused = launcherRef.current === document.activeElement;
+      setIsVisible(
+        window.scrollY > CHAT_VISIBILITY_SCROLL_Y ||
+        preserveLauncherRef.current ||
+        launcherIsFocused,
+      );
+    };
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -55,7 +69,8 @@ export function ChatButton() {
         type="button"
         onClick={toggleChat}
         onBlur={() => {
-          if (!isOpen && window.scrollY <= 520) setIsVisible(false);
+          preserveLauncherRef.current = false;
+          if (!isOpen && window.scrollY <= CHAT_VISIBILITY_SCROLL_Y) setIsVisible(false);
         }}
         className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 md:h-14 md:w-14 ${
           isOpen
