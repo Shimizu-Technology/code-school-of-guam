@@ -183,7 +183,7 @@ const shimizuProjects: ShimizuProject[] = [
 
 export default function ProjectsPage() {
   return (
-    <div className="flex flex-col">
+    <div className="csg-inner flex flex-col">
       {/* Hero */}
       <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
@@ -373,6 +373,7 @@ export default function ProjectsPage() {
                         src={project.image}
                         alt={project.title}
                         fill
+                        sizes="(min-width: 1024px) 33vw, 100vw"
                         className={`object-contain p-8 ${project.image.includes('hafaloha') ? 'object-cover p-0' : ''}`}
                       />
                     ) : (

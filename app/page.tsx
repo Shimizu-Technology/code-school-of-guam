@@ -116,7 +116,7 @@ export default function HomePage() {
             <div className="mt-7 divide-y divide-white/10 border-y border-white/10">
               {[
                 ["Under 6 months", "Program length"],
-                ["12+ hours", "Live + structured practice each week"],
+                ["13.5 hours", "Live + structured practice each week"],
                 ["10 students", "Maximum cohort size"],
                 ["Remote", "Live from Guam via Zoom"],
               ].map(([value, label]) => (

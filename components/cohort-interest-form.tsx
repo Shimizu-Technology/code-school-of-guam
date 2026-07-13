@@ -109,8 +109,8 @@ export function CohortInterestForm() {
         </div>
       )}
 
-      <button disabled={submitState === "submitting"} type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-ruby-500 px-6 py-4 text-lg font-semibold text-white shadow-lg transition hover:bg-ruby-600 disabled:cursor-wait disabled:opacity-70">
-        {submitState === "submitting" ? <><Loader2 className="h-5 w-5 animate-spin" /> Saving your interest</> : "Join the next-cohort interest list"}
+      <button disabled={submitState === "submitting"} type="submit" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-ruby-700 disabled:cursor-wait disabled:opacity-70">
+        {submitState === "submitting" ? <><Loader2 className="h-5 w-5 animate-spin" /> Saving your interest</> : "Join the interest list"}
       </button>
       <p className="text-center text-xs leading-5 text-slate-500">This is an interest list, not an application. January and February 2027 are being considered, but no date has been announced.</p>
     </form>

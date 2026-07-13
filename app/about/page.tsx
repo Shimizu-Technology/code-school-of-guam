@@ -22,7 +22,7 @@ import {
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col">
+    <div className="csg-inner flex flex-col">
       {/* Hero */}
       <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
@@ -251,6 +251,7 @@ export default function AboutPage() {
                     src="/images/uog-intro-to-ai.jpeg"
                     alt="UOG Intro to AI Workshop attendees"
                     fill
+                    sizes="(min-width: 768px) 50vw, 100vw"
                     className="object-cover"
                   />
                 </div>
