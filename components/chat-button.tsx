@@ -1,35 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { ChatWindow } from "./chat-window";
-
-const CHAT_VISIBILITY_SCROLL_Y = 520;
 
 export function ChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [showPulse, setShowPulse] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-  const launcherRef = useRef<HTMLButtonElement>(null);
-  const hasOpenedRef = useRef(false);
-  const preserveLauncherRef = useRef(false);
-
-  const closeChat = () => {
-    // Protect the launcher from momentum-scroll updates until focus returns.
-    preserveLauncherRef.current = true;
-    setIsVisible(true);
-    setIsOpen(false);
-  };
-
-  const toggleChat = () => {
-    if (isOpen) {
-      closeChat();
-      return;
-    }
-
-    hasOpenedRef.current = true;
-    setIsOpen(true);
-  };
 
   // Stop the pulse animation after 5 seconds
   useEffect(() => {
@@ -38,21 +16,7 @@ export function ChatButton() {
   }, []);
 
   useEffect(() => {
-    if (!isOpen && hasOpenedRef.current) {
-      launcherRef.current?.focus();
-      preserveLauncherRef.current = false;
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const launcherIsFocused = launcherRef.current === document.activeElement;
-      setIsVisible(
-        window.scrollY > CHAT_VISIBILITY_SCROLL_Y ||
-        preserveLauncherRef.current ||
-        launcherIsFocused,
-      );
-    };
+    const handleScroll = () => setIsVisible(window.scrollY > 520);
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -61,17 +25,11 @@ export function ChatButton() {
   return (
     <>
       {/* Chat Window */}
-      {isOpen && <ChatWindow onClose={closeChat} />}
+      {isOpen && <ChatWindow onClose={() => setIsOpen(false)} />}
 
       {/* Compact, safe-area-aware help control */}
       {(isVisible || isOpen) && <button
-        ref={launcherRef}
-        type="button"
-        onClick={toggleChat}
-        onBlur={() => {
-          preserveLauncherRef.current = false;
-          if (!isOpen && window.scrollY <= CHAT_VISIBILITY_SCROLL_Y) setIsVisible(false);
-        }}
+        onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 md:h-14 md:w-14 ${
           isOpen
             ? "bg-slate-700 text-white hover:bg-slate-800 focus:ring-slate-500"

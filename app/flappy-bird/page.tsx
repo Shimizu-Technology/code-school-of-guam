@@ -3,14 +3,8 @@ import Link from "next/link"
 import { ChevronLeft, Gamepad2 } from "lucide-react"
 
 export const metadata = {
-  title: "Flappy Bird Demo",
+  title: "Flappy Bird | Code School of Guam",
   description: "Play our Flappy Bird clone and see how coding can create fun games!",
-  alternates: { canonical: "/flappy-bird" },
-  openGraph: {
-    title: "Flappy Bird Demo | Code School of Guam",
-    description: "Play a student-friendly browser game and see what learning to code can create.",
-    url: "/flappy-bird",
-  },
 }
 
 export default function FlappyBirdPage() {

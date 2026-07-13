@@ -192,7 +192,7 @@ const technologies = [
 
 export default function CurriculumPage() {
   return (
-    <div className="csg-inner flex flex-col">
+    <div className="flex flex-col">
       {/* Hero */}
       <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
