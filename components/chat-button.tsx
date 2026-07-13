@@ -11,9 +11,20 @@ export function ChatButton() {
   const launcherRef = useRef<HTMLButtonElement>(null);
   const hasOpenedRef = useRef(false);
 
+  const closeChat = () => {
+    // Keep the launcher mounted until focus has safely returned to it.
+    setIsVisible(true);
+    setIsOpen(false);
+  };
+
   const toggleChat = () => {
-    if (!isOpen) hasOpenedRef.current = true;
-    setIsOpen((open) => !open);
+    if (isOpen) {
+      closeChat();
+      return;
+    }
+
+    hasOpenedRef.current = true;
+    setIsOpen(true);
   };
 
   // Stop the pulse animation after 5 seconds
@@ -36,12 +47,16 @@ export function ChatButton() {
   return (
     <>
       {/* Chat Window */}
-      {isOpen && <ChatWindow onClose={() => setIsOpen(false)} />}
+      {isOpen && <ChatWindow onClose={closeChat} />}
 
       {/* Compact, safe-area-aware help control */}
       {(isVisible || isOpen) && <button
         ref={launcherRef}
+        type="button"
         onClick={toggleChat}
+        onBlur={() => {
+          if (!isOpen && window.scrollY <= 520) setIsVisible(false);
+        }}
         className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 md:h-14 md:w-14 ${
           isOpen
             ? "bg-slate-700 text-white hover:bg-slate-800 focus:ring-slate-500"
