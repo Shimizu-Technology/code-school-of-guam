@@ -11,7 +11,7 @@ export default function FlappyBirdPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       {/* Header */}
-      <header className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-6 shadow-lg">
+      <header className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-6 shadow-sm">
         <div className="container mx-auto px-4 md:px-6">
           <Link
             href="/"
@@ -48,7 +48,7 @@ export default function FlappyBirdPage() {
 
         {/* How It's Built Section */}
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+          <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
             <div className="bg-gradient-to-r from-ruby-600 to-red-600 px-6 md:px-8 py-6">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                 How This Game Was Built
@@ -155,7 +155,7 @@ export default function FlappyBirdPage() {
                 <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-lg transition-all hover:bg-ruby-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-sm transition-all hover:bg-ruby-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
                   >
                     View Our Program
                   </Link>

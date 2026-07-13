@@ -194,13 +194,13 @@ export default function CurriculumPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
             <Code className="w-4 h-4 mr-2" />
             Under 6 Months
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
             What You&apos;ll Learn
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
@@ -212,7 +212,7 @@ export default function CurriculumPage() {
       </section>
 
       {/* Tech Stack Cards */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -225,7 +225,7 @@ export default function CurriculumPage() {
 
           {/* Uniform tech stack cards with flexbox */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-all flex flex-col h-full">
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-all flex flex-col h-full">
               <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
                 <Code className="mr-3 h-6 w-6 text-red-500" />
                 Ruby on Rails: Backend Mastery
@@ -255,7 +255,7 @@ export default function CurriculumPage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-all flex flex-col h-full">
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-all flex flex-col h-full">
               <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
                 <Code className="mr-3 h-6 w-6 text-blue-500" />
                 React.js: Frontend Excellence
@@ -285,7 +285,7 @@ export default function CurriculumPage() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl p-8 shadow-lg border border-slate-200 hover:shadow-xl transition-all flex flex-col h-full">
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-all flex flex-col h-full">
               <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
                 <Brain className="mr-3 h-6 w-6 text-purple-500" />
                 Python & AI: Future Skills
@@ -319,7 +319,7 @@ export default function CurriculumPage() {
       </section>
 
       {/* Timeline - subtle background change, no fade needed */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -340,7 +340,7 @@ export default function CurriculumPage() {
                   <div className="w-2 h-2 bg-white rounded-full" />
                 </div>
 
-                <div className={`bg-white rounded-2xl p-6 border border-slate-100 shadow-md border-l-4 ${phase.borderColor}`}>
+                <div className={`bg-white rounded-xl p-6 border border-slate-100 shadow-md border-l-4 ${phase.borderColor}`}>
                   <div className="flex flex-wrap items-center gap-3 mb-3">
                     <span className={`px-3 py-1 ${phase.color} text-white text-sm font-medium rounded-full`}>
                       {phase.week}
@@ -363,7 +363,7 @@ export default function CurriculumPage() {
       </section>
 
       {/* Technologies You'll Master - subtle background change, no fade needed */}
-      <section className="py-24 lg:py-32 bg-white relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
@@ -379,7 +379,7 @@ export default function CurriculumPage() {
               {technologies.map((tech, index) => (
                 <div 
                   key={index}
-                  className={`${tech.color} border ${tech.borderColor} rounded-2xl p-4 text-center hover:shadow-md transition-all`}
+                  className={`${tech.color} border ${tech.borderColor} rounded-xl p-4 text-center hover:shadow-md transition-all`}
                 >
                   <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                     {tech.iconComponent && (
@@ -396,7 +396,7 @@ export default function CurriculumPage() {
       </section>
 
       {/* Class Format - subtle background change, no fade needed */}
-      <section className="py-24 lg:py-32 bg-slate-50 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">
@@ -404,28 +404,28 @@ export default function CurriculumPage() {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
+              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
                 <Clock className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-slate-900">Live Classes</h3>
                 <p className="text-slate-600 text-sm">
                   Tuesday & Thursday, 6:00-9:00 PM (Guam time)
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
+              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
                 <BookOpen className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-slate-900">Guided Practice</h3>
                 <p className="text-slate-600 text-sm">
                   Monday, Wednesday, Friday (async with exercises + recordings)
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
+              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
                 <Users className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-slate-900">1-on-1 Mentorship</h3>
                 <p className="text-slate-600 text-sm">
                   Saturday with Lead Instructor
                 </p>
               </div>
-              <div className="bg-white rounded-2xl p-6 text-center shadow-md border border-slate-100">
+              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
                 <Smartphone className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
                 <h3 className="font-semibold mb-2 text-slate-900">Fully Remote</h3>
                 <p className="text-slate-600 text-sm">
@@ -441,9 +441,9 @@ export default function CurriculumPage() {
       </section>
 
       {/* CTA - final section, no fade needed */}
-      <section className="py-24 lg:py-32 bg-slate-900 text-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-900 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
             Ready to Start Learning?
           </h2>
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">

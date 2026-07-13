@@ -185,13 +185,13 @@ export default function ProjectsPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-green-500/20 text-green-400 rounded-full text-sm font-medium mb-4">
             <Trophy className="w-4 h-4 mr-2" />
             Success Stories
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
             From Zero to <span className="text-ruby-500">Full-Stack Developer</span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
@@ -226,7 +226,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Capstone Videos */}
-      <section className="py-24 lg:py-32 bg-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-white">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
@@ -241,7 +241,7 @@ export default function ProjectsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Cohort 2 - December 2025 */}
             <div>
-              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-ruby-200">
+              <div className="relative w-full overflow-hidden rounded-xl shadow-md border-2 border-ruby-200">
                 <div style={{ paddingTop: '56.25%' }}>
                   <iframe 
                     src="https://www.youtube.com/embed/bWuS_YuiRzI" 
@@ -268,7 +268,7 @@ export default function ProjectsPage() {
 
             {/* Cohort 1 - May 2025 */}
             <div>
-              <div className="relative w-full overflow-hidden rounded-xl shadow-xl border-2 border-slate-200">
+              <div className="relative w-full overflow-hidden rounded-xl shadow-md border-2 border-slate-200">
                 <div style={{ paddingTop: '56.25%' }}>
                   <iframe 
                     src="https://www.youtube.com/embed/MNzZeL33jiw?t=650" 
@@ -293,7 +293,7 @@ export default function ProjectsPage() {
 
           {/* Project Highlights */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
-            <div className="bg-slate-50 rounded-2xl p-6 border-l-4 border-ruby-500">
+            <div className="bg-slate-50 rounded-xl p-6 border-l-4 border-ruby-500">
               <div className="flex items-center mb-3">
                 <Code className="w-5 h-5 text-ruby-500 mr-2" />
                 <h3 className="font-semibold text-slate-900">Local Impact Projects</h3>
@@ -302,7 +302,7 @@ export default function ProjectsPage() {
                 Students created apps addressing Guam-specific challenges, from tourism platforms to local business management tools.
               </p>
             </div>
-            <div className="bg-slate-50 rounded-2xl p-6 border-l-4 border-green-500">
+            <div className="bg-slate-50 rounded-xl p-6 border-l-4 border-green-500">
               <div className="flex items-center mb-3">
                 <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
                 <h3 className="font-semibold text-slate-900">Industry-Ready Skills</h3>
@@ -311,7 +311,7 @@ export default function ProjectsPage() {
                 Every project uses professional development practices: Git version control, database design, API integration, and responsive design.
               </p>
             </div>
-            <div className="bg-slate-50 rounded-2xl p-6 border-l-4 border-blue-500">
+            <div className="bg-slate-50 rounded-xl p-6 border-l-4 border-blue-500">
               <div className="flex items-center mb-3">
                 <Users className="w-5 h-5 text-blue-500 mr-2" />
                 <h3 className="font-semibold text-slate-900">Presentation Skills</h3>
@@ -335,14 +335,14 @@ export default function ProjectsPage() {
       </section>
 
       {/* Shimizu Technology Projects */}
-      <section className="py-24 lg:py-32 bg-slate-50">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/10 text-ruby-700 rounded-full text-sm font-medium mb-4">
               <Rocket className="w-4 h-4 mr-2" />
               Real-World Experience
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+            <h2 className="font-serif text-4xl md:text-5xl font-semibold text-slate-900 mb-4">
               Projects Our Graduates Work On
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
@@ -363,7 +363,7 @@ export default function ProjectsPage() {
             {shimizuProjects.map((project, index) => (
               <div 
                 key={index}
-                className={`bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-md hover:shadow-lg transition-all ${project.featured ? 'ring-2 ring-ruby-200' : ''}`}
+                className={`bg-white rounded-xl overflow-hidden border border-slate-100 shadow-md hover:shadow-sm transition-all ${project.featured ? 'ring-2 ring-ruby-200' : ''}`}
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                   {/* Image */}
@@ -503,7 +503,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* Try It Yourself - Interactive Demos */}
-      <section className="py-24 lg:py-32 bg-slate-50">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-10">
             <div className="inline-flex items-center px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
@@ -521,7 +521,7 @@ export default function ProjectsPage() {
           <div className="max-w-md mx-auto">
             <Link
               href="/flappy-bird"
-              className="group block bg-white rounded-xl border border-slate-200 shadow-lg hover:shadow-xl transition-all overflow-hidden"
+              className="group block bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden"
             >
               <div className="bg-gradient-to-br from-teal-500 to-cyan-600 p-8 text-center">
                 <Rocket className="w-12 h-12 text-white/90 mb-3 mx-auto" />
@@ -547,9 +547,9 @@ export default function ProjectsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 lg:py-32 bg-ruby-600 text-white">
+      <section className="py-16 md:py-24 lg:py-28 bg-ruby-600 text-white">
         <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
             Want to Build Real Projects?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">

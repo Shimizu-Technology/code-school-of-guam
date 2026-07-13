@@ -86,7 +86,7 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   <div 
                     className={`bg-slate-800/80 backdrop-blur-sm rounded-lg p-6 shadow-md border-l-2 ${
                       activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-slate-700'
-                    } hover:border-ruby-500 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer`}
+                    } hover:border-ruby-500 hover:shadow-sm hover:scale-105 transition-all duration-300 cursor-pointer`}
                     onMouseEnter={() => setHoveredItem(index)}
                     onMouseLeave={() => setHoveredItem(null)}
                     onClick={() => setExpandedItem(expandedItem === index ? null : index)}

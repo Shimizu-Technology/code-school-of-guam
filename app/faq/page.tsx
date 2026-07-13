@@ -92,13 +92,13 @@ export default function FAQPage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="bg-slate-900 text-white py-16 md:py-24 relative overflow-hidden">
+      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
             <HelpCircle className="w-4 h-4 mr-2" />
             Get Answers
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
             Frequently Asked Questions
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
@@ -110,7 +110,7 @@ export default function FAQPage() {
       </section>
 
       {/* FAQs - Card-based accordion like original */}
-      <section className="py-24 lg:py-32 bg-slate-100 relative">
+      <section className="py-16 md:py-24 lg:py-28 bg-slate-100 relative">
         {/* Background pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,0,0,0.1),transparent_70%)]"></div>
