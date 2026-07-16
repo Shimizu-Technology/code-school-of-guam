@@ -29,155 +29,90 @@ type ShimizuProject = {
   comingSoon?: boolean
 }
 
-// Shimizu Technology projects that students learn around and graduates can contribute to
+// A selective set of Shimizu systems that gives students real production context.
+// Inclusion here does not imply that every graduate contributed to every product.
 const shimizuProjects: ShimizuProject[] = [
   {
     title: "Hafa Code",
     subtitle: "Student Coding Playground",
-    description: "A lightweight Replit alternative built for Code School of Guam, FD students, alumni, and anyone learning to code without heavy setup or distracting AI features.",
+    description: "A lightweight browser coding environment built for Code School of Guam, FD students, alumni, and anyone learning without heavy setup.",
     image: "/images/hafa-code-logo.png",
     link: "https://hafa-code.netlify.app",
     technologies: ["React", "TypeScript", "WASM", "Ruby", "Monaco"],
     highlights: [
       "Ruby, JavaScript, and HTML/CSS/JS in the browser",
       "Simple local projects with optional cloud sync",
-      "Built as a real tool students can use and understand"
+      "A real tool students can use and understand"
     ],
     featured: true
   },
   {
     title: "CSG Learning Hub",
     subtitle: "Code School Learning Platform",
-    description: "The private learning platform behind Code School of Guam: prework, class content, workshops, recordings, grading, progress tracking, and cohort management.",
+    description: "The private platform behind Code School of Guam: prework, class content, workshops, recordings, grading, progress tracking, and cohort management.",
     image: "/CSG-Logo.png",
     link: "https://learn.codeschoolofguam.com",
     technologies: ["React", "Rails", "Clerk", "PostgreSQL", "TypeScript"],
     highlights: [
       "Lessons, exercises, recordings, and workshops",
       "Student progress and instructor workflows",
-      "Real production platform powering the school"
+      "Production platform powering the school"
     ],
     featured: true
   },
   {
     title: "HåfaGPT",
-    subtitle: "Chamorro Language Learning Platform",
-    description: "A comprehensive AI-powered platform for learning Chamorro, the indigenous language of Guam and the Mariana Islands.",
+    subtitle: "CHamoru Language Learning Platform",
+    description: "An AI-powered platform for learning CHamoru, built around Guam and the Mariana Islands rather than treating local culture as an afterthought.",
     image: "/images/HafaGPT-icon1.png",
     link: "https://hafagpt.com",
     technologies: ["React", "TypeScript", "FastAPI", "Python", "PostgreSQL", "OpenAI"],
     highlights: [
-      "45,000+ knowledge chunks in RAG system",
-      "Searchable dictionary, stories, quizzes, and games",
+      "45,000+ knowledge chunks in its RAG system",
+      "Dictionary, stories, quizzes, and games",
       "Guam-first AI product with cultural impact"
     ],
     featured: true
   },
   {
     title: "Cornerstone Payroll",
-    subtitle: "Guam Payroll Platform",
-    description: "A Guam-specific payroll application built as a better local alternative to generic mainland payroll tools and QuickBooks-heavy workflows.",
+    subtitle: "Live Guam Payroll Platform",
+    description: "A production payroll and accounting-operations system used by Cornerstone Accounting, translating Guam tax and filing rules into dependable workflows.",
     image: "/images/cornerstone-payroll-cp.svg",
     link: "https://cornerstone-payroll.netlify.app",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
     highlights: [
-      "Payroll runs, pay periods, and approvals",
-      "Guam tax and reporting workflows",
-      "Check printing and employee records"
+      "Guam payroll calculations, adjustments, and approvals",
+      "Check printing, pay stubs, tax summaries, and filing support",
+      "Company switching, role controls, and audit history"
     ],
     featured: true
   },
   {
-    title: "AIRE Services",
-    subtitle: "Live Business Operations App",
-    description: "A production operations platform for AIRE Services Guam, already used by employees for clock-in/clock-out and daily workflows.",
-    image: "/images/aire-logo.png",
-    link: "https://aire-services-guam.netlify.app",
-    technologies: ["React", "Rails", "PostgreSQL", "Clerk"],
-    highlights: [
-      "Employee time clock and attendance",
-      "Approval and operations dashboards",
-      "Payroll-oriented summaries and exports"
-    ]
-  },
-  {
     title: "Hafaloha Orders",
-    subtitle: "Production Ordering Platform",
-    description: "Online ordering, retail, VIP event sales, shipping, and admin workflows for a real business with real customers and high-volume event fulfillment.",
+    subtitle: "Active Production Ordering Platform",
+    description: "Ordering, retail, VIP event sales, shipping, and administrative workflows still used by Hafaloha, including its June 2026 concert.",
     image: "/images/hafaloha_hero.jpg",
     link: "https://hafaloha-orders.com",
     technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe", "EasyPost", "Redis"],
     highlights: [
-      "850+ VIP orders at concert event",
+      "850+ VIP orders during a major concert launch",
       "EasyPost shipping and Stripe payments",
-      "Real-time order management"
+      "Continued concert and fulfillment use"
     ]
-  },
-  {
-    title: "Golf for Wishes",
-    subtitle: "Make-A-Wish Event Platform",
-    description: "Registration and event management platform for Make-A-Wish Guam & CNMI, supporting charity events from signup through tournament day.",
-    image: "/images/make-a-wish-logo-blue.png",
-    link: "https://golfforwishes.com",
-    technologies: ["React", "Ruby on Rails", "Stripe", "ActionCable"],
-    highlights: [
-      "Team registration and payments",
-      "Sponsor and raffle management",
-      "Admin tools for event-day operations"
-    ]
-  },
-  {
-    title: "Three Squares Grill",
-    subtitle: "Restaurant & Catering System",
-    description: "Coming-soon ordering platform for Three Squares and B&G Pacific, designed around catering, dine-in/takeout, and local restaurant operations.",
-    image: "/images/three-squares-grill.svg",
-    link: "https://three-squares-web.netlify.app",
-    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe"],
-    highlights: [
-      "Catering and bulk ordering flows",
-      "Admin dashboard and order management",
-      "Built for multi-location operations"
-    ],
-    comingSoon: true
   },
   {
     title: "GIAA Golf Tournament",
-    subtitle: "Event Registration System",
-    description: "Custom registration and admin dashboard for the annual Edward A.P. Muna II Memorial Golf Tournament hosted by the Guam International Airport Authority.",
+    subtitle: "Reusable Public Event System",
+    description: "Registration, payment, and administration for the annual Edward A.P. Muna II Memorial Golf Tournament hosted by the Guam International Airport Authority.",
     image: "/images/giaa-logo.png",
     link: "https://giaa-tournament.com",
     technologies: ["React", "Ruby on Rails", "Stripe", "PostgreSQL"],
     highlights: [
-      "Online registration with payments",
-      "Admin dashboard for event management",
-      "Built for annual reuse"
+      "Public registration and online payments",
+      "Deadline-driven administrative launch",
+      "Designed for annual reuse"
     ]
-  },
-  {
-    title: "Cornerstone Accounting",
-    subtitle: "Tax & Accounting Platform",
-    description: "Full-service accounting platform that transformed Cornerstone's paper-based process into a streamlined digital system with client intake and workflow management.",
-    image: "/images/cornerstone-logo.jpeg",
-    link: "https://cornerstone-accounting.tax",
-    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
-    highlights: [
-      "Digital client intake workflows",
-      "Workflow and status dashboards",
-      "Recurring operations and time tracking"
-    ]
-  },
-  {
-    title: "Typr",
-    subtitle: "Voice-to-Text Tool",
-    description: "A coming-soon local-first dictation app inspired by Superwhisper and Wispr Flow — a good example of the team building tools for itself.",
-    image: "/images/typr-icon.png",
-    technologies: ["Tauri", "Rust", "Whisper", "TypeScript"],
-    highlights: [
-      "Local Whisper-powered dictation",
-      "App-aware paste and replace workflows",
-      "Built for developers and operators"
-    ],
-    comingSoon: true
   }
 ]
 
@@ -343,10 +278,10 @@ export default function ProjectsPage() {
               Real-World Experience
             </div>
             <h2 className="font-serif text-4xl md:text-5xl font-semibold text-slate-900 mb-4">
-              Projects Our Graduates Work On
+              Production Systems Students Learn Around
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              During their internship with{" "}
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              Code School&apos;s connection to{" "}
               <a
                 href="https://shimizu-technology.com"
                 target="_blank"
@@ -355,7 +290,7 @@ export default function ProjectsPage() {
               >
                 Shimizu Technology
               </a>
-              , students learn around real production applications like these — the kind of software actual businesses, students, and community organizations depend on.
+              {" "}gives students concrete examples of how professional teams handle users, data, payments, compliance, deployment, and ongoing support. These examples provide production context; inclusion does not mean every graduate contributed to every system.
             </p>
           </div>
 
@@ -367,7 +302,7 @@ export default function ProjectsPage() {
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
                   {/* Image */}
-                  <div className="lg:col-span-1 h-64 lg:h-auto relative bg-slate-100 overflow-hidden">
+                  <div className="lg:col-span-1 h-48 sm:h-64 lg:h-auto relative bg-slate-100 overflow-hidden">
                     {project.image ? (
                       <Image
                         src={project.image}
@@ -458,18 +393,18 @@ export default function ProjectsPage() {
 
           {/* Partner CTA */}
           <div className="mt-12 text-center">
-            <p className="text-slate-600 mb-4">
-              These projects are built and maintained by{" "}
-              <a 
-                href="https://shimizu-technology.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-ruby-600 hover:text-ruby-700 font-medium"
-              >
-                Shimizu Technology
-              </a>
-              , our internship partner.
+            <p className="text-slate-600 mb-5">
+              These representative systems are built and maintained by Shimizu Technology, the software company behind Code School&apos;s production context and internship pathway.
             </p>
+            <a
+              href="https://shimizu-technology.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-sm font-medium transition-colors"
+            >
+              Explore the full Shimizu portfolio
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </a>
           </div>
         </div>
       </section>
