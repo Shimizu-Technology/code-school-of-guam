@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import { ArrowUpRight, Menu, X } from "lucide-react"
 
 const navItems = [
+  { href: "/courses/python-fundamentals", label: "Python Course" },
   { href: "/curriculum", label: "Curriculum" },
   { href: "/programs", label: "Program & Tuition" },
   { href: "/projects", label: "Student Work" },
