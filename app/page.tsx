@@ -131,6 +131,19 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="border-b border-slate-200 bg-[#f1ede5] py-14 md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div>
+            <p className="csg-label text-ruby-700">New focused course · January 2027 interest</p>
+            <h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Start with Python. Finish with a program of your own.</h2>
+          </div>
+          <div className="lg:pb-1">
+            <p className="max-w-xl text-lg leading-8 text-slate-700">A three-week beginner course with short lessons, browser coding, and one private Zoom hour with Leon each week. We&apos;re building a small first run for January.</p>
+            <Link href="/courses/python-fundamentals" className="mt-6 inline-flex min-h-12 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Explore Python Fundamentals <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+          </div>
+        </div>
+      </section>
+
       <section className="border-b border-slate-200 bg-white">
         <div className="container mx-auto grid grid-cols-3 px-4 py-6 text-center sm:px-8">
           {[["11", "graduates"], ["100%", "completion"], ["2", "cohorts"]].map(([value, label]) => (

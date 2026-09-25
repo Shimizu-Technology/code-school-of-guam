@@ -3,6 +3,7 @@ import Link from "next/link"
 import { ArrowUpRight, Mail, Phone } from "lucide-react"
 
 const footerLinks = [
+  ["Python Fundamentals", "/courses/python-fundamentals"],
   ["Curriculum", "/curriculum"],
   ["Program & Tuition", "/programs"],
   ["Student Work", "/projects"],
