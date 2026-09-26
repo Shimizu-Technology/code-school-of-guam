@@ -11,6 +11,14 @@ import { HelpCircle, Mail, Phone } from "lucide-react"
 
 const faqs = [
   {
+    question: "What is the difference between a focused course and the full bootcamp?",
+    answer: "A focused course teaches one subject through short lessons, practice, a bounded project, and private instructor time. The full bootcamp is a longer program across frontend, backend, databases, and AI, with integrated projects and sustained instruction. Completing focused courses does not mean you have completed the bootcamp."
+  },
+  {
+    question: "Can I enroll in Python Fundamentals now?",
+    answer: "The first three-week Python Fundamentals run is being prepared for an invited group in December 2026. Public enrollment is not open. You can join the course-specific updates list on the Python Fundamentals page to hear about a later public run."
+  },
+  {
     question: "Do I need prior coding experience?",
     answer: "No prior coding experience is required. Our program starts from the basics and builds up to advanced concepts."
   },
@@ -19,8 +27,8 @@ const faqs = [
     answer: "There's no upper age limit — our students range from high schoolers to professionals in their 50s changing careers. For students under 18, we require parental consent. Everyone learns together and supports each other. There's no 'right age' to learn to code — just the right motivation."
   },
   {
-    question: "Why is there only 1 class in 2026?",
-    answer: "We're limiting to one cohort in 2026 for two reasons: First, high demand for our partner company Shimizu Technology keeps us busy with real client projects — which is actually great for students because it means you're learning from instructors who are actively building software. Second, we're completing a major curriculum upgrade to focus on AI Engineering, so students will now learn to build AI-powered applications with chatbots and RAG systems."
+    question: "Why is there only one full bootcamp cohort in 2026?",
+    answer: "The March 2026 full bootcamp cohort is underway, and we have not announced another full cohort for 2026. We are also developing shorter focused courses, starting with an invited Python Fundamentals pilot in December. Those are separate from the full bootcamp."
   },
   {
     question: "Why do you teach Ruby on Rails instead of other programming languages?",
@@ -32,7 +40,7 @@ const faqs = [
   },
   {
     question: "Are the classes held in-person or online?",
-    answer: "All classes are fully remote via Zoom + a structured online platform. Live sessions are Tuesday & Thursday 6-9 PM, guided async practice runs Monday/Wednesday/Friday, and Saturday is reserved for 1-on-1 mentorship with the Lead Instructor."
+    answer: "The March 2026 full bootcamp cohort uses live Zoom sessions, structured online practice, and mentorship. Python Fundamentals is planned as short lessons with one private Zoom hour each week for an invited group. Check the page for the specific offer before enrolling; future schedules may differ."
   },
   {
     question: "How does the internship work?",
@@ -52,7 +60,7 @@ const faqs = [
   },
   {
     question: "What is the hybrid format?",
-    answer: "Our hybrid format combines live instruction with structured async practice for maximum learning. Live classes are Tuesday & Thursday from 6-9 PM via Zoom. Monday, Wednesday, and Friday feature guided async practice with exercises, coding challenges, and recorded walkthroughs. Saturday is dedicated to 1-on-1 mentorship sessions with the Lead Instructor. This format gives you 13.5 hours of structured learning per week while offering more flexibility than a traditional daily schedule."
+    answer: "For the March 2026 full bootcamp, live Zoom classes are Tuesday and Thursday, with structured practice during the week and mentorship. Focused courses use a different format: short lessons, exercises, project feedback, and private meetings. See each offer page for its current schedule and support terms."
   },
   {
     question: "What AI tools will I learn?",
@@ -64,11 +72,11 @@ const faqs = [
   },
   {
     question: "Why is the tuition set at $7,500?",
-    answer: "We strive to provide high-quality education with personalized attention through small class sizes and offer real-world experience via internships. Our tuition reflects the value and unique opportunities we provide, while remaining more affordable than many comparable programs."
+    answer: "The $7,500 figure is tuition for the March 2026 full bootcamp cohort, which is already underway. The price for a future full cohort has not been announced. Focused courses have separate prices and terms when enrollment opens."
   },
   {
     question: "Do you offer payment plans?",
-    answer: "Yes, we offer monthly installment plans during the course duration. We are also working on partnering with local banks for financing options."
+    answer: "Payment options depend on the specific offer. The March 2026 bootcamp had installment options; terms for a future cohort have not been announced. Ask us for the current written terms before making a payment."
   },
   {
     question: "What is the attendance policy?",
@@ -80,7 +88,7 @@ const faqs = [
   },
   {
     question: "How can I access the policies?",
-    answer: "You can view our detailed policies, including the Code of Conduct, Attendance Policy, and Refund Policy, in the Policies section of our website."
+    answer: "Please email codeschoolofguam@gmail.com for the written terms that apply to your specific cohort or course. We will show the applicable access, meeting, and refund terms before accepting payment for a new offer."
   },
   {
     question: "What resources do you recommend to get started with coding?",
@@ -186,14 +194,9 @@ export default function FAQPage() {
             Ready to start your coding journey?
           </h2>
           <p className="text-white/90 mb-6">
-            Our only 2026 cohort is underway. Contact us for future cohort updates.
+            Our 2026 full bootcamp cohort is underway. Explore focused courses or join the future bootcamp update list.
           </p>
-          <a
-            href="/interest"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
-          >
-            Join the Interest List
-          </a>
+          <div className="flex flex-wrap justify-center gap-3"><Link href="/courses" className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all">Explore courses</Link><Link href="/interest" className="inline-flex items-center justify-center px-8 py-4 border border-white/50 text-white hover:bg-white/10 rounded-lg text-lg font-medium transition-all">Full bootcamp updates</Link></div>
         </div>
       </section>
     </div>

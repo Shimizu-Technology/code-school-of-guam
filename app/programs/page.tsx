@@ -1,247 +1,60 @@
-"use client"
-
 import Link from "next/link"
-import { 
-  CheckCircle, 
-  ArrowRight, 
-  Star, 
-  Clock, 
-  Users, 
-  Briefcase, 
-  GraduationCap,
-  Calendar,
-  CreditCard
-} from "lucide-react"
+import { ArrowRight, Code2, GraduationCap, Layers3, Users } from "lucide-react"
+
+const differentiators = [
+  { icon: Layers3, title: "Connected projects", copy: "Bring frontend, backend, databases, and AI together in applications that grow over time." },
+  { icon: Code2, title: "Repeated practice and review", copy: "Return to the same engineering skills across larger problems, with instructor feedback and revision." },
+  { icon: Users, title: "A staffed cohort", copy: "Learn alongside other students, collaborate, present your work, and prepare for professional development work." },
+]
 
 export default function ProgramsPage() {
   return (
-    <div className="csg-inner flex flex-col">
-      {/* Hero */}
-      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-full text-yellow-400 text-sm font-medium mb-4">
-            <Calendar className="h-4 w-4 mr-2" />
-            2026 Cohort Is Underway
+    <div className="bg-[#fbfaf7]">
+      <section className="relative overflow-hidden bg-[#0b1220] text-white">
+        <div className="csg-grid absolute inset-0 opacity-30" />
+        <div className="container relative mx-auto grid gap-10 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:py-28">
+          <div>
+            <p className="csg-label text-ruby-300">The full CSG bootcamp</p>
+            <h1 className="mt-6 max-w-3xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl">Build software across the whole stack.</h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Our full program develops skill through sustained instruction, practice, integrated projects, collaboration, and review. It is a different commitment from a focused three-week course.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/curriculum" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Explore the curriculum <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+              <Link href="/interest" className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/20 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Next cohort updates</Link>
+            </div>
           </div>
-          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
-            Cohort 3 Started <span className="text-ruby-500">March 2, 2026</span>
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto mb-4">
-            Comprehensive program (under 6 months) with <span className="text-white font-semibold">Ruby, Rails, React, Python & AI Engineering</span>
-          </p>
-          <div className="inline-flex items-center px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full text-green-400 text-sm font-medium">
-            <CheckCircle className="h-4 w-4 mr-1" />
-            Applications are closed for the 2026 cohort
-          </div>
+          <aside className="border-l-2 border-ruby-500 bg-white/[0.045] p-6 sm:p-8">
+            <p className="csg-label text-ruby-300">Current status</p>
+            <h2 className="mt-3 font-serif text-3xl font-semibold">The 2026 cohort is underway.</h2>
+            <p className="mt-4 leading-7 text-slate-300">Cohort 3 began March 2, 2026. Applications for that cohort are closed. We have not announced dates, tuition, or a staffed schedule for the next full bootcamp cohort.</p>
+          </aside>
         </div>
-        {/* Fade to next section - dark to light */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
-      {/* Main Pricing Section */}
-      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Program Details */}
-            <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-md">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6 flex items-center">
-                <GraduationCap className="w-6 h-6 mr-3 text-ruby-500" />
-                Live Coding Bootcamp
-              </h2>
-              <p className="text-slate-600 mb-6">
-                Under 6 months • Fully Remote • Max 10 Students • Ruby, Rails, React, Python & AI
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-slate-50 rounded-lg p-4 text-center">
-                  <div className="text-xl font-bold text-slate-900">13.5</div>
-                  <div className="text-xs text-slate-600">Hours/Week</div>
-                  <div className="text-xs text-slate-500 mt-1">6 hrs live + 7.5 hrs async</div>
-                </div>
-                <div className="bg-slate-50 rounded-lg p-4 text-center">
-                  <div className="text-2xl font-bold text-slate-900">Max 10</div>
-                  <div className="text-sm text-slate-600">Students</div>
-                </div>
-              </div>
-
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start">
-                  <div className="w-1 h-full bg-ruby-500 rounded mr-3 self-stretch"></div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900">Live Classes:</h4>
-                    <p className="text-slate-600 text-sm">Tue & Thu 6-9 PM (Live via Zoom)</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-1 h-full bg-blue-400 rounded mr-3 self-stretch"></div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900">Guided Practice:</h4>
-                    <p className="text-slate-600 text-sm">Mon / Wed / Fri (Async with exercises + recordings)</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-1 h-full bg-green-500 rounded mr-3 self-stretch"></div>
-                  <div>
-                    <h4 className="font-semibold text-slate-900">Saturday:</h4>
-                    <p className="text-slate-600 text-sm">1-on-1 Mentorship with Lead Instructor</p>
-                  </div>
-                </div>
-              </div>
-
-              <ul className="space-y-2 text-sm text-slate-600">
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  Live instruction via Zoom + optional in-person sessions
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  Cursor IDE Pro license included
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  Lifetime access to all recordings & materials
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
-                  Optional internship + paid TA/dev opportunities
-                </li>
-              </ul>
-            </div>
-
-            {/* Pricing Card */}
-            <div className="bg-gradient-to-br from-ruby-500 to-ruby-600 rounded-xl p-8 text-white">
-              <h2 className="text-xl font-bold mb-6">New Lower Tuition</h2>
-              <div className="mb-6">
-                <div className="text-slate-200 line-through text-lg">$10,000</div>
-                <div className="text-5xl font-bold mb-2">$7,500</div>
-                <div className="text-ruby-200">Current 2026 Cohort</div>
-              </div>
-
-              <div className="inline-flex items-center px-3 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-8">
-                <Star className="h-4 w-4 mr-1" />
-                25% Lower Than Before!
-              </div>
-
-              <a
-                href="/interest"
-                className="block w-full text-center px-6 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg font-medium transition-colors mb-4"
-              >
-                Join the Interest List →
-              </a>
-
-              <a
-                href="mailto:codeschoolofguam@gmail.com?subject=Question%20About%20Code%20School%20of%20Guam"
-                className="block w-full text-center px-6 py-3 bg-white/10 hover:bg-white/20 border border-white/30 rounded-lg font-medium transition-colors text-sm"
-              >
-                Questions? Contact Us
-              </a>
-            </div>
+      <section className="border-b border-slate-200 bg-white py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="max-w-3xl"><p className="csg-label text-ruby-700">Why the full program</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">More than a collection of short courses.</h2><p className="mt-5 text-lg leading-8 text-slate-600">The bootcamp connects skills over a longer period. You build, explain, revise, deploy, and work with others as the projects become more demanding.</p></div>
+          <div className="mt-12 grid gap-8 border-t border-slate-200 pt-8 md:grid-cols-3">
+            {differentiators.map(({ icon: Icon, title, copy }) => <div key={title} className="border-l-2 border-ruby-700 pl-5"><Icon className="h-6 w-6 text-ruby-700" aria-hidden="true" /><h3 className="mt-4 text-xl font-bold text-slate-950">{title}</h3><p className="mt-3 leading-7 text-slate-600">{copy}</p></div>)}
           </div>
         </div>
       </section>
 
-      {/* Price Comparison */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 md:p-8 border border-green-200 shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                <div>
-                  <div className="text-4xl font-bold text-green-600 mb-2">$7,500</div>
-                  <div className="text-lg font-semibold text-slate-900 mb-1">Code School of Guam</div>
-                  <div className="text-sm text-slate-600">New Lower Price • Was $10,000</div>
-                </div>
-                <div className="flex items-center justify-center">
-                  <div className="text-slate-400 text-2xl font-bold">VS</div>
-                </div>
-                <div>
-                  <div className="text-4xl font-bold text-red-500 mb-2">$16,000+</div>
-                  <div className="text-lg font-semibold text-slate-900 mb-1">U.S. Bootcamps</div>
-                  <div className="text-sm text-slate-600">Without real-world experience</div>
-                </div>
-              </div>
-              <div className="mt-6 text-center">
-                <p className="text-lg font-semibold text-slate-900 flex items-center justify-center gap-2">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" /> <span className="text-green-600">Save over $8,500</span> while getting MORE value with our locally-focused program
-                </p>
-              </div>
-            </div>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
+          <div><GraduationCap className="h-7 w-7 text-ruby-700" aria-hidden="true" /><p className="csg-label mt-5 text-ruby-700">The March 2026 cohort</p><h2 className="mt-3 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">How the current program was structured.</h2></div>
+          <div className="divide-y divide-slate-200 border-y border-slate-200 text-slate-700">
+            <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Duration</strong><p>Under six months, including prework and the live program.</p></div>
+            <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Teaching</strong><p>Live Zoom instruction, structured online practice, and individual support.</p></div>
+            <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Subjects</strong><p>Programming fundamentals, Ruby and Rails, frontend development, databases, Python, and AI engineering.</p></div>
+            <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">2026 tuition</strong><p>$7,500 for this cohort. Future cohort pricing and payment options will be published with its own terms.</p></div>
           </div>
         </div>
       </section>
 
-      {/* Payment Options */}
-      <section className="py-16 md:py-24 lg:py-28 bg-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Flexible Payment Options
-            </h2>
-            <p className="text-slate-600">
-              Choose the payment plan that works best for you
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="bg-slate-50 rounded-xl p-6 text-center border border-slate-200">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <CheckCircle className="w-6 h-6 text-green-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">Pay in Full</h3>
-              <div className="text-3xl font-bold text-green-600 mb-2">$7,500</div>
-              <p className="text-sm text-slate-600">One-time payment</p>
-            </div>
-
-            <div className="bg-slate-50 rounded-xl p-6 text-center border border-slate-200">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">Monthly Plans</h3>
-              <div className="text-3xl font-bold text-blue-600 mb-2">$950+</div>
-              <p className="text-sm text-slate-600">4-8 month plans</p>
-            </div>
-
-            <div className="bg-slate-50 rounded-xl p-6 text-center border border-slate-200">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <CreditCard className="w-6 h-6 text-purple-600" />
-              </div>
-              <h3 className="font-semibold text-slate-900 mb-2">PFC Financing</h3>
-              <div className="text-2xl font-bold text-purple-600 mb-2">Apply</div>
-              <p className="text-sm text-slate-600">Bank partnership</p>
-            </div>
-          </div>
-
-          <div className="max-w-2xl mx-auto mt-12 text-center">
-            <h3 className="text-xl font-bold text-slate-900 mb-4">Our Commitment to Accessibility</h3>
-            <p className="text-slate-600">
-              While comparable programs charge $15,000-$20,000, we&apos;ve set our tuition lower to make quality coding education accessible to motivated students in Guam and beyond.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 bg-slate-900 text-white">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-2xl font-bold mb-4">Questions about payment?</h2>
-          <p className="text-slate-300 mb-6">
-            We&apos;re happy to discuss options that work for your situation.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/interest"
-              className="inline-flex items-center justify-center px-6 py-3 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg font-medium transition-colors"
-            >
-              Join the Interest List
-            </a>
-            <Link
-              href="/faq"
-              className="inline-flex items-center text-slate-300 hover:text-white font-medium"
-            >
-              View FAQs
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
-          </div>
+      <section className="bg-[#0b1220] py-16 text-white md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div><p className="csg-label text-ruby-300">Find your starting point</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Stay informed about the next cohort.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-300">The next full bootcamp has no announced date. If you want to start sooner, explore the focused-course path and its December invited pilot.</p></div>
+          <div className="flex flex-col gap-3 sm:flex-row"><Link href="/interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white hover:bg-ruby-500">Bootcamp updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link><Link href="/courses" className="inline-flex min-h-12 items-center justify-center rounded-md border border-white/20 px-6 py-3 font-bold text-white hover:bg-white/10">Focused courses</Link></div>
         </div>
       </section>
     </div>
