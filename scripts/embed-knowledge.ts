@@ -5,7 +5,8 @@
  * chunks them, generates embeddings, and uploads to Pinecone.
  * 
  * Run with: npx tsx scripts/embed-knowledge.ts
- * Run with clean slate: npx tsx scripts/embed-knowledge.ts --clean
+ * A rerun replaces this version's vectors and removes obsolete IDs after
+ * every replacement vector has been uploaded successfully.
  */
 
 import { Pinecone } from '@pinecone-database/pinecone';
@@ -37,8 +38,9 @@ const MAX_CHUNK_SIZE = 1500; // Max characters before sub-chunking
 const MIN_CHUNK_SIZE = 200; // Min characters (combine small sections)
 const SUB_CHUNK_OVERLAP = 200; // Overlap when sub-chunking large sections
 
-// Check for --clean flag
-const shouldClean = process.argv.includes('--clean');
+if (process.argv.includes('--clean')) {
+  throw new Error('--clean would delete knowledge from other versions. Run without it.');
+}
 
 // Validate required env vars
 if (!process.env.PINECONE_API_KEY) {
@@ -243,18 +245,20 @@ function readKnowledgeFiles(): { filename: string; content: string }[] {
   return files;
 }
 
-/**
- * Delete all vectors from the index
- */
-async function cleanIndex(index: ReturnType<Pinecone['index']>) {
-  console.log('🧹 Cleaning index - deleting all existing vectors...');
-  try {
-    await index.deleteAll();
-    console.log('   ✅ All vectors deleted\n');
-  } catch (error) {
-    console.error('   ❌ Error deleting vectors:', error);
-    throw error;
-  }
+async function listVersionIds(index: ReturnType<Pinecone['index']>): Promise<Set<string>> {
+  const ids = new Set<string>();
+  let paginationToken: string | undefined;
+  do {
+    const page = await index.listPaginated({
+      prefix: `${ACTIVE_KNOWLEDGE_VERSION}-`,
+      paginationToken,
+    });
+    for (const vector of page.vectors ?? []) {
+      if (vector.id) ids.add(vector.id);
+    }
+    paginationToken = page.pagination?.next;
+  } while (paginationToken);
+  return ids;
 }
 
 /**
@@ -270,10 +274,9 @@ async function embedKnowledge() {
   // Get the index
   const index = pinecone.index(INDEX_NAME);
 
-  // Clean index if --clean flag is passed
-  if (shouldClean) {
-    await cleanIndex(index);
-  }
+  // List the active version before writing. Upsert does not remove IDs from
+  // deleted or renamed sections, so those must be reconciled after upload.
+  const previousIds = await listVersionIds(index);
 
   // Process each file
   const vectors: {
@@ -323,6 +326,7 @@ async function embedKnowledge() {
         process.stdout.write(`   - Embedded: "${chunk.sectionTitle}" ${chunk.subIndex > 0 ? `(part ${chunk.subIndex + 1})` : ''}\r`);
       } catch (error) {
         console.error(`\n   ❌ Error embedding "${chunk.sectionTitle}": ${error}`);
+        throw error;
       }
 
       // Small delay to avoid rate limiting
@@ -332,7 +336,12 @@ async function embedKnowledge() {
     console.log(`   ✅ Completed ${file.filename}\n`);
   }
 
-  // Upload vectors to Pinecone in batches
+  if (vectors.length === 0) {
+    throw new Error('No knowledge vectors generated; refusing to replace the active version.');
+  }
+
+  // Upload every replacement before deleting obsolete IDs. A failed upload
+  // leaves the prior knowledge available for a later rerun.
   console.log(`\n📤 Uploading ${vectors.length} vectors to Pinecone...`);
 
   const batchSize = 100;
@@ -342,6 +351,13 @@ async function embedKnowledge() {
     console.log(`   - Uploaded batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(vectors.length / batchSize)}`);
   }
 
+  const currentIds = new Set(vectors.map((vector) => vector.id));
+  const obsoleteIds = [...previousIds].filter((id) => !currentIds.has(id));
+  for (let i = 0; i < obsoleteIds.length; i += batchSize) {
+    await index.deleteMany(obsoleteIds.slice(i, i + batchSize));
+  }
+  console.log(`   - Removed ${obsoleteIds.length} obsolete vectors from ${ACTIVE_KNOWLEDGE_VERSION}`);
+
   console.log('\n✅ Knowledge embedding complete!');
   console.log(`   - Total files processed: ${files.length}`);
   console.log(`   - Total chunks embedded: ${totalChunks}`);
@@ -349,4 +365,7 @@ async function embedKnowledge() {
 }
 
 // Run the script
-embedKnowledge().catch(console.error);
+embedKnowledge().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
