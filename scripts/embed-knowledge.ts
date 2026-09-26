@@ -274,11 +274,22 @@ async function embedKnowledge() {
   // Get the index
   const index = pinecone.index(INDEX_NAME);
 
-  // A knowledge version is immutable. If a prior run left partial vectors,
-  // bump the version before retrying; readers ignore versions without a manifest.
+  // Published versions are immutable. An unpublished partial upload can be
+  // removed by exact version prefix and retried; readers never see it.
+  const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
+  if (manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]) {
+    throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} is already published. Bump the version before uploading.`);
+  }
   const previousIds = await listVersionIds(index);
   if (previousIds.size > 0) {
-    throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} already has records. Bump the version before uploading.`);
+    if (previousIds.has(ACTIVE_KNOWLEDGE_MANIFEST_ID)) {
+      throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} has a manifest. Refusing to delete a published version.`);
+    }
+    const partialIds = [...previousIds];
+    for (let i = 0; i < partialIds.length; i += 100) {
+      await index.deleteMany(partialIds.slice(i, i + 100));
+    }
+    console.log(`   - Removed ${partialIds.length} unpublished vectors before retry`);
   }
 
   // Process each file

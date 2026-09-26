@@ -1,6 +1,6 @@
 // Only reviewed, current sources are eligible for new chatbot embeddings.
 // Bump this immutable version whenever a source changes. The embedding script
-// refuses to overwrite a version that already has records.
+// refuses to overwrite a published version.
 export const ACTIVE_KNOWLEDGE_VERSION = '2026-09-courses-20260927';
 export const ACTIVE_KNOWLEDGE_MANIFEST_ID = `${ACTIVE_KNOWLEDGE_VERSION}::manifest`;
 

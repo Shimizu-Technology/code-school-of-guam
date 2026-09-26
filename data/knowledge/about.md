@@ -4,7 +4,7 @@ Code School of Guam was founded by Leon Shimizu in 2024 to help people in Guam l
 
 ## Teaching approach
 
-The full bootcamp covers frontend, backend, databases, AI, integrated projects, reviews, collaboration, and career preparation over a longer staffed program. Focused courses teach one subject through short lessons, practice, feedback, a bounded project, and private instructor time. A sequence of focused courses does not equal graduating from the full bootcamp. Course dates, access periods, policies, software licenses, and career opportunities depend on each written offer.
+The full bootcamp covers frontend, backend, databases, AI, integrated projects, reviews, collaboration, and career preparation over a longer staffed program. Focused courses teach one subject through short lessons, practice, and a bounded project. Guided runs include private instructor time and feedback; a future self-paced option would have separate support terms. A sequence of focused courses does not equal graduating from the full bootcamp. Course dates, access periods, policies, software licenses, and career opportunities depend on each written offer.
 
 ## Graduate examples
 
