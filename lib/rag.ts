@@ -1,5 +1,6 @@
 import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from 'openai';
+import { ACTIVE_KNOWLEDGE_VERSION } from './active-knowledge';
 
 // Lazy initialization of clients
 let pinecone: Pinecone | null = null;
@@ -61,6 +62,7 @@ export async function queryKnowledge(
       vector: queryEmbedding,
       topK,
       includeMetadata: true,
+      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION } },
     });
 
     // Extract and return the text content from results
@@ -98,4 +100,3 @@ export async function getRelevantContext(query: string): Promise<string> {
   const chunks = await queryKnowledge(query);
   return buildContext(chunks);
 }
-

@@ -72,7 +72,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
   name: 'Code School of Guam',
-  description: "Focused coding courses and a full software development bootcamp taught from Guam. The 2026 full bootcamp cohort is underway.",
+  description: "Focused coding courses and a full software development bootcamp taught from Guam. The March 2026 full bootcamp cohort is closed to new students.",
   url: 'https://codeschoolofguam.com',
   logo: 'https://codeschoolofguam.com/CSG-Logo.png',
   image: 'https://codeschoolofguam.com/CSG-Logo.png',

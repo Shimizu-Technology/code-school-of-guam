@@ -119,7 +119,7 @@ export default function HomePage() {
             <Link href="/programs" className="group block border border-white/15 bg-white/[0.045] p-6 transition hover:border-white/40 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">
               <span className="csg-label text-slate-300">02 · Full bootcamp</span>
               <h2 className="mt-3 font-serif text-3xl font-semibold">Go deeper across the stack</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">Sustained instruction, integrated projects, reviews, collaboration, and career preparation. The 2026 cohort is underway.</p>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Sustained instruction, integrated projects, reviews, collaboration, and career preparation. The March 2026 cohort is closed to new students.</p>
               <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white">Explore the program <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" /></span>
             </Link>
           </aside>
@@ -246,12 +246,12 @@ export default function HomePage() {
           <div>
             <p className="csg-label text-ruby-700">2026 full bootcamp tuition</p>
             <h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-6xl">$7,500</h2>
-            <p className="mt-3 text-lg text-slate-600">This is the tuition for the cohort already underway. The next full-cohort price and dates have not been announced. Focused courses have separate terms.</p>
+            <p className="mt-3 text-lg text-slate-600">This was the tuition for the March 2026 cohort, which is closed to new students. The next full-cohort price and dates have not been announced. Focused courses have separate terms.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {[
               [GraduationCap, "Under six months", "Live teaching and structured practice"],
-              [Laptop, "Lifetime access", "Recordings, resources, and updates"],
+              [Laptop, "Learning resources", "Materials and access vary by offer"],
               [Users, "Professional practice", "Collaboration, review, and project work"],
             ].map(([Icon, title, copy]) => {
               const FeatureIcon = Icon as typeof GraduationCap
@@ -263,7 +263,7 @@ export default function HomePage() {
 
       <section className="bg-ruby-700 py-16 text-white md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The 2026 cohort is underway. Join the update list to hear about the next opportunity.</p></div>
+          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The March 2026 cohort is closed to new students. Join the update list to hear about the next opportunity.</p></div>
           <a href="/interest" className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-bold text-ruby-800 transition hover:-translate-y-0.5">Join the interest list <ArrowRight className="h-4 w-4" /></a>
         </div>
       </section>

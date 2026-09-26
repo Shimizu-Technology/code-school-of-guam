@@ -13,6 +13,7 @@ import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
 
 // Load environment variables (check .env.local first, then .env)
 const envLocalPath = path.join(process.cwd(), '.env.local');
@@ -231,14 +232,12 @@ function readKnowledgeFiles(): { filename: string; content: string }[] {
     process.exit(1);
   }
 
-  const filenames = fs.readdirSync(KNOWLEDGE_DIR);
+  const filenames = ACTIVE_KNOWLEDGE_FILES;
 
   for (const filename of filenames) {
-    if (filename.endsWith('.md')) {
-      const filepath = path.join(KNOWLEDGE_DIR, filename);
-      const content = fs.readFileSync(filepath, 'utf-8');
-      files.push({ filename, content });
-    }
+    const filepath = path.join(KNOWLEDGE_DIR, filename);
+    const content = fs.readFileSync(filepath, 'utf-8');
+    files.push({ filename, content });
   }
 
   return files;
@@ -284,6 +283,7 @@ async function embedKnowledge() {
       text: string; 
       source: string; 
       sectionTitle: string;
+      knowledgeVersion: string;
       chunkIndex: number;
       subIndex: number;
     };
@@ -301,7 +301,7 @@ async function embedKnowledge() {
     // Generate embeddings for each chunk
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
-      const id = `${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
+      const id = `${ACTIVE_KNOWLEDGE_VERSION}-${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
 
       try {
         const embedding = await generateEmbedding(chunk.text);
@@ -312,6 +312,7 @@ async function embedKnowledge() {
           metadata: {
             text: chunk.text,
             source: file.filename,
+            knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION,
             sectionTitle: chunk.sectionTitle,
             chunkIndex: i,
             subIndex: chunk.subIndex,

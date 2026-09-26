@@ -38,7 +38,7 @@ export default function InterestPage() {
           <p className="mt-4 leading-7 text-slate-600">Your timing and goals help us understand demand while we plan instructor capacity, information sessions, and the next application window.</p>
           <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
             <h3 className="font-semibold text-slate-900">The current cohort</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">Cohort 3 began March 2, 2026 and is underway. Late enrollment is closed.</p>
+            <p className="mt-2 text-sm leading-6 text-slate-600">Cohort 3 began March 2, 2026. Enrollment is closed.</p>
             <Link href="/curriculum" className="mt-4 inline-block text-sm font-semibold text-ruby-600 hover:text-ruby-700">Explore the curriculum →</Link>
           </div>
         </aside>

@@ -380,7 +380,7 @@ export default function AboutPage() {
               Shimizu Technology Partnership
             </h2>
             <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-              Employers want experience, but new engineers can&apos;t get experience if no one gives them a chance. We created Shimizu Technology to be that company — ensuring every graduate has access to real-world projects.
+              Employers value experience, and Shimizu Technology has given some CSG graduates opportunities to practice on real software. Availability depends on active projects and each graduate&apos;s readiness.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-white rounded-xl p-6 border-l-4 border-blue-500 shadow-sm">
@@ -389,7 +389,7 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-slate-900">Optional Internship</h3>
                 </div>
                 <p className="text-sm text-slate-600">
-                  10-week experience-focused program working on real production apps — build your portfolio
+                  Some graduates have practiced on real software. A future internship would have its own eligibility and terms.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-6 border-l-4 border-green-500 shadow-sm">
@@ -398,7 +398,7 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-slate-900">TA Positions</h3>
                 </div>
                 <p className="text-sm text-slate-600">
-                  Paid teaching assistant roles for the next cohort — reinforce your skills while earning
+                  Paid teaching roles may be available when a cohort needs instructors.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-sm">
@@ -407,7 +407,7 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-slate-900">Junior Dev Roles</h3>
                 </div>
                 <p className="text-sm text-slate-600">
-                  Paid contract positions at Shimizu Technology — work on real client projects
+                  Contract opportunities depend on project needs and a graduate&apos;s readiness.
                 </p>
               </div>
             </div>

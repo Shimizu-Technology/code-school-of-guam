@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     question: "Why is there only one full bootcamp cohort in 2026?",
-    answer: "The March 2026 full bootcamp cohort is underway, and we have not announced another full cohort for 2026. We are also developing shorter focused courses, starting with an invited Python Fundamentals pilot in December. Those are separate from the full bootcamp."
+    answer: "The March 2026 full bootcamp cohort began March 2 and is closed to new students. We have not announced another full cohort for 2026. We are also developing shorter focused courses, starting with an invited Python Fundamentals pilot in December. Those are separate from the full bootcamp."
   },
   {
     question: "Why do you teach Ruby on Rails instead of other programming languages?",
@@ -44,11 +44,11 @@ const faqs = [
   },
   {
     question: "How does the internship work?",
-    answer: "The internship is completely optional and unpaid — it's designed for graduates who want to build their portfolio with real-world experience before job hunting. You'll work on production applications at Shimizu Technology in 2-week Agile sprints over 10 weeks. Separately, we offer paid opportunities for top performers: Teaching Assistant positions for the next cohort, and Junior Software Engineer contracts with Shimizu Technology."
+    answer: "Some graduates have practiced on real software through Shimizu Technology. Internships, contracts, teaching roles, and jobs depend on available projects and each graduate's readiness; none is guaranteed by completing a course or the bootcamp. Any defined internship for a future cohort will be described in that cohort's written offer."
   },
   {
     question: "How long do I have access to the class recordings?",
-    answer: "You will have lifetime access to all class recordings, in-class resources, and learning materials, supporting your continued learning journey indefinitely."
+    answer: "Recording and resource access depends on the specific course or cohort. We will provide the access period in its written terms before payment."
   },
   {
     question: "Can I reach out for support after the program ends?",
@@ -64,7 +64,7 @@ const faqs = [
   },
   {
     question: "What AI tools will I learn?",
-    answer: "You'll learn to use Cursor IDE (Pro license included), ChatGPT, the OpenAI API, Pinecone vector databases, and LangChain concepts. Our progressive AI curriculum starts with no AI tools in the first few weeks so you build a strong foundation, then gradually introduces AI as a study buddy, debugging partner, coding accelerator, and finally teaches you to build AI-powered applications from scratch."
+    answer: "The full bootcamp has taught a progression from coding fundamentals to building AI-powered applications. Specific tools and any paid software licenses depend on the cohort's curriculum and written offer. Python Fundamentals starts with beginner Python and does not require prior AI experience."
   },
   {
     question: "Do I need to know anything about AI before starting?",
@@ -72,7 +72,7 @@ const faqs = [
   },
   {
     question: "Why is the tuition set at $7,500?",
-    answer: "The $7,500 figure is tuition for the March 2026 full bootcamp cohort, which is already underway. The price for a future full cohort has not been announced. Focused courses have separate prices and terms when enrollment opens."
+    answer: "The $7,500 figure was tuition for the March 2026 full bootcamp cohort, which is closed to new students. The price for a future full cohort has not been announced. Focused courses have separate prices and terms when enrollment opens."
   },
   {
     question: "Do you offer payment plans?",
@@ -80,11 +80,11 @@ const faqs = [
   },
   {
     question: "What is the attendance policy?",
-    answer: "Attendance is crucial. Missing more than three unexcused classes may result in dismissal without a refund. Excused absences are considered for valid reasons."
+    answer: "Attendance expectations depend on the course or cohort. We will provide them, including any consequences of missed sessions, in the written terms for that offer before payment."
   },
   {
     question: "Is there a refund policy?",
-    answer: "Yes. Full tuition (minus the non-refundable deposit) is refundable if you withdraw before the start of the second week. No refunds are issued from the second week onward."
+    answer: "Refund and deposit terms depend on the course or cohort. We will provide the applicable policy in writing before payment."
   },
   {
     question: "How can I access the policies?",
@@ -194,7 +194,7 @@ export default function FAQPage() {
             Ready to start your coding journey?
           </h2>
           <p className="text-white/90 mb-6">
-            Our 2026 full bootcamp cohort is underway. Explore focused courses or join the future bootcamp update list.
+            The March 2026 full bootcamp cohort is closed to new students. Explore focused courses or join the future bootcamp update list.
           </p>
           <div className="flex flex-wrap justify-center gap-3"><Link href="/courses" className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all">Explore courses</Link><Link href="/interest" className="inline-flex items-center justify-center px-8 py-4 border border-white/50 text-white hover:bg-white/10 rounded-lg text-lg font-medium transition-all">Full bootcamp updates</Link></div>
         </div>
