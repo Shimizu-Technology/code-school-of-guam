@@ -68,7 +68,7 @@ const faqs = [
   },
   {
     question: "What is the hybrid format?",
-    answer: "For the March 2026 full bootcamp, live Zoom classes are Tuesday and Thursday, with structured practice during the week and mentorship. Focused courses use a different format: short lessons, exercises, project feedback, and private meetings. See each offer page for its current schedule and support terms."
+    answer: "For the March 2026 full bootcamp, live Zoom classes are Tuesday and Thursday, with structured practice during the week and mentorship. Guided focused courses use a different format: short lessons, exercises, project feedback, and private meetings. A future self-paced option would have different support terms. See each offer page for its current schedule and support terms."
   },
   {
     question: "What AI tools will I learn?",

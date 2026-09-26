@@ -14,7 +14,7 @@ import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
+import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
 
 // Load environment variables (check .env.local first, then .env)
 const envLocalPath = path.join(process.cwd(), '.env.local');
@@ -250,7 +250,7 @@ async function listVersionIds(index: ReturnType<Pinecone['index']>): Promise<Set
   let paginationToken: string | undefined;
   do {
     const page = await index.listPaginated({
-      prefix: `${ACTIVE_KNOWLEDGE_VERSION}-`,
+      prefix: `${ACTIVE_KNOWLEDGE_VERSION}::`,
       paginationToken,
     });
     for (const vector of page.vectors ?? []) {
@@ -274,9 +274,12 @@ async function embedKnowledge() {
   // Get the index
   const index = pinecone.index(INDEX_NAME);
 
-  // List the active version before writing. Upsert does not remove IDs from
-  // deleted or renamed sections, so those must be reconciled after upload.
+  // A knowledge version is immutable. If a prior run left partial vectors,
+  // bump the version before retrying; readers ignore versions without a manifest.
   const previousIds = await listVersionIds(index);
+  if (previousIds.size > 0) {
+    throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} already has records. Bump the version before uploading.`);
+  }
 
   // Process each file
   const vectors: {
@@ -287,6 +290,7 @@ async function embedKnowledge() {
       source: string; 
       sectionTitle: string;
       knowledgeVersion: string;
+      kind: string;
       chunkIndex: number;
       subIndex: number;
     };
@@ -304,7 +308,7 @@ async function embedKnowledge() {
     // Generate embeddings for each chunk
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
-      const id = `${ACTIVE_KNOWLEDGE_VERSION}-${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
+      const id = `${ACTIVE_KNOWLEDGE_VERSION}::${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
 
       try {
         const embedding = await generateEmbedding(chunk.text);
@@ -316,6 +320,7 @@ async function embedKnowledge() {
             text: chunk.text,
             source: file.filename,
             knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION,
+            kind: 'chunk',
             sectionTitle: chunk.sectionTitle,
             chunkIndex: i,
             subIndex: chunk.subIndex,
@@ -340,8 +345,8 @@ async function embedKnowledge() {
     throw new Error('No knowledge vectors generated; refusing to replace the active version.');
   }
 
-  // Upload every replacement before deleting obsolete IDs. A failed upload
-  // leaves the prior knowledge available for a later rerun.
+  // Publish the manifest only after all batches succeed. Readers use the
+  // vetted fallback until the manifest exists, so a partial upload is hidden.
   console.log(`\n📤 Uploading ${vectors.length} vectors to Pinecone...`);
 
   const batchSize = 100;
@@ -351,12 +356,12 @@ async function embedKnowledge() {
     console.log(`   - Uploaded batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(vectors.length / batchSize)}`);
   }
 
-  const currentIds = new Set(vectors.map((vector) => vector.id));
-  const obsoleteIds = [...previousIds].filter((id) => !currentIds.has(id));
-  for (let i = 0; i < obsoleteIds.length; i += batchSize) {
-    await index.deleteMany(obsoleteIds.slice(i, i + batchSize));
-  }
-  console.log(`   - Removed ${obsoleteIds.length} obsolete vectors from ${ACTIVE_KNOWLEDGE_VERSION}`);
+  await index.upsert([{
+    id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
+    values: vectors[0].values,
+    metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', totalVectors: vectors.length },
+  }]);
+  console.log(`   - Published complete version ${ACTIVE_KNOWLEDGE_VERSION}`);
 
   console.log('\n✅ Knowledge embedding complete!');
   console.log(`   - Total files processed: ${files.length}`);

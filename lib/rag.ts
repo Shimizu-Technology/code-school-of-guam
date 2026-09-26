@@ -1,6 +1,6 @@
 import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from 'openai';
-import { ACTIVE_KNOWLEDGE_FALLBACK, ACTIVE_KNOWLEDGE_VERSION } from './active-knowledge';
+import { ACTIVE_KNOWLEDGE_FALLBACK, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_VERSION } from './active-knowledge';
 
 // Lazy initialization of clients
 let pinecone: Pinecone | null = null;
@@ -57,12 +57,16 @@ export async function queryKnowledge(
     const client = getPinecone();
     const index = client.index(INDEX_NAME);
 
+    // An incomplete upload has no manifest and must never answer visitors.
+    const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
+    if (!manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]) return [];
+
     // Query Pinecone
     const results = await index.query({
       vector: queryEmbedding,
       topK,
       includeMetadata: true,
-      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION } },
+      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' } },
     });
 
     // Extract and return the text content from results
