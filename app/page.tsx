@@ -93,7 +93,7 @@ export default function HomePage() {
               Learn to build software that matters.
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
-              Start with a focused course and a useful project, or take the full bootcamp for a longer path through software development. Both are taught from Guam with personal guidance and real production context.
+              Start with a focused course and a useful project, or take the full bootcamp for a longer path through software development. We teach from Guam and are designing future online courses for learners wherever they live.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
@@ -106,14 +106,14 @@ export default function HomePage() {
                 Explore the full bootcamp <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
-            <p className="mt-5 text-sm text-slate-400">Beginners are welcome. December&apos;s Python pilot is for an invited group; later public courses are being prepared.</p>
+            <p className="mt-5 text-sm text-slate-400">Beginners are welcome. December&apos;s Python pilot is for invited adults; later public courses are being prepared.</p>
           </div>
 
           <aside className="space-y-4" aria-label="Choose a learning path">
             <Link href="/courses" className="group block border border-ruby-400/40 bg-ruby-700/20 p-6 transition hover:border-ruby-300 hover:bg-ruby-700/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">
               <span className="csg-label text-ruby-200">01 · Focused courses</span>
               <h2 className="mt-3 font-serif text-3xl font-semibold">Build one skill at a time</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">Short lessons, a bounded project, feedback, and private help. Python Fundamentals begins with an invited December pilot.</p>
+              <p className="mt-3 text-sm leading-6 text-slate-300">We&apos;re developing self-paced study alongside guided runs with private help and feedback. Python Fundamentals begins with an invited December pilot.</p>
               <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white">View the course path <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" /></span>
             </Link>
             <Link href="/programs" className="group block border border-white/15 bg-white/[0.045] p-6 transition hover:border-white/40 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">

@@ -12,7 +12,7 @@ import { HelpCircle, Mail, Phone } from "lucide-react"
 const faqs = [
   {
     question: "What is the difference between a focused course and the full bootcamp?",
-    answer: "A focused course teaches one subject through short lessons, practice, a bounded project, and private instructor time. The full bootcamp is a longer program across frontend, backend, databases, and AI, with integrated projects and sustained instruction. Completing focused courses does not mean you have completed the bootcamp."
+    answer: "A focused course teaches one subject through short lessons, practice, and a bounded project. Guided runs include private instructor time and feedback; a future self-paced option would have different support terms. The full bootcamp is a longer program across frontend, backend, databases, and AI, with integrated projects and sustained instruction. Completing focused courses does not mean you have completed the bootcamp."
   },
   {
     question: "Can I enroll in Python Fundamentals now?",
@@ -24,7 +24,15 @@ const faqs = [
   },
   {
     question: "Is there an age requirement?",
-    answer: "Age requirements depend on the offer. The invited Python Fundamentals pilot is planned for adults. For any future offer open to students under 18, we would require parental consent."
+    answer: "The invited December 2026 Python pilot is for adults. We are exploring future courses for ages 13–17 with guardian involvement and appropriate support and safety practices. Any course for younger children would be developed separately. Each offer will state its age requirements before enrollment."
+  },
+  {
+    question: "Can I take a course from outside Guam?",
+    answer: "Our future focused courses are being designed for online learners beyond Guam. The December 2026 Python pilot is an invited adult group. Before any public guided run opens, we will publish its instructor availability and meeting times clearly across time zones. The full bootcamp has its own cohort-specific requirements."
+  },
+  {
+    question: "Will there be a self-paced option?",
+    answer: "We plan to offer self-paced course material as well as limited guided runs with private meetings and feedback. The first December Python pilot tests the guided format. Self-paced enrollment, pricing, support, and access terms have not been announced."
   },
   {
     question: "Why is there only one full bootcamp cohort in 2026?",
@@ -40,7 +48,7 @@ const faqs = [
   },
   {
     question: "Are the classes held in-person or online?",
-    answer: "The March 2026 full bootcamp cohort uses live Zoom sessions, structured online practice, and mentorship. Python Fundamentals is planned as short lessons with one private Zoom hour each week for an invited group. Check the page for the specific offer before enrolling; future schedules may differ."
+    answer: "The March 2026 full bootcamp cohort uses live Zoom sessions, structured online practice, and mentorship. The invited Python Fundamentals pilot uses short lessons and one private Zoom hour each week. Later guided runs may use trained instructors, while a future self-paced option would have different support. Check each offer before enrolling."
   },
   {
     question: "How does the internship work?",

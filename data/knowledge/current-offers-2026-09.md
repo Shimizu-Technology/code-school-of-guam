@@ -14,6 +14,8 @@ CSG is preparing a separate three-week beginner Python course for a small invite
 
 Python Automation, SQL and Data Basics, Ruby Fundamentals, JavaScript Fundamentals, Rails APIs, frontend development, and later AI courses are planned directions, not scheduled or purchasable offers. Recommended prerequisites do not mean that later courses are available now. See https://codeschoolofguam.com/courses.
 
+CSG plans to develop self-paced course material and guided runs with private instructor meetings and feedback. The invited December Python pilot tests the guided format with Leon and up to five adult learners. Future guided capacity would be limited by each instructor's available hours; trained alumni may teach later runs after the first pilot is evaluated. Self-paced enrollment, support, access, and pricing have not been announced. These online courses are being designed for learners beyond Guam, but meeting times and eligibility will be set per offer. CSG is exploring future courses for ages 13–17 with guardian involvement and appropriate safeguards. Any offer for younger children would be developed separately. The December pilot remains adult-only.
+
 ## Policy and pricing questions
 
 Do not quote the March 2026 bootcamp policy, payment plan, or tuition as the terms for a new offer. Direct a prospective learner to codeschoolofguam@gmail.com for the written terms of the specific course or cohort. CSG will present access, meetings, rescheduling, and refund terms before taking payment.
