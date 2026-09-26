@@ -76,7 +76,7 @@ export default function PythonFundamentalsPage() {
 
       <section className="border-y border-slate-200 bg-white py-16 md:py-24">
         <div className="container mx-auto grid gap-12 px-4 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div><p className="csg-label text-ruby-700">How you&apos;ll learn</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Learn on your schedule. Get help from a person.</h2><p className="mt-5 max-w-xl leading-7 text-slate-600">The lessons and code practice live in CSG Learn and Hafa Code. Leon works through your own code with you on Zoom each week, then gives you a concrete next step.</p></div>
+          <div><p className="csg-label text-ruby-700">How you&apos;ll learn</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Learn on your schedule. Get help from a person.</h2><p className="mt-5 max-w-xl leading-7 text-slate-600">The lessons and code practice live in CSG Learn and <a href="https://code.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Hafa Code</a>. Leon works through your own code with you on Zoom each week, then gives you a concrete next step.</p></div>
           <div className="space-y-0 border-t border-slate-200">
             {[
               [Clock3, "Short, focused lessons", "Nine lessons across three weeks, with exercises and weekly checkpoints."],

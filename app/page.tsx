@@ -66,7 +66,7 @@ const projects = [
     title: "Hafa Code",
     category: "Student coding playground",
     image: "/images/hafa-code-logo.png",
-    href: "https://hafa-code.netlify.app",
+    href: "https://code.shimizu-technology.com/",
     surface: "bg-[#f8efe0]",
   },
   {
