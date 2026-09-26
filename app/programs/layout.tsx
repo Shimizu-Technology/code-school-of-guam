@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Program, Schedule & Tuition",
-  description: "Review Code School of Guam's live bootcamp format, weekly schedule, $7,500 tuition, payment options, and next-cohort interest list.",
+  title: "Full Bootcamp",
+  description: "Explore Code School of Guam's full bootcamp, the structure of its 2026 cohort, and updates for a future cohort. Next-cohort dates and tuition have not been announced.",
   alternates: { canonical: "/programs" },
-  openGraph: { title: "Program, Schedule & Tuition | Code School of Guam", description: "An under-six-month remote coding bootcamp with live instruction, structured practice, AI engineering, and real production context.", url: "/programs" },
+  openGraph: { title: "Full Bootcamp | Code School of Guam", description: "Sustained instruction, integrated software projects, and real production context. The next cohort has not been announced.", url: "/programs" },
 }
 
 export default function ProgramsLayout({ children }: { children: React.ReactNode }) { return children }

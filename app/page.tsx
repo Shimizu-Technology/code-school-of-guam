@@ -87,46 +87,41 @@ export default function HomePage() {
         <div className="container relative z-10 mx-auto grid gap-12 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-28">
           <div>
             <div className="csg-label flex items-center gap-3 text-ruby-300">
-              <span className="h-px w-8 bg-ruby-400" /> Guam&apos;s first coding bootcamp
+              <span className="h-px w-8 bg-ruby-400" /> Focused courses and a full bootcamp
             </div>
             <h1 className="mt-6 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl lg:text-[5.15rem]">
               Learn to build software that matters.
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
-              Go from complete beginner to AI-capable full-stack developer in under six months—with live instruction, structured practice, and real production experience.
+              Start with a focused course and a useful project, or take the full bootcamp for a longer path through software development. Both are taught from Guam with personal guidance and real production context.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="/interest"
+                href="/courses"
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-ruby-500"
               >
-                Join the interest list <ArrowRight className="h-4 w-4" />
+                Explore focused courses <ArrowRight className="h-4 w-4" />
               </a>
               <Link href="/programs" className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10">
-                Explore the program <ArrowUpRight className="h-4 w-4" />
+                Explore the full bootcamp <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
-            <p className="mt-5 text-sm text-slate-400">No prior coding experience required.</p>
+            <p className="mt-5 text-sm text-slate-400">Beginners are welcome. December&apos;s Python pilot is for an invited group; later public courses are being prepared.</p>
           </div>
 
-          <aside className="rounded-xl border border-white/10 bg-white/[0.045] p-6 backdrop-blur sm:p-8">
-            <div className="flex items-center gap-2 text-sm font-semibold text-emerald-300">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" /> 2026 cohort is underway
-            </div>
-            <div className="mt-7 divide-y divide-white/10 border-y border-white/10">
-              {[
-                ["Under 6 months", "Program length"],
-                ["13.5 hours", "Live + structured practice each week"],
-                ["10 students", "Maximum cohort size"],
-                ["Remote", "Live from Guam via Zoom"],
-              ].map(([value, label]) => (
-                <div key={label} className="grid grid-cols-[0.75fr_1.25fr] gap-4 py-4">
-                  <span className="font-bold text-white">{value}</span>
-                  <span className="text-sm text-slate-400">{label}</span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-6 text-sm leading-relaxed text-slate-400">Join the update list and we&apos;ll contact you first when the next cohort is planned.</p>
+          <aside className="space-y-4" aria-label="Choose a learning path">
+            <Link href="/courses" className="group block border border-ruby-400/40 bg-ruby-700/20 p-6 transition hover:border-ruby-300 hover:bg-ruby-700/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">
+              <span className="csg-label text-ruby-200">01 · Focused courses</span>
+              <h2 className="mt-3 font-serif text-3xl font-semibold">Build one skill at a time</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Short lessons, a bounded project, feedback, and private help. Python Fundamentals begins with an invited December pilot.</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white">View the course path <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" /></span>
+            </Link>
+            <Link href="/programs" className="group block border border-white/15 bg-white/[0.045] p-6 transition hover:border-white/40 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">
+              <span className="csg-label text-slate-300">02 · Full bootcamp</span>
+              <h2 className="mt-3 font-serif text-3xl font-semibold">Go deeper across the stack</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Sustained instruction, integrated projects, reviews, collaboration, and career preparation. The March 2026 cohort is closed to new students.</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white">Explore the program <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" /></span>
+            </Link>
           </aside>
         </div>
       </section>
@@ -183,7 +178,7 @@ export default function HomePage() {
       <section className="border-y border-slate-200 bg-white py-16 md:py-24 lg:py-28">
         <div className="container mx-auto px-4 sm:px-8">
           <div className="max-w-3xl">
-            <p className="csg-label text-ruby-700">The curriculum</p>
+            <p className="csg-label text-ruby-700">Full bootcamp curriculum</p>
             <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">Fundamentals first. AI with understanding.</h2>
             <p className="mt-5 text-lg leading-relaxed text-slate-600">You will learn to think through software problems before using AI to accelerate the work. Every tool is introduced with context, constraints, and responsibility.</p>
           </div>
@@ -210,7 +205,7 @@ export default function HomePage() {
             <div>
               <p className="csg-label text-ruby-300">The learning journey</p>
               <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight md:text-5xl">Build capability in deliberate stages.</h2>
-              <p className="mt-5 leading-relaxed text-slate-300">AI becomes more useful as your own understanding grows. The program is structured around that progression.</p>
+            <p className="mt-5 leading-relaxed text-slate-300">AI becomes more useful as your own understanding grows. The full bootcamp is structured around that progression.</p>
             </div>
             <div className="divide-y divide-white/10 border-y border-white/10">
               {[
@@ -249,15 +244,15 @@ export default function HomePage() {
       <section className="border-y border-slate-200 bg-white py-16 md:py-24 lg:py-28">
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div>
-            <p className="csg-label text-ruby-700">Transparent tuition</p>
+            <p className="csg-label text-ruby-700">2026 full bootcamp tuition</p>
             <h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-6xl">$7,500</h2>
-            <p className="mt-3 text-lg text-slate-600">Complete program tuition. Flexible payment options are available.</p>
+            <p className="mt-3 text-lg text-slate-600">This was the tuition for the March 2026 cohort, which is closed to new students. The next full-cohort price and dates have not been announced. Focused courses have separate terms.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {[
               [GraduationCap, "Under six months", "Live teaching and structured practice"],
-              [Laptop, "Lifetime access", "Recordings, resources, and updates"],
-              [Users, "Real experience", "Optional internship and paid opportunities"],
+              [Laptop, "Learning resources", "Materials and access vary by offer"],
+              [Users, "Professional practice", "Collaboration, review, and project work"],
             ].map(([Icon, title, copy]) => {
               const FeatureIcon = Icon as typeof GraduationCap
               return <div key={String(title)} className="border-t-2 border-ruby-600 pt-5"><FeatureIcon className="h-5 w-5 text-ruby-700" /><h3 className="mt-4 font-bold text-slate-950">{String(title)}</h3><p className="mt-2 text-sm leading-relaxed text-slate-500">{String(copy)}</p></div>
@@ -268,7 +263,7 @@ export default function HomePage() {
 
       <section className="bg-ruby-700 py-16 text-white md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The 2026 cohort is underway. Join the update list to hear about the next opportunity.</p></div>
+          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The March 2026 cohort is closed to new students. Join the update list to hear about the next opportunity.</p></div>
           <a href="/interest" className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-bold text-ruby-800 transition hover:-translate-y-0.5">Join the interest list <ArrowRight className="h-4 w-4" /></a>
         </div>
       </section>

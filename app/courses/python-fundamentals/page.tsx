@@ -34,7 +34,7 @@ export default function PythonFundamentalsPage() {
               <a href="#interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></a>
               <a href="#course-map" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/20 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">See what you&apos;ll build <ArrowDown className="h-5 w-5" aria-hidden="true" /></a>
             </div>
-            <p className="mt-5 text-sm text-slate-400">A small invited pilot is planned for December 2026 in Guam. Public enrollment is not open yet.</p>
+            <p className="mt-5 text-sm text-slate-400">The December 2026 invited pilot is capped at five learners because each person gets three private teaching hours. Public enrollment is not open yet.</p>
           </div>
           <div className="border border-white/15 bg-[#111c2c] p-5 shadow-[18px_18px_0_rgba(128,18,36,0.23)] sm:p-7" aria-label="Sample Python expense summary output">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 text-xs text-slate-400"><span className="font-mono">expense_summary.py</span><Code2 className="h-4 w-4 text-ruby-300" aria-hidden="true" /></div>
