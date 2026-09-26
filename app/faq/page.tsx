@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     question: "Is there an age requirement?",
-    answer: "There's no upper age limit — our students range from high schoolers to professionals in their 50s changing careers. For students under 18, we require parental consent. Everyone learns together and supports each other. There's no 'right age' to learn to code — just the right motivation."
+    answer: "Age requirements depend on the offer. The invited Python Fundamentals pilot is planned for adults. For any future offer open to students under 18, we would require parental consent."
   },
   {
     question: "Why is there only one full bootcamp cohort in 2026?",
@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     question: "Do I need to have a Mac to join the program?",
-    answer: "While it's not mandatory to have a Mac, we highly recommend it. Using a Mac helps ensure uniformity in the classroom, simplifying setup processes and minimizing technical issues that can arise from different operating systems. This allows you to focus more on learning coding concepts rather than dealing with OS-specific challenges. If you don't have a Mac, you're still welcome to join, but please be aware that some steps and commands may differ slightly."
+    answer: "A Mac is not required for the invited Python Fundamentals pilot; learners can write and run Python in Hafa Code through a browser. Device and setup requirements for other courses or bootcamp cohorts will be shared with each offer."
   },
   {
     question: "Are the classes held in-person or online?",
@@ -52,11 +52,11 @@ const faqs = [
   },
   {
     question: "Can I reach out for support after the program ends?",
-    answer: "We are here to support you even after your cohort concludes. Feel free to reach out with questions or for guidance."
+    answer: "You can contact us after a course ends. The period and type of instructor support included with enrollment will be described in that offer's written terms."
   },
   {
     question: "Are there opportunities to become a teaching assistant?",
-    answer: "Yes! Outstanding graduates may be invited to become paid teaching assistants for future cohorts, providing leadership experience and reinforcing your own learning."
+    answer: "Outstanding graduates may be considered for paid teaching roles when openings exist. Completing a course or the bootcamp does not guarantee a position."
   },
   {
     question: "What is the hybrid format?",
@@ -68,7 +68,7 @@ const faqs = [
   },
   {
     question: "Do I need to know anything about AI before starting?",
-    answer: "No! We teach AI from scratch with a progressive approach. You'll start by learning coding fundamentals without any AI tools, then gradually learn to use AI effectively as you advance through the program. By the end, you'll be building full applications with AI features like chatbots and RAG systems. No prior AI knowledge required."
+    answer: "No prior AI knowledge is needed for Python Fundamentals. The full bootcamp has introduced AI after core coding skills; a future cohort's exact AI curriculum will be described with its offer."
   },
   {
     question: "Why is the tuition set at $7,500?",

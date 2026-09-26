@@ -23,7 +23,7 @@ export default function ProgramsPage() {
             </div>
           </div>
           <aside className="border-l-2 border-ruby-500 bg-white/[0.045] p-6 sm:p-8">
-            <p className="csg-label text-ruby-300">Current status</p>
+            <p className="csg-label text-ruby-300">Enrollment status</p>
             <h2 className="mt-3 font-serif text-3xl font-semibold">The March 2026 cohort is closed to new students.</h2>
             <p className="mt-4 leading-7 text-slate-300">Cohort 3 began March 2, 2026. Applications for that cohort are closed. We have not announced dates, tuition, or a staffed schedule for the next full bootcamp cohort.</p>
           </aside>
