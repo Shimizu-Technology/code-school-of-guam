@@ -35,7 +35,7 @@ export function PythonInterestForm() {
       <div className="border-l-4 border-green-600 bg-green-50 p-7" role="status">
         <CheckCircle2 className="h-8 w-8 text-green-700" aria-hidden="true" />
         <h3 className="mt-4 font-serif text-3xl font-semibold text-slate-950">You&apos;re on the Python list.</h3>
-        <p className="mt-3 text-slate-700">We&apos;ll email you when dates, enrollment, and the sample lesson are ready. Joining the list does not reserve a seat or charge you.</p>
+        <p className="mt-3 text-slate-700">We&apos;ll email you when the sample lesson and plans for a public run are ready. Joining the list does not reserve a seat or charge you.</p>
         <button type="button" onClick={() => setSubmitState("idle")} className="mt-5 min-h-11 font-bold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Submit another response</button>
       </div>
     )
@@ -72,7 +72,7 @@ export function PythonInterestForm() {
       <button type="submit" disabled={submitState === "submitting"} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-ruby-700 px-5 py-3 font-bold text-white transition hover:bg-ruby-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700 disabled:cursor-wait disabled:opacity-70">
         {submitState === "submitting" ? <><Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> Saving your interest</> : <>Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></>}
       </button>
-      <p className="text-xs leading-5 text-slate-500">This is an interest list only. Dates, payment, and enrollment are not open yet.</p>
+      <p className="text-xs leading-5 text-slate-500">This updates list is separate from the invited pilot. Public dates, payment, and enrollment are not open yet.</p>
     </form>
   )
 }

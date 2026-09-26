@@ -5,11 +5,11 @@ import { PythonInterestForm } from "@/components/python-interest-form"
 
 export const metadata: Metadata = {
   title: "Python Fundamentals Course",
-  description: "A three-week beginner Python course from Code School of Guam, planned for January 2027. Short lessons, browser coding, a finished project, and three private Zoom hours with Leon Shimizu.",
+  description: "A three-week beginner Python course from Code School of Guam. A small invited pilot is planned for December 2026, with short lessons, browser coding, a finished project, and three private Zoom hours with Leon Shimizu.",
   alternates: { canonical: "/courses/python-fundamentals" },
   openGraph: {
     title: "Python Fundamentals | Code School of Guam",
-    description: "Learn Python from the beginning with short lessons, a practical project, and three private Zoom meetings. Join the January 2027 interest list.",
+    description: "Learn Python from the beginning with short lessons, a practical project, and three private Zoom meetings. Join the course updates list while we test a small invited pilot.",
     url: "/courses/python-fundamentals",
   },
 }
@@ -34,7 +34,7 @@ export default function PythonFundamentalsPage() {
               <a href="#interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></a>
               <a href="#course-map" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/20 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">See what you&apos;ll build <ArrowDown className="h-5 w-5" aria-hidden="true" /></a>
             </div>
-            <p className="mt-5 text-sm text-slate-400">Planning for January 2027 in Guam. Exact dates and enrollment will be announced after the course is tested.</p>
+            <p className="mt-5 text-sm text-slate-400">A small invited pilot is planned for December 2026 in Guam. Public enrollment is not open yet.</p>
           </div>
           <div className="border border-white/15 bg-[#111c2c] p-5 shadow-[18px_18px_0_rgba(128,18,36,0.23)] sm:p-7" aria-label="Sample Python expense summary output">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 text-xs text-slate-400"><span className="font-mono">expense_summary.py</span><Code2 className="h-4 w-4 text-ruby-300" aria-hidden="true" /></div>
@@ -94,9 +94,9 @@ export default function PythonFundamentalsPage() {
       <section id="interest" className="scroll-mt-24 py-16 md:py-24">
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div>
-            <p className="csg-label text-ruby-700">January pilot interest</p>
-            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Be first to see the finished course.</h2>
-            <p className="mt-5 max-w-lg leading-7 text-slate-600">We&apos;re planning a small first run for up to four adult beginners. Join this course-specific list and we&apos;ll send you the confirmed dates, sample lesson, price, and enrollment details when they&apos;re ready. This form does not reserve a seat.</p>
+            <p className="csg-label text-ruby-700">Course updates</p>
+            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Follow the course as we test it.</h2>
+            <p className="mt-5 max-w-lg leading-7 text-slate-600">We&apos;re starting with a small invited group of adult beginners. Join this course-specific list and we&apos;ll share the sample lesson and details of a future public run after the pilot. This form is not an application for the invited pilot and does not reserve a seat.</p>
             <ul className="mt-7 space-y-3 text-sm leading-6 text-slate-700">
               <li className="flex gap-3"><Check className="mt-1 h-4 w-4 shrink-0 text-green-700" aria-hidden="true" /> Complete beginners are welcome.</li>
               <li className="flex gap-3"><Check className="mt-1 h-4 w-4 shrink-0 text-green-700" aria-hidden="true" /> Python runs in your browser; no install is required to start.</li>
