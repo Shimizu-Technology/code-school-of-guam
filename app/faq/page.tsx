@@ -39,8 +39,8 @@ const faqs = [
     answer: "The March 2026 full bootcamp cohort began March 2 and is closed to new students. We have not announced another full cohort for 2026. We are also developing shorter focused courses, starting with an invited Python Fundamentals pilot in December. Those are separate from the full bootcamp."
   },
   {
-    question: "Why do you teach Ruby on Rails instead of other programming languages?",
-    answer: "We have chosen Ruby on Rails because it's a powerful, beginner-friendly framework that allows for rapid development. It's used by many successful companies like Airbnb, GitHub, and Shopify. Our instructors have professional experience with Rails, ensuring high-quality teaching and real-world insights. Learning Rails provides a strong foundation, making it easier to pick up other languages in the future."
+    question: "Why does the full bootcamp teach Ruby on Rails, and what languages will focused courses use?",
+    answer: "Ruby on Rails has been part of our full bootcamp because it lets learners build and understand a complete web application. Focused courses will use the language that fits their subject: the invited December pilot starts with Python, and we are developing Ruby and JavaScript fundamentals along with later courses in areas such as SQL, frontend development, and Rails APIs. Each course page will state what it teaches and what learners should know before starting."
   },
   {
     question: "Do I need to have a Mac to join the program?",
