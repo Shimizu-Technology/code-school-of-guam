@@ -50,9 +50,6 @@ export async function queryKnowledge(
   topK: number = 5
 ): Promise<string[]> {
   try {
-    // Generate embedding for the query
-    const queryEmbedding = await generateEmbedding(query);
-
     // Get the index
     const client = getPinecone();
     const index = client.index(INDEX_NAME);
@@ -61,6 +58,9 @@ export async function queryKnowledge(
     const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
     const uploadId = manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]?.metadata?.uploadId;
     if (typeof uploadId !== 'string' || !uploadId) return [];
+
+    // Skip the paid embedding call while this version is unpublished.
+    const queryEmbedding = await generateEmbedding(query);
 
     // Query Pinecone
     const results = await index.query({

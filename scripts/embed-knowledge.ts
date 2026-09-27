@@ -344,6 +344,29 @@ async function embedKnowledge() {
     console.log(`   - Uploaded batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(vectors.length / batchSize)}`);
   }
 
+  // Pinecone may acknowledge writes before every chunk is query-visible.
+  // A manifest makes this upload public, so wait until a filtered query sees
+  // all of this attempt's chunk IDs. Other overlapping attempts use other IDs.
+  if (vectors.length > 10000) {
+    throw new Error('Knowledge upload exceeds the query visibility check limit; refusing to publish.');
+  }
+  const expectedIds = new Set(vectors.map((vector) => vector.id));
+  let visible = false;
+  for (let attempt = 1; attempt <= 10; attempt++) {
+    const results = await index.query({
+      vector: vectors[0].values,
+      topK: vectors.length,
+      includeMetadata: false,
+      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' }, uploadId: { $eq: uploadId } },
+    });
+    const visibleIds = new Set((results.matches ?? []).map((match) => match.id));
+    visible = visibleIds.size === expectedIds.size && [...expectedIds].every((id) => visibleIds.has(id));
+    if (visible) break;
+    console.log(`   - Query sees ${visibleIds.size}/${expectedIds.size} chunks; retry ${attempt}/10`);
+    if (attempt < 10) await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+  if (!visible) throw new Error('Knowledge chunks are not all query-visible; refusing to publish.');
+
   await index.upsert([{
     id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
     values: vectors[0].values,
