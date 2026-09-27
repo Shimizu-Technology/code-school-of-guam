@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const weeks = [
   { number: "01", title: "Make a program decide", detail: "Run code, work with values, and use conditions to check a budget.", outcome: "A small budget decision program" },
   { number: "02", title: "Work with several items", detail: "Use lists, loops, dictionaries, and functions to summarize expenses.", outcome: "A data summary with reusable functions" },
-  { number: "03", title: "Finish and explain it", detail: "Plan, test, and revise a complete expense-summary program.", outcome: "A working program and a code review" },
+  { number: "03", title: "Finish and explain it", detail: "Plan, test, and revise a complete expense-summary program.", outcome: "A working program and a final self-check" },
 ]
 
 export default function PythonFundamentalsPage() {
@@ -77,15 +77,15 @@ export default function PythonFundamentalsPage() {
               <PlayCircle className="h-7 w-7 text-ruby-700" aria-hidden="true" />
               <p className="csg-label mt-5 text-ruby-700">Planned · independent study</p>
               <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Self-paced</h3>
-              <p className="mt-4 leading-7 text-slate-700">Work through recordings, written lessons, Hafa Code practice, checkpoints, and the final project on your own schedule.</p>
-              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">Private meetings and individual project review are not planned for this option. We will publish its price, access period, and support policy before enrollment opens.</p>
+              <p className="mt-4 leading-7 text-slate-700">Work through recordings, written lessons, Hafa Code practice, checkpoints, and the final project on your own schedule. Ask course questions through CSG Learn during a defined support window.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">We plan 12 months of lesson access and six weeks of course-question messaging from enrollment, with a two-business-day reply target on Guam time. Private Zoom meetings and individual project review are not included in this planned option. Final price and written support terms will be published before enrollment.</p>
             </article>
             <article className="bg-white p-7 sm:p-9">
               <Video className="h-7 w-7 text-ruby-700" aria-hidden="true" />
               <p className="csg-label mt-5 text-ruby-700">Invited pilot first</p>
               <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Guided</h3>
-              <p className="mt-4 leading-7 text-slate-700">Use the same lessons and practice, with private instructor meetings, course messaging, and personal feedback on your work.</p>
-              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">The adult-only December pilot includes one private Zoom hour each week for three weeks with Leon. Later guided runs may use trained instructors; their schedule, capacity, price, and terms will be posted before enrollment.</p>
+              <p className="mt-4 leading-7 text-slate-700">Use the same lessons and practice, with course messaging plus private instructor meetings and personal feedback on your work.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">The adult-only December pilot includes one private Zoom hour each week for three weeks with Leon and individual project review. Later guided runs may use trained instructors; their lesson-access period, schedule, capacity, price, and terms will be posted before enrollment.</p>
             </article>
           </div>
           <p className="mt-6 text-sm leading-6 text-slate-600">CSG Learn will hold course lessons and progress once a learner is invited or enrolled. We are designing future online courses for learners beyond Guam; guided meeting availability will be listed in the learner&apos;s local time.</p>
