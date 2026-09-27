@@ -46,7 +46,7 @@ export default function CoursesPage() {
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div><p className="csg-label text-ruby-700">A format that can grow</p><h2 className="mt-3 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Practice independently. Get personal guidance when you need it.</h2></div>
           <div className="space-y-5 leading-7 text-slate-700">
-            <p>Our long-term plan is to offer self-paced course material alongside optional guided runs with private instructor meetings and feedback. The December Python pilot tests the guided format with Leon. Self-paced enrollment and later guided runs are not open yet.</p>
+            <p>Our long-term plan is to offer each finished course in two ways: independent study with recordings, exercises, and a project, or a guided run using those same materials with private instructor meetings and personal feedback. The December Python pilot tests the guided format with Leon. Self-paced enrollment and later guided runs are not open yet.</p>
             <p>Guided places would be limited by each instructor&apos;s available meeting hours, starting with five learners per instructor. As trained alumni join the teaching team, we could run more courses at the same time without reducing the individual support included in each guided place.</p>
             <p>Adults are the audience for the invited pilot. We are also planning how future courses could serve teens with guardian involvement and appropriate support; details for younger learners will be developed separately.</p>
           </div>
@@ -105,7 +105,7 @@ export default function CoursesPage() {
 
       <section className="border-t border-slate-200 bg-[#f1ede5] py-16 md:py-24">
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-2 lg:gap-16">
-          <div><Code2 className="h-7 w-7 text-ruby-700" aria-hidden="true" /><h2 className="mt-5 font-serif text-3xl font-semibold text-slate-950 md:text-4xl">Focused courses</h2><p className="mt-4 leading-7 text-slate-700">Practice one topic and finish a bounded project. Guided runs include private help and feedback; a future self-paced option would have its own support terms. A sequence can build your skills, but completing it does not equal graduating from the full program.</p></div>
+          <div><Code2 className="h-7 w-7 text-ruby-700" aria-hidden="true" /><h2 className="mt-5 font-serif text-3xl font-semibold text-slate-950 md:text-4xl">Focused courses</h2><p className="mt-4 leading-7 text-slate-700">Practice one topic and finish a bounded project. Planned self-paced study would leave the schedule to you; guided runs add private help and feedback. A sequence can build your skills, but completing it does not equal graduating from the full program.</p></div>
           <div><GraduationCap className="h-7 w-7 text-ruby-700" aria-hidden="true" /><h2 className="mt-5 font-serif text-3xl font-semibold text-slate-950 md:text-4xl">Full bootcamp</h2><p className="mt-4 leading-7 text-slate-700">Learn across frontend, backend, databases, and AI over a longer staffed program with integrated projects, repeated reviews, collaboration, deployment, and career preparation.</p><Link href="/programs" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4">Explore the full program <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
         </div>
       </section>

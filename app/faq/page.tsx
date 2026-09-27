@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: "Will there be a self-paced option?",
-    answer: "We plan to offer self-paced course material as well as limited guided runs with private meetings and feedback. The first December Python pilot tests the guided format. Self-paced enrollment, pricing, support, and access terms have not been announced."
+    answer: "We plan to use the same lessons, exercises, and project for two options. Self-paced learners would study independently, without private meetings or individual project review. Guided learners would also get instructor meetings, course messaging, and personal feedback. The invited December Python pilot tests the guided format. Self-paced enrollment, pricing, access period, and support policy have not been announced."
   },
   {
     question: "Why is there only one full bootcamp cohort in 2026?",
