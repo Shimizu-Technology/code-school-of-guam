@@ -78,7 +78,7 @@ export default function PythonFundamentalsPage() {
               <p className="csg-label mt-5 text-ruby-700">Planned · independent study</p>
               <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Self-paced</h3>
               <p className="mt-4 leading-7 text-slate-700">Work through recordings, written lessons, Hafa Code practice, checkpoints, and the final project on your own schedule. Ask course questions through CSG Learn during a defined support window.</p>
-              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">We plan 12 months of lesson access and six weeks of course-question messaging from enrollment, with a two-business-day reply target on Guam time. Private Zoom meetings and individual project review are not included in this planned option. Final price and written support terms will be published before enrollment.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">We plan 12 months of lesson access, plus a defined period for course-question messaging. Private Zoom meetings and individual project review are not included in this planned option. Final price, messaging window, and reply times will be published before enrollment.</p>
             </article>
             <article className="bg-white p-7 sm:p-9">
               <Video className="h-7 w-7 text-ruby-700" aria-hidden="true" />

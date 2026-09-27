@@ -32,7 +32,7 @@ const faqs = [
   },
   {
     question: "Will there be a self-paced option?",
-    answer: "We plan to use the same lessons, exercises, and project for two options. Self-paced learners would study on their own schedule with course-question messaging, but without private Zoom meetings or individual project review. The proposed self-paced terms are 12 months of lesson access and six weeks of messaging from enrollment, with a two-business-day reply target on Guam time. Guided learners would also get private instructor meetings and personal feedback. The invited December Python pilot tests the guided format. Public enrollment and self-paced pricing are not open or announced; final written terms will be published first."
+    answer: "We plan to use the same lessons, exercises, and project for two options. Self-paced learners would study on their own schedule with course-question messaging, but without private Zoom meetings or individual project review. We plan 12 months of self-paced lesson access; the messaging window and reply times will be set in the written offer. Guided learners would also get private instructor meetings and personal feedback. The invited December Python pilot tests the guided format. Public enrollment and self-paced pricing are not open or announced; final written terms will be published first."
   },
   {
     question: "Why is there only one full bootcamp cohort in 2026?",

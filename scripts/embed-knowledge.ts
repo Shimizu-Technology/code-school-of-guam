@@ -5,14 +5,15 @@
  * chunks them, generates embeddings, and uploads to Pinecone.
  * 
  * Run with: npx tsx scripts/embed-knowledge.ts
- * A rerun replaces this version's vectors and removes obsolete IDs after
- * every replacement vector has been uploaded successfully.
+ * Every upload uses a distinct ID. Readers see only the complete upload
+ * named by the manifest, so overlapping attempts cannot mix chunks.
  */
 
 import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
+import { randomUUID } from 'node:crypto';
 import * as dotenv from 'dotenv';
 import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
 
@@ -245,22 +246,6 @@ function readKnowledgeFiles(): { filename: string; content: string }[] {
   return files;
 }
 
-async function listVersionIds(index: ReturnType<Pinecone['index']>): Promise<Set<string>> {
-  const ids = new Set<string>();
-  let paginationToken: string | undefined;
-  do {
-    const page = await index.listPaginated({
-      prefix: `${ACTIVE_KNOWLEDGE_VERSION}::`,
-      paginationToken,
-    });
-    for (const vector of page.vectors ?? []) {
-      if (vector.id) ids.add(vector.id);
-    }
-    paginationToken = page.pagination?.next;
-  } while (paginationToken);
-  return ids;
-}
-
 /**
  * Main embedding function
  */
@@ -274,23 +259,13 @@ async function embedKnowledge() {
   // Get the index
   const index = pinecone.index(INDEX_NAME);
 
-  // Published versions are immutable. An unpublished partial upload can be
-  // removed by exact version prefix and retried; readers never see it.
+  // Published versions are immutable. Concurrent unpublished attempts use
+  // different IDs; each may publish only after all of its chunks are uploaded.
   const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
   if (manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]) {
     throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} is already published. Bump the version before uploading.`);
   }
-  const previousIds = await listVersionIds(index);
-  if (previousIds.size > 0) {
-    if (previousIds.has(ACTIVE_KNOWLEDGE_MANIFEST_ID)) {
-      throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} has a manifest. Refusing to delete a published version.`);
-    }
-    const partialIds = [...previousIds];
-    for (let i = 0; i < partialIds.length; i += 100) {
-      await index.deleteMany(partialIds.slice(i, i + 100));
-    }
-    console.log(`   - Removed ${partialIds.length} unpublished vectors before retry`);
-  }
+  const uploadId = randomUUID();
 
   // Process each file
   const vectors: {
@@ -302,6 +277,7 @@ async function embedKnowledge() {
       sectionTitle: string;
       knowledgeVersion: string;
       kind: string;
+      uploadId: string;
       chunkIndex: number;
       subIndex: number;
     };
@@ -319,7 +295,7 @@ async function embedKnowledge() {
     // Generate embeddings for each chunk
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
-      const id = `${ACTIVE_KNOWLEDGE_VERSION}::${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
+      const id = `${ACTIVE_KNOWLEDGE_VERSION}::${uploadId}::${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
 
       try {
         const embedding = await generateEmbedding(chunk.text);
@@ -332,6 +308,7 @@ async function embedKnowledge() {
             source: file.filename,
             knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION,
             kind: 'chunk',
+            uploadId,
             sectionTitle: chunk.sectionTitle,
             chunkIndex: i,
             subIndex: chunk.subIndex,
@@ -370,7 +347,7 @@ async function embedKnowledge() {
   await index.upsert([{
     id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
     values: vectors[0].values,
-    metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', totalVectors: vectors.length },
+    metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', uploadId, totalVectors: vectors.length },
   }]);
   console.log(`   - Published complete version ${ACTIVE_KNOWLEDGE_VERSION}`);
 

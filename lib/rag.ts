@@ -59,14 +59,15 @@ export async function queryKnowledge(
 
     // An incomplete upload has no manifest and must never answer visitors.
     const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
-    if (!manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]) return [];
+    const uploadId = manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]?.metadata?.uploadId;
+    if (typeof uploadId !== 'string' || !uploadId) return [];
 
     // Query Pinecone
     const results = await index.query({
       vector: queryEmbedding,
       topK,
       includeMetadata: true,
-      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' } },
+      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' }, uploadId: { $eq: uploadId } },
     });
 
     // Extract and return the text content from results
