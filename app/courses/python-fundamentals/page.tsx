@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const weeks = [
   { number: "01", title: "Make a program decide", detail: "Run code, work with values, and use conditions to check a budget.", outcome: "A small budget decision program" },
   { number: "02", title: "Work with several items", detail: "Use lists, loops, dictionaries, and functions to summarize expenses.", outcome: "A data summary with reusable functions" },
-  { number: "03", title: "Finish and explain it", detail: "Plan, test, and revise a complete expense-summary program.", outcome: "A working program and a final self-check" },
+  { number: "03", title: "Finish and explain it", detail: "Build and test an expense-summary program yourself. Then explore an optional agent-assisted extension and check its work.", outcome: "A working program you can explain and verify" },
 ]
 
 export default function PythonFundamentalsPage() {

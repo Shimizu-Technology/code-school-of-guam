@@ -1,6 +1,6 @@
 import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from 'openai';
-import { ACTIVE_KNOWLEDGE_FALLBACK, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_VERSION } from './active-knowledge';
+import { ACTIVE_KNOWLEDGE_FALLBACK, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_SOURCE_SHA256, ACTIVE_KNOWLEDGE_VERSION } from './active-knowledge';
 
 // Lazy initialization of clients
 let pinecone: Pinecone | null = null;
@@ -56,7 +56,9 @@ export async function queryKnowledge(
 
     // An incomplete upload has no manifest and must never answer visitors.
     const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
-    const uploadId = manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]?.metadata?.uploadId;
+    const metadata = manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]?.metadata;
+    if (metadata?.sourceHash !== ACTIVE_KNOWLEDGE_SOURCE_SHA256) return [];
+    const uploadId = metadata?.uploadId;
     if (typeof uploadId !== 'string' || !uploadId) return [];
 
     // Skip the paid embedding call while this version is unpublished.

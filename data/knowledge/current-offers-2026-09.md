@@ -8,7 +8,7 @@ The March 2026 full bootcamp cohort began March 2 and is closed to new students.
 
 ## Python Fundamentals
 
-CSG is preparing a separate three-week beginner Python course for a small invited group during the first three weeks of December 2026. Public enrollment is not open. The course uses short lessons, Python coding in Hafa Code, submissions and feedback in CSG Learn, one private hour with Leon by Zoom each week, and an expense-summary final project. Exact dates and the complete student terms will be shared with invited learners before any payment. The public page at https://codeschoolofguam.com/courses/python-fundamentals has an updates list for a later public run; it does not reserve a pilot seat.
+CSG is preparing a separate three-week beginner Python course for a small invited group during the first three weeks of December 2026. Public enrollment is not open. The course uses short lessons, Python coding in Hafa Code, submissions and feedback in CSG Learn, one private hour with Leon by Zoom each week, and an expense-summary final project that learners build and explain independently. After that project, an optional lesson shows an agent-assisted monthly extension and how to check its code and tests. No AI subscription is required to complete the fundamentals project. Exact dates and the complete student terms will be shared with invited learners before any payment. The public page at https://codeschoolofguam.com/courses/python-fundamentals has an updates list for a later public run; it does not reserve a pilot seat.
 
 ## Future focused courses
 

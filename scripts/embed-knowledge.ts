@@ -15,7 +15,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { randomUUID } from 'node:crypto';
 import * as dotenv from 'dotenv';
-import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
+import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_SOURCE_SHA256, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
+import { knowledgeSourceHash } from '../lib/knowledge-source-hash';
 
 // Load environment variables (check .env.local first, then .env)
 const envLocalPath = path.join(process.cwd(), '.env.local');
@@ -254,6 +255,10 @@ async function embedKnowledge() {
 
   // Read all knowledge files
   const files = readKnowledgeFiles();
+  const sourceHash = knowledgeSourceHash(files);
+  if (sourceHash !== ACTIVE_KNOWLEDGE_SOURCE_SHA256) {
+    throw new Error('Knowledge files differ from the reviewed source hash. Update the version and source hash before uploading.');
+  }
   console.log(`📁 Found ${files.length} knowledge files\n`);
 
   // Get the index
@@ -370,7 +375,7 @@ async function embedKnowledge() {
   await index.upsert([{
     id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
     values: vectors[0].values,
-    metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', uploadId, totalVectors: vectors.length },
+    metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', uploadId, totalVectors: vectors.length, sourceHash },
   }]);
   console.log(`   - Published complete version ${ACTIVE_KNOWLEDGE_VERSION}`);
 
