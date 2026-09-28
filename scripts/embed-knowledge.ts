@@ -5,18 +5,18 @@
  * chunks them, generates embeddings, and uploads to Pinecone.
  * 
  * Run with: npx tsx scripts/embed-knowledge.ts
- * Every upload uses a distinct ID. Readers see only the complete upload
- * named by the manifest, so overlapping attempts cannot mix chunks.
+ * Each reviewed source bundle uses one content-derived upload ID. Readers see
+ * only the complete upload named by the manifest; concurrent attempts for the
+ * same bundle write the same chunk and manifest identities.
  */
 
 import { Pinecone } from '@pinecone-database/pinecone';
 import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
-import { randomUUID } from 'node:crypto';
 import * as dotenv from 'dotenv';
 import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_SOURCE_SHA256, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
-import { knowledgeSourceHash } from '../lib/knowledge-source-hash';
+import { knowledgeChunkId, knowledgeSourceHash, knowledgeUploadId } from '../lib/knowledge-source-hash';
 
 // Load environment variables (check .env.local first, then .env)
 const envLocalPath = path.join(process.cwd(), '.env.local');
@@ -264,13 +264,14 @@ async function embedKnowledge() {
   // Get the index
   const index = pinecone.index(INDEX_NAME);
 
-  // Published versions are immutable. Concurrent unpublished attempts use
-  // different IDs; each may publish only after all of its chunks are uploaded.
+  // Published versions are immutable. The reviewed source hash is the upload
+  // identity, so two attempts that pass this check for the same bundle converge
+  // on identical chunk IDs and manifest metadata regardless of write order.
   const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
   if (manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]) {
     throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} is already published. Bump the version before uploading.`);
   }
-  const uploadId = randomUUID();
+  const uploadId = knowledgeUploadId(sourceHash);
 
   // Process each file
   const vectors: {
@@ -300,7 +301,7 @@ async function embedKnowledge() {
     // Generate embeddings for each chunk
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
-      const id = `${ACTIVE_KNOWLEDGE_VERSION}::${uploadId}::${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
+      const id = knowledgeChunkId(ACTIVE_KNOWLEDGE_VERSION, uploadId, file.filename, i, chunk.sectionTitle, chunk.subIndex);
 
       try {
         const embedding = await generateEmbedding(chunk.text);
@@ -351,7 +352,8 @@ async function embedKnowledge() {
 
   // Pinecone may acknowledge writes before every chunk is query-visible.
   // A manifest makes this upload public, so wait until a filtered query sees
-  // all of this attempt's chunk IDs. Other overlapping attempts use other IDs.
+  // all of this bundle's chunk IDs. Overlapping attempts for the same reviewed
+  // bundle have the same IDs and content, so either complete attempt may publish.
   if (vectors.length > 10000) {
     throw new Error('Knowledge upload exceeds the query visibility check limit; refusing to publish.');
   }
