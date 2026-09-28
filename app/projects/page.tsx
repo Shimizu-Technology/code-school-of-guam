@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ArrowUpRight, Play } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Gamepad2, Play } from "lucide-react"
 
 const presentations = [
   {
@@ -112,6 +112,17 @@ export default function ProjectsPage() {
       </section>
 
       <section className="border-y border-slate-200 bg-white py-16 md:py-24">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <div><p className="csg-label text-ruby-700">Alumni team project · in progress</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Party Games Hub</h2></div>
+          <div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-ruby-50 text-ruby-700"><Gamepad2 className="h-6 w-6" aria-hidden="true" /></div>
+            <p className="mt-5 max-w-2xl leading-relaxed text-slate-600">A mobile-friendly collection of pass-the-device games built with the Code School of Guam alumni internship team. The public version has a playable Imposter reference game; the other games are still being built.</p>
+            <a href="https://party-games.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Explore Party Games Hub <ArrowUpRight className="h-4 w-4" /></a>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-white py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <div><p className="csg-label text-ruby-700">Professional context</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Production systems students learn around.</h2></div>
@@ -125,7 +136,7 @@ export default function ProjectsPage() {
               </article>
             ))}
           </div>
-          <a href="https://shimizu-technology.com/work/" className="mt-8 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Explore the complete Shimizu portfolio <ArrowUpRight className="h-4 w-4" /></a>
+          <a href="https://shimizu-technology.com/work/" className="mt-8 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Explore more Shimizu projects <ArrowUpRight className="h-4 w-4" /></a>
         </div>
       </section>
 
