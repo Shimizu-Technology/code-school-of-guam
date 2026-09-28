@@ -106,8 +106,8 @@ const faqs = [
 
 const faqGroups = [
   { title: "Choosing a path", description: "Focused courses, the full bootcamp, and who each is for.", items: faqs.slice(0, 7) },
-  { title: "Learning and support", description: "Schedule, equipment, teaching, and opportunities after the program.", items: faqs.slice(7, 17) },
-  { title: "Tuition and policies", description: "Prices and written terms for a specific course or cohort.", items: faqs.slice(17) },
+  { title: "Learning and support", description: "Schedule, equipment, teaching, resources, and opportunities after the program.", items: [...faqs.slice(7, 17), faqs[22]] },
+  { title: "Tuition and policies", description: "Prices and written terms for a specific course or cohort.", items: faqs.slice(17, 22) },
 ]
 
 export default function FAQPage() {

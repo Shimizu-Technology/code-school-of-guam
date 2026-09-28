@@ -30,6 +30,16 @@ export function SiteHeader() {
 
   useEffect(() => setMobileMenuOpen(false), [pathname])
 
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1280px)")
+    const closeOnDesktop = () => {
+      if (desktop.matches) setMobileMenuOpen(false)
+    }
+    closeOnDesktop()
+    desktop.addEventListener("change", closeOnDesktop)
+    return () => desktop.removeEventListener("change", closeOnDesktop)
+  }, [])
+
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
   return (

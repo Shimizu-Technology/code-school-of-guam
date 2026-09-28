@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight, ArrowUpRight, Play } from "lucide-react"
@@ -51,14 +51,19 @@ const productionExamples = [
 
 function PresentationVideo({ presentation }: { presentation: typeof presentations[number] }) {
   const [playing, setPlaying] = useState(false)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
   const title = `${presentation.cohort} capstone presentations, ${presentation.date}`
   const url = `https://www.youtube.com/watch?v=${presentation.videoId}${presentation.start ? `&t=${presentation.start}s` : ""}`
+
+  useEffect(() => {
+    if (playing) iframeRef.current?.focus()
+  }, [playing])
 
   return (
     <article className="border border-slate-200 bg-white">
       <div className="relative aspect-video overflow-hidden bg-[#0b1220] text-white">
         {playing ? (
-          <iframe src={`https://www.youtube-nocookie.com/embed/${presentation.videoId}?autoplay=1${presentation.start ? `&start=${presentation.start}` : ""}`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen className="absolute inset-0 h-full w-full" />
+          <iframe ref={iframeRef} tabIndex={0} src={`https://www.youtube-nocookie.com/embed/${presentation.videoId}?autoplay=1${presentation.start ? `&start=${presentation.start}` : ""}`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen className="absolute inset-0 h-full w-full" />
         ) : (
           <button type="button" onClick={() => setPlaying(true)} className="group flex h-full w-full flex-col items-center justify-center gap-5 bg-[radial-gradient(circle_at_50%_25%,rgba(165,25,25,0.35),transparent_55%)] px-6 text-center focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:outline-white" aria-label={`Play ${title}`}>
             <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/10 transition group-hover:bg-ruby-600"><Play className="ml-1 h-7 w-7 fill-current" /></span>
