@@ -58,22 +58,22 @@ export function CohortInterestForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="block text-sm font-semibold text-slate-800">
           Name <span className="text-ruby-600">*</span>
-          <input required name="name" autoComplete="name" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus:border-ruby-500 focus:ring-2 focus:ring-ruby-500/20" />
+          <input required name="name" autoComplete="name" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
         </label>
         <label className="block text-sm font-semibold text-slate-800">
           Email <span className="text-ruby-600">*</span>
-          <input required type="email" name="email" autoComplete="email" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus:border-ruby-500 focus:ring-2 focus:ring-ruby-500/20" />
+          <input required type="email" name="email" autoComplete="email" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
         </label>
       </div>
 
       <label className="block text-sm font-semibold text-slate-800">
         Phone <span className="font-normal text-slate-500">(optional)</span>
-        <input type="tel" name="phone" autoComplete="tel" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus:border-ruby-500 focus:ring-2 focus:ring-ruby-500/20" />
+        <input type="tel" name="phone" autoComplete="tel" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
       </label>
 
       <label className="block text-sm font-semibold text-slate-800">
         What timing would work best? <span className="text-ruby-600">*</span>
-        <select required name="preferred_timing" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus:border-ruby-500 focus:ring-2 focus:ring-ruby-500/20">
+        <select required name="preferred_timing" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select a preference</option>
           <option value="January 2027">January 2027</option>
           <option value="February 2027">February 2027</option>
@@ -84,7 +84,7 @@ export function CohortInterestForm() {
 
       <label className="block text-sm font-semibold text-slate-800">
         Current coding experience <span className="text-ruby-600">*</span>
-        <select required name="experience_level" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus:border-ruby-500 focus:ring-2 focus:ring-ruby-500/20">
+        <select required name="experience_level" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select your experience</option>
           <option value="Complete beginner">Complete beginner</option>
           <option value="Some self-study">Some self-study</option>
@@ -95,7 +95,7 @@ export function CohortInterestForm() {
 
       <label className="block text-sm font-semibold text-slate-800">
         What would you most like to accomplish? <span className="text-ruby-600">*</span>
-        <textarea required name="primary_goal" rows={4} className="mt-2 w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus:border-ruby-500 focus:ring-2 focus:ring-ruby-500/20" placeholder="For example: change careers, build a product, or add AI skills..." />
+        <textarea required name="primary_goal" rows={4} className="mt-2 w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" placeholder="For example: change careers, build a product, or add AI skills..." />
       </label>
 
       <label className="flex items-start gap-3 rounded-lg bg-slate-50 p-4 text-sm text-slate-700">

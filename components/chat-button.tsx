@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X } from "lucide-react";
-import { ChatWindow } from "./chat-window";
+import dynamic from "next/dynamic";
+
+const ChatWindow = dynamic(() => import("./chat-window").then((module) => module.ChatWindow), { ssr: false });
 
 const CHAT_VISIBILITY_SCROLL_Y = 520;
 

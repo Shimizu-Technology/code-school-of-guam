@@ -127,6 +127,21 @@ export default function HomePage() {
       </section>
 
       <section className="border-b border-slate-200 bg-[#f1ede5] py-14 md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14">
+          <figure className="overflow-hidden border border-slate-200 bg-white">
+            <Image src="/images/uog-intro-to-ai.jpeg" alt="University of Guam staff attending a practical AI workshop" width={1280} height={960} className="aspect-[16/10] w-full object-cover" />
+            <figcaption className="px-4 py-3 text-xs text-slate-600">Leon teaching University of Guam staff at a July 2025 AI workshop.</figcaption>
+          </figure>
+          <div>
+            <p className="csg-label text-ruby-700">Learning with people</p>
+            <h2 className="mt-4 max-w-xl font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Guidance you can bring your own work to.</h2>
+            <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-700">The school grew from Leon&apos;s experience learning to code with an instructor. Our guided offers make room for questions, feedback, and the practice it takes to understand what you build.</p>
+            <Link href="/about" className="mt-6 inline-flex min-h-12 items-center gap-2 font-semibold text-ruby-800 underline underline-offset-4">Meet the school <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-slate-200 bg-white py-14 md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
           <div>
             <p className="csg-label text-ruby-700">New focused course · December invited pilot</p>
@@ -135,6 +150,11 @@ export default function HomePage() {
           <div className="lg:pb-1">
             <p className="max-w-xl text-lg leading-8 text-slate-700">A three-week beginner course with short lessons, browser coding, and one private Zoom hour with Leon each week. We&apos;re testing it with a small invited group before opening it more widely.</p>
             <Link href="/courses/python-fundamentals" className="mt-6 inline-flex min-h-12 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Explore Python Fundamentals <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+            <div className="mt-6 border border-slate-200 bg-[#0b1220] p-5 font-mono text-sm leading-relaxed text-slate-200" aria-label="Sample output from the Python program learners build">
+              <span className="text-ruby-300">$ python expense_summary.py</span><br />
+              Total: $118 · Food: $61 · Transport: $48<br />
+              <span className="text-emerald-300">Under budget by $2</span>
+            </div>
           </div>
         </div>
       </section>
@@ -144,9 +164,10 @@ export default function HomePage() {
           {[["11", "graduates"], ["100%", "completion"], ["2", "cohorts"]].map(([value, label]) => (
             <div key={label} className="border-r border-slate-200 px-2 last:border-r-0">
               <div className="text-2xl font-bold text-slate-950 md:text-3xl">{value}</div>
-              <div className="csg-label mt-1 text-[9px] text-slate-500 sm:text-[10px]">{label}</div>
+              <div className="csg-label mt-1 text-xs text-slate-600">{label}</div>
             </div>
           ))}
+          <p className="col-span-3 mt-5 text-left text-xs leading-relaxed text-slate-600">Results from the first two cohorts, completed in 2025: 11 graduates, and everyone who started those cohorts completed the program. The March 2026 cohort is not included.</p>
         </div>
       </section>
 

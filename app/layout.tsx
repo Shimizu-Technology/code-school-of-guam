@@ -127,10 +127,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
       <body className="font-sans min-h-screen bg-background text-foreground">
         <noscript>You need to enable JavaScript to run this app.</noscript>
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <PostHogProvider>
           <div id="root" className="flex flex-col min-h-screen">
             <SiteHeader />
-            <main className="flex-grow">
+            <main id="main-content" tabIndex={-1} className="flex-grow">
               {children}
             </main>
             <SiteFooter />

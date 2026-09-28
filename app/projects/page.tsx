@@ -1,511 +1,145 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import type React from "react"
-import { 
-  ArrowRight, 
-  ExternalLink, 
-  Star,
-  CheckCircle,
-  Code,
-  Rocket,
-  Quote,
-  Users,
-  Trophy
-} from "lucide-react"
+import { ArrowRight, ArrowUpRight, Play } from "lucide-react"
 
-type ShimizuProject = {
-  title: string
-  subtitle: string
-  description: string
-  image?: string
-  gradient?: string
-  icon?: React.ReactNode
-  link?: string
-  technologies: string[]
-  highlights: string[]
-  featured?: boolean
-  comingSoon?: boolean
-}
+const presentations = [
+  {
+    cohort: "Cohort 2",
+    date: "December 2025",
+    graduates: "5 graduates",
+    videoId: "bWuS_YuiRzI",
+    start: 0,
+  },
+  {
+    cohort: "Cohort 1",
+    date: "May 2025",
+    graduates: "6 graduates",
+    videoId: "MNzZeL33jiw",
+    start: 650,
+  },
+]
 
-// A selective set of Shimizu systems that gives students real production context.
-// Inclusion here does not imply that every graduate contributed to every product.
-const shimizuProjects: ShimizuProject[] = [
+const productionExamples = [
   {
     title: "Hafa Code",
-    subtitle: "Student Coding Playground",
-    description: "A lightweight browser coding environment built for Code School of Guam, FD students, alumni, and anyone learning without heavy setup.",
+    type: "School learning tool",
+    description: "A browser coding environment used by Code School of Guam, FD students, alumni, and other learners.",
     image: "/images/hafa-code-logo.png",
-    link: "https://code.shimizu-technology.com/",
-    technologies: ["React", "TypeScript", "WASM", "Python", "Ruby", "Monaco"],
-    highlights: [
-      "Python, Ruby, JavaScript, and HTML/CSS/JS in the browser",
-      "Simple local projects with optional cloud sync",
-      "A real tool students can use and understand"
-    ],
-    featured: true
+    href: "https://code.shimizu-technology.com/",
+    surface: "bg-[#f8efe0]",
   },
   {
     title: "CSG Learning Hub",
-    subtitle: "Code School Learning Platform",
-    description: "The private platform behind Code School of Guam: prework, class content, workshops, recordings, grading, progress tracking, and cohort management.",
+    type: "School learning platform",
+    description: "The private platform for lessons, recordings, grading, progress tracking, and cohort management.",
     image: "/CSG-Logo.png",
-    link: "https://learn.codeschoolofguam.com",
-    technologies: ["React", "Rails", "Clerk", "PostgreSQL", "TypeScript"],
-    highlights: [
-      "Lessons, exercises, recordings, and workshops",
-      "Student progress and instructor workflows",
-      "Production platform powering the school"
-    ],
-    featured: true
-  },
-  {
-    title: "HåfaGPT",
-    subtitle: "CHamoru Language Learning Platform",
-    description: "An AI-powered platform for learning CHamoru, built around Guam and the Mariana Islands rather than treating local culture as an afterthought.",
-    image: "/images/HafaGPT-icon1.png",
-    link: "https://hafagpt.com",
-    technologies: ["React", "TypeScript", "FastAPI", "Python", "PostgreSQL", "OpenAI"],
-    highlights: [
-      "45,000+ knowledge chunks in its RAG system",
-      "Dictionary, stories, quizzes, and games",
-      "Guam-first AI product with cultural impact"
-    ],
-    featured: true
-  },
-  {
-    title: "Cornerstone Payroll",
-    subtitle: "Live Guam Payroll Platform",
-    description: "A production payroll and accounting-operations system used by Cornerstone Accounting, translating Guam tax and filing rules into dependable workflows.",
-    image: "/images/cornerstone-payroll-cp.svg",
-    link: "https://cornerstone-payroll.netlify.app",
-    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Clerk"],
-    highlights: [
-      "Guam payroll calculations, adjustments, and approvals",
-      "Check printing, pay stubs, tax summaries, and filing support",
-      "Company switching, role controls, and audit history"
-    ],
-    featured: true
+    href: "https://learn.codeschoolofguam.com/",
+    surface: "bg-[#101827]",
   },
   {
     title: "Hafaloha Orders",
-    subtitle: "Active Production Ordering Platform",
-    description: "Ordering, retail, VIP event sales, shipping, and administrative workflows still used by Hafaloha, including its June 2026 concert.",
+    type: "Shimizu client system",
+    description: "A live ordering and fulfillment platform that handled 850+ VIP orders during a concert launch.",
     image: "/images/hafaloha_hero.jpg",
-    link: "https://hafaloha-orders.com",
-    technologies: ["React", "Ruby on Rails", "PostgreSQL", "Stripe", "EasyPost", "Redis"],
-    highlights: [
-      "850+ VIP orders during a major concert launch",
-      "EasyPost shipping and Stripe payments",
-      "Continued concert and fulfillment use"
-    ]
+    href: "https://hafaloha-orders.com/",
+    surface: "bg-slate-100",
   },
-  {
-    title: "GIAA Golf Tournament",
-    subtitle: "Reusable Public Event System",
-    description: "Registration, payment, and administration for the annual Edward A.P. Muna II Memorial Golf Tournament hosted by the Guam International Airport Authority.",
-    image: "/images/giaa-logo.png",
-    link: "https://giaa-tournament.com",
-    technologies: ["React", "Ruby on Rails", "Stripe", "PostgreSQL"],
-    highlights: [
-      "Public registration and online payments",
-      "Deadline-driven administrative launch",
-      "Designed for annual reuse"
-    ]
-  }
 ]
+
+function PresentationVideo({ presentation }: { presentation: typeof presentations[number] }) {
+  const [playing, setPlaying] = useState(false)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const title = `${presentation.cohort} capstone presentations, ${presentation.date}`
+  const url = `https://www.youtube.com/watch?v=${presentation.videoId}${presentation.start ? `&t=${presentation.start}s` : ""}`
+
+  useEffect(() => {
+    if (playing) iframeRef.current?.focus()
+  }, [playing])
+
+  return (
+    <article className="border border-slate-200 bg-white">
+      <div className="relative aspect-video overflow-hidden bg-[#0b1220] text-white">
+        {playing ? (
+          <iframe ref={iframeRef} tabIndex={0} src={`https://www.youtube-nocookie.com/embed/${presentation.videoId}?autoplay=1${presentation.start ? `&start=${presentation.start}` : ""}`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen className="absolute inset-0 h-full w-full" />
+        ) : (
+          <button type="button" onClick={() => setPlaying(true)} className="group flex h-full w-full flex-col items-center justify-center gap-5 bg-[radial-gradient(circle_at_50%_25%,rgba(165,25,25,0.35),transparent_55%)] px-6 text-center focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:outline-white" aria-label={`Play ${title}`}>
+            <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/10 transition group-hover:bg-ruby-600"><Play className="ml-1 h-7 w-7 fill-current" /></span>
+            <span className="font-serif text-2xl font-semibold sm:text-3xl">{presentation.cohort} capstone presentations</span>
+            <span className="csg-label text-ruby-200">{presentation.date}</span>
+          </button>
+        )}
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6">
+        <div><h3 className="text-lg font-bold text-slate-950">{presentation.cohort} graduate presentations</h3><p className="mt-1 text-sm text-slate-600">{presentation.date} · {presentation.graduates}</p></div>
+        <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-ruby-700 underline underline-offset-4">Watch on YouTube <ArrowUpRight className="h-4 w-4" /></a>
+      </div>
+    </article>
+  )
+}
 
 export default function ProjectsPage() {
   return (
-    <div className="csg-inner flex flex-col">
-      {/* Hero */}
-      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="inline-flex items-center px-3 py-1.5 bg-green-500/20 text-green-400 rounded-full text-sm font-medium mb-4">
-            <Trophy className="w-4 h-4 mr-2" />
-            Success Stories
-          </div>
-          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
-            From Zero to <span className="text-ruby-500">Full-Stack Developer</span>
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Watch our students present their capstone projects. In under 6 months, they go from coding beginners to building full-stack applications with Ruby on Rails APIs, React frontends, and AI-powered features. <span className="text-ruby-400 font-medium">11 graduates across 2 cohorts with a 100% completion rate.</span>
-          </p>
+    <div className="bg-[#fbfaf7]">
+      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
+        <div className="csg-grid absolute inset-0 opacity-30" />
+        <div className="container relative mx-auto px-4 sm:px-8">
+          <p className="csg-label text-ruby-300">Graduate work</p>
+          <h1 className="mt-5 max-w-4xl font-serif text-5xl font-semibold leading-tight md:text-7xl">See what students built and explained.</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">Watch graduates present their own capstones. Then explore the production systems we use to show how software is built and supported beyond class.</p>
+          <a href="#capstones" className="mt-8 inline-flex items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-semibold text-white hover:bg-ruby-500">Watch presentations <ArrowRight className="h-4 w-4" /></a>
         </div>
-        {/* Fade to next section - dark to light */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-50 to-transparent"></div>
       </section>
 
-      {/* Stats */}
-      <section className="py-8 bg-slate-50 border-b border-slate-200">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto text-center">
-            <div>
-              <div className="text-3xl font-bold text-green-600">100%</div>
-              <div className="text-sm text-slate-600">Completion Rate</div>
-              <div className="text-xs text-slate-500">All students finished the program</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-600">16</div>
-              <div className="text-sm text-slate-600">Weeks to Success</div>
-              <div className="text-xs text-slate-500">From beginner to developer</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-600">8</div>
-              <div className="text-sm text-slate-600">Real Projects Built</div>
-              <div className="text-xs text-slate-500">Hands-on applications</div>
-            </div>
+      <section className="border-b border-slate-200 bg-white py-7">
+        <div className="container mx-auto px-4 sm:px-8">
+          <p className="text-sm leading-relaxed text-slate-700"><strong className="text-slate-950">First two cohorts:</strong> 11 graduates across Cohorts 1 and 2 in 2025. Everyone who started those two cohorts completed the program. This figure does not include the March 2026 cohort.</p>
+        </div>
+      </section>
+
+      <section id="capstones" className="scroll-mt-20 py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div><p className="csg-label text-ruby-700">Student capstones</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">The work, in their own words.</h2></div>
+            <p className="max-w-2xl leading-relaxed text-slate-600 lg:justify-self-end">Each recording shows graduates walking through the project they built and the decisions behind it. Videos load only when you choose to play one.</p>
+          </div>
+          <div className="mt-10 grid gap-6 lg:grid-cols-2">
+            {presentations.map((presentation) => <PresentationVideo key={presentation.cohort} presentation={presentation} />)}
           </div>
         </div>
       </section>
 
-      {/* Capstone Videos */}
-      <section className="py-16 md:py-24 lg:py-28 bg-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
-              Capstone Presentations
-            </h2>
-            <p className="text-slate-600">
-              Watch our graduates present their final projects
-            </p>
+      <section className="border-y border-slate-200 bg-white py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div><p className="csg-label text-ruby-700">Professional context</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Production systems students learn around.</h2></div>
+            <p className="max-w-2xl leading-relaxed text-slate-600 lg:justify-self-end">These examples were built and maintained by Shimizu Technology. They give students a view of real users, data, payments, delivery, and support. Listing a system here does not mean every graduate worked on it.</p>
           </div>
-
-          {/* Two videos side by side on desktop, stacked on mobile */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Cohort 2 - December 2025 */}
-            <div>
-              <div className="relative w-full overflow-hidden rounded-xl shadow-md border-2 border-ruby-200">
-                <div style={{ paddingTop: '56.25%' }}>
-                  <iframe 
-                    src="https://www.youtube.com/embed/bWuS_YuiRzI" 
-                    title="Code School of Guam Cohort 2 Capstone Presentations - December 2025" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    className="absolute top-0 left-0 w-full h-full"
-                  ></iframe>
-                </div>
-              </div>
-              <div className="mt-4 text-center">
-                <span className="inline-flex items-center px-3 py-1 bg-ruby-100 text-ruby-700 rounded-full text-sm font-medium mb-2">
-                  Latest
-                </span>
-                <p className="text-sm text-slate-600 font-medium">
-                  Cohort 2 Capstone Presentations
-                </p>
-                <p className="text-xs text-slate-500">
-                  December 2025 • 5 Graduates
-                </p>
-              </div>
-            </div>
-
-            {/* Cohort 1 - May 2025 */}
-            <div>
-              <div className="relative w-full overflow-hidden rounded-xl shadow-md border-2 border-slate-200">
-                <div style={{ paddingTop: '56.25%' }}>
-                  <iframe 
-                    src="https://www.youtube.com/embed/MNzZeL33jiw?t=650" 
-                    title="Code School of Guam Cohort 1 Capstone Presentations - May 2025" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    className="absolute top-0 left-0 w-full h-full"
-                  ></iframe>
-                </div>
-              </div>
-              <div className="mt-4 text-center">
-                <p className="text-sm text-slate-600 font-medium">
-                  Cohort 1 Capstone Presentations
-                </p>
-                <p className="text-xs text-slate-500">
-                  May 2025 • 6 Graduates
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Project Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
-            <div className="bg-slate-50 rounded-xl p-6 border-l-4 border-ruby-500">
-              <div className="flex items-center mb-3">
-                <Code className="w-5 h-5 text-ruby-500 mr-2" />
-                <h3 className="font-semibold text-slate-900">Local Impact Projects</h3>
-              </div>
-              <p className="text-sm text-slate-600">
-                Students created apps addressing Guam-specific challenges, from tourism platforms to local business management tools.
-              </p>
-            </div>
-            <div className="bg-slate-50 rounded-xl p-6 border-l-4 border-green-500">
-              <div className="flex items-center mb-3">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <h3 className="font-semibold text-slate-900">Industry-Ready Skills</h3>
-              </div>
-              <p className="text-sm text-slate-600">
-                Every project uses professional development practices: Git version control, database design, API integration, and responsive design.
-              </p>
-            </div>
-            <div className="bg-slate-50 rounded-xl p-6 border-l-4 border-blue-500">
-              <div className="flex items-center mb-3">
-                <Users className="w-5 h-5 text-blue-500 mr-2" />
-                <h3 className="font-semibold text-slate-900">Presentation Skills</h3>
-              </div>
-              <p className="text-sm text-slate-600">
-                Students present to industry professionals, gaining confidence in explaining technical concepts and business value.
-              </p>
-            </div>
-          </div>
-
-          {/* Founder Quote */}
-          <div className="max-w-2xl mx-auto mt-12 bg-slate-50 rounded-lg p-6 text-center">
-            <p className="text-slate-700 italic mb-3">
-              &quot;Seeing our students go from never having coded before to presenting full-stack applications with AI features in just a few months is incredibly rewarding. They&apos;re ready for real developer roles.&quot;
-            </p>
-            <p className="text-sm text-slate-600">
-              - Leon Shimizu, Founder & Lead Instructor
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Shimizu Technology Projects */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/10 text-ruby-700 rounded-full text-sm font-medium mb-4">
-              <Rocket className="w-4 h-4 mr-2" />
-              Real-World Experience
-            </div>
-            <h2 className="font-serif text-4xl md:text-5xl font-semibold text-slate-900 mb-4">
-              Production Systems Students Learn Around
-            </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              Code School&apos;s connection to{" "}
-              <a
-                href="https://shimizu-technology.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-ruby-600 hover:text-ruby-700 font-medium"
-              >
-                Shimizu Technology
-              </a>
-              {" "}gives students concrete examples of how professional teams handle users, data, payments, compliance, deployment, and ongoing support. These examples provide production context; inclusion does not mean every graduate contributed to every system.
-            </p>
-          </div>
-
-          <div className="space-y-8 max-w-5xl mx-auto">
-            {shimizuProjects.map((project, index) => (
-              <div 
-                key={index}
-                className={`bg-white rounded-xl overflow-hidden border border-slate-100 shadow-md hover:shadow-sm transition-all ${project.featured ? 'ring-2 ring-ruby-200' : ''}`}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
-                  {/* Image */}
-                  <div className="lg:col-span-1 h-48 sm:h-64 lg:h-auto relative bg-slate-100 overflow-hidden">
-                    {project.image ? (
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, 100vw"
-                        className={`object-contain p-8 ${project.image.includes('hafaloha') ? 'object-cover p-0' : ''}`}
-                      />
-                    ) : (
-                      <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${project.gradient || 'from-slate-600 to-slate-900'}`}>
-                        {project.icon}
-                      </div>
-                    )}
-                    {project.featured && !project.comingSoon && (
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 bg-ruby-500 text-white text-xs font-semibold rounded-full flex items-center">
-                          <Star className="w-3 h-3 mr-1" /> Featured
-                        </span>
-                      </div>
-                    )}
-                    {project.comingSoon && (
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-full flex items-center">
-                          <Rocket className="w-3 h-3 mr-1" /> Coming Soon
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="lg:col-span-2 p-6 lg:p-8">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <h3 className="text-2xl font-bold text-slate-900">{project.title}</h3>
-                      <span className="text-slate-500">—</span>
-                      <span className="text-slate-600">{project.subtitle}</span>
-                    </div>
-                    
-                    <p className="text-slate-600 mb-4">{project.description}</p>
-
-                    {/* Highlights */}
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
-                      {project.highlights.map((highlight, idx) => (
-                        <li key={idx} className="flex items-start text-sm text-slate-700">
-                          <CheckCircle className="w-4 h-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {/* Technologies */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech, idx) => (
-                        <span 
-                          key={idx}
-                          className="px-2 py-1 bg-slate-100 text-slate-700 text-xs rounded"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Links */}
-                    <div className="flex flex-wrap gap-3">
-                      {project.link && !project.comingSoon && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-sm font-medium transition-colors"
-                        >
-                          Visit Site
-                          <ExternalLink className="w-3 h-3 ml-2" />
-                        </a>
-                      )}
-                      {project.comingSoon && (
-                        <span className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-700 rounded-md text-sm font-medium">
-                          <Rocket className="w-3 h-3 mr-2" />
-                          Coming Soon
-                        </span>
-                      )}
-
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            {productionExamples.map((project) => (
+              <article key={project.title} className="overflow-hidden border border-slate-200 bg-white">
+                <div className={`flex aspect-[4/3] items-center justify-center p-10 ${project.surface}`}><Image src={project.image} alt="" width={400} height={300} className="h-full w-full object-contain" /></div>
+                <div className="p-6"><p className="csg-label text-ruby-700">{project.type} · Shimizu built</p><h3 className="mt-3 text-xl font-bold text-slate-950">{project.title}</h3><p className="mt-3 leading-relaxed text-slate-600">{project.description}</p><a href={project.href} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Visit the product <ArrowUpRight className="h-4 w-4" /></a></div>
+              </article>
             ))}
           </div>
-
-          {/* Partner CTA */}
-          <div className="mt-12 text-center">
-            <p className="text-slate-600 mb-5">
-              These representative systems are built and maintained by Shimizu Technology, the software company behind Code School&apos;s production context and internship pathway.
-            </p>
-            <a
-              href="https://shimizu-technology.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-5 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-md text-sm font-medium transition-colors"
-            >
-              Explore the full Shimizu portfolio
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </a>
-          </div>
+          <a href="https://shimizu-technology.com/work/" className="mt-8 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Explore the complete Shimizu portfolio <ArrowUpRight className="h-4 w-4" /></a>
         </div>
       </section>
 
-      {/* Testimonial */}
-      <section className="py-16 bg-slate-900 text-white">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <Quote className="w-12 h-12 text-ruby-500/50 mx-auto mb-6" />
-            <blockquote className="text-xl md:text-2xl leading-relaxed mb-6 text-slate-300">
-              &ldquo;It was soooo incredible being able to see what was only a discussion of an idea, come to life. No doubt that the online ordering option is a valuable perk & adds to the VIP experience.&rdquo;
-            </blockquote>
-            <p className="text-slate-400">
-              — <span className="text-white font-medium">Hafaloha Owner</span>, on the system our team built
-            </p>
-            <div className="flex justify-center gap-8 mt-8 text-center">
-              <div>
-                <div className="text-3xl font-bold text-ruby-400">850+</div>
-                <div className="text-sm text-slate-400">VIP Orders</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-green-400">100%</div>
-                <div className="text-sm text-slate-400">Fulfillment</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400">Zero</div>
-                <div className="text-sm text-slate-400">Downtime</div>
-              </div>
-            </div>
-          </div>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div><p className="csg-label text-ruby-700">A smaller example</p><h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Try a project idea.</h2></div>
+          <div><p className="max-w-2xl leading-relaxed text-slate-600">This Flappy Bird clone is a school demonstration of programming ideas such as state, loops, collision detection, and responsive design. It is not a graduate capstone.</p><Link href="/flappy-bird" className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-md border border-slate-300 px-5 py-3 font-semibold text-slate-950 hover:border-ruby-700 hover:text-ruby-700">Play the demo <ArrowRight className="h-4 w-4" /></Link></div>
         </div>
       </section>
 
-      {/* Try It Yourself - Interactive Demos */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-50">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
-              <Rocket className="w-4 h-4 mr-2" />
-              Interactive Demo
-            </div>
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              See What&apos;s Possible
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              With the skills you learn at Code School of Guam, projects like this become possible. Built with React and core programming concepts from our curriculum.
-            </p>
-          </div>
-
-          <div className="max-w-md mx-auto">
-            <Link
-              href="/flappy-bird"
-              className="group block bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-all overflow-hidden"
-            >
-              <div className="bg-gradient-to-br from-teal-500 to-cyan-600 p-8 text-center">
-                <Rocket className="w-12 h-12 text-white/90 mb-3 mx-auto" />
-                <h3 className="text-xl font-bold text-white mb-1">Flappy Bird Clone</h3>
-                <p className="text-white/80 text-sm">Built with React & HTML5 Canvas</p>
-              </div>
-              <div className="p-6 text-center">
-                <p className="text-slate-600 text-sm mb-4">
-                  A fun example of what you can build with programming fundamentals — state management, game loops, collision detection, and responsive design.
-                </p>
-                <span className="inline-flex items-center text-ruby-600 font-medium group-hover:text-ruby-700">
-                  Play Now
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </div>
-            </Link>
-          </div>
-
-          <p className="text-center text-slate-500 text-sm mt-8">
-            More interactive demos coming soon!
-          </p>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 md:py-24 lg:py-28 bg-ruby-600 text-white">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
-            Want to Build Real Projects?
-          </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join the Code School of Guam and get the skills to contribute to production applications.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/interest"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all"
-            >
-              Join the Interest List
-            </a>
-            <Link
-              href="/internship"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-lg text-lg font-medium transition-all"
-            >
-              Learn About Internship
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Link>
-          </div>
+      <section className="bg-ruby-700 py-16 text-white">
+        <div className="container mx-auto flex flex-col gap-7 px-4 sm:px-8 lg:flex-row lg:items-end lg:justify-between">
+          <div><p className="csg-label text-ruby-100">Your next step</p><h2 className="mt-3 max-w-2xl font-serif text-4xl font-semibold md:text-5xl">Build something you can explain.</h2><p className="mt-4 max-w-2xl text-ruby-100">Explore the focused courses being prepared, or join updates for a future full bootcamp cohort.</p></div>
+          <div className="flex flex-wrap gap-3"><Link href="/courses" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-5 py-3 font-semibold text-ruby-800">Explore courses <ArrowRight className="h-4 w-4" /></Link><Link href="/interest" className="inline-flex min-h-12 items-center rounded-md border border-white/60 px-5 py-3 font-semibold text-white">Bootcamp updates</Link></div>
         </div>
       </section>
     </div>

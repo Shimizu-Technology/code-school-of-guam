@@ -1,469 +1,100 @@
-"use client"
-
 import Link from "next/link"
-import Image from "next/image"
-import { 
-  ArrowRight, 
-  Code, 
-  Database, 
-  Smartphone,
-  Brain,
-  CheckCircle,
-  Clock,
-  BookOpen,
-  Rocket,
-  Users,
-  GitBranch,
-  Zap
-} from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
-const phases = [
+const foundations = [
   {
-    week: "Weeks 1-3",
-    title: "Build Your Foundation",
-    color: "bg-blue-500",
-    borderColor: "border-blue-500",
-    topics: [
-      "No AI tools — learn fundamentals the hard way",
-      "Command line, Git, HTML, CSS, JavaScript",
-      "Ruby programming & OOP basics",
-      "Problem-solving & computational thinking",
-      "Build muscle memory with manual coding"
-    ]
+    number: "01",
+    title: "Ruby & Rails",
+    purpose: "Understand the server side of a complete application.",
+    detail: "Programming fundamentals, data models, APIs, authentication, and database-backed workflows.",
   },
   {
-    week: "Weeks 4-5",
-    title: "AI as Study Buddy",
-    color: "bg-teal-500",
-    borderColor: "border-teal-500",
-    topics: [
-      "Introduce Cursor IDE + AI assistants",
-      "Use AI to understand concepts, not copy code",
-      "Learn to ask better questions",
-      "Ruby on Rails fundamentals",
-      "Database design with PostgreSQL"
-    ]
+    number: "02",
+    title: "React & the browser",
+    purpose: "Build interfaces people can use.",
+    detail: "Components, state, responsive layouts, API integration, and deployment.",
   },
   {
-    week: "Weeks 6-7",
-    title: "AI as Debugging Partner",
-    color: "bg-ruby-500",
-    borderColor: "border-ruby-500",
-    topics: [
-      "Debug with AI, but understand every fix",
-      "Rails APIs & React.js frontends",
-      "Component architecture & state management",
-      "Authentication & deployment",
-      "Read AI output critically"
-    ]
+    number: "03",
+    title: "Python & AI engineering",
+    purpose: "Apply AI after you understand the underlying software.",
+    detail: "Python, model APIs, retrieval, prompts, evaluations, and careful review of generated work.",
   },
-  {
-    week: "Weeks 8-9",
-    title: "AI as Coding Accelerator",
-    color: "bg-orange-500",
-    borderColor: "border-orange-500",
-    topics: [
-      "Scaffold projects with AI assistance",
-      "Test-driven development with AI",
-      "Review every line AI generates",
-      "Full-stack Rails + React applications",
-      "Speed up workflow without losing understanding"
-    ]
-  },
-  {
-    week: "Weeks 10-12",
-    title: "AI Engineering",
-    color: "bg-purple-500",
-    borderColor: "border-purple-500",
-    topics: [
-      "Learn how AI works under the hood",
-      "Python fundamentals & OpenAI SDK",
-      "Building AI chatbots & RAG systems",
-      "Prompt engineering & vector databases",
-      "Agentic systems & evals"
-    ]
-  },
-  {
-    week: "Weeks 13-17",
-    title: "AI-Native Development",
-    color: "bg-green-500",
-    borderColor: "border-green-500",
-    topics: [
-      "Build apps with AI as a core feature",
-      "Capstone project development",
-      "Code reviews & iteration",
-      "Deployment & portfolio prep",
-      "Demo Day presentations"
-    ]
-  }
 ]
 
-// Technologies with proper icons
-const technologies = [
-  { 
-    name: "Ruby", 
-    category: "Language",
-    iconComponent: Code,
-    iconColor: "text-red-500",
-    color: "bg-red-50",
-    borderColor: "border-red-200"
-  },
-  { 
-    name: "Rails", 
-    category: "Framework",
-    iconComponent: Rocket,
-    iconColor: "text-red-500",
-    color: "bg-red-50",
-    borderColor: "border-red-200"
-  },
-  { 
-    name: "JavaScript", 
-    category: "Language",
-    iconComponent: Zap,
-    iconColor: "text-yellow-500",
-    color: "bg-yellow-50",
-    borderColor: "border-yellow-200"
-  },
-  { 
-    name: "React", 
-    category: "Framework",
-    iconComponent: Code,
-    iconColor: "text-blue-500",
-    color: "bg-blue-50",
-    borderColor: "border-blue-200"
-  },
-  { 
-    name: "Python", 
-    category: "Language",
-    iconComponent: Code,
-    iconColor: "text-green-500",
-    color: "bg-green-50",
-    borderColor: "border-green-200"
-  },
-  { 
-    name: "Vite", 
-    category: "Build Tool",
-    iconComponent: Rocket,
-    iconColor: "text-violet-500",
-    color: "bg-violet-50",
-    borderColor: "border-violet-200"
-  },
-  { 
-    name: "PostgreSQL", 
-    category: "Database",
-    iconComponent: Database,
-    iconColor: "text-blue-600",
-    color: "bg-blue-50",
-    borderColor: "border-blue-200"
-  },
-  {
-    name: "Git",
-    category: "Tool",
-    iconComponent: GitBranch,
-    iconColor: "text-orange-500",
-    color: "bg-orange-50",
-    borderColor: "border-orange-200"
-  },
-  {
-    name: "Cursor",
-    category: "AI IDE",
-    iconComponent: Code,
-    iconColor: "text-cyan-500",
-    color: "bg-cyan-50",
-    borderColor: "border-cyan-200"
-  },
-  {
-    name: "OpenAI",
-    category: "AI",
-    iconComponent: Brain,
-    iconColor: "text-purple-500",
-    color: "bg-purple-50",
-    borderColor: "border-purple-200"
-  },
-  { 
-    name: "Vector DBs", 
-    category: "AI Infrastructure",
-    iconComponent: Database,
-    iconColor: "text-teal-600",
-    color: "bg-teal-50",
-    borderColor: "border-teal-200"
-  },
+const phases = [
+  { weeks: "Weeks 1–3", title: "Build a foundation", detail: "Terminal, Git, HTML, CSS, JavaScript, Ruby, and problem solving. Practice writing and explaining code before relying on AI assistance." },
+  { weeks: "Weeks 4–5", title: "Add a backend", detail: "Ruby on Rails and PostgreSQL. Use AI to ask better questions while you learn to model data and reason through the code." },
+  { weeks: "Weeks 6–7", title: "Connect the full stack", detail: "Rails APIs, React interfaces, state, authentication, and deployment. Debug with support while understanding each change." },
+  { weeks: "Weeks 8–9", title: "Build with more independence", detail: "Create larger applications, write tests, review AI-assisted work, and make deliberate product decisions." },
+  { weeks: "Weeks 10–12", title: "Study AI engineering", detail: "Python, model APIs, chatbots, retrieval, vector databases, agents, and evaluations." },
+  { weeks: "Weeks 13–17", title: "Finish and present a capstone", detail: "Design, build, review, deploy, document, and present a complete project." },
 ]
 
 export default function CurriculumPage() {
   return (
-    <div className="csg-inner flex flex-col">
-      {/* Hero */}
-      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
-            <Code className="w-4 h-4 mr-2" />
-            Under 6 Months
-          </div>
-          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
-            What You&apos;ll Learn
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            From complete beginner to AI-capable full-stack developer. Our curriculum covers everything you need to build modern AI-powered web applications.
-          </p>
-        </div>
-        {/* Fade to next section - dark to light */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
-      </section>
-
-      {/* Tech Stack Cards */}
-      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              What You&apos;ll Learn & Why
-            </h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
-              Master Ruby on Rails, React.js, and Python & AI - the comprehensive toolkit that opens doors to any tech career
-            </p>
-          </div>
-
-          {/* Uniform tech stack cards with flexbox */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-all flex flex-col h-full">
-              <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
-                <Code className="mr-3 h-6 w-6 text-red-500" />
-                Ruby on Rails: Backend Mastery
-              </h3>
-              <ul className="space-y-3 text-slate-600 flex-grow">
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Beginner-friendly, readable syntax
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Rapid prototyping & development
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Used by Airbnb, GitHub, Shopify
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Convention over configuration
-                </li>
-              </ul>
-              <div className="bg-red-50 rounded-lg p-4 mt-6">
-                <p className="text-sm text-red-700 font-medium">
-                  Perfect for building robust APIs and web applications
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-all flex flex-col h-full">
-              <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
-                <Code className="mr-3 h-6 w-6 text-blue-500" />
-                React.js: Frontend Excellence
-              </h3>
-              <ul className="space-y-3 text-slate-600 flex-grow">
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Most in-demand frontend framework
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Component-based architecture
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Used by Meta, Netflix, Airbnb
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Gateway to React Native (mobile)
-                </li>
-              </ul>
-              <div className="bg-blue-50 rounded-lg p-4 mt-6">
-                <p className="text-sm text-blue-700 font-medium">
-                  Perfect pair with Rails APIs for full-stack development
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-all flex flex-col h-full">
-              <h3 className="text-xl font-bold mb-4 flex items-center text-slate-900">
-                <Brain className="mr-3 h-6 w-6 text-purple-500" />
-                Python & AI: Future Skills
-              </h3>
-              <ul className="space-y-3 text-slate-600 flex-grow">
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Build Chatbots & RAG Systems
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  LLMs & Prompt Engineering
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  Agentic Systems & Evals
-                </li>
-                <li className="flex items-center">
-                  <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
-                  High-demand AI skillset
-                </li>
-              </ul>
-              <div className="bg-purple-50 rounded-lg p-4 mt-6">
-                <p className="text-sm text-purple-700 font-medium">
-                  Create intelligent applications with the power of AI
-                </p>
-              </div>
-            </div>
-          </div>
+    <div className="bg-[#fbfaf7]">
+      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
+        <div className="csg-grid absolute inset-0 opacity-30" />
+        <div className="container relative mx-auto px-4 sm:px-8">
+          <p className="csg-label text-ruby-300">The full bootcamp curriculum</p>
+          <h1 className="mt-5 max-w-4xl font-serif text-5xl font-semibold leading-tight md:text-7xl">Fundamentals first. Then the full stack.</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">The March 2026 bootcamp connected programming, web development, and AI through projects that grew in scope. This is the original curriculum outline for that closed cohort; a future cohort will publish its own schedule and terms.</p>
+          <Link href="/programs" className="mt-7 inline-flex items-center gap-2 font-semibold text-white underline underline-offset-4">See the full bootcamp <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
 
-      {/* Timeline - subtle background change, no fade needed */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Your Learning Journey
-            </h2>
+      <section className="bg-white py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div><p className="csg-label text-ruby-700">What connects</p><h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Three parts of one working product.</h2></div>
+            <p className="max-w-xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">Students learn to explain how the interface, server, database, and AI features work together. Tools are introduced because they help build something useful.</p>
           </div>
-
-          <div className="max-w-4xl mx-auto">
-            {phases.map((phase, index) => (
-              <div key={index} className="relative pl-8 pb-12 last:pb-0">
-                {/* Timeline line */}
-                {index < phases.length - 1 && (
-                  <div className="absolute left-[11px] top-8 w-0.5 h-full bg-slate-200" />
-                )}
-                
-                {/* Timeline dot */}
-                <div className={`absolute left-0 top-1 w-6 h-6 rounded-full ${phase.color} flex items-center justify-center`}>
-                  <div className="w-2 h-2 bg-white rounded-full" />
-                </div>
-
-                <div className={`bg-white rounded-xl p-6 border border-slate-100 shadow-md border-l-4 ${phase.borderColor}`}>
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <span className={`px-3 py-1 ${phase.color} text-white text-sm font-medium rounded-full`}>
-                      {phase.week}
-                    </span>
-                    <h3 className="text-xl font-bold text-slate-900">{phase.title}</h3>
-                  </div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {phase.topics.map((topic, idx) => (
-                      <li key={idx} className="flex items-center text-slate-600">
-                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                        {topic}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+          <div className="mt-12 divide-y divide-slate-200 border-y border-slate-200">
+            {foundations.map((item) => (
+              <article key={item.number} className="grid gap-4 py-7 md:grid-cols-[5rem_0.8fr_1.2fr] md:gap-8 md:py-9">
+                <span className="csg-label text-ruby-700">{item.number}</span>
+                <div><h3 className="text-2xl font-bold text-slate-950">{item.title}</h3><p className="mt-2 font-medium text-slate-700">{item.purpose}</p></div>
+                <p className="leading-relaxed text-slate-600">{item.detail}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Technologies You'll Master - subtle background change, no fade needed */}
-      <section className="py-16 md:py-24 lg:py-28 bg-white relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Technologies You&apos;ll Master
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Industry-standard tools used by companies like GitHub, Shopify, and Airbnb
-            </p>
-          </div>
+      <section className="py-16 md:py-24">
+        <div className="container mx-auto px-4 sm:px-8">
+          <p className="csg-label text-ruby-700">March 2026 sequence</p>
+          <h2 className="mt-4 max-w-3xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Capability built in stages.</h2>
+          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">These week ranges describe the original teaching plan. Enrolled learners now follow individual completion or restart schedules, and a future cohort may use a different sequence.</p>
+          <ol className="mt-10 divide-y divide-slate-200 border-y border-slate-200">
+            {phases.map((phase, index) => (
+              <li key={phase.title} className="grid gap-3 py-6 sm:grid-cols-[2.5rem_8rem_1fr] sm:gap-6 md:py-8">
+                <span className="csg-label text-slate-400">0{index + 1}</span>
+                <span className="text-sm font-semibold text-ruby-700">{phase.weeks}</span>
+                <div><h3 className="text-xl font-bold text-slate-950">{phase.title}</h3><p className="mt-2 max-w-3xl leading-relaxed text-slate-600">{phase.detail}</p></div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {technologies.map((tech, index) => (
-                <div 
-                  key={index}
-                  className={`${tech.color} border ${tech.borderColor} rounded-xl p-4 text-center hover:shadow-md transition-all`}
-                >
-                  <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                    {tech.iconComponent && (
-                      <tech.iconComponent className={`w-8 h-8 ${tech.iconColor}`} />
-                    )}
-                  </div>
-                  <h4 className="font-semibold text-slate-900">{tech.name}</h4>
-                  <p className="text-xs text-slate-600">{tech.category}</p>
-                </div>
-              ))}
-            </div>
+      <section className="border-t border-slate-200 bg-white py-16 md:py-24">
+        <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-2 lg:gap-16">
+          <div><p className="csg-label text-ruby-700">How students learned</p><h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Instruction, practice, and review.</h2></div>
+          <div className="divide-y divide-slate-200 border-y border-slate-200">
+            <p className="py-5 leading-relaxed text-slate-600"><strong className="text-slate-950">Live teaching.</strong> The March cohort began with Zoom sessions on Tuesday and Thursday evenings in Guam.</p>
+            <p className="py-5 leading-relaxed text-slate-600"><strong className="text-slate-950">Structured practice.</strong> Exercises, recordings, and project work supported learning between meetings.</p>
+            <p className="py-5 leading-relaxed text-slate-600"><strong className="text-slate-950">Individual support.</strong> Reviews and mentorship helped students identify a concrete next step.</p>
+            <p className="py-5 leading-relaxed text-slate-600">Exact teaching, access, and support terms for any future cohort will be published with that offer.</p>
           </div>
         </div>
       </section>
 
-      {/* Class Format - subtle background change, no fade needed */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-50 relative">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8 text-center">
-              Class Format
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
-                <Clock className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2 text-slate-900">Live Classes</h3>
-                <p className="text-slate-600 text-sm">
-                  Tuesday & Thursday, 6:00-9:00 PM (Guam time)
-                </p>
-              </div>
-              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
-                <BookOpen className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2 text-slate-900">Guided Practice</h3>
-                <p className="text-slate-600 text-sm">
-                  Monday, Wednesday, Friday (async with exercises + recordings)
-                </p>
-              </div>
-              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
-                <Users className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2 text-slate-900">1-on-1 Mentorship</h3>
-                <p className="text-slate-600 text-sm">
-                  Saturday with Lead Instructor
-                </p>
-              </div>
-              <div className="bg-white rounded-xl p-6 text-center shadow-md border border-slate-100">
-                <Smartphone className="w-10 h-10 text-ruby-500 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2 text-slate-900">Fully Remote</h3>
-                <p className="text-slate-600 text-sm">
-                  Via Zoom + structured online platform
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Fade to next section - light to dark */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-900 to-transparent"></div>
-      </section>
-
-      {/* CTA - final section, no fade needed */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-900 text-white">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="font-serif text-4xl md:text-5xl font-semibold mb-4">
-            Ready to Start Learning?
-          </h2>
-          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            No prior experience needed. We&apos;ll teach you everything from scratch.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/interest"
-              className="inline-flex items-center justify-center px-8 py-4 bg-ruby-500 hover:bg-ruby-600 text-white rounded-lg text-lg font-medium transition-all"
-            >
-              Join the Interest List
-            </a>
-            <Link
-              href="/programs"
-              className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 text-white rounded-lg text-lg font-medium transition-all"
-            >
-              View Pricing
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Link>
-          </div>
+      <section className="bg-ruby-700 py-16 text-white">
+        <div className="container mx-auto flex flex-col gap-7 px-4 sm:px-8 lg:flex-row lg:items-end lg:justify-between">
+          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 max-w-2xl font-serif text-4xl font-semibold md:text-5xl">See what the next full program offers.</h2><p className="mt-4 max-w-2xl text-ruby-100">The March 2026 cohort is closed to new students. Join the update list for future dates and terms when they are ready.</p></div>
+          <Link href="/interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 py-3 font-semibold text-ruby-800">Join the update list <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
     </div>
