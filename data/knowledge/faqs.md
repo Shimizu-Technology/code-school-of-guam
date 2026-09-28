@@ -73,7 +73,7 @@ No! Tuition covers everything: all course materials, software tools (including C
 Junior full-stack developer, frontend developer, backend developer, AI engineer, freelance developer. Our graduates have gone on to developer positions, TA roles, teaching positions, and freelance work.
 
 ### Is there an internship?
-Yes — optional 10-week internship with Shimizu Technology, our partner software company. You'll work on real production applications (like Hafaloha, Three Squares Grill, and HåfaGPT) used by actual businesses.
+Some graduates have practiced on real software through Shimizu Technology. An internship is not guaranteed; any defined opportunity for a future cohort will be described in that cohort's written offer.
 
 ### What is Shimizu Technology?
 Shimizu Technology is the software company founded by Leon Shimizu (CSG's Lead Instructor). They build AI-powered applications and ordering systems for local businesses. CSG students intern at Shimizu Technology, working on real client projects — not toy apps.
@@ -81,7 +81,7 @@ Shimizu Technology is the software company founded by Leon Shimizu (CSG's Lead I
 ## Enrollment
 
 ### When does the next cohort start?
-Cohort 3 started March 2, 2026 and is now underway. This is the only class in 2026 — the next cohort won't be until 2027.
+Cohort 3 started March 2, 2026 and is closed to new students. Enrolled students follow individual completion or restart schedules. No next full bootcamp date has been announced. A separate invited Python Fundamentals pilot is planned for December 2026.
 
 ### Can I apply right now?
 Applications are closed for the 2026 cohort because the cohort has already started. Contact us directly at codeschoolofguam@gmail.com or (671) 483-0219 for future cohort updates.

@@ -48,7 +48,7 @@ const faqs = [
   },
   {
     question: "Are the classes held in-person or online?",
-    answer: "The March 2026 full bootcamp cohort uses live Zoom sessions, structured online practice, and mentorship. The invited Python Fundamentals pilot uses short lessons and one private Zoom hour each week. Later guided runs may use trained instructors, while a future self-paced option would have different support. Check each offer before enrolling."
+    answer: "The March 2026 full bootcamp began with live Zoom sessions, structured online practice, and mentorship; enrolled students now follow individual completion or restart schedules. The invited Python Fundamentals pilot uses short lessons and one private Zoom hour each week. Later guided runs may use trained instructors, while a future self-paced option would have different support. Check each offer before enrolling."
   },
   {
     question: "How does the internship work?",

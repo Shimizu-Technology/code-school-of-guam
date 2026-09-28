@@ -41,9 +41,9 @@ export default function ProgramsPage() {
 
       <section className="py-16 md:py-24">
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-16">
-          <div><GraduationCap className="h-7 w-7 text-ruby-700" aria-hidden="true" /><p className="csg-label mt-5 text-ruby-700">The March 2026 cohort</p><h2 className="mt-3 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">How the current program was structured.</h2></div>
+          <div><GraduationCap className="h-7 w-7 text-ruby-700" aria-hidden="true" /><p className="csg-label mt-5 text-ruby-700">The March 2026 cohort</p><h2 className="mt-3 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">How the March program was planned.</h2></div>
           <div className="divide-y divide-slate-200 border-y border-slate-200 text-slate-700">
-            <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Duration</strong><p>Under six months, including prework and the live program.</p></div>
+            <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Original schedule</strong><p>Under six months, including prework and the live program. Enrolled learners now follow individual completion or restart schedules.</p></div>
             <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Teaching</strong><p>Live Zoom instruction, structured online practice, and individual support.</p></div>
             <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">Subjects</strong><p>Programming fundamentals, Ruby and Rails, frontend development, databases, Python, and AI engineering.</p></div>
             <div className="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]"><strong className="text-slate-950">2026 tuition</strong><p>$7,500 for this cohort. Future cohort pricing and payment options will be published with its own terms.</p></div>

@@ -4,7 +4,7 @@ This file is the current offer summary. Older program, tuition, admissions, and 
 
 ## Full bootcamp
 
-The March 2026 full bootcamp cohort began March 2 and is closed to new students. Its tuition was $7,500. A next full-cohort date, price, schedule, financing arrangement, and internship arrangement have not been announced. See https://codeschoolofguam.com/programs and join future-cohort updates at https://codeschoolofguam.com/interest.
+The March 2026 full bootcamp cohort began March 2 and is closed to new students. Its original synchronized end date no longer describes every learner; enrolled students continue on individual completion or restart schedules. Its tuition was $7,500. A next full-cohort date, price, schedule, financing arrangement, and internship arrangement have not been announced. See https://codeschoolofguam.com/programs and join future-cohort updates at https://codeschoolofguam.com/interest.
 
 ## Python Fundamentals
 
