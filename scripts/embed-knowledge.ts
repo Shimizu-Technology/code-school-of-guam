@@ -16,6 +16,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_SOURCE_SHA256, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
+import { publishManifestWhenVisible } from '../lib/knowledge-publication';
 import { knowledgeChunkId, knowledgeSourceHash, knowledgeUploadId } from '../lib/knowledge-source-hash';
 
 // Load environment variables (check .env.local first, then .env)
@@ -354,31 +355,26 @@ async function embedKnowledge() {
   // A manifest makes this upload public, so wait until a filtered query sees
   // all of this bundle's chunk IDs. Overlapping attempts for the same reviewed
   // bundle have the same IDs and content, so either complete attempt may publish.
-  if (vectors.length > 10000) {
-    throw new Error('Knowledge upload exceeds the query visibility check limit; refusing to publish.');
-  }
-  const expectedIds = new Set(vectors.map((vector) => vector.id));
-  let visible = false;
-  for (let attempt = 1; attempt <= 10; attempt++) {
-    const results = await index.query({
-      vector: vectors[0].values,
-      topK: vectors.length,
-      includeMetadata: false,
-      filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' }, uploadId: { $eq: uploadId } },
-    });
-    const visibleIds = new Set((results.matches ?? []).map((match) => match.id));
-    visible = visibleIds.size === expectedIds.size && [...expectedIds].every((id) => visibleIds.has(id));
-    if (visible) break;
-    console.log(`   - Query sees ${visibleIds.size}/${expectedIds.size} chunks; retry ${attempt}/10`);
-    if (attempt < 10) await new Promise((resolve) => setTimeout(resolve, 2000));
-  }
-  if (!visible) throw new Error('Knowledge chunks are not all query-visible; refusing to publish.');
-
-  await index.upsert([{
-    id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
-    values: vectors[0].values,
-    metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', uploadId, totalVectors: vectors.length, sourceHash },
-  }]);
+  await publishManifestWhenVisible(
+    vectors.map((vector) => vector.id),
+    async () => {
+      const results = await index.query({
+        vector: vectors[0].values,
+        topK: vectors.length,
+        includeMetadata: false,
+        filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' }, uploadId: { $eq: uploadId } },
+      });
+      return (results.matches ?? []).map((match) => match.id);
+    },
+    async () => {
+      await index.upsert([{
+        id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
+        values: vectors[0].values,
+        metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', uploadId, totalVectors: vectors.length, sourceHash },
+      }]);
+    },
+    { onRetry: (visible, attempt) => console.log(`   - Query sees ${visible}/${vectors.length} chunks; retry ${attempt}/10`) }
+  );
   console.log(`   - Published complete version ${ACTIVE_KNOWLEDGE_VERSION}`);
 
   console.log('\n✅ Knowledge embedding complete!');
