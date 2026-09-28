@@ -1,6 +1,6 @@
 # Code School of Guam - General Syllabus
 
-**Cohort 3**: March 2 – August 3, 2026
+**Cohort 3 original planned schedule**: March 2 – August 3, 2026. This is not the actual completion date for every learner; enrolled students follow individual completion or restart schedules.
 **Format**: Hybrid (Live + Async) via Zoom
 **Total Program Hours**: 300+
 **CEUs**: 30

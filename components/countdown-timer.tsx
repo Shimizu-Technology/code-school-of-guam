@@ -70,7 +70,7 @@ export function CountdownTimer() {
         <div className="inline-flex items-center gap-2 px-6 py-3 bg-green-500/20 border border-green-500/30 rounded-full">
           <GraduationCap className="h-5 w-5 text-green-400" />
           <span className="text-lg font-semibold text-green-400">
-            The 2026 cohort is underway
+            Enrollment for the March 2026 cohort is closed
           </span>
         </div>
       </div>

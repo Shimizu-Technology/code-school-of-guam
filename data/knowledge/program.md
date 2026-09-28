@@ -158,6 +158,6 @@ We don't ban AI — we teach you to use it intelligently with a 6-phase progress
 ## Current Cohort
 
 - **Start Date**: March 2, 2026 (pre-work began)
-- **Status**: The only 2026 cohort is underway
+- **Status**: The March 2026 cohort is closed to new students; enrolled students follow individual completion or restart schedules
 - **Enrollment**: Closed for the 2026 cohort
 - **Future Updates**: Contact codeschoolofguam@gmail.com or +1 (671) 483-0219

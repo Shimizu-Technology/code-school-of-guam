@@ -38,9 +38,9 @@ const shimizuProjects: ShimizuProject[] = [
     description: "A lightweight browser coding environment built for Code School of Guam, FD students, alumni, and anyone learning without heavy setup.",
     image: "/images/hafa-code-logo.png",
     link: "https://code.shimizu-technology.com/",
-    technologies: ["React", "TypeScript", "WASM", "Ruby", "Monaco"],
+    technologies: ["React", "TypeScript", "WASM", "Python", "Ruby", "Monaco"],
     highlights: [
-      "Ruby, JavaScript, and HTML/CSS/JS in the browser",
+      "Python, Ruby, JavaScript, and HTML/CSS/JS in the browser",
       "Simple local projects with optional cloud sync",
       "A real tool students can use and understand"
     ],

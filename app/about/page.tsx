@@ -100,10 +100,10 @@ export default function AboutPage() {
                 Graduate Spotlights
               </div>
               <h2 className="text-3xl font-bold text-slate-900 mb-4">
-                Proof That Anyone Can Do This
+                Different Paths After CSG
               </h2>
               <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                Our graduates aren&apos;t just landing jobs — they&apos;re becoming leaders, teachers, and builders.
+                Graduates have used what they learned in different ways, including software work and teaching.
               </p>
             </div>
 
@@ -116,7 +116,7 @@ export default function AboutPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-slate-900">Alanna Cruz</h3>
-                    <p className="text-ruby-600 font-medium text-sm">TA & Junior Software Engineer</p>
+                    <p className="text-ruby-600 font-medium text-sm">CSG graduate</p>
                   </div>
                 </div>
                 <div className="space-y-3 text-slate-700 text-sm">
@@ -124,31 +124,31 @@ export default function AboutPage() {
                     Alanna always felt like the <span className="font-semibold">&ldquo;least tech-savvy&rdquo;</span> person in her family. She signed up <span className="font-semibold">the day before class started</span>, not knowing if she could do it.
                   </p>
                   <p>
-                    Today she&apos;s a <span className="font-semibold">Teaching Assistant</span> for our current cohort AND a <span className="font-semibold">Junior Software Engineer</span> at Shimizu Technology.
+                    After CSG, Alanna continued building her software career and now works at DMR.
                   </p>
                   <p className="text-green-700 font-medium">
-                    If she can do it, anyone can.
+                    Her path shows what consistent practice and support can make possible.
                   </p>
                 </div>
               </div>
 
-              {/* Audreana Lett */}
+              {/* Audreana Crane */}
               <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-20 h-20 bg-[#800000] rounded-full flex items-center justify-center text-[#FFD700] text-3xl font-bold flex-shrink-0">
                     A
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-slate-900">Audreana Lett</h3>
+                    <h3 className="text-xl font-bold text-slate-900">Audreana Crane</h3>
                     <p className="text-[#800000] font-medium text-sm">Coding Instructor at Father Duenas</p>
                   </div>
                 </div>
                 <div className="space-y-3 text-slate-700 text-sm">
                   <p>
-                    While taking our program, Audreana was already teaching at Father Duenas Memorial School. She was passionate about bringing coding to high schoolers — so we made it happen.
+                    Audreana brought her interest in teaching to CSG and now introduces students at Father Dueñas Memorial School to coding.
                   </p>
                   <p>
-                    She now teaches <span className="font-semibold">15 students</span> across two courses, showing the next generation that coding is a real career path.
+                    Her classroom work gives younger students a chance to try programming early.
                   </p>
                   <p className="text-[#800000] font-medium">
                     From student to teacher — inspiring others to follow.
@@ -185,7 +185,7 @@ export default function AboutPage() {
                   We&apos;re So Proud of You, Audreana!
                 </div>
                 <p className="text-slate-700 max-w-2xl mx-auto">
-                  <span className="font-semibold text-[#800000]">Audreana Lett</span>, a graduate from our very first cohort, didn&apos;t just complete the program — she&apos;s now <span className="font-semibold">teaching the next generation</span>. Her passion for bringing coding to high schoolers made this partnership possible.
+                  <span className="font-semibold text-[#800000]">Audreana Crane</span>, a graduate from our first cohort, now teaches introductory coding at Father Dueñas Memorial School.
                 </p>
               </div>
 
@@ -198,26 +198,9 @@ export default function AboutPage() {
                   <p className="text-sm text-[#800000] font-medium">Father Duenas<br/>Memorial School</p>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">Our First High School Partnership</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">Coding in the classroom</h3>
                   <p className="text-slate-700 mb-4">
-                    Audreana is now teaching coding electives at Father Duenas Memorial School — Leon&apos;s own high school alma mater. She&apos;s bringing a simplified version of our curriculum to high schoolers, proving that <span className="font-semibold">coding is a real career path</span> they can start exploring now.
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                    <div className="bg-white rounded-lg p-4 text-center border border-[#800000]/10">
-                      <div className="text-2xl font-bold text-[#800000]">15</div>
-                      <div className="text-sm text-slate-600">Students Enrolled</div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 text-center border border-[#800000]/10">
-                      <div className="text-2xl font-bold text-[#800000]">2</div>
-                      <div className="text-sm text-slate-600">Elective Courses</div>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 text-center border border-[#800000]/10">
-                      <CheckCircle className="w-6 h-6 text-[#FFD700] mx-auto" />
-                      <div className="text-sm text-slate-600">Capstones Complete</div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-slate-600">
-                    <span className="font-medium">Courses offered:</span> Intro to Scripting with Ruby • Intro to HTML/CSS/JavaScript
+                    Audreana introduces students to programming at Father Dueñas Memorial School. Her path from CSG learner to teacher is one example of how coding skills can be used.
                   </p>
                 </div>
               </div>
@@ -397,7 +380,7 @@ export default function AboutPage() {
               Shimizu Technology Partnership
             </h2>
             <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-              Employers want experience, but new engineers can&apos;t get experience if no one gives them a chance. We created Shimizu Technology to be that company — ensuring every graduate has access to real-world projects.
+              Employers value experience, and Shimizu Technology has given some CSG graduates opportunities to practice on real software. Availability depends on active projects and each graduate&apos;s readiness.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <div className="bg-white rounded-xl p-6 border-l-4 border-blue-500 shadow-sm">
@@ -406,7 +389,7 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-slate-900">Optional Internship</h3>
                 </div>
                 <p className="text-sm text-slate-600">
-                  10-week experience-focused program working on real production apps — build your portfolio
+                  Some graduates have practiced on real software. A future internship would have its own eligibility and terms.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-6 border-l-4 border-green-500 shadow-sm">
@@ -415,7 +398,7 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-slate-900">TA Positions</h3>
                 </div>
                 <p className="text-sm text-slate-600">
-                  Paid teaching assistant roles for the next cohort — reinforce your skills while earning
+                  Paid teaching roles may be available when a cohort needs instructors.
                 </p>
               </div>
               <div className="bg-white rounded-xl p-6 border-l-4 border-purple-500 shadow-sm">
@@ -424,7 +407,7 @@ export default function AboutPage() {
                   <h3 className="font-semibold text-slate-900">Junior Dev Roles</h3>
                 </div>
                 <p className="text-sm text-slate-600">
-                  Paid contract positions at Shimizu Technology — work on real client projects
+                  Contract opportunities depend on project needs and a graduate&apos;s readiness.
                 </p>
               </div>
             </div>

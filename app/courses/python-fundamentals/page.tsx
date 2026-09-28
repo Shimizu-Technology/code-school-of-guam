@@ -1,15 +1,15 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowDown, ArrowRight, CalendarDays, Check, Clock3, Code2, MessageCircle, Video } from "lucide-react"
+import { ArrowDown, ArrowRight, CalendarDays, Check, Clock3, Code2, MessageCircle, PlayCircle, Video } from "lucide-react"
 import { PythonInterestForm } from "@/components/python-interest-form"
 
 export const metadata: Metadata = {
   title: "Python Fundamentals Course",
-  description: "A three-week beginner Python course from Code School of Guam. A small invited pilot is planned for December 2026, with short lessons, browser coding, a finished project, and three private Zoom hours with Leon Shimizu.",
+  description: "Explore Code School of Guam's beginner Python course. An invited guided pilot is planned for December 2026; self-paced and later guided enrollment are not open yet.",
   alternates: { canonical: "/courses/python-fundamentals" },
   openGraph: {
     title: "Python Fundamentals | Code School of Guam",
-    description: "Learn Python from the beginning with short lessons, a practical project, and three private Zoom meetings. Join the course updates list while we test a small invited pilot.",
+    description: "Learn Python through short lessons, browser coding, and a practical project. Join updates while we test an invited guided pilot and prepare future study options.",
     url: "/courses/python-fundamentals",
   },
 }
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const weeks = [
   { number: "01", title: "Make a program decide", detail: "Run code, work with values, and use conditions to check a budget.", outcome: "A small budget decision program" },
   { number: "02", title: "Work with several items", detail: "Use lists, loops, dictionaries, and functions to summarize expenses.", outcome: "A data summary with reusable functions" },
-  { number: "03", title: "Finish and explain it", detail: "Plan, test, and revise a complete expense-summary program.", outcome: "A working program and a code review" },
+  { number: "03", title: "Finish and explain it", detail: "Build and test an expense-summary program yourself. Then explore an optional agent-assisted extension and check its work.", outcome: "A working program you can explain and verify" },
 ]
 
 export default function PythonFundamentalsPage() {
@@ -34,7 +34,7 @@ export default function PythonFundamentalsPage() {
               <a href="#interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></a>
               <a href="#course-map" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/20 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">See what you&apos;ll build <ArrowDown className="h-5 w-5" aria-hidden="true" /></a>
             </div>
-            <p className="mt-5 text-sm text-slate-400">A small invited pilot is planned for December 2026 in Guam. Public enrollment is not open yet.</p>
+            <p className="mt-5 text-sm text-slate-400">The December 2026 invited pilot is capped at five learners because each person gets three private teaching hours. Public enrollment is not open yet.</p>
           </div>
           <div className="border border-white/15 bg-[#111c2c] p-5 shadow-[18px_18px_0_rgba(128,18,36,0.23)] sm:p-7" aria-label="Sample Python expense summary output">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 text-xs text-slate-400"><span className="font-mono">expense_summary.py</span><Code2 className="h-4 w-4 text-ruby-300" aria-hidden="true" /></div>
@@ -63,10 +63,39 @@ export default function PythonFundamentalsPage() {
         </div>
       </section>
 
+      <section className="border-b border-slate-200 bg-[#f1ede5] py-16 md:py-24" aria-labelledby="study-options-title">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-12">
+            <div>
+              <p className="csg-label text-ruby-700">Future ways to take this course</p>
+              <h2 id="study-options-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">One course. Two levels of support.</h2>
+            </div>
+            <p className="max-w-2xl leading-7 text-slate-700">Both planned options use the same beginner lessons, coding exercises, and expense-summary project. The December 2026 invited pilot tests the guided option first. Neither option is open for public enrollment yet.</p>
+          </div>
+          <div className="mt-10 grid gap-px border border-slate-300 bg-slate-300 md:grid-cols-2">
+            <article className="bg-[#fbfaf7] p-7 sm:p-9">
+              <PlayCircle className="h-7 w-7 text-ruby-700" aria-hidden="true" />
+              <p className="csg-label mt-5 text-ruby-700">Planned · independent study</p>
+              <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Self-paced</h3>
+              <p className="mt-4 leading-7 text-slate-700">Work through recordings, written lessons, Hafa Code practice, checkpoints, and the final project on your own schedule. Ask course questions through CSG Learn during a defined support window.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">We plan 12 months of lesson access, plus a defined period for course-question messaging. Private Zoom meetings and individual project review are not included in this planned option. Final price, messaging window, and reply times will be published before enrollment.</p>
+            </article>
+            <article className="bg-white p-7 sm:p-9">
+              <Video className="h-7 w-7 text-ruby-700" aria-hidden="true" />
+              <p className="csg-label mt-5 text-ruby-700">Invited pilot first</p>
+              <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Guided</h3>
+              <p className="mt-4 leading-7 text-slate-700">Use the same lessons and practice, with course messaging plus private instructor meetings and personal feedback on your work.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">The adult-only December pilot includes one private Zoom hour each week for three weeks with Leon and individual project review. Later guided runs may use trained instructors; their lesson-access period, schedule, capacity, price, and terms will be posted before enrollment.</p>
+            </article>
+          </div>
+          <p className="mt-6 text-sm leading-6 text-slate-600">CSG Learn will hold course lessons and progress once a learner is invited or enrolled. We are designing future online courses for learners beyond Guam; guided meeting availability will be listed in the learner&apos;s local time.</p>
+        </div>
+      </section>
+
       <section id="course-map" className="scroll-mt-24 py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-            <div><p className="csg-label text-ruby-700">The course map</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">A clear next step every week.</h2><p className="mt-5 max-w-md leading-7 text-slate-600">You&apos;ll predict what code does, run it, make a change, and explain the result. Each week ends with something you can show Leon in your private meeting.</p></div>
+            <div><p className="csg-label text-ruby-700">The course map</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">A clear next step every week.</h2><p className="mt-5 max-w-md leading-7 text-slate-600">You&apos;ll predict what code does, run it, make a change, and explain the result. Each week ends with a checkpoint. Guided learners can bring their work to a private meeting.</p></div>
             <div className="divide-y divide-slate-200 border-y border-slate-200">
               {weeks.map((week) => <article key={week.number} className="grid gap-2 py-7 sm:grid-cols-[3rem_1fr] sm:gap-6"><span className="csg-label text-ruby-700">{week.number}</span><div><h3 className="text-2xl font-bold text-slate-950">{week.title}</h3><p className="mt-2 leading-7 text-slate-600">{week.detail}</p><p className="mt-3 text-sm font-bold text-ruby-700">You&apos;ll have: {week.outcome}</p></div></article>)}
             </div>
@@ -76,7 +105,7 @@ export default function PythonFundamentalsPage() {
 
       <section className="border-y border-slate-200 bg-white py-16 md:py-24">
         <div className="container mx-auto grid gap-12 px-4 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div><p className="csg-label text-ruby-700">How you&apos;ll learn</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Learn on your schedule. Get help from a person.</h2><p className="mt-5 max-w-xl leading-7 text-slate-600">The lessons and code practice live in CSG Learn and <a href="https://code.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Hafa Code</a>. Leon works through your own code with you on Zoom each week, then gives you a concrete next step.</p></div>
+          <div><p className="csg-label text-ruby-700">Inside the guided pilot</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Learn on your schedule. Get help from a person.</h2><p className="mt-5 max-w-xl leading-7 text-slate-600">The lessons and code practice live in CSG Learn and <a href="https://code.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Hafa Code</a>. In the invited guided pilot, Leon works through your own code with you on Zoom each week, then gives you a concrete next step.</p></div>
           <div className="space-y-0 border-t border-slate-200">
             {[
               [Clock3, "Short, focused lessons", "Nine lessons across three weeks, with exercises and weekly checkpoints."],

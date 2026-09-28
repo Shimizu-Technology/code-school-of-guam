@@ -4,7 +4,7 @@
 
 **Applications are closed for the 2026 cohort.**
 
-The only Code School of Guam cohort in 2026 started on March 2, 2026 and is now underway. We are not accepting late enrollment for this cohort.
+The only full bootcamp cohort in 2026 started on March 2, 2026. Enrolled students now follow individual completion or restart schedules. We are not accepting late enrollment for this cohort.
 
 We have successfully completed 2 cohorts with 11 graduates and a 100% completion rate. The current 2026 cohort is Cohort 3.
 
@@ -12,7 +12,7 @@ We have successfully completed 2 cohorts with 11 graduates and a 100% completion
 
 - **Cohort**: Cohort 3 (March 2026)
 - **Pre-work Start Date**: March 2, 2026
-- **Status**: In progress
+- **Status**: Closed to new students; individual completion and restart schedules
 - **Class Size**: Maximum 10 students
 - **Format**: Fully remote via Zoom
 
@@ -66,8 +66,8 @@ We intentionally keep cohorts small:
 ### March 2026 Cohort
 1. **Pre-work Began**: March 2, 2026
 2. **Live Classes Begin**: After 5 weeks of pre-work
-3. **Program Ends**: Approximately August 2026
-4. **Internship**: Optional 2-month program after graduation
+3. **Original planned end**: Approximately August 2026; this is not the actual completion date for every learner
+4. **Internship**: Any opportunity depends on available work and a graduate's readiness; completion does not guarantee one
 
 ## Frequently Asked Questions About Admissions
 

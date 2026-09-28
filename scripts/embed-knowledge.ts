@@ -5,7 +5,9 @@
  * chunks them, generates embeddings, and uploads to Pinecone.
  * 
  * Run with: npx tsx scripts/embed-knowledge.ts
- * Run with clean slate: npx tsx scripts/embed-knowledge.ts --clean
+ * Each reviewed source bundle uses one content-derived upload ID. Readers see
+ * only the complete upload named by the manifest; concurrent attempts for the
+ * same bundle write the same chunk and manifest identities.
  */
 
 import { Pinecone } from '@pinecone-database/pinecone';
@@ -13,6 +15,9 @@ import OpenAI from 'openai';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+import { ACTIVE_KNOWLEDGE_FILES, ACTIVE_KNOWLEDGE_MANIFEST_ID, ACTIVE_KNOWLEDGE_SOURCE_SHA256, ACTIVE_KNOWLEDGE_VERSION } from '../lib/active-knowledge';
+import { publishManifestWhenVisible } from '../lib/knowledge-publication';
+import { knowledgeChunkId, knowledgeSourceHash, knowledgeUploadId } from '../lib/knowledge-source-hash';
 
 // Load environment variables (check .env.local first, then .env)
 const envLocalPath = path.join(process.cwd(), '.env.local');
@@ -36,8 +41,9 @@ const MAX_CHUNK_SIZE = 1500; // Max characters before sub-chunking
 const MIN_CHUNK_SIZE = 200; // Min characters (combine small sections)
 const SUB_CHUNK_OVERLAP = 200; // Overlap when sub-chunking large sections
 
-// Check for --clean flag
-const shouldClean = process.argv.includes('--clean');
+if (process.argv.includes('--clean')) {
+  throw new Error('--clean would delete knowledge from other versions. Run without it.');
+}
 
 // Validate required env vars
 if (!process.env.PINECONE_API_KEY) {
@@ -231,31 +237,15 @@ function readKnowledgeFiles(): { filename: string; content: string }[] {
     process.exit(1);
   }
 
-  const filenames = fs.readdirSync(KNOWLEDGE_DIR);
+  const filenames = ACTIVE_KNOWLEDGE_FILES;
 
   for (const filename of filenames) {
-    if (filename.endsWith('.md')) {
-      const filepath = path.join(KNOWLEDGE_DIR, filename);
-      const content = fs.readFileSync(filepath, 'utf-8');
-      files.push({ filename, content });
-    }
+    const filepath = path.join(KNOWLEDGE_DIR, filename);
+    const content = fs.readFileSync(filepath, 'utf-8');
+    files.push({ filename, content });
   }
 
   return files;
-}
-
-/**
- * Delete all vectors from the index
- */
-async function cleanIndex(index: ReturnType<Pinecone['index']>) {
-  console.log('🧹 Cleaning index - deleting all existing vectors...');
-  try {
-    await index.deleteAll();
-    console.log('   ✅ All vectors deleted\n');
-  } catch (error) {
-    console.error('   ❌ Error deleting vectors:', error);
-    throw error;
-  }
 }
 
 /**
@@ -266,15 +256,23 @@ async function embedKnowledge() {
 
   // Read all knowledge files
   const files = readKnowledgeFiles();
+  const sourceHash = knowledgeSourceHash(files);
+  if (sourceHash !== ACTIVE_KNOWLEDGE_SOURCE_SHA256) {
+    throw new Error('Knowledge files differ from the reviewed source hash. Update the version and source hash before uploading.');
+  }
   console.log(`📁 Found ${files.length} knowledge files\n`);
 
   // Get the index
   const index = pinecone.index(INDEX_NAME);
 
-  // Clean index if --clean flag is passed
-  if (shouldClean) {
-    await cleanIndex(index);
+  // Published versions are immutable. The reviewed source hash is the upload
+  // identity, so two attempts that pass this check for the same bundle converge
+  // on identical chunk IDs and manifest metadata regardless of write order.
+  const manifest = await index.fetch([ACTIVE_KNOWLEDGE_MANIFEST_ID]);
+  if (manifest.records?.[ACTIVE_KNOWLEDGE_MANIFEST_ID]) {
+    throw new Error(`Knowledge version ${ACTIVE_KNOWLEDGE_VERSION} is already published. Bump the version before uploading.`);
   }
+  const uploadId = knowledgeUploadId(sourceHash);
 
   // Process each file
   const vectors: {
@@ -284,6 +282,9 @@ async function embedKnowledge() {
       text: string; 
       source: string; 
       sectionTitle: string;
+      knowledgeVersion: string;
+      kind: string;
+      uploadId: string;
       chunkIndex: number;
       subIndex: number;
     };
@@ -301,7 +302,7 @@ async function embedKnowledge() {
     // Generate embeddings for each chunk
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
-      const id = `${file.filename.replace('.md', '')}-${i}-${chunk.sectionTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${chunk.subIndex}`;
+      const id = knowledgeChunkId(ACTIVE_KNOWLEDGE_VERSION, uploadId, file.filename, i, chunk.sectionTitle, chunk.subIndex);
 
       try {
         const embedding = await generateEmbedding(chunk.text);
@@ -312,6 +313,9 @@ async function embedKnowledge() {
           metadata: {
             text: chunk.text,
             source: file.filename,
+            knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION,
+            kind: 'chunk',
+            uploadId,
             sectionTitle: chunk.sectionTitle,
             chunkIndex: i,
             subIndex: chunk.subIndex,
@@ -322,6 +326,7 @@ async function embedKnowledge() {
         process.stdout.write(`   - Embedded: "${chunk.sectionTitle}" ${chunk.subIndex > 0 ? `(part ${chunk.subIndex + 1})` : ''}\r`);
       } catch (error) {
         console.error(`\n   ❌ Error embedding "${chunk.sectionTitle}": ${error}`);
+        throw error;
       }
 
       // Small delay to avoid rate limiting
@@ -331,7 +336,12 @@ async function embedKnowledge() {
     console.log(`   ✅ Completed ${file.filename}\n`);
   }
 
-  // Upload vectors to Pinecone in batches
+  if (vectors.length === 0) {
+    throw new Error('No knowledge vectors generated; refusing to replace the active version.');
+  }
+
+  // Publish the manifest only after all batches succeed. Readers use the
+  // vetted fallback until the manifest exists, so a partial upload is hidden.
   console.log(`\n📤 Uploading ${vectors.length} vectors to Pinecone...`);
 
   const batchSize = 100;
@@ -341,6 +351,32 @@ async function embedKnowledge() {
     console.log(`   - Uploaded batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(vectors.length / batchSize)}`);
   }
 
+  // Pinecone may acknowledge writes before every chunk is query-visible.
+  // A manifest makes this upload public, so wait until a filtered query sees
+  // all of this bundle's chunk IDs. Overlapping attempts for the same reviewed
+  // bundle have the same IDs and content, so either complete attempt may publish.
+  await publishManifestWhenVisible(
+    vectors.map((vector) => vector.id),
+    async () => {
+      const results = await index.query({
+        vector: vectors[0].values,
+        topK: vectors.length,
+        includeMetadata: false,
+        filter: { knowledgeVersion: { $eq: ACTIVE_KNOWLEDGE_VERSION }, kind: { $eq: 'chunk' }, uploadId: { $eq: uploadId } },
+      });
+      return (results.matches ?? []).map((match) => match.id);
+    },
+    async () => {
+      await index.upsert([{
+        id: ACTIVE_KNOWLEDGE_MANIFEST_ID,
+        values: vectors[0].values,
+        metadata: { knowledgeVersion: ACTIVE_KNOWLEDGE_VERSION, kind: 'manifest', uploadId, totalVectors: vectors.length, sourceHash },
+      }]);
+    },
+    { onRetry: (visible, attempt) => console.log(`   - Query sees ${visible}/${vectors.length} chunks; retry ${attempt}/10`) }
+  );
+  console.log(`   - Published complete version ${ACTIVE_KNOWLEDGE_VERSION}`);
+
   console.log('\n✅ Knowledge embedding complete!');
   console.log(`   - Total files processed: ${files.length}`);
   console.log(`   - Total chunks embedded: ${totalChunks}`);
@@ -348,4 +384,7 @@ async function embedKnowledge() {
 }
 
 // Run the script
-embedKnowledge().catch(console.error);
+embedKnowledge().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
