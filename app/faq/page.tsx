@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion"
-import { HelpCircle, Mail, Phone } from "lucide-react"
+import { ArrowRight, Mail, Phone } from "lucide-react"
 
 const faqs = [
   {
@@ -104,107 +104,60 @@ const faqs = [
   }
 ]
 
+const faqGroups = [
+  { title: "Choosing a path", description: "Focused courses, the full bootcamp, and who each is for.", items: faqs.slice(0, 7) },
+  { title: "Learning and support", description: "Schedule, equipment, teaching, and opportunities after the program.", items: faqs.slice(7, 17) },
+  { title: "Tuition and policies", description: "Prices and written terms for a specific course or cohort.", items: faqs.slice(17) },
+]
+
 export default function FAQPage() {
   return (
-    <div className="csg-inner flex flex-col">
-      {/* Hero */}
-      <section className="bg-[#0b1220] text-white py-14 md:py-20 relative overflow-hidden">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <div className="inline-flex items-center px-3 py-1.5 bg-ruby-500/20 text-ruby-400 rounded-full text-sm font-medium mb-4">
-            <HelpCircle className="w-4 h-4 mr-2" />
-            Get Answers
-          </div>
-          <h1 className="font-serif text-4xl md:text-6xl font-semibold mb-6">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Everything you need to know about Code School of Guam
-          </p>
-        </div>
-        {/* Fade to next section - dark to light */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-100 to-transparent"></div>
-      </section>
-
-      {/* FAQs - Card-based accordion like original */}
-      <section className="py-16 md:py-24 lg:py-28 bg-slate-100 relative">
-        {/* Background pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,0,0,0.1),transparent_70%)]"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 md:px-6 relative z-10">
-          <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
-            {faqs.map((faq, index) => (
-              <AccordionItem 
-                key={index} 
-                value={`item-${index}`}
-                className="mb-4 border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
-              >
-                <AccordionTrigger className="text-left p-4 hover:bg-slate-50 data-[state=open]:bg-slate-50">
-                  <div className="flex items-center">
-                    <span className="text-ruby-500 font-semibold mr-2">Q:</span>
-                    <span className="font-medium">{faq.question}</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="p-4 pt-0 text-slate-600">
-                  <div className="pl-6 border-l-2 border-ruby-500">
-                    {faq.answer}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-
-          <div className="max-w-3xl mx-auto mt-8 text-center">
-            <p className="text-slate-600">
-              Don&apos;t see your question? Feel free to{" "}
-              <a href="mailto:codeschoolofguam@gmail.com" className="text-ruby-600 hover:text-ruby-700 font-medium hover:underline">
-                contact us
-              </a>
-              .
-            </p>
-          </div>
+    <div className="bg-[#fbfaf7]">
+      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
+        <div className="csg-grid absolute inset-0 opacity-30" />
+        <div className="container relative mx-auto px-4 sm:px-8">
+          <p className="csg-label text-ruby-300">Useful answers</p>
+          <h1 className="mt-5 max-w-3xl font-serif text-5xl font-semibold leading-tight md:text-7xl">Questions before you begin.</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">Find the right learning path, understand what is available now, and see where course or cohort terms may differ.</p>
         </div>
       </section>
 
-      {/* Still have questions - subtle background change, no fade needed */}
-      <section className="py-16 bg-slate-50 relative">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-4">
-            Still have questions?
-          </h2>
-          <p className="text-slate-600 mb-6">
-            We&apos;re here to help. Reach out anytime.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="mailto:codeschoolofguam@gmail.com"
-              className="inline-flex items-center justify-center px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-medium transition-colors"
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              Email Us
-            </a>
-            <a
-              href="tel:+16714830219"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-900 rounded-lg font-medium transition-colors"
-            >
-              <Phone className="w-4 h-4 mr-2" />
-              Call (671) 483-0219
-            </a>
+      <div className="container mx-auto px-4 py-16 sm:px-8 md:py-24">
+        {faqGroups.map((group) => (
+          <section key={group.title} className="grid gap-7 border-t border-slate-200 py-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+            <div>
+              <h2 className="font-serif text-3xl font-semibold text-slate-950 md:text-4xl">{group.title}</h2>
+              <p className="mt-3 max-w-sm leading-relaxed text-slate-600">{group.description}</p>
+            </div>
+            <Accordion type="single" collapsible className="divide-y divide-slate-200 border-y border-slate-200">
+              {group.items.map((faq) => (
+                <AccordionItem key={faq.question} value={faq.question} className="border-0">
+                  <AccordionTrigger className="py-5 text-left text-base font-semibold leading-snug text-slate-950 hover:no-underline hover:text-ruby-700 md:text-lg">{faq.question}</AccordionTrigger>
+                  <AccordionContent className="max-w-3xl pb-6 pr-7 text-base leading-relaxed text-slate-600">{faq.answer}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
+        ))}
+      </div>
+
+      <section className="border-t border-slate-200 bg-white py-16 md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="csg-label text-ruby-700">Still have a question?</p>
+            <h2 className="mt-3 font-serif text-4xl font-semibold text-slate-950">Talk with us directly.</h2>
+            <p className="mt-3 text-slate-600">We can clarify the current offer and provide its written terms.</p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <a href="mailto:codeschoolofguam@gmail.com" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-700 px-5 py-3 font-semibold text-white hover:bg-ruby-800"><Mail className="h-4 w-4" /> Email us</a>
+            <a href="tel:+16714830219" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-slate-300 px-5 py-3 font-semibold text-slate-900 hover:bg-slate-50"><Phone className="h-4 w-4" /> (671) 483-0219</a>
           </div>
         </div>
       </section>
-
-      {/* CTA - final section, no fade needed */}
-      <section className="py-16 bg-ruby-600 text-white">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <h2 className="text-2xl font-bold mb-4">
-            Ready to start your coding journey?
-          </h2>
-          <p className="text-white/90 mb-6">
-            The March 2026 full bootcamp cohort is closed to new students. Explore focused courses or join the future bootcamp update list.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3"><Link href="/courses" className="inline-flex items-center justify-center px-8 py-4 bg-white text-ruby-600 hover:bg-slate-100 rounded-lg text-lg font-medium transition-all">Explore courses</Link><Link href="/interest" className="inline-flex items-center justify-center px-8 py-4 border border-white/50 text-white hover:bg-white/10 rounded-lg text-lg font-medium transition-all">Full bootcamp updates</Link></div>
+      <section className="bg-ruby-700 py-14 text-white">
+        <div className="container mx-auto flex flex-col gap-6 px-4 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
+          <div><h2 className="font-serif text-3xl font-semibold md:text-4xl">Find your starting point.</h2><p className="mt-2 text-ruby-100">The March 2026 bootcamp is closed to new students; focused courses are being prepared.</p></div>
+          <div className="flex flex-wrap gap-3"><Link href="/courses" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-white px-5 py-3 font-semibold text-ruby-800">Explore courses <ArrowRight className="h-4 w-4" /></Link><Link href="/interest" className="inline-flex min-h-12 items-center rounded-md border border-white/60 px-5 py-3 font-semibold text-white">Bootcamp updates</Link></div>
         </div>
       </section>
     </div>

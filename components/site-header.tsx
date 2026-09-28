@@ -4,7 +4,8 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowUpRight, Menu, X } from "lucide-react"
+import { ArrowUpRight, Menu } from "lucide-react"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const navItems = [
   { href: "/courses", label: "Focused Courses" },
@@ -52,25 +53,28 @@ export function SiteHeader() {
             Python updates <ArrowUpRight className="h-4 w-4" />
           </Link>
 
-          <button onClick={() => setMobileMenuOpen((open) => !open)} className="rounded-md p-2 text-slate-300 hover:bg-white/10 hover:text-white xl:hidden" aria-label="Toggle menu" aria-expanded={mobileMenuOpen}>
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <button type="button" className="rounded-md p-2 text-slate-300 hover:bg-white/10 hover:text-white xl:hidden" aria-label="Open menu">
+                <Menu className="h-6 w-6" />
+              </button>
+            </SheetTrigger>
+            <SheetContent side="right" className="max-h-dvh w-[min(88vw,26rem)] overflow-y-auto border-white/10 bg-[#0b1220] p-0 text-white xl:hidden">
+              <SheetHeader className="border-b border-white/10 px-6 py-5 text-left">
+                <SheetTitle className="font-serif text-2xl text-white">Explore Code School</SheetTitle>
+                <SheetDescription className="text-slate-300">Courses, the full bootcamp, student work, and school information.</SheetDescription>
+              </SheetHeader>
+              <nav aria-label="Mobile navigation" className="space-y-1 px-4 py-5">
+                {navItems.map((item) => (
+                  <Link key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className={`block rounded-md px-4 py-3 font-semibold ${isActive(item.href) ? "bg-white/10 text-white" : "text-slate-200 hover:bg-white/5 hover:text-white"}`}>{item.label}</Link>
+                ))}
+                <Link href="/courses/python-fundamentals" onClick={() => setMobileMenuOpen(false)} className="mt-5 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white hover:bg-ruby-500">Python course updates <ArrowUpRight className="h-4 w-4" /></Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </nav>
 
-      {mobileMenuOpen && (
-        <>
-          <button className="fixed inset-0 top-[72px] z-40 bg-slate-950/60 xl:hidden" onClick={() => setMobileMenuOpen(false)} aria-label="Close menu" />
-          <div className="absolute left-0 top-full z-50 w-full border-t border-white/10 bg-[#0b1220] px-4 py-4 xl:hidden">
-            <div className="mx-auto max-w-2xl space-y-1">
-              {navItems.map((item) => (
-                <Link key={item.href} href={item.href} className={`block rounded-md px-4 py-3 font-semibold ${isActive(item.href) ? "bg-white/10 text-white" : "text-slate-300"}`}>{item.label}</Link>
-              ))}
-              <Link href="/courses/python-fundamentals" className="mt-4 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white">Python course updates <ArrowUpRight className="h-4 w-4" /></Link>
-            </div>
-          </div>
-        </>
-      )}
     </header>
   )
 }

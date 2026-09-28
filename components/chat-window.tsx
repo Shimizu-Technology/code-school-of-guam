@@ -166,7 +166,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
         isExpanded
           ? "sm:left-auto sm:h-[600px] sm:w-[600px]"
           : "sm:left-auto sm:h-[500px] sm:w-[400px]"
-      } h-[500px]`}
+      } h-[min(500px,calc(100dvh-6rem))] sm:max-h-[calc(100dvh-6rem)]`}
     >
       {/* Header */}
       <div className="flex items-center justify-between bg-ruby-600 px-4 py-3 text-white">
