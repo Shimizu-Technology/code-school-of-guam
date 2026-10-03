@@ -17,11 +17,11 @@ const entryCourses = [
 
 const nextCourses = [
   { title: "Python Automation", prerequisite: "Python fundamentals", project: "Automate a useful task with files and data." },
-  { title: "SQL and Data Basics", prerequisite: "Any fundamentals course", project: "Ask useful questions of a real data set." },
+  { title: "SQL and Data Basics", prerequisite: "Basic computer and data confidence; SQL fundamentals are taught here", project: "Ask useful questions of a real data set." },
   { title: "Frontend with JavaScript", prerequisite: "JavaScript fundamentals or equivalent", project: "Build a responsive page with real interactions." },
-  { title: "APIs with Ruby on Rails", prerequisite: "Ruby fundamentals or equivalent", project: "Create an API that stores and returns useful data." },
-  { title: "AI Engineering with Python", prerequisite: "Python and API basics", project: "Build and evaluate a small application using a model API." },
-  { title: "Agent Workflows for Developers", prerequisite: "Experience building and testing software", project: "Use coding agents to plan, implement, review, and verify a real change." },
+  { title: "APIs with Ruby on Rails", prerequisite: "Ruby fundamentals or equivalent, plus basic HTTP", project: "Create an API that stores and returns useful data." },
+  { title: "AI Engineering with Python", prerequisite: "Python, HTTP/API basics, and tests", project: "Build and evaluate a small application using a model API." },
+  { title: "Agent Workflows for Developers", prerequisite: "Git, tests, and one programming language", project: "Use coding agents to plan, implement, review, and verify a real change." },
 ]
 
 export default function CoursesPage() {
