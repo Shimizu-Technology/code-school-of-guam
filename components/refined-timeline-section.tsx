@@ -86,26 +86,23 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                   <div
                     className={`bg-slate-800/80 backdrop-blur-sm rounded-lg p-6 shadow-md border-l-2 ${
                       activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-slate-700'
-                    } hover:border-ruby-500 hover:shadow-xs hover:scale-105 transition-all duration-300 cursor-pointer`}
+                    } hover:border-ruby-500 hover:shadow-xs hover:scale-105 transition-all duration-300`}
                     onMouseEnter={() => setHoveredItem(index)}
                     onMouseLeave={() => setHoveredItem(null)}
-                    role="button"
-                    tabIndex={0}
-                    aria-expanded={expandedItem === index}
-                    onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setExpandedItem(expandedItem === index ? null : index) } }}
-                    onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center text-slate-300">
                         <span className="text-sm font-medium uppercase tracking-wider">{item.weeks}</span>
                       </div>
-                      <div className={`text-ruby-400 transition-transform duration-200 ${
+                      <div aria-hidden="true" className={`text-ruby-400 transition-transform duration-200 ${
                         expandedItem === index ? 'rotate-45' : ''
                       }`}>
                         +
                       </div>
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                    <h3 className="text-xl font-bold text-white mb-2">
+                      <button type="button" className="min-h-11 w-full text-left" aria-expanded={expandedItem === index} onClick={() => setExpandedItem(expandedItem === index ? null : index)}>{item.title}</button>
+                    </h3>
                     <p className="text-slate-300 text-sm">{item.description}</p>
 
                     {expandedItem === index && (
@@ -166,27 +163,24 @@ export function RefinedTimelineSection({ timelineItems }: RefinedTimelineSection
                 <div
                   className={`bg-slate-800/90 backdrop-blur-sm rounded-lg p-4 shadow-xs border-l-2 ${
                     activeItem === index || hoveredItem === index ? 'border-ruby-500' : 'border-slate-700'
-                  } hover:shadow-md hover:scale-105 transition-all duration-300 cursor-pointer`}
+                  } hover:shadow-md hover:scale-105 transition-all duration-300`}
                   onMouseEnter={() => setHoveredItem(index)}
                   onMouseLeave={() => setHoveredItem(null)}
-                  role="button"
-                    tabIndex={0}
-                    aria-expanded={expandedItem === index}
-                    onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setExpandedItem(expandedItem === index ? null : index) } }}
-                    onClick={() => setExpandedItem(expandedItem === index ? null : index)}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center">
                       <Calendar className="mr-2 h-4 w-4 text-ruby-500/80" />
                       <span className="text-xs font-medium uppercase tracking-wider text-slate-400">{item.weeks}</span>
                     </div>
-                    <div className={`text-ruby-400 text-sm transition-transform duration-200 ${
+                    <div aria-hidden="true" className={`text-ruby-400 text-sm transition-transform duration-200 ${
                       expandedItem === index ? 'rotate-45' : ''
                     }`}>
                       +
                     </div>
                   </div>
-                  <h3 className="text-base font-semibold text-white mb-1">{item.title}</h3>
+                  <h3 className="text-base font-semibold text-white mb-1">
+                      <button type="button" className="min-h-11 w-full text-left" aria-expanded={expandedItem === index} onClick={() => setExpandedItem(expandedItem === index ? null : index)}>{item.title}</button>
+                    </h3>
                   <p className="text-slate-300 text-xs leading-relaxed">{item.description}</p>
 
                   {expandedItem === index && (

@@ -13,6 +13,23 @@ const forms = [
   ['focused-courses-interest', CourseInterestForm],
 ] as const
 
+function fillRequiredFields(form: HTMLFormElement) {
+  fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Test Learner' } })
+  fireEvent.change(form.querySelector('[name="email"]')!, { target: { value: 'learner@example.invalid' } })
+  const discovery = new DOMParser().parseFromString(readFileSync('public/__forms.html', 'utf8'), 'text/html').querySelector(`form[name="${form.name}"]`)!
+  for (const select of form.querySelectorAll<HTMLSelectElement>('select[required]')) {
+    const value = Array.from(select.options).find((option) => option.value && !option.disabled)!.value
+    const discovered = discovery.querySelector<HTMLSelectElement>(`select[name="${select.name}"]`)!
+    expect(Array.from(discovered.options).map((option) => option.value)).toContain(value)
+    fireEvent.change(select, { target: { value } })
+  }
+  for (const textarea of form.querySelectorAll<HTMLTextAreaElement>('textarea[required]')) {
+    fireEvent.change(textarea, { target: { value: 'Learn to build a useful project.' } })
+  }
+  fireEvent.click(form.querySelector('[name="update_consent"]')!)
+  expect(form.checkValidity()).toBe(true)
+}
+
 for (const [name, Form] of forms) {
   test(`${name} has the same named fields as Netlify discovery and requires consent`, () => {
     const { container } = render(<Form />)
@@ -31,8 +48,7 @@ for (const [name, Form] of forms) {
     vi.stubGlobal('fetch', request)
     const { container } = render(<Form />)
     const form = container.querySelector('form')!
-    fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Test Learner' } })
-    fireEvent.change(form.querySelector('[name="email"]')!, { target: { value: 'learner@example.invalid' } })
+    fillRequiredFields(form)
     fireEvent.submit(form)
     expect(request).toHaveBeenCalledTimes(1)
     const [url, options] = request.mock.calls[0] as unknown as [string, RequestInit]
@@ -42,6 +58,8 @@ for (const [name, Form] of forms) {
     expect(body.get('form-name')).toBe(name)
     expect(body.get('name')).toBe('Test Learner')
     expect(body.get('email')).toBe('learner@example.invalid')
+    expect(body.get('update_consent')).toBe('yes')
+    if (name === 'next-cohort-interest') expect(body.get('preferred_timing')).toBe('Weekday daytime')
     expect(screen.queryByRole('status')).toBeNull()
     expect(form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(true)
     finish({ ok: true })
@@ -53,7 +71,7 @@ for (const [name, Form] of forms) {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }))
     const { container } = render(<Form />)
     const form = container.querySelector('form')!
-    fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Test Learner' } })
+    fillRequiredFields(form)
     fireEvent.submit(form)
     await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
     expect(form.querySelector<HTMLInputElement>('[name="name"]')!.value).toBe('Test Learner')
