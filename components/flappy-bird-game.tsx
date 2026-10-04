@@ -114,7 +114,7 @@ export default function FlappyBirdGame() {
       const maxWidth = isMobile ? Math.min(window.innerWidth - 32, 360) : 400
       const canvasWidth = maxWidth
       const canvasHeight = canvasWidth * 1.4 // Slightly less tall for mobile
-      
+
       canvas.width = canvasWidth
       canvas.height = canvasHeight
 
@@ -139,7 +139,7 @@ export default function FlappyBirdGame() {
 
       // Always draw the background
       drawBackground(ctx)
-      
+
       if (gameStateRef.current === 'playing') {
         updateGame(deltaTime)
         drawPipes(ctx)
@@ -275,36 +275,36 @@ export default function FlappyBirdGame() {
     if (!birdRef.current) return
 
     const bird = birdRef.current
-    
+
     // Bird body (orange circle)
     ctx.fillStyle = "#FFA500"
     ctx.beginPath()
     ctx.arc(bird.x, bird.y, 18, 0, 2 * Math.PI)
     ctx.fill()
-    
+
     // Bird outline
     ctx.strokeStyle = "#FF8C00"
     ctx.lineWidth = 2
     ctx.stroke()
-    
+
     // Wing
     ctx.fillStyle = "#FF6347"
     ctx.beginPath()
     ctx.ellipse(bird.x - 5, bird.y - 5, 12, 8, -0.3, 0, 2 * Math.PI)
     ctx.fill()
-    
+
     // Eye
     ctx.fillStyle = "white"
     ctx.beginPath()
     ctx.arc(bird.x + 8, bird.y - 5, 6, 0, 2 * Math.PI)
     ctx.fill()
-    
+
     // Pupil
     ctx.fillStyle = "black"
     ctx.beginPath()
     ctx.arc(bird.x + 10, bird.y - 5, 3, 0, 2 * Math.PI)
     ctx.fill()
-    
+
     // Beak
     ctx.fillStyle = "#FFD700"
     ctx.beginPath()
@@ -326,7 +326,7 @@ export default function FlappyBirdGame() {
       }
 
       ctx.globalAlpha = pipe.opacity || 1
-      
+
       // Pipe gradient
       const pipeGradient = ctx.createLinearGradient(pipe.x, 0, pipe.x + PIPE_WIDTH, 0)
       pipeGradient.addColorStop(0, "#4CAF50")
@@ -336,7 +336,7 @@ export default function FlappyBirdGame() {
 
       // Top pipe
       ctx.fillRect(pipe.x, 0, PIPE_WIDTH, pipe.top)
-      
+
       // Top pipe cap
       ctx.fillStyle = "#2E7D32"
       ctx.fillRect(pipe.x - 5, pipe.top - 20, PIPE_WIDTH + 10, 20)
@@ -349,7 +349,7 @@ export default function FlappyBirdGame() {
         PIPE_WIDTH,
         canvas.height - pipe.top - PIPE_GAP
       )
-      
+
       // Bottom pipe cap
       ctx.fillStyle = "#2E7D32"
       ctx.fillRect(pipe.x - 5, pipe.top + PIPE_GAP, PIPE_WIDTH + 10, 20)
@@ -375,8 +375,8 @@ export default function FlappyBirdGame() {
 
   return (
     <div className="relative w-full">
-      <Card className="w-full mx-auto bg-gradient-to-b from-slate-900 to-slate-800 text-white shadow-2xl border-0 overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-ruby-600 to-red-600 text-center py-4">
+      <Card className="w-full mx-auto bg-linear-to-b from-slate-900 to-slate-800 text-white shadow-2xl border-0 overflow-hidden">
+        <CardHeader className="bg-linear-to-r from-ruby-600 to-red-600 text-center py-4">
           <CardTitle className="text-xl md:text-2xl font-bold">
             <Bird className="w-6 h-6 inline mr-2" /> Flappy Bird
           </CardTitle>
@@ -384,7 +384,7 @@ export default function FlappyBirdGame() {
             Tap or press space to play!
           </p>
         </CardHeader>
-        
+
         <CardContent className="relative p-4 md:p-6">
           <canvas
             ref={canvasRef}
@@ -392,18 +392,18 @@ export default function FlappyBirdGame() {
             onClick={handleClick}
             onTouchStart={handleClick}
           />
-          
+
           {/* Game State Overlays */}
           {gameState === 'waiting' && (
-            <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black bg-opacity-40 rounded-lg">
+            <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black/40 rounded-lg">
               <Bird className="w-10 h-10 md:w-12 md:h-12 text-yellow-400 mb-4 animate-bounce mx-auto" />
               <div className="text-lg md:text-xl font-bold mb-2 text-center">Ready to Fly?</div>
               <div className="text-sm md:text-base opacity-90 text-center px-4">Tap anywhere or press Space to start</div>
             </div>
           )}
-          
+
           {gameState === 'gameOver' && (
-            <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black bg-opacity-50 rounded-lg">
+            <div className="absolute inset-4 md:inset-6 flex flex-col items-center justify-center text-white pointer-events-none bg-black/50 rounded-lg">
               <div className="text-2xl md:text-3xl font-bold text-red-400 mb-3 flex items-center justify-center gap-2"><XCircle className="w-8 h-8" /> Game Over!</div>
               <div className="text-lg md:text-xl mb-2">Final Score: <span className="text-yellow-400 font-bold">{score}</span></div>
               {score === highScore && score > 0 && (
@@ -412,17 +412,17 @@ export default function FlappyBirdGame() {
               <div className="text-sm md:text-base opacity-90 text-center px-4">Tap to try again</div>
             </div>
           )}
-          
+
           {/* Score display during gameplay */}
           {gameState === 'playing' && (
             <div className="absolute top-6 left-6 md:top-8 md:left-8">
-              <div className="bg-black bg-opacity-60 text-white font-bold text-xl md:text-2xl px-3 py-1 rounded-lg border border-white border-opacity-30">
+              <div className="bg-black/60 text-white font-bold text-xl md:text-2xl px-3 py-1 rounded-lg border border-white/30">
                 {score}
               </div>
             </div>
           )}
         </CardContent>
-        
+
         <CardFooter className="bg-slate-800 border-t border-slate-700 px-4 py-3 md:px-6 md:py-4">
           <div className="flex justify-between items-center w-full">
             <div className="text-sm md:text-base">

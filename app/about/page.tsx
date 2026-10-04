@@ -18,18 +18,18 @@ const graduatePaths = [
 export default function AboutPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] py-16 text-slate-950 md:py-24">
+
         <div className="container relative mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[1fr_0.85fr] lg:items-center lg:gap-16">
           <div>
-            <p className="csg-label text-ruby-300">Our story</p>
+            <p className="csg-label text-ruby-700">Our story</p>
             <h1 className="mt-5 max-w-3xl font-serif text-5xl font-semibold leading-tight md:text-7xl">A place to learn, build, and belong.</h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">Code School of Guam began with a simple gap: people here should be able to learn software development with real instruction and local context.</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">Code School of Guam began with a simple gap: people here should be able to learn software development with real instruction and local context.</p>
             <Link href="/courses" className="mt-8 inline-flex items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-semibold text-white hover:bg-ruby-500">Explore how to start <ArrowRight className="h-4 w-4" /></Link>
           </div>
-          <figure className="overflow-hidden border border-white/15 bg-white/5">
-            <Image src="/images/uog-intro-to-ai.jpeg" alt="University of Guam staff attending an AI workshop" width={1280} height={960} priority className="aspect-[4/3] w-full object-cover" />
-            <figcaption className="px-4 py-3 text-xs leading-relaxed text-slate-300">Leon teaching a University of Guam staff workshop, July 2025.</figcaption>
+          <figure className="overflow-hidden border border-[#ded7c9] bg-white">
+            <Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending an AI workshop" width={1280} height={960} priority className="aspect-[4/3] w-full object-cover" />
+            <figcaption className="px-4 py-3 text-xs leading-relaxed text-slate-600">Leon teaching a University of Guam staff workshop, July 2025.</figcaption>
           </figure>
         </div>
       </section>
@@ -68,7 +68,7 @@ export default function AboutPage() {
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
           <div><p className="csg-label text-ruby-700">The founder</p><h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Meet Leon.</h2></div>
           <div className="grid gap-7 sm:grid-cols-[11rem_1fr] sm:items-start">
-            <Image src="/NationalsPic2.jpg" alt="Leon Shimizu" width={500} height={500} className="aspect-square w-44 object-cover object-top" />
+            <Image src="/images/leon-shimizu.webp" alt="Leon Shimizu" width={500} height={500} className="aspect-square w-44 object-cover object-top" />
             <div className="space-y-4 leading-relaxed text-slate-600">
               <p><strong className="text-slate-950">Leon Shimizu</strong> was born and raised in Guam. He studied at Actualize Coding Bootcamp in 2021 and became a software engineer before graduating.</p>
               <p>He founded Code School of Guam in 2024 and also leads Shimizu Technology, where software is built for organizations in Guam and beyond. He has worked at Spectrio and taught at Actualize.</p>

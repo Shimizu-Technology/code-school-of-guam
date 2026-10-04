@@ -4,12 +4,12 @@ import { ArrowRight, BriefcaseBusiness, Code2, GraduationCap } from "lucide-reac
 export default function InternshipPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] text-white">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] text-slate-950">
+
         <div className="container relative mx-auto px-4 py-16 sm:px-8 md:py-24 lg:py-28">
-          <p className="csg-label text-ruby-300">Professional practice</p>
+          <p className="csg-label text-ruby-700">Professional practice</p>
           <h1 className="mt-6 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl">Learn what it takes to work on real software.</h1>
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">The full CSG bootcamp teaches collaboration, code review, deployment, and the judgment needed to maintain applications beyond a classroom exercise.</p>
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">The full CSG bootcamp teaches collaboration, code review, deployment, and the judgment needed to maintain applications beyond a classroom exercise.</p>
         </div>
       </section>
 

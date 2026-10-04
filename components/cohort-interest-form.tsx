@@ -72,12 +72,12 @@ export function CohortInterestForm() {
       </label>
 
       <label className="block text-sm font-semibold text-slate-800">
-        What timing would work best? <span className="text-ruby-600">*</span>
+        What meeting times would usually work for you? <span className="text-ruby-600">*</span>
         <select required name="preferred_timing" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select a preference</option>
-          <option value="January 2027">January 2027</option>
-          <option value="February 2027">February 2027</option>
-          <option value="Later in 2027">Later in 2027</option>
+          <option value="Weekday daytime">Weekday daytime</option>
+          <option value="Weekday evenings">Weekday evenings</option>
+          <option value="Weekends">Weekends</option>
           <option value="Flexible">I&apos;m flexible</option>
         </select>
       </label>
@@ -112,7 +112,7 @@ export function CohortInterestForm() {
       <button disabled={submitState === "submitting"} type="submit" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-ruby-700 disabled:cursor-wait disabled:opacity-70">
         {submitState === "submitting" ? <><Loader2 className="h-5 w-5 animate-spin" /> Saving your interest</> : "Join the interest list"}
       </button>
-      <p className="text-center text-xs leading-5 text-slate-500">This is an interest list, not an application. January and February 2027 are being considered, but no date has been announced.</p>
+      <p className="text-center text-xs leading-5 text-slate-500">This is an interest list, not an application or seat reservation. Future bootcamp dates, schedule, and tuition have not been announced.</p>
     </form>
   )
 }

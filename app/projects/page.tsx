@@ -15,7 +15,7 @@ const presentations = [
   },
   {
     cohort: "Cohort 1",
-    date: "May 2025",
+    date: "2025",
     graduates: "6 graduates",
     videoId: "MNzZeL33jiw",
     start: 650,
@@ -27,7 +27,7 @@ const productionExamples = [
     title: "Hafa Code",
     type: "School learning tool",
     description: "A browser coding environment used by Code School of Guam, FD students, alumni, and other learners.",
-    image: "/images/hafa-code-logo.png",
+    image: "/images/hafa-code-logo.webp",
     href: "https://code.shimizu-technology.com/",
     surface: "bg-[#f8efe0]",
   },
@@ -43,7 +43,7 @@ const productionExamples = [
     title: "Hafaloha Orders",
     type: "Shimizu client system",
     description: "A live ordering and fulfillment platform that handled 850+ VIP orders during a concert launch.",
-    image: "/images/hafaloha_hero.jpg",
+    image: "/images/hafaloha-hero.webp",
     href: "https://hafaloha-orders.com/",
     surface: "bg-slate-100",
   },
@@ -63,7 +63,7 @@ function PresentationVideo({ presentation }: { presentation: typeof presentation
     <article className="border border-slate-200 bg-white">
       <div className="relative aspect-video overflow-hidden bg-[#0b1220] text-white">
         {playing ? (
-          <iframe ref={iframeRef} tabIndex={0} src={`https://www.youtube-nocookie.com/embed/${presentation.videoId}?autoplay=1${presentation.start ? `&start=${presentation.start}` : ""}`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen className="absolute inset-0 h-full w-full" />
+          <iframe ref={iframeRef} src={`https://www.youtube-nocookie.com/embed/${presentation.videoId}?autoplay=1${presentation.start ? `&start=${presentation.start}` : ""}`} title={title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen className="absolute inset-0 h-full w-full" />
         ) : (
           <button type="button" onClick={() => setPlaying(true)} className="group flex h-full w-full flex-col items-center justify-center gap-5 bg-[radial-gradient(circle_at_50%_25%,rgba(165,25,25,0.35),transparent_55%)] px-6 text-center focus-visible:outline-2 focus-visible:outline-offset-[-6px] focus-visible:outline-white" aria-label={`Play ${title}`}>
             <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/40 bg-white/10 transition group-hover:bg-ruby-600"><Play className="ml-1 h-7 w-7 fill-current" /></span>
@@ -83,12 +83,12 @@ function PresentationVideo({ presentation }: { presentation: typeof presentation
 export default function ProjectsPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] py-16 text-slate-950 md:py-24">
+
         <div className="container relative mx-auto px-4 sm:px-8">
-          <p className="csg-label text-ruby-300">Graduate work</p>
+          <p className="csg-label text-ruby-700">Graduate work</p>
           <h1 className="mt-5 max-w-4xl font-serif text-5xl font-semibold leading-tight md:text-7xl">See what students built and explained.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">Watch graduates present their own capstones. Then explore the production systems we use to show how software is built and supported beyond class.</p>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">Watch graduates present their own capstones. Then explore the production systems we use to show how software is built and supported beyond class.</p>
           <a href="#capstones" className="mt-8 inline-flex items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-semibold text-white hover:bg-ruby-500">Watch presentations <ArrowRight className="h-4 w-4" /></a>
         </div>
       </section>

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { 
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -24,7 +24,7 @@ const faqGroups = [
       },
       {
         question: "Do I need prior coding experience?",
-        answer: "No prior coding experience is required. Our program starts from the basics and builds up to advanced concepts."
+        answer: "Python Fundamentals and the planned Ruby and JavaScript fundamentals courses start with the basics and welcome beginners. Later focused courses list their recommended skills on the course page; equivalent experience is welcome, and you do not have to buy an earlier CSG course. The full bootcamp has its own cohort-specific entry requirements."
       },
       {
         question: "Is there an age requirement?",
@@ -78,7 +78,7 @@ const faqGroups = [
       },
       {
         question: "What is the hybrid format?",
-        answer: "For the March 2026 full bootcamp, live Zoom classes are Tuesday and Thursday, with structured practice during the week and mentorship. Guided focused courses use a different format: short lessons, exercises, project feedback, and private meetings. A future self-paced option would have different support terms. See each offer page for its current schedule and support terms."
+        answer: "The original March 2026 full bootcamp schedule used live Zoom classes on Tuesday and Thursday, structured practice during the week, and mentorship. Enrolled learners now follow individual completion or restart schedules. Guided focused courses use a different format: short lessons, exercises, project feedback, and private meetings. A future self-paced option would have different support terms. See each offer page for its current schedule and support terms."
       },
       {
         question: "What AI tools will I learn?",
@@ -125,12 +125,12 @@ const faqGroups = [
 export default function FAQPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] py-16 text-slate-950 md:py-24">
+
         <div className="container relative mx-auto px-4 sm:px-8">
-          <p className="csg-label text-ruby-300">Useful answers</p>
+          <p className="csg-label text-ruby-700">Useful answers</p>
           <h1 className="mt-5 max-w-3xl font-serif text-5xl font-semibold leading-tight md:text-7xl">Questions before you begin.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">Find the right learning path, understand what is available now, and see where course or cohort terms may differ.</p>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">Find the right learning path, understand what is available now, and see where course or cohort terms may differ.</p>
         </div>
       </section>
 

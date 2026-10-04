@@ -4,7 +4,7 @@ This file is the current offer summary. Older program, tuition, admissions, and 
 
 ## Full bootcamp
 
-The March 2026 full bootcamp cohort began March 2 and is closed to new students. Its original synchronized end date no longer describes every learner; enrolled students continue on individual completion or restart schedules. Its tuition was $7,500. A next full-cohort date, price, schedule, financing arrangement, and internship arrangement have not been announced. See https://codeschoolofguam.com/programs and join future-cohort updates at https://codeschoolofguam.com/interest.
+The March 2026 full bootcamp cohort began March 2 and is closed to new students. Its original synchronized end date no longer describes every learner; enrolled students continue on individual completion or restart schedules. Its tuition was $7,500. A next full-cohort date, price, schedule, financing arrangement, and internship arrangement have not been announced. The interest list collects general bootcamp interest and usual meeting availability; no future start date is proposed. See https://codeschoolofguam.com/programs and join future-cohort updates at https://codeschoolofguam.com/interest.
 
 ## Python Fundamentals
 
@@ -12,7 +12,7 @@ CSG is preparing a separate three-week beginner Python course for a small invite
 
 ## Future focused courses
 
-Python Automation, SQL and Data Basics, Ruby Fundamentals, JavaScript Fundamentals, Rails APIs, frontend development, and later AI courses are planned directions, not scheduled or purchasable offers. Recommended prerequisites do not mean that later courses are available now. See https://codeschoolofguam.com/courses.
+Python Automation, SQL and Data Basics, Ruby Fundamentals, JavaScript Fundamentals, Rails APIs, frontend development, and later AI courses are planned directions, not scheduled or purchasable offers. Fundamentals courses welcome beginners; later courses list recommended skills, and equivalent experience is welcome without purchasing another CSG course. Recommended prerequisites do not mean that later courses are available now. See https://codeschoolofguam.com/courses.
 
 CSG plans to use the same core lessons, coding exercises, checkpoints, and project for self-paced and guided options. Self-paced learners would study on their own schedule with course-question messaging, but without private Zoom meetings or individual project review. CSG plans 12 months of self-paced lesson access; the messaging window and reply times will be set in the written offer. Guided runs would add private instructor meetings and personal feedback. The invited December Python pilot tests the guided format with Leon and up to five adult learners. Future guided capacity would be limited by each instructor's available hours; trained alumni may teach later runs after the first pilot is evaluated. Self-paced enrollment and pricing have not been announced; final written terms will be published first. These online courses are being designed for learners beyond Guam, but meeting times and eligibility will be set per offer. CSG is exploring future courses for ages 13–17 with guardian involvement and appropriate safeguards. Any offer for younger children would be developed separately. The December pilot remains adult-only.
 

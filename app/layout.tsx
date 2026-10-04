@@ -64,7 +64,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#0b1220',
+  themeColor: '#faf7f0',
 }
 
 // JSON-LD Structured Data
@@ -95,7 +95,7 @@ const jsonLd = {
       {
         '@type': 'Course',
         name: 'Full-Stack Development & AI Engineering Bootcamp',
-        description: 'Learn to build AI-powered applications with Ruby, Rails, React, Python & AI Engineering in under 6 months',
+        description: 'Full-stack development and AI engineering across Ruby, Rails, React, and Python. The March 2026 cohort is closed; future cohort dates and terms have not been announced.',
         provider: {
           '@type': 'Organization',
           name: 'Code School of Guam',
@@ -119,6 +119,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <link rel="preload" href="/fonts/manrope-latin-variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/newsreader-latin-variable.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -126,12 +128,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
 
       <body className="font-sans min-h-screen bg-background text-foreground">
-        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <noscript><p className="bg-[#eee7da] px-4 py-3 text-center text-sm">You can explore the school without JavaScript. For updates or questions, email <a href="mailto:codeschoolofguam@gmail.com" className="underline">codeschoolofguam@gmail.com</a>.</p></noscript>
         <a href="#main-content" className="skip-link">Skip to content</a>
         <PostHogProvider>
           <div id="root" className="flex flex-col min-h-screen">
             <SiteHeader />
-            <main id="main-content" tabIndex={-1} className="flex-grow">
+            <main id="main-content" tabIndex={-1} className="grow">
               {children}
             </main>
             <SiteFooter />

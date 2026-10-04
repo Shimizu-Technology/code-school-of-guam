@@ -17,7 +17,7 @@ const STORAGE_KEY = "csg-chat-messages";
 const INITIAL_MESSAGE: Message = {
   role: "assistant",
   content:
-    "Hi! I'm the Code School of Guam assistant. I can answer questions about our coding bootcamp, curriculum, pricing, admissions, and more. How can I help you today?",
+    "Hi! I'm the Code School of Guam assistant. I can answer questions about our focused courses, full bootcamp, availability, and learning paths. How can I help you today?",
 };
 
 function loadMessages(): Message[] {
@@ -57,7 +57,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [messages]);
 
   // Focus input on mount
@@ -141,7 +141,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
         {
           role: "assistant",
           content:
-            "I apologize, but I encountered an error. Please try again or contact codeschoolofguam@gmail.com for assistance.",
+            "The assistant could not answer right now. Please try again or email codeschoolofguam@gmail.com for help.",
         },
       ]);
     } finally {
@@ -212,7 +212,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
           >
             {/* Avatar */}
             <div
-              className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full ${
+              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${
                 message.role === "user"
                   ? "bg-slate-700 text-white"
                   : "bg-ruby-100 text-ruby-600"
@@ -290,7 +290,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
         {/* Loading indicator */}
         {isLoading && (
           <div className="flex gap-2.5">
-            <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-ruby-100 text-ruby-600">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ruby-100 text-ruby-600">
               <Bot className="h-3.5 w-3.5" />
             </div>
             <div className="flex items-center gap-2 rounded-2xl rounded-tl-md bg-slate-50 border border-slate-100 px-3.5 py-2.5">
@@ -326,7 +326,7 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             <Send className="h-4 w-4" />
           </button>
         </div>
-        <p className="mt-2 text-center text-[11px] text-slate-400">
+        <p className="mt-2 text-center text-[11px] text-slate-600">
           Powered by AI &middot; Answers based on CSG information
         </p>
       </div>

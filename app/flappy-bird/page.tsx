@@ -15,9 +15,9 @@ export const metadata = {
 
 export default function FlappyBirdPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="min-h-screen bg-linear-to-b from-slate-50 to-white">
       {/* Header */}
-      <header className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-6 shadow-sm">
+      <header className="bg-linear-to-r from-slate-900 to-slate-800 text-white py-6 shadow-xs">
         <div className="container mx-auto px-4 md:px-6">
           <Link
             href="/"
@@ -30,7 +30,7 @@ export default function FlappyBirdPage() {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="container mx-auto px-4 md:px-6 py-8 md:py-12">
         {/* Hero Section */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-flex items-center px-4 py-2 bg-ruby-100 border border-ruby-200 rounded-full text-ruby-800 text-sm font-medium mb-4">
@@ -55,7 +55,7 @@ export default function FlappyBirdPage() {
         {/* How It's Built Section */}
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-            <div className="bg-gradient-to-r from-ruby-600 to-red-600 px-6 md:px-8 py-6">
+            <div className="bg-linear-to-r from-ruby-600 to-red-600 px-6 md:px-8 py-6">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
                 How This Game Was Built
               </h2>
@@ -63,13 +63,13 @@ export default function FlappyBirdPage() {
                 Real-world coding concepts you&apos;ll learn in our program
               </p>
             </div>
-            
+
             <div className="p-6 md:p-8">
               <p className="text-slate-600 mb-6 text-lg">
-                This Flappy Bird clone demonstrates key programming concepts using React and HTML5 Canvas - 
+                This Flappy Bird clone demonstrates key programming concepts using React and HTML5 Canvas -
                 the same technologies taught in our bootcamp.
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div className="space-y-3">
                   <div className="flex items-start">
@@ -109,7 +109,7 @@ export default function FlappyBirdPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-start">
                     <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
@@ -149,8 +149,8 @@ export default function FlappyBirdPage() {
                   </div>
                 </div>
               </div>
-              
-              <div className="bg-gradient-to-r from-ruby-50 to-red-50 rounded-xl p-6 border border-ruby-200">
+
+              <div className="bg-linear-to-r from-ruby-50 to-red-50 rounded-xl p-6 border border-ruby-200">
                 <h3 className="text-xl font-bold text-slate-900 mb-3">
                   Ready to Build Your Own Games & Apps?
                 </h3>
@@ -161,7 +161,7 @@ export default function FlappyBirdPage() {
                 <div className="flex flex-col sm:flex-row gap-3">
           <Link
             href="/"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-sm transition-all hover:bg-ruby-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
+                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-xs transition-all hover:bg-ruby-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
                   >
                     View Our Program
                   </Link>
@@ -176,10 +176,10 @@ export default function FlappyBirdPage() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-8 mt-16">
+      <footer className="bg-linear-to-r from-slate-900 to-slate-800 text-white py-8 mt-16">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <p className="text-slate-300">&copy; 2025 Code School of Guam. All rights reserved.</p>
         </div>
