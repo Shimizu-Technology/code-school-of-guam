@@ -27,17 +27,17 @@ const nextCourses = [
 export default function CoursesPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] text-white">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] text-slate-950">
+
         <div className="container relative mx-auto grid gap-10 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:py-28">
           <div>
-            <p className="csg-label text-ruby-300">Code School of Guam courses</p>
+            <p className="csg-label text-ruby-700">Code School of Guam courses</p>
             <h1 className="mt-6 max-w-3xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl">Choose a starting point. Keep building from there.</h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Start with a language that interests you, then move into projects with data, interfaces, APIs, or AI. We teach online from Guam and are designing future courses for learners wherever they live.</p>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">Start with a language that interests you, then move into projects with data, interfaces, APIs, or AI. We teach online from Guam and are designing future courses for learners wherever they live.</p>
           </div>
-          <div className="border-l-2 border-ruby-500 pl-6 text-sm leading-7 text-slate-300 sm:text-base">
+          <div className="border-l-2 border-ruby-500 pl-6 text-sm leading-7 text-slate-600 sm:text-base">
             <p>Our first guided course is a five-learner Python pilot by invitation in December 2026. The other courses below are in development. Join the interest list to help us decide what to build and offer next.</p>
-            <Link href="/programs" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-white underline decoration-ruby-400 underline-offset-4">Looking for the full bootcamp? <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            <Link href="/programs" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline decoration-ruby-400 underline-offset-4">Looking for the full bootcamp? <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
         </div>
       </section>
@@ -46,9 +46,12 @@ export default function CoursesPage() {
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div><p className="csg-label text-ruby-700">A format that can grow</p><h2 className="mt-3 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Practice independently. Get personal guidance when you need it.</h2></div>
           <div className="space-y-5 leading-7 text-slate-700">
-            <p>Our long-term plan is to offer each finished course in two ways: self-paced study with recordings, exercises, a project, and a defined course-question messaging window; or a guided run using those same materials with private instructor meetings and personal feedback. Learners build a small project themselves before exploring an optional agent-assisted extension and testing its results. The December Python pilot tests the guided format with Leon. Self-paced enrollment and later guided runs are not open yet.</p>
-            <p>Guided places would be limited by each instructor&apos;s available meeting hours, starting with five learners per instructor. As trained alumni join the teaching team, we could run more courses at the same time without reducing the individual support included in each guided place.</p>
-            <p>Adults are the audience for the invited pilot. We are also planning how future courses could serve teens with guardian involvement and appropriate support; details for younger learners will be developed separately.</p>
+            <div className="grid gap-6 sm:grid-cols-2">
+              <article className="border-t-2 border-[#c8bfb0] pt-4"><h3 className="text-lg font-bold text-slate-950">Self-paced · planned</h3><p className="mt-2 text-sm leading-6">Recordings, exercises, a project, and a defined course-question messaging window. Enrollment is not open yet.</p></article>
+              <article className="border-t-2 border-ruby-700 pt-4"><h3 className="text-lg font-bold text-slate-950">Guided · invited pilot first</h3><p className="mt-2 text-sm leading-6">The same materials with private instructor meetings and personal feedback. December&apos;s Python pilot tests this format with Leon; later runs are not open yet.</p></article>
+            </div>
+            <p className="text-sm leading-6">Build a small project yourself before exploring an optional agent-assisted extension and testing its results. Guided capacity starts with five learners per instructor and depends on available meeting hours. Trained alumni may teach later runs as the school grows.</p>
+            <p className="text-sm leading-6">The invited pilot is for adults. Future teen courses are being planned with guardian involvement and appropriate support; details for younger learners will be developed separately.</p>
           </div>
         </div>
       </section>

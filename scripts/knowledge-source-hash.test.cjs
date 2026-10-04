@@ -8,9 +8,9 @@ function loadTs(relativePath) {
   const filename = path.join(__dirname, '..', relativePath);
   const source = fs.readFileSync(filename, 'utf8');
   const output = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
-  const module = { exports: {} };
-  new Function('require', 'module', 'exports', output)(require, module, module.exports);
-  return module.exports;
+  const moduleUnderTest = { exports: {} };
+  new Function('require', 'module', 'exports', output)(require, moduleUnderTest, moduleUnderTest.exports);
+  return moduleUnderTest.exports;
 }
 
 const { knowledgeChunkId, knowledgeSourceHash, knowledgeUploadId } = loadTs('lib/knowledge-source-hash.ts');

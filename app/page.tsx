@@ -1,292 +1,75 @@
 import Link from "next/link"
 import Image from "next/image"
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Brain,
-  Code2,
-  GraduationCap,
-  Laptop,
-  Quote,
-  Rocket,
-  Users,
-} from "lucide-react"
+import { ArrowRight, ArrowUpRight, Code2, Quote } from "lucide-react"
 
 const graduateStories = [
-  {
-    quote: "CSG matched the effort I gave it. Trust the process and keep showing up.",
-    name: "Noah Peredo",
-    role: "Cohort 1 graduate",
-    initial: "N",
-  },
-  {
-    quote: "Now I constantly think about ways I can improve daily life by creating apps.",
-    name: "Jessica Fernandez",
-    role: "Cohort 1 graduate",
-    initial: "J",
-  },
-  {
-    quote: "The support, guidance, and encouragement throughout the program were second to none.",
-    name: "Junior O’Brien",
-    role: "Cohort 2 graduate",
-    initial: "J",
-  },
-]
-
-const curriculum = [
-  {
-    icon: Code2,
-    label: "Full-stack foundation",
-    title: "Ruby, Rails & React",
-    copy: "Build responsive interfaces, production APIs, databases, authentication, and deployed applications.",
-  },
-  {
-    icon: Brain,
-    label: "AI engineering",
-    title: "Python, RAG & Agents",
-    copy: "Understand modern AI systems and build chatbots, retrieval workflows, prompts, evaluations, and agents.",
-  },
-  {
-    icon: Rocket,
-    label: "Professional practice",
-    title: "Ship Real Products",
-    copy: "Work with Git, code reviews, product constraints, deployment, presentations, and production-quality expectations.",
-  },
-]
-
-const projects = [
-  {
-    title: "HåfaGPT",
-    category: "Chamorro language learning",
-    image: "/images/HafaGPT-icon1.png",
-    href: "https://hafagpt.com",
-    surface: "bg-[#f4ede1]",
-  },
-  {
-    title: "Hafa Code",
-    category: "Student coding playground",
-    image: "/images/hafa-code-logo.png",
-    href: "https://code.shimizu-technology.com/",
-    surface: "bg-[#f8efe0]",
-  },
-  {
-    title: "CSG Learning Hub",
-    category: "School learning platform",
-    image: "/CSG-Logo.png",
-    href: "https://learn.codeschoolofguam.com",
-    surface: "bg-[#101827]",
-  },
+  { quote: "CSG matched the effort I gave it. Trust the process and keep showing up.", name: "Noah Peredo", role: "Cohort 1 graduate" },
+  { quote: "Now I constantly think about ways I can improve daily life by creating apps.", name: "Jessica Fernandez", role: "Cohort 1 graduate" },
+  { quote: "The support, guidance, and encouragement throughout the program were second to none.", name: "Junior O’Brien", role: "Cohort 2 graduate" },
 ]
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] text-white">
-        <div className="csg-grid absolute inset-0 opacity-30" />
-        <div className="absolute -right-32 top-10 h-[420px] w-[420px] rounded-full bg-ruby-600/15 blur-[120px]" />
-        <div className="container relative z-10 mx-auto grid gap-12 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:py-28">
+    <div className="bg-[#faf7f0]">
+      <section className="border-b border-[#ded7c9]">
+        <div className="container mx-auto grid gap-10 px-4 py-12 sm:px-8 md:py-16 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16 lg:py-20">
           <div>
-            <div className="csg-label flex items-center gap-3 text-ruby-300">
-              <span className="h-px w-8 bg-ruby-400" /> Focused courses and a full bootcamp
+            <p className="csg-label text-ruby-700">Learn to code · Taught from Guam</p>
+            <h1 className="mt-5 max-w-xl font-serif text-[2.75rem] font-medium leading-[1.05] tracking-[-0.035em] sm:text-6xl lg:text-[4.25rem]">Learn to build software that matters.</h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">Start with a focused course and a useful project, or explore the full bootcamp for a longer path through software development.</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/courses" className="csg-button">Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <Link href="/programs" className="csg-button-secondary">Full bootcamp <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
             </div>
-            <h1 className="mt-6 max-w-4xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl lg:text-[5.15rem]">
-              Learn to build software that matters.
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-slate-300 md:text-xl">
-              Start with a focused course and a useful project, or take the full bootcamp for a longer path through software development. We teach from Guam and are designing future online courses for learners wherever they live.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/courses"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-ruby-500"
-              >
-                Explore focused courses <ArrowRight className="h-4 w-4" />
-              </a>
-              <Link href="/programs" className="inline-flex items-center justify-center gap-2 rounded-md border border-white/15 bg-white/5 px-6 py-3.5 font-semibold text-white transition hover:bg-white/10">
-                Explore the full bootcamp <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-            <p className="mt-5 text-sm text-slate-400">Beginners are welcome. December&apos;s Python pilot is for invited adults; later public courses are being prepared.</p>
+            <p className="mt-4 max-w-lg text-sm leading-6 text-slate-600">December&apos;s Python pilot is for invited adults. Public courses are being prepared.</p>
           </div>
-
-          <aside className="space-y-4" aria-label="Choose a learning path">
-            <Link href="/courses" className="group block border border-ruby-400/40 bg-ruby-700/20 p-6 transition hover:border-ruby-300 hover:bg-ruby-700/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">
-              <span className="csg-label text-ruby-200">01 · Focused courses</span>
-              <h2 className="mt-3 font-serif text-3xl font-semibold">Build one skill at a time</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">We&apos;re developing self-paced study alongside guided runs with private help and feedback. Python Fundamentals begins with an invited December pilot.</p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white">View the course path <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" /></span>
-            </Link>
-            <Link href="/programs" className="group block border border-white/15 bg-white/[0.045] p-6 transition hover:border-white/40 hover:bg-white/[0.08] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:p-7">
-              <span className="csg-label text-slate-300">02 · Full bootcamp</span>
-              <h2 className="mt-3 font-serif text-3xl font-semibold">Go deeper across the stack</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">Sustained instruction, integrated projects, reviews, collaboration, and career preparation. The March 2026 cohort is closed to new students.</p>
-              <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white">Explore the program <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" /></span>
-            </Link>
+          <aside className="overflow-hidden rounded-xl border border-[#ded7c9] bg-white" aria-labelledby="python-preview-title">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#e7e1d6] px-6 py-4 text-sm"><strong>Python Fundamentals</strong><span className="rounded-full bg-[#f7eeeb] px-3 py-1 text-xs font-bold text-ruby-800">Invited pilot</span></div>
+            <div className="p-6 sm:p-8">
+              <h2 id="python-preview-title" className="font-serif text-3xl font-medium leading-tight sm:text-4xl">Start with Python.<br />Build something useful.</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-600">Learn the basics, practice in your browser, and build a program that summarizes expenses.</p>
+              <div className="mt-5 rounded-lg bg-[#17202b] p-5 font-mono text-[13px] leading-7 text-slate-100" aria-label="Sample output from the Python expense-summary program">
+                <p className="text-ruby-200">$ python expense_summary.py</p>
+                <p>Total: $118</p><p>Food: $61 · Transport: $48 · Supplies: $9</p>
+                <p className="text-emerald-200">Under budget by $2</p>
+              </div>
+              <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600"><li>3 guided weeks</li><li>Beginner course</li><li>Weekly private Zoom hour</li></ul>
+              <Link href="/courses/python-fundamentals" className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ruby-800 underline underline-offset-4">Explore Python Fundamentals <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            </div>
           </aside>
         </div>
+        <div className="container mx-auto px-4 pb-6 sm:px-8">
+          <div className="flex flex-col gap-2 border-t border-[#ded7c9] pt-5 text-sm leading-6 text-slate-600 sm:flex-row sm:gap-6"><strong className="shrink-0 text-ruby-800">Current status</strong><p>December Python: invited pilot. Other courses: in development. March 2026 bootcamp: closed. Future bootcamp dates: unannounced.</p></div>
+        </div>
       </section>
 
-      <section className="border-b border-slate-200 bg-[#f1ede5] py-14 md:py-20">
+      <section className="py-14 md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <div><p className="csg-label text-ruby-700">Graduate work</p><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">See what graduates built.</h2><Link href="/projects" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4">Watch capstone presentations <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
+          <div>
+            <p className="max-w-2xl text-lg leading-8 text-slate-600">Graduates present their own applications and explain the decisions behind them. Explore their capstones, an alumni team project, and the production systems students learn around.</p>
+            <div className="mt-7 grid grid-cols-3 gap-3 border-y border-[#ded7c9] py-5">{[["11", "graduates"], ["100%", "completion"], ["2", "cohorts"]].map(([value, label]) => <div key={label}><strong className="text-3xl text-slate-950">{value}</strong><p className="mt-1 text-xs font-semibold text-slate-600">{label}</p></div>)}</div>
+            <p className="mt-4 text-xs leading-6 text-slate-600">Results from the first two cohorts, completed in 2025: everyone who started those cohorts completed the program. The March 2026 cohort is not included.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[#ded7c9] bg-white py-14 md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14">
-          <figure className="overflow-hidden border border-slate-200 bg-white">
-            <Image src="/images/uog-intro-to-ai.jpeg" alt="University of Guam staff attending a practical AI workshop" width={1280} height={960} className="aspect-[16/10] w-full object-cover" />
-            <figcaption className="px-4 py-3 text-xs text-slate-600">Leon teaching University of Guam staff at a July 2025 AI workshop.</figcaption>
-          </figure>
-          <div>
-            <p className="csg-label text-ruby-700">Learning with people</p>
-            <h2 className="mt-4 max-w-xl font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Guidance you can bring your own work to.</h2>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-slate-700">The school grew from Leon&apos;s experience learning to code with an instructor. Our guided offers make room for questions, feedback, and the practice it takes to understand what you build.</p>
-            <Link href="/about" className="mt-6 inline-flex min-h-12 items-center gap-2 font-semibold text-ruby-800 underline underline-offset-4">Meet the school <ArrowRight className="h-4 w-4" /></Link>
-          </div>
+          <figure className="overflow-hidden rounded-xl border border-[#ded7c9]"><Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending a practical AI workshop" width={1280} height={960} sizes="(min-width: 1024px) 600px, 100vw" className="aspect-[16/10] w-full object-cover" /><figcaption className="px-4 py-3 text-xs leading-5 text-slate-600">Leon teaching University of Guam staff at a July 2025 AI workshop.</figcaption></figure>
+          <div><p className="csg-label text-ruby-700">Practice with guidance</p><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">Bring your questions.<br />Build your understanding.</h2><p className="mt-5 text-lg leading-8 text-slate-600">The school grew from Leon&apos;s experience learning with an instructor. Our guided offers make room for questions, feedback, and the practice it takes to understand what you build.</p><Link href="/about" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4">Meet the school <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
         </div>
       </section>
 
-      <section className="border-b border-slate-200 bg-white py-14 md:py-20">
-        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-          <div>
-            <p className="csg-label text-ruby-700">New focused course · December invited pilot</p>
-            <h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Start with Python. Finish with a program of your own.</h2>
-          </div>
-          <div className="lg:pb-1">
-            <p className="max-w-xl text-lg leading-8 text-slate-700">A three-week beginner course with short lessons, browser coding, and one private Zoom hour with Leon each week. We&apos;re testing it with a small invited group before opening it more widely.</p>
-            <Link href="/courses/python-fundamentals" className="mt-6 inline-flex min-h-12 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Explore Python Fundamentals <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
-            <div className="mt-6 border border-slate-200 bg-[#0b1220] p-5 font-mono text-sm leading-relaxed text-slate-200" aria-label="Sample output from the Python program learners build">
-              <span className="text-ruby-300">$ python expense_summary.py</span><br />
-              Total: $118 · Food: $61 · Transport: $48<br />
-              <span className="text-emerald-300">Under budget by $2</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-slate-200 bg-white">
-        <div className="container mx-auto grid grid-cols-3 px-4 py-6 text-center sm:px-8">
-          {[["11", "graduates"], ["100%", "completion"], ["2", "cohorts"]].map(([value, label]) => (
-            <div key={label} className="border-r border-slate-200 px-2 last:border-r-0">
-              <div className="text-2xl font-bold text-slate-950 md:text-3xl">{value}</div>
-              <div className="csg-label mt-1 text-xs text-slate-600">{label}</div>
-            </div>
-          ))}
-          <p className="col-span-3 mt-5 text-left text-xs leading-relaxed text-slate-600">Results from the first two cohorts, completed in 2025: 11 graduates, and everyone who started those cohorts completed the program. The March 2026 cohort is not included.</p>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-24 lg:py-28">
+      <section className="py-14 md:py-20">
         <div className="container mx-auto px-4 sm:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-            <div>
-              <p className="csg-label text-ruby-700">Graduate stories</p>
-              <h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">A small program with personal support.</h2>
-            </div>
-            <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">Students have joined us from high school, career transitions, and entirely different industries. The common thread is consistent effort and a willingness to build.</p>
-          </div>
-
-          <div className="mt-12 grid overflow-hidden rounded-xl border border-slate-200 bg-slate-200 lg:grid-cols-3">
-            {graduateStories.map((story) => (
-              <article key={story.name} className="flex min-h-72 flex-col bg-white p-7 md:p-8">
-                <Quote className="h-6 w-6 text-ruby-600" />
-                <blockquote className="mt-6 flex-1 font-serif text-2xl leading-snug text-slate-900">“{story.quote}”</blockquote>
-                <div className="mt-8 flex items-center gap-3 border-t border-slate-100 pt-5">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-sm font-bold text-white">{story.initial}</div>
-                  <div><div className="font-bold text-slate-900">{story.name}</div><div className="text-xs text-slate-500">{story.role}</div></div>
-                </div>
-              </article>
-            ))}
-          </div>
+          <p className="csg-label text-ruby-700">Graduate stories</p><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">Learning, in their words.</h2>
+          <div className="mt-8 grid gap-8 lg:grid-cols-3">{graduateStories.map((story) => <figure key={story.name} className="border-t border-[#ded7c9] pt-6"><Quote className="h-5 w-5 text-ruby-700" aria-hidden="true" /><blockquote className="mt-4 font-serif text-2xl leading-snug text-slate-950">“{story.quote}”</blockquote><figcaption className="mt-5 text-sm font-bold text-slate-950">{story.name}<span className="mt-1 block text-xs font-normal text-slate-600">{story.role}</span></figcaption></figure>)}</div>
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white py-16 md:py-24 lg:py-28">
-        <div className="container mx-auto px-4 sm:px-8">
-          <div className="max-w-3xl">
-            <p className="csg-label text-ruby-700">Full bootcamp curriculum</p>
-            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">Fundamentals first. AI with understanding.</h2>
-            <p className="mt-5 text-lg leading-relaxed text-slate-600">You will learn to think through software problems before using AI to accelerate the work. Every tool is introduced with context, constraints, and responsibility.</p>
-          </div>
-
-          <div className="mt-12 divide-y divide-slate-200 border-y border-slate-200">
-            {curriculum.map((item, index) => {
-              const Icon = item.icon
-              return (
-                <article key={item.title} className="grid gap-4 py-7 md:grid-cols-[70px_0.75fr_1.25fr] md:items-start md:gap-8 md:py-9">
-                  <div className="flex items-center gap-3"><span className="csg-label text-[10px] text-slate-400">0{index + 1}</span><Icon className="h-5 w-5 text-ruby-600 md:hidden" /></div>
-                  <div><div className="csg-label text-[10px] text-ruby-700">{item.label}</div><h3 className="mt-2 text-2xl font-bold text-slate-950">{item.title}</h3></div>
-                  <p className="max-w-2xl leading-relaxed text-slate-600">{item.copy}</p>
-                </article>
-              )
-            })}
-          </div>
-          <Link href="/curriculum" className="mt-8 inline-flex items-center gap-2 font-bold text-ruby-700">Explore the full curriculum <ArrowRight className="h-4 w-4" /></Link>
-        </div>
-      </section>
-
-      <section className="bg-[#0b1220] py-16 text-white md:py-24 lg:py-28">
-        <div className="container mx-auto px-4 sm:px-8">
-          <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
-            <div>
-              <p className="csg-label text-ruby-300">The learning journey</p>
-              <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight md:text-5xl">Build capability in deliberate stages.</h2>
-            <p className="mt-5 leading-relaxed text-slate-300">AI becomes more useful as your own understanding grows. The full bootcamp is structured around that progression.</p>
-            </div>
-            <div className="divide-y divide-white/10 border-y border-white/10">
-              {[
-                ["01", "Foundation", "Code manually. Learn the terminal, Git, web fundamentals, Ruby, and problem solving."],
-                ["02", "Full-stack", "Build Rails APIs, React interfaces, PostgreSQL databases, and deployed applications."],
-                ["03", "AI engineering", "Add Python, model APIs, retrieval, agents, prompts, and evaluation workflows."],
-                ["04", "Capstone", "Design, build, explain, and present a complete product you can stand behind."],
-              ].map(([number, title, copy]) => (
-                <div key={number} className="grid gap-2 py-5 sm:grid-cols-[70px_150px_1fr] sm:gap-6">
-                  <span className="csg-label text-[10px] text-ruby-300">{number}</span><strong>{title}</strong><span className="text-sm leading-relaxed text-slate-400">{copy}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-24 lg:py-28">
-        <div className="container mx-auto px-4 sm:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-            <div><p className="csg-label text-ruby-700">Real production context</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-6xl">Learn around products people use.</h2></div>
-            <p className="max-w-2xl text-lg leading-relaxed text-slate-600 lg:justify-self-end">Through our partnership with Shimizu Technology, students see how professional software is scoped, built, reviewed, and supported beyond the classroom.</p>
-          </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {projects.map((project) => (
-              <a key={project.title} href={project.href} target="_blank" rel="noopener noreferrer" className="group overflow-hidden rounded-xl border border-slate-200 bg-white">
-                <div className={`flex aspect-[4/3] items-center justify-center p-12 ${project.surface}`}><Image src={project.image} alt={project.title} width={220} height={220} className="h-full w-full object-contain transition duration-500 group-hover:scale-105" /></div>
-                <div className="flex items-end justify-between gap-4 p-5"><div><h3 className="text-lg font-bold text-slate-950">{project.title}</h3><p className="mt-1 text-sm text-slate-500">{project.category}</p></div><ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-ruby-600" /></div>
-              </a>
-            ))}
-          </div>
-          <Link href="/projects" className="mt-8 inline-flex items-center gap-2 font-bold text-ruby-700">See graduate presentations and projects <ArrowRight className="h-4 w-4" /></Link>
-        </div>
-      </section>
-
-      <section className="border-y border-slate-200 bg-white py-16 md:py-24 lg:py-28">
-        <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          <div>
-            <p className="csg-label text-ruby-700">2026 full bootcamp tuition</p>
-            <h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-6xl">$7,500</h2>
-            <p className="mt-3 text-lg text-slate-600">This was the tuition for the March 2026 cohort, which is closed to new students. The next full-cohort price and dates have not been announced. Focused courses have separate terms.</p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              [GraduationCap, "Under six months", "Live teaching and structured practice"],
-              [Laptop, "Learning resources", "Materials and access vary by offer"],
-              [Users, "Professional practice", "Collaboration, review, and project work"],
-            ].map(([Icon, title, copy]) => {
-              const FeatureIcon = Icon as typeof GraduationCap
-              return <div key={String(title)} className="border-t-2 border-ruby-600 pt-5"><FeatureIcon className="h-5 w-5 text-ruby-700" /><h3 className="mt-4 font-bold text-slate-950">{String(title)}</h3><p className="mt-2 text-sm leading-relaxed text-slate-500">{String(copy)}</p></div>
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-ruby-700 py-16 text-white md:py-20">
-        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div><p className="csg-label text-ruby-100">Future cohorts</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Your first line of code can start something bigger.</h2><p className="mt-4 max-w-2xl text-ruby-100">The March 2026 cohort is closed to new students. Join the update list to hear about the next opportunity.</p></div>
-          <a href="/interest" className="inline-flex items-center justify-center gap-2 rounded-md bg-white px-6 py-3.5 font-bold text-ruby-800 transition hover:-translate-y-0.5">Join the interest list <ArrowRight className="h-4 w-4" /></a>
-        </div>
+      <section className="bg-[#17202b] py-14 text-white md:py-20">
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center"><div><Code2 className="h-6 w-6 text-ruby-200" aria-hidden="true" /><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">Find your starting point.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-300">Explore the courses being prepared and tell us what you&apos;d like to learn. For the longer program, join the separate bootcamp updates list; dates and tuition are unannounced.</p></div><div className="flex flex-col gap-3 sm:flex-row lg:flex-col"><Link href="/courses#course-interest" className="csg-button">Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link><Link href="/interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/30 px-5 py-3 font-bold text-white hover:bg-white/10">Bootcamp updates <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link></div></div>
       </section>
     </div>
   )

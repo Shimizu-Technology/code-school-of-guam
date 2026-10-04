@@ -26,7 +26,7 @@ interface SimpleMobileNavProps {
 
 export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProps) {
   const [showNav, setShowNav] = useState(false)
-  
+
   // Close the mobile nav after clicking a link
   const closeNav = () => {
     setShowNav(false)
@@ -40,8 +40,8 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent 
-        side="right" 
+      <SheetContent
+        side="right"
         className="bg-slate-900 text-white p-0 w-[85%] sm:max-w-md"
       >
         <SheetHeader className="p-4 border-b border-slate-800">
@@ -50,7 +50,7 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
             Navigation links for Code School of Guam
           </SheetDescription>
         </SheetHeader>
-        
+
         <div className="py-4 px-2 overflow-y-auto max-h-[calc(100vh-80px)]">
           <div className="flex flex-col space-y-1">
             {navItems.map((item, index) => (
@@ -68,7 +68,7 @@ export function SimpleMobileNav({ navItems, activeSection }: SimpleMobileNavProp
               </Link>
             ))}
           </div>
-          
+
           <div className="mt-8 pt-4 border-t border-slate-800">
             <a
               href="/interest"

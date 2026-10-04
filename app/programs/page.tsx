@@ -10,22 +10,22 @@ const differentiators = [
 export default function ProgramsPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] text-white">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] text-slate-950">
+
         <div className="container relative mx-auto grid gap-10 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:py-28">
           <div>
-            <p className="csg-label text-ruby-300">The full CSG bootcamp</p>
+            <p className="csg-label text-ruby-700">The full CSG bootcamp</p>
             <h1 className="mt-6 max-w-3xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl">Build software across the whole stack.</h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Our full program develops skill through sustained instruction, practice, integrated projects, collaboration, and review. It is a different commitment from a focused three-week course.</p>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">Our full program develops skill through sustained instruction, practice, integrated projects, collaboration, and review. It is a different commitment from a focused three-week course.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/curriculum" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Explore the curriculum <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
-              <Link href="/interest" className="inline-flex min-h-12 items-center gap-2 rounded-md border border-white/20 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Next cohort updates</Link>
+              <Link href="/curriculum" className="inline-flex min-h-12 items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Explore the curriculum <ArrowRight className="h-5 w-5" aria-hidden="true" /></Link>
+              <Link href="/interest" className="inline-flex min-h-12 items-center gap-2 rounded-md border border-slate-300 px-6 py-3 font-bold text-slate-950 transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Next cohort updates</Link>
             </div>
           </div>
-          <aside className="border-l-2 border-ruby-500 bg-white/[0.045] p-6 sm:p-8">
-            <p className="csg-label text-ruby-300">Enrollment status</p>
+          <aside className="rounded-xl border border-[#ded7c9] border-l-4 border-l-ruby-700 bg-white p-6 sm:p-8">
+            <p className="csg-label text-ruby-700">Enrollment status</p>
             <h2 className="mt-3 font-serif text-3xl font-semibold">The March 2026 cohort is closed to new students.</h2>
-            <p className="mt-4 leading-7 text-slate-300">Cohort 3 began March 2, 2026. Applications for that cohort are closed. We have not announced dates, tuition, or a staffed schedule for the next full bootcamp cohort.</p>
+            <p className="mt-4 leading-7 text-slate-600">Cohort 3 began March 2, 2026. Applications for that cohort are closed. We have not announced dates, tuition, or a staffed schedule for the next full bootcamp cohort.</p>
           </aside>
         </div>
       </section>

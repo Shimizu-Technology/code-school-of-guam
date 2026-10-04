@@ -34,13 +34,13 @@ const phases = [
 export default function CurriculumPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] py-16 text-white md:py-24">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] py-16 text-slate-950 md:py-24">
+
         <div className="container relative mx-auto px-4 sm:px-8">
-          <p className="csg-label text-ruby-300">The full bootcamp curriculum</p>
+          <p className="csg-label text-ruby-700">The full bootcamp curriculum</p>
           <h1 className="mt-5 max-w-4xl font-serif text-5xl font-semibold leading-tight md:text-7xl">Fundamentals first. Then the full stack.</h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">The March 2026 bootcamp connected programming, web development, and AI through projects that grew in scope. This is the original curriculum outline for that closed cohort; a future cohort will publish its own schedule and terms.</p>
-          <Link href="/programs" className="mt-7 inline-flex items-center gap-2 font-semibold text-white underline underline-offset-4">See the full bootcamp <ArrowRight className="h-4 w-4" /></Link>
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">The March 2026 bootcamp connected programming, web development, and AI through projects that grew in scope. This is the original curriculum outline for that closed cohort; a future cohort will publish its own schedule and terms.</p>
+          <Link href="/programs" className="mt-7 inline-flex items-center gap-2 font-semibold text-ruby-800 underline underline-offset-4">See the full bootcamp <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </section>
 

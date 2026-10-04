@@ -23,18 +23,18 @@ const weeks = [
 export default function PythonFundamentalsPage() {
   return (
     <div className="bg-[#fbfaf7]">
-      <section className="relative overflow-hidden bg-[#0b1220] text-white">
-        <div className="csg-grid absolute inset-0 opacity-30" />
+      <section className="csg-page-hero relative overflow-hidden bg-[#faf7f0] text-slate-950">
+
         <div className="container relative mx-auto grid gap-10 px-4 py-16 sm:px-8 md:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-28">
           <div>
-            <p className="csg-label text-ruby-300">A focused course from Code School of Guam</p>
+            <p className="csg-label text-ruby-700">A focused course from Code School of Guam</p>
             <h1 className="mt-6 max-w-3xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl">Your first useful Python program starts here.</h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">Three guided weeks, short lessons you can revisit, and a private hour with Leon each week. Write code in your browser and finish an expense-summary program you can explain yourself.</p>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">Three guided weeks, short lessons you can revisit, and a private hour with Leon each week. Write code in your browser and finish an expense-summary program you can explain yourself.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></a>
-              <a href="#course-map" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/20 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">See what you&apos;ll build <ArrowDown className="h-5 w-5" aria-hidden="true" /></a>
+              <a href="#course-map" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-slate-300 px-6 py-3 font-bold text-slate-950 transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">See what you&apos;ll build <ArrowDown className="h-5 w-5" aria-hidden="true" /></a>
             </div>
-            <p className="mt-5 text-sm text-slate-400">The December 2026 invited pilot is capped at five learners because each person gets three private teaching hours. Public enrollment is not open yet.</p>
+            <p className="mt-5 text-sm text-slate-600">The December 2026 invited pilot is capped at five learners because each person gets three private teaching hours. Public enrollment is not open yet.</p>
           </div>
           <div className="border border-white/15 bg-[#111c2c] p-5 shadow-[18px_18px_0_rgba(128,18,36,0.23)] sm:p-7" aria-label="Sample Python expense summary output">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 text-xs text-slate-400"><span className="font-mono">expense_summary.py</span><Code2 className="h-4 w-4 text-ruby-300" aria-hidden="true" /></div>

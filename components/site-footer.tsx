@@ -11,7 +11,7 @@ const footerLinks = [
   ["Internship", "/internship"],
   ["About", "/about"],
   ["FAQ", "/faq"],
-  ["Next Cohort Interest", "/interest"],
+  ["Bootcamp updates", "/interest"],
 ]
 
 export function SiteFooter() {
@@ -25,16 +25,16 @@ export function SiteFooter() {
             <a href="https://shimizu-technology.com" target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ruby-300">In partnership with Shimizu Technology <ArrowUpRight className="h-4 w-4" /></a>
           </div>
           <div>
-            <p className="csg-label text-[10px] text-slate-500">Explore</p>
+            <p className="csg-label text-[10px] text-slate-400">Explore</p>
             <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 text-sm">{footerLinks.map(([label, href]) => <Link key={href} href={href} className="text-slate-300 hover:text-white">{label}</Link>)}</div>
           </div>
           <div>
-            <p className="csg-label text-[10px] text-slate-500">Contact</p>
+            <p className="csg-label text-[10px] text-slate-400">Contact</p>
             <div className="mt-4 space-y-3 text-sm"><a href="mailto:codeschoolofguam@gmail.com" className="flex items-center gap-2 text-slate-300 hover:text-white"><Mail className="h-4 w-4 text-ruby-400" />codeschoolofguam@gmail.com</a><a href="tel:+16714830219" className="flex items-center gap-2 text-slate-300 hover:text-white"><Phone className="h-4 w-4 text-ruby-400" />(671) 483-0219</a></div>
             <Link href="/courses" className="mt-5 inline-flex items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-ruby-500">Explore courses <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
         </div>
-        <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:justify-between"><span>© Code School of Guam</span><span>Built in Guam</span></div>
+        <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row sm:justify-between"><span>© Code School of Guam</span><span>Built in Guam</span></div>
       </div>
     </footer>
   )

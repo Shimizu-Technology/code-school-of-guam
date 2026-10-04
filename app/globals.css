@@ -1,15 +1,26 @@
-/* 
-  1) Optionally import a Google Font (here, "Inter") for a more modern look.
-  2) Keep your existing tailwind base, components, and utilities. 
-  3) Tweak body typography (font-family, line-height, base font-size, etc.).
-  4) Add subtle link hover transitions or styles if desired.
-*/
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/fonts/manrope-latin-variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('/fonts/newsreader-latin-variable.woff2') format('woff2');
+}
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@utility container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
 
 .skip-link {
   position: fixed;
@@ -29,7 +40,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 42 50% 96%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -38,7 +49,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 359 58% 39%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -53,9 +64,9 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
+    --border: 39 24% 82%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 359 58% 39%;
 
     --radius: 0.5rem;
   }
@@ -100,6 +111,7 @@
   * {
     @apply border-border;
   }
+  button:not(:disabled), [role="button"] { cursor: pointer; }
 
   /* Body with a modern sans-serif font, slightly larger base text */
   body {
@@ -515,3 +527,27 @@
 .stagger-delay-6 { animation-delay: 0.6s; }
 .stagger-delay-7 { animation-delay: 0.7s; }
 .stagger-delay-8 { animation-delay: 0.8s; }
+
+/* Shared public-site controls and restrained editorial page openings. */
+@layer components {
+  .csg-button {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-700 px-5 py-3 font-bold text-white transition-colors hover:bg-ruby-800;
+  }
+  .csg-button-secondary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-[#c8bfb0] px-5 py-3 font-bold text-slate-950 transition-colors hover:bg-white;
+  }
+  .csg-page-hero {
+    @apply border-b border-[#ded7c9];
+  }
+}
+.csg-page-hero { padding-block: clamp(2.5rem, 5vw, 4.5rem); }
+.csg-page-hero > .container { padding-block: 0; }
+.csg-page-hero h1 { font-size: clamp(2.5rem, 4.6vw, 4rem); line-height: 1.08; font-weight: 500; }
+.csg-page-hero .csg-grid { display: none; }
+a:focus-visible, button:focus-visible, select:focus-visible, textarea:focus-visible, input:focus-visible {
+  outline: 3px solid #9c292b; outline-offset: 4px;
+}
+section[id] { scroll-margin-top: 6rem; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll, .animate-stagger { opacity: 1; transform: none; }
+}
