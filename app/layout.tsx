@@ -64,6 +64,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  // Lets the chat launcher and window use env(safe-area-inset-*) on notched phones.
+  viewportFit: 'cover',
   themeColor: '#faf7f0',
 }
 
@@ -138,7 +140,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </main>
             <SiteFooter />
           </div>
-          {/* Chatbot - fixed position in bottom-left corner */}
+          {/* Chatbot - fixed position in the bottom-right corner */}
           <ChatButton />
         </PostHogProvider>
       </body>

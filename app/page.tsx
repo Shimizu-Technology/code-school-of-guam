@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ArrowUpRight, Code2, Quote } from "lucide-react"
+import { ArrowRight, Code2, Quote } from "lucide-react"
 
 const graduateStories = [
   { quote: "CSG matched the effort I gave it. Trust the process and keep showing up.", name: "Noah Peredo", role: "Cohort 1 graduate" },
@@ -19,7 +19,7 @@ export default function HomePage() {
             <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">Start with a focused course and a useful project, or explore the full bootcamp for a longer path through software development.</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/courses" className="csg-button">Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-              <Link href="/programs" className="csg-button-secondary">Full bootcamp <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <Link href="/programs" className="csg-button-secondary">Full bootcamp <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
             </div>
             <p className="mt-4 max-w-lg text-sm leading-6 text-slate-600">December&apos;s Python pilot is for invited adults. Public courses are being prepared.</p>
           </div>
@@ -56,7 +56,7 @@ export default function HomePage() {
 
       <section className="border-y border-[#ded7c9] bg-white py-14 md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14">
-          <figure className="overflow-hidden rounded-xl border border-[#ded7c9]"><Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending a practical AI workshop" width={1280} height={960} sizes="(min-width: 1024px) 600px, 100vw" className="aspect-[16/10] w-full object-cover" /><figcaption className="px-4 py-3 text-xs leading-5 text-slate-600">Leon teaching University of Guam staff at a July 2025 AI workshop.</figcaption></figure>
+          <figure className="overflow-hidden rounded-xl border border-[#ded7c9]"><Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending a practical AI workshop" width={1280} height={960} quality={60} sizes="(min-width: 1024px) 600px, 100vw" className="aspect-[16/10] w-full object-cover" /><figcaption className="px-4 py-3 text-xs leading-5 text-slate-600">Leon teaching University of Guam staff at a July 2025 AI workshop.</figcaption></figure>
           <div><p className="csg-label text-ruby-700">Practice with guidance</p><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">Bring your questions.<br />Build your understanding.</h2><p className="mt-5 text-lg leading-8 text-slate-600">The school grew from Leon&apos;s experience learning with an instructor. Our guided offers make room for questions, feedback, and the practice it takes to understand what you build.</p><Link href="/about" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4">Meet the school <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div>
         </div>
       </section>
@@ -69,7 +69,7 @@ export default function HomePage() {
       </section>
 
       <section className="bg-[#17202b] py-14 text-white md:py-20">
-        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center"><div><Code2 className="h-6 w-6 text-ruby-200" aria-hidden="true" /><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">Find your starting point.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-300">Explore the courses being prepared and tell us what you&apos;d like to learn. For the longer program, join the separate bootcamp updates list; dates and tuition are unannounced.</p></div><div className="flex flex-col gap-3 sm:flex-row lg:flex-col"><Link href="/courses#course-interest" className="csg-button">Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link><Link href="/interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/30 px-5 py-3 font-bold text-white hover:bg-white/10">Bootcamp updates <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link></div></div>
+        <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center"><div><Code2 className="h-6 w-6 text-ruby-200" aria-hidden="true" /><h2 className="mt-4 font-serif text-4xl font-medium leading-tight md:text-5xl">Find your starting point.</h2><p className="mt-4 max-w-xl leading-7 text-slate-300">Explore the courses being prepared and tell us what you&apos;d like to learn. For the longer program, join the separate bootcamp updates list; dates and tuition are unannounced.</p></div><div className="flex flex-col gap-3 sm:flex-row lg:flex-col"><Link href="/courses#course-interest" className="csg-button">Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link><Link href="/interest" className="csg-press inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/30 px-5 py-3 font-bold text-white hover:bg-white/10 active:bg-white/20">Bootcamp updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link></div></div>
       </section>
     </div>
   )

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, Bot, User, Loader2, X, Maximize2, Minimize2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Message {
   role: "user" | "assistant";
@@ -162,41 +163,41 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="csg-chat-title"
-      className={`fixed bottom-20 left-4 right-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl transition-all duration-300 ease-out ${
+      className={`csg-chat-window fixed left-4 right-4 z-50 flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl ${
         isExpanded
           ? "sm:left-auto sm:h-[600px] sm:w-[600px]"
           : "sm:left-auto sm:h-[500px] sm:w-[400px]"
-      } h-[min(500px,calc(100dvh-6rem))] sm:max-h-[calc(100dvh-6rem)]`}
+      } sm:max-h-[calc(100dvh-6rem)]`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between bg-ruby-600 px-4 py-3 text-white">
+      <div className="flex items-center justify-between bg-ruby-600 py-1.5 pl-4 pr-1.5 text-white">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
             <Bot className="h-4 w-4" />
           </div>
           <div>
             <h3 id="csg-chat-title" className="text-sm font-semibold leading-tight">CSG Assistant</h3>
-            <p className="text-[11px] text-ruby-100">Ask me anything!</p>
+            <p className="text-xs text-ruby-100">Ask me anything!</p>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="hidden rounded-full p-1.5 hover:bg-ruby-700 transition-colors sm:flex items-center justify-center"
+            className="csg-press hidden h-11 w-11 items-center justify-center rounded-full hover:bg-ruby-700 active:bg-ruby-800 sm:flex"
             aria-label={isExpanded ? "Shrink chat" : "Expand chat"}
           >
             {isExpanded ? (
-              <Minimize2 className="h-4 w-4" />
+              <Minimize2 className="h-4 w-4" aria-hidden="true" />
             ) : (
-              <Maximize2 className="h-4 w-4" />
+              <Maximize2 className="h-4 w-4" aria-hidden="true" />
             )}
           </button>
           <button
             onClick={onClose}
-            className="rounded-full p-1.5 hover:bg-ruby-700 transition-colors"
+            className="csg-press flex h-11 w-11 items-center justify-center rounded-full hover:bg-ruby-700 active:bg-ruby-800"
             aria-label="Close chat"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -225,9 +226,9 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
               )}
             </div>
 
-            {/* Message bubble */}
+            {/* Message bubble: min-w-0 lets it shrink; long words wrap and code/tables scroll inside. */}
             <div
-              className={`overflow-hidden ${
+              className={`min-w-0 [overflow-wrap:anywhere] ${
                 isExpanded ? "max-w-[85%]" : "max-w-[80%]"
               } ${
                 message.role === "user"
@@ -238,13 +239,14 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
               {message.role === "assistant" ? (
                 <div className="chat-markdown text-[13px] leading-relaxed">
                   <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
                     components={{
                       a: ({ href, children }) => (
                         <a
                           href={href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-ruby-600 underline underline-offset-2 hover:text-ruby-700 break-all"
+                          className="text-ruby-600 underline underline-offset-2 hover:text-ruby-700 break-words"
                         >
                           {children}
                         </a>
@@ -272,6 +274,28 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
                         <code className="rounded bg-slate-200 px-1 py-0.5 text-xs font-mono">
                           {children}
                         </code>
+                      ),
+                      pre: ({ children }) => (
+                        <pre className="my-2 max-w-full overflow-x-auto rounded-lg bg-slate-800 p-3 text-xs leading-relaxed text-slate-100 [overflow-wrap:normal] [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-inherit">
+                          {children}
+                        </pre>
+                      ),
+                      table: ({ children }) => (
+                        <div className="my-2 max-w-full overflow-x-auto rounded-lg border border-slate-200 bg-white">
+                          <table className="w-full border-collapse text-left text-xs [overflow-wrap:normal]">
+                            {children}
+                          </table>
+                        </div>
+                      ),
+                      th: ({ children }) => (
+                        <th className="border-b border-slate-200 bg-slate-100 px-2.5 py-1.5 font-semibold text-slate-900">
+                          {children}
+                        </th>
+                      ),
+                      td: ({ children }) => (
+                        <td className="border-t border-slate-100 px-2.5 py-1.5 align-top">
+                          {children}
+                        </td>
                       ),
                     }}
                   >
@@ -315,18 +339,18 @@ export function ChatWindow({ onClose }: ChatWindowProps) {
             placeholder="Type your message..."
             aria-label="Message the Code School assistant"
             disabled={isLoading}
-            className="flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm focus:border-ruby-500 focus:outline-none focus:ring-1 focus:ring-ruby-500 disabled:bg-slate-50 disabled:cursor-not-allowed"
+            className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-base placeholder:text-slate-500 focus:border-ruby-500 focus:outline-none focus:ring-1 focus:ring-ruby-500 disabled:bg-slate-50 disabled:cursor-not-allowed"
           />
           <button
             onClick={sendMessage}
             disabled={!input.trim() || isLoading}
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-ruby-600 text-white transition-all duration-200 hover:bg-ruby-700 hover:shadow-md disabled:bg-slate-300 disabled:cursor-not-allowed disabled:shadow-none"
+            className="csg-press flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ruby-600 text-white hover:bg-ruby-700 active:bg-ruby-800 disabled:bg-slate-300 disabled:cursor-not-allowed"
             aria-label="Send message"
           >
-            <Send className="h-4 w-4" />
+            <Send className="h-4 w-4" aria-hidden="true" />
           </button>
         </div>
-        <p className="mt-2 text-center text-[11px] text-slate-600">
+        <p className="mt-2 text-center text-xs text-slate-600">
           Powered by AI &middot; Answers based on CSG information
         </p>
       </div>

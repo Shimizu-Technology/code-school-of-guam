@@ -11,6 +11,7 @@ import { ArrowRight, Mail, Phone } from "lucide-react"
 
 const faqGroups = [
   {
+    id: "choosing-a-path",
     title: "Choosing a path",
     description: "Focused courses, the full bootcamp, and who each is for.",
     items: [
@@ -45,6 +46,7 @@ const faqGroups = [
     ],
   },
   {
+    id: "learning-and-support",
     title: "Learning and support",
     description: "Schedule, equipment, teaching, resources, and opportunities after the program.",
     items: [
@@ -95,11 +97,13 @@ const faqGroups = [
     ],
   },
   {
+    // /policies redirects here.
+    id: "tuition-and-policies",
     title: "Tuition and policies",
     description: "Prices and written terms for a specific course or cohort.",
     items: [
       {
-        question: "Why is the tuition set at $7,500?",
+        question: "What did the March 2026 bootcamp cost?",
         answer: "The $7,500 figure was tuition for the March 2026 full bootcamp cohort, which is closed to new students. The price for a future full cohort has not been announced. Focused courses have separate prices and terms when enrollment opens."
       },
       {
@@ -136,16 +140,16 @@ export default function FAQPage() {
 
       <div className="container mx-auto px-4 py-16 sm:px-8 md:py-24">
         {faqGroups.map((group) => (
-          <section key={group.title} className="grid gap-7 border-t border-slate-200 py-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+          <section key={group.title} id={group.id} aria-labelledby={`${group.id}-title`} className="grid grid-cols-1 gap-7 border-t border-slate-200 py-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
             <div>
-              <h2 className="font-serif text-3xl font-semibold text-slate-950 md:text-4xl">{group.title}</h2>
+              <h2 id={`${group.id}-title`} className="font-serif text-3xl font-semibold text-slate-950 md:text-4xl">{group.title}</h2>
               <p className="mt-3 max-w-sm leading-relaxed text-slate-600">{group.description}</p>
             </div>
-            <Accordion type="single" collapsible className="divide-y divide-slate-200 border-y border-slate-200">
+            <Accordion type="single" collapsible className="min-w-0 divide-y divide-slate-200 border-y border-slate-200">
               {group.items.map((faq) => (
                 <AccordionItem key={faq.question} value={faq.question} className="border-0">
-                  <AccordionTrigger className="py-5 text-left text-base font-semibold leading-snug text-slate-950 hover:no-underline hover:text-ruby-700 md:text-lg">{faq.question}</AccordionTrigger>
-                  <AccordionContent className="max-w-3xl pb-6 pr-7 text-base leading-relaxed text-slate-600">{faq.answer}</AccordionContent>
+                  <AccordionTrigger className="py-5 text-left text-base font-semibold leading-snug text-slate-950 [overflow-wrap:anywhere] hover:no-underline hover:text-ruby-700 md:text-lg">{faq.question}</AccordionTrigger>
+                  <AccordionContent className="max-w-prose pb-6 pr-7 text-base leading-relaxed text-slate-600 [overflow-wrap:anywhere]">{faq.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

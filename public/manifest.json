@@ -1,21 +1,24 @@
 {
   "name": "Code School of Guam",
-  "short_name": "CSG",
+  "short_name": "Code School",
+  "description": "Focused coding courses and a full software development bootcamp, taught from Guam.",
   "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
-  "description": "Guam's First Code School",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#faf7f0",
+  "theme_color": "#faf7f0",
   "icons": [
     {
-      "src": "/CSG-Logo.png",
+      "src": "/icons/csg-icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/CSG-Logo.png",
+      "src": "/icons/csg-icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

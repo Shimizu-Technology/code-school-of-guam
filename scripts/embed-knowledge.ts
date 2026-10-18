@@ -1,8 +1,8 @@
 /**
  * Knowledge Embedding Script
  * 
- * This script reads all markdown files from data/knowledge/,
- * chunks them, generates embeddings, and uploads to Pinecone.
+ * This script reads the reviewed files listed in ACTIVE_KNOWLEDGE_FILES from
+ * data/knowledge/ (never data/knowledge/archive/), chunks them, generates embeddings, and uploads to Pinecone.
  * 
  * Run with: npx tsx scripts/embed-knowledge.ts
  * Each reviewed source bundle uses one content-derived upload ID. Readers see

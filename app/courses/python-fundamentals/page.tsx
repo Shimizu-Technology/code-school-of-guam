@@ -70,7 +70,7 @@ export default function PythonFundamentalsPage() {
               <p className="csg-label text-ruby-700">Future ways to take this course</p>
               <h2 id="study-options-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">One course. Two levels of support.</h2>
             </div>
-            <p className="max-w-2xl leading-7 text-slate-700">Both planned options use the same beginner lessons, coding exercises, and expense-summary project. The December 2026 invited pilot tests the guided option first. Neither option is open for public enrollment yet.</p>
+            <p className="max-w-prose leading-7 text-slate-700">Both planned options use the same beginner lessons, coding exercises, and expense-summary project. The December 2026 invited pilot tests the guided option first. Neither option is open for public enrollment yet.</p>
           </div>
           <div className="mt-10 grid gap-px border border-slate-300 bg-slate-300 md:grid-cols-2">
             <article className="bg-[#fbfaf7] p-7 sm:p-9">
@@ -134,8 +134,9 @@ export default function PythonFundamentalsPage() {
             <p className="mt-8 text-sm text-slate-600">Looking for the full program? <Link href="/interest" className="font-bold text-ruby-700 underline underline-offset-4">Join the next cohort list</Link>.</p>
           </div>
           <div className="border-t-4 border-ruby-700 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] sm:p-8">
-            <p className="csg-label text-ruby-700">Python Fundamentals updates</p>
-            <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Tell us where to send them.</h3>
+            <p className="csg-label text-ruby-700">Python Fundamentals updates list</p>
+            <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Get Python Fundamentals updates</h3>
+            <p className="mt-3 text-sm leading-6 text-slate-600">Only for this course&apos;s future public run. It is not an application for the invited pilot.</p>
             <div className="mt-7"><PythonInterestForm /></div>
           </div>
         </div>

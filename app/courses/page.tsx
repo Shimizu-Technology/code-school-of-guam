@@ -34,6 +34,9 @@ export default function CoursesPage() {
             <p className="csg-label text-ruby-700">Code School of Guam courses</p>
             <h1 className="mt-6 max-w-3xl font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.045em] sm:text-6xl md:text-7xl">Choose a starting point. Keep building from there.</h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">Start with a language that interests you, then move into projects with data, interfaces, APIs, or AI. We teach online from Guam and are designing future courses for learners wherever they live.</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a href="#course-interest" className="csg-button">Get course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></a>
+            </div>
           </div>
           <div className="border-l-2 border-ruby-500 pl-6 text-sm leading-7 text-slate-600 sm:text-base">
             <p>Our first guided course is a five-learner Python pilot by invitation in December 2026. The other courses below are in development. Join the interest list to help us decide what to build and offer next.</p>
@@ -50,8 +53,8 @@ export default function CoursesPage() {
               <article className="border-t-2 border-[#c8bfb0] pt-4"><h3 className="text-lg font-bold text-slate-950">Self-paced · planned</h3><p className="mt-2 text-sm leading-6">Recordings, exercises, a project, and a defined course-question messaging window. Enrollment is not open yet.</p></article>
               <article className="border-t-2 border-ruby-700 pt-4"><h3 className="text-lg font-bold text-slate-950">Guided · invited pilot first</h3><p className="mt-2 text-sm leading-6">The same materials with private instructor meetings and personal feedback. December&apos;s Python pilot tests this format with Leon; later runs are not open yet.</p></article>
             </div>
-            <p className="text-sm leading-6">Build a small project yourself before exploring an optional agent-assisted extension and testing its results. Guided capacity starts with five learners per instructor and depends on available meeting hours. Trained alumni may teach later runs as the school grows.</p>
-            <p className="text-sm leading-6">The invited pilot is for adults. Future teen courses are being planned with guardian involvement and appropriate support; details for younger learners will be developed separately.</p>
+            <p className="max-w-prose text-sm leading-6">Build a small project yourself before exploring an optional agent-assisted extension and testing its results. Guided capacity starts with five learners per instructor and depends on available meeting hours. Trained alumni may teach later runs as the school grows.</p>
+            <p className="max-w-prose text-sm leading-6">The invited pilot is for adults. Future teen courses are being planned with guardian involvement and appropriate support; details for younger learners will be developed separately.</p>
           </div>
         </div>
       </section>
@@ -96,13 +99,13 @@ export default function CoursesPage() {
             {nextCourses.map((course, index) => <div key={course.title} className="grid gap-3 py-5 sm:grid-cols-[3rem_1fr] sm:gap-5"><span className="csg-label text-ruby-700">{String(index + 4).padStart(2, "0")}</span><div><div className="flex flex-wrap items-baseline justify-between gap-2"><h3 className="text-xl font-bold text-slate-950">{course.title}</h3><span className="text-xs font-bold uppercase tracking-wider text-slate-500">In development</span></div><p className="mt-2 text-sm text-slate-500">Recommended: {course.prerequisite}</p><p className="mt-2 leading-6 text-slate-600">{course.project}</p></div></div>)}
           </div>
         </div>
-        <div className="container mx-auto mt-14 px-4 sm:px-8"><div className="border-l-4 border-ruby-700 bg-[#f4f0e9] p-7 sm:p-9"><p className="csg-label text-ruby-700">Free starting companions in preparation</p><h3 className="mt-3 font-serif text-3xl font-semibold text-slate-950">GitHub Essentials and development setup</h3><p className="mt-3 max-w-3xl leading-7 text-slate-700">We are preparing a GitHub guide and Mac and Windows/WSL setup routes as optional resources for learners. They are not paid prerequisites for Python Fundamentals.</p></div></div>
+        <div className="container mx-auto mt-14 px-4 sm:px-8"><div className="border-l-4 border-ruby-700 bg-[#f4f0e9] p-7 sm:p-9"><p className="csg-label text-ruby-700">Free starting companions in preparation</p><h3 className="mt-3 font-serif text-3xl font-semibold text-slate-950">GitHub Essentials and development setup</h3><p className="mt-3 max-w-prose leading-7 text-slate-700">We are preparing a GitHub guide and Mac and Windows/WSL setup routes as optional resources for learners. They are not paid prerequisites for Python Fundamentals.</p></div></div>
       </section>
 
       <section id="course-interest" className="scroll-mt-24 py-16 md:py-24">
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <div><p className="csg-label text-ruby-700">Course updates</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Tell us what you would take.</h2><p className="mt-5 max-w-lg leading-7 text-slate-600">Choose the course you would want first. We will use interest and pilot feedback to decide what to finish and schedule next. Joining this list is free and does not reserve a seat. If you want the full bootcamp, use its separate <Link href="/interest" className="font-bold text-ruby-800 underline underline-offset-4">cohort interest list</Link>.</p></div>
-          <div className="border-t-4 border-ruby-700 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] sm:p-8"><h3 className="font-serif text-3xl font-semibold text-slate-950">Get focused-course updates</h3><div className="mt-7"><CourseInterestForm /></div></div>
+          <div className="border-t-4 border-ruby-700 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] sm:p-8"><p className="csg-label text-ruby-700">Focused courses updates list</p><h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Get focused-course updates</h3><p className="mt-3 text-sm leading-6 text-slate-600">For Python, Ruby, JavaScript, and the project courses above. Full bootcamp news uses a <Link href="/interest" className="font-bold text-ruby-800 underline underline-offset-4">separate bootcamp list</Link>.</p><div className="mt-7"><CourseInterestForm /></div></div>
         </div>
       </section>
 
