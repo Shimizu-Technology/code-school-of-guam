@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 const graduatePaths = [
   {
@@ -25,10 +25,10 @@ export default function AboutPage() {
             <p className="csg-label text-ruby-700">Our story</p>
             <h1 className="mt-5 max-w-3xl font-serif text-5xl font-semibold leading-tight md:text-7xl">A place to learn, build, and belong.</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">Code School of Guam began with a simple gap: people here should be able to learn software development with real instruction and local context.</p>
-            <Link href="/courses" className="mt-8 inline-flex items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-semibold text-white hover:bg-ruby-500">Explore how to start <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/courses" className="csg-press mt-8 inline-flex min-h-12 items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-semibold text-white hover:bg-ruby-500 active:bg-ruby-800">Explore how to start <ArrowRight className="h-4 w-4" /></Link>
           </div>
           <figure className="overflow-hidden border border-[#ded7c9] bg-white">
-            <Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending an AI workshop" width={1280} height={960} priority className="aspect-[4/3] w-full object-cover" />
+            <Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending an AI workshop" width={1280} height={960} priority sizes="(min-width: 1200px) 500px, (min-width: 1024px) 42vw, 100vw" className="aspect-[4/3] w-full object-cover" />
             <figcaption className="px-4 py-3 text-xs leading-relaxed text-slate-600">Leon teaching a University of Guam staff workshop, July 2025.</figcaption>
           </figure>
         </div>
@@ -68,7 +68,7 @@ export default function AboutPage() {
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
           <div><p className="csg-label text-ruby-700">The founder</p><h2 className="mt-4 font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Meet Leon.</h2></div>
           <div className="grid gap-7 sm:grid-cols-[11rem_1fr] sm:items-start">
-            <Image src="/images/leon-shimizu.webp" alt="Leon Shimizu" width={500} height={500} className="aspect-square w-44 object-cover object-top" />
+            <Image src="/images/leon-shimizu.webp" alt="Leon Shimizu" width={500} height={500} sizes="176px" className="aspect-square w-44 object-cover object-top" />
             <div className="space-y-4 leading-relaxed text-slate-600">
               <p><strong className="text-slate-950">Leon Shimizu</strong> was born and raised in Guam. He studied at Actualize Coding Bootcamp in 2021 and became a software engineer before graduating.</p>
               <p>He founded Code School of Guam in 2024 and also leads Shimizu Technology, where software is built for organizations in Guam and beyond. He has worked at Spectrio and taught at Actualize.</p>
@@ -84,7 +84,7 @@ export default function AboutPage() {
           <div className="max-w-2xl space-y-5 leading-relaxed text-slate-600">
             <p>Through <a href="https://shimizu-technology.com/" className="font-semibold text-ruby-700 underline underline-offset-4">Shimizu Technology</a>, students can see how professional teams handle users, data, delivery, and support. Some graduates have practiced on real projects when active work and their readiness aligned.</p>
             <p>Internships, contract work, and paid teaching roles depend on available projects and individual readiness. Completing a course or bootcamp does not guarantee any of them; a future opportunity will have its own eligibility and terms.</p>
-            <Link href="/internship" className="inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">How the internship pathway works <ArrowUpRight className="h-4 w-4" /></Link>
+            <Link href="/internship" className="inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">How the internship pathway works <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
         </div>
       </section>

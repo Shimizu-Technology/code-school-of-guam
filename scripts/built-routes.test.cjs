@@ -29,7 +29,10 @@ for (const [route, html] of pages) {
       }
     }
     for (const img of doc.querySelectorAll('img[src^="/"]')) {
-      assert.ok(fs.existsSync(path.join('public', img.getAttribute('src'))), `${route}: missing image ${img.getAttribute('src')}`)
+      const src = new URL(img.getAttribute('src'), 'https://codeschoolofguam.com')
+      // Optimized images point at /_next/image?url=<public path>; check the original asset.
+      const asset = src.pathname === '/_next/image' ? src.searchParams.get('url') : src.pathname
+      assert.ok(asset && fs.existsSync(path.join('public', asset)), `${route}: missing image ${img.getAttribute('src')}`)
     }
   })
 }
@@ -43,4 +46,46 @@ test('published offer surfaces preserve closed enrollment and unannounced bootca
   const doc = new JSDOM(pages.get('/')).window.document
   const schema = JSON.parse(doc.querySelector('script[type="application/ld+json"]').textContent)
   assert.doesNotMatch(JSON.stringify(schema), /under 6 months|six months/)
+})
+
+test('/policies permanently redirects to the FAQ tuition and policies section', () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join('.next', 'routes-manifest.json'), 'utf8'))
+  const redirect = manifest.redirects.find((entry) => entry.source === '/policies')
+  assert.ok(redirect, 'missing /policies redirect')
+  assert.equal(redirect.statusCode, 301)
+  const destination = new URL(redirect.destination, 'https://codeschoolofguam.com')
+  assert.equal(destination.pathname, '/faq')
+  const faq = new JSDOM(pages.get('/faq')).window.document
+  const section = faq.getElementById(destination.hash.slice(1))
+  assert.ok(section, `missing anchor ${redirect.destination}`)
+  assert.match(section.textContent, /Tuition and policies/)
+  assert.match(section.textContent, /What did the March 2026 bootcamp cost\?/)
+  assert.doesNotMatch(faq.querySelector('main').textContent, /Why is the tuition set/)
+})
+
+test('each interest form is introduced by a heading that names its offer', () => {
+  const expectations = [
+    ['/courses', 'focused-courses-interest', /focused-course updates/i],
+    ['/courses/python-fundamentals', 'python-fundamentals-interest', /Python Fundamentals updates/],
+    ['/interest', 'next-cohort-interest', /full bootcamp updates/i],
+  ]
+  for (const [route, formName, heading] of expectations) {
+    const doc = new JSDOM(pages.get(route)).window.document
+    const form = doc.querySelector(`form[name="${formName}"]`)
+    assert.ok(form, `${route}: missing ${formName}`)
+    let card = form.parentElement
+    while (card && !card.querySelector('h2, h3')) card = card.parentElement
+    assert.ok(card, `${route}: no heading near ${formName}`)
+    assert.match(card.querySelector('h2, h3').textContent, heading)
+  }
+})
+
+test('the /courses hero offers a course-updates action that is visible on phones', () => {
+  const doc = new JSDOM(pages.get('/courses')).window.document
+  const hero = doc.querySelector('main section')
+  const cta = Array.from(hero.querySelectorAll('a')).find((a) => a.getAttribute('href') === '#course-interest')
+  assert.ok(cta, 'missing hero course-updates link')
+  assert.match(cta.textContent, /Get course updates/)
+  assert.doesNotMatch(cta.className + ' ' + cta.parentElement.className, /(^|\s)hidden(\s|$)/)
+  assert.ok(doc.getElementById('course-interest'))
 })

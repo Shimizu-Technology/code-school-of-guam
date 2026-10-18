@@ -66,13 +66,13 @@ export default function CurriculumPage() {
         <div className="container mx-auto px-4 sm:px-8">
           <p className="csg-label text-ruby-700">March 2026 sequence</p>
           <h2 className="mt-4 max-w-3xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Capability built in stages.</h2>
-          <p className="mt-4 max-w-3xl leading-relaxed text-slate-600">These week ranges describe the original teaching plan. Enrolled learners now follow individual completion or restart schedules, and a future cohort may use a different sequence.</p>
+          <p className="mt-4 max-w-prose leading-relaxed text-slate-600">These week ranges describe the original teaching plan. Enrolled learners now follow individual completion or restart schedules, and a future cohort may use a different sequence.</p>
           <ol className="mt-10 divide-y divide-slate-200 border-y border-slate-200">
             {phases.map((phase, index) => (
               <li key={phase.title} className="grid gap-3 py-6 sm:grid-cols-[2.5rem_8rem_1fr] sm:gap-6 md:py-8">
-                <span className="csg-label text-slate-400">0{index + 1}</span>
+                <span className="csg-label text-slate-600">0{index + 1}</span>
                 <span className="text-sm font-semibold text-ruby-700">{phase.weeks}</span>
-                <div><h3 className="text-xl font-bold text-slate-950">{phase.title}</h3><p className="mt-2 max-w-3xl leading-relaxed text-slate-600">{phase.detail}</p></div>
+                <div><h3 className="text-xl font-bold text-slate-950">{phase.title}</h3><p className="mt-2 max-w-prose leading-relaxed text-slate-600">{phase.detail}</p></div>
               </li>
             ))}
           </ol>

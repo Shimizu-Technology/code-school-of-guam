@@ -103,7 +103,7 @@ export default function ProjectsPage() {
         <div className="container mx-auto px-4 sm:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <div><p className="csg-label text-ruby-700">Student capstones</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">The work, in their own words.</h2></div>
-            <p className="max-w-2xl leading-relaxed text-slate-600 lg:justify-self-end">Each recording shows graduates walking through the project they built and the decisions behind it. Videos load only when you choose to play one.</p>
+            <p className="max-w-prose leading-relaxed text-slate-600 lg:justify-self-end">Each recording shows graduates walking through the project they built and the decisions behind it. Videos load only when you choose to play one.</p>
           </div>
           <div className="mt-10 grid gap-6 lg:grid-cols-2">
             {presentations.map((presentation) => <PresentationVideo key={presentation.cohort} presentation={presentation} />)}
@@ -116,7 +116,7 @@ export default function ProjectsPage() {
           <div><p className="csg-label text-ruby-700">Alumni team project · in progress</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Party Games Hub</h2></div>
           <div>
             <div className="flex h-12 w-12 items-center justify-center rounded-md bg-ruby-50 text-ruby-700"><Gamepad2 className="h-6 w-6" aria-hidden="true" /></div>
-            <p className="mt-5 max-w-2xl leading-relaxed text-slate-600">A mobile-friendly collection of pass-the-device games built with the Code School of Guam alumni internship team. The public version has a playable Imposter reference game; the other games are still being built.</p>
+            <p className="mt-5 max-w-prose leading-relaxed text-slate-600">A mobile-friendly collection of pass-the-device games built with the Code School of Guam alumni internship team. The public version has a playable Imposter reference game; the other games are still being built.</p>
             <a href="https://party-games.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Explore Party Games Hub <ArrowUpRight className="h-4 w-4" /></a>
           </div>
         </div>
@@ -126,12 +126,12 @@ export default function ProjectsPage() {
         <div className="container mx-auto px-4 sm:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <div><p className="csg-label text-ruby-700">Professional context</p><h2 className="mt-4 max-w-2xl font-serif text-4xl font-semibold text-slate-950 md:text-5xl">Production systems students learn around.</h2></div>
-            <p className="max-w-2xl leading-relaxed text-slate-600 lg:justify-self-end">These examples were built and maintained by Shimizu Technology. They give students a view of real users, data, payments, delivery, and support. Listing a system here does not mean every graduate worked on it.</p>
+            <p className="max-w-prose leading-relaxed text-slate-600 lg:justify-self-end">These examples were built and maintained by Shimizu Technology. They give students a view of real users, data, payments, delivery, and support. Listing a system here does not mean every graduate worked on it.</p>
           </div>
           <div className="mt-10 grid gap-5 lg:grid-cols-3">
             {productionExamples.map((project) => (
               <article key={project.title} className="overflow-hidden border border-slate-200 bg-white">
-                <div className={`flex aspect-[4/3] items-center justify-center p-10 ${project.surface}`}><Image src={project.image} alt="" width={400} height={300} className="h-full w-full object-contain" /></div>
+                <div className={`flex aspect-[4/3] items-center justify-center p-10 ${project.surface}`}><Image src={project.image} alt="" width={400} height={300} sizes="(min-width: 1024px) 300px, 80vw" className="h-full w-full object-contain" /></div>
                 <div className="p-6"><p className="csg-label text-ruby-700">{project.type} · Shimizu built</p><h3 className="mt-3 text-xl font-bold text-slate-950">{project.title}</h3><p className="mt-3 leading-relaxed text-slate-600">{project.description}</p><a href={project.href} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 font-semibold text-ruby-700 underline underline-offset-4">Visit the product <ArrowUpRight className="h-4 w-4" /></a></div>
               </article>
             ))}
