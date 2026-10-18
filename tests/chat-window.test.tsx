@@ -45,3 +45,66 @@ test('chatbot failure retains conversation, restores input, and allows a success
   expect(close).toHaveBeenCalledTimes(1)
   expect(failureLog).toHaveBeenCalledOnce()
 })
+
+test('assistant answers wrap long words, scroll wide code and GFM tables, and keep links readable', () => {
+  sessionStorage.setItem('csg-chat-messages', JSON.stringify([
+    { role: 'user', content: 'Compare the offers.' },
+    { role: 'assistant', content: [
+      '```python',
+      'expenses = {"food": 61, "transport": 48, "supplies": 9}  # a deliberately long line wider than the bubble',
+      '```',
+      '',
+      '| Offer | Status |',
+      '| --- | --- |',
+      '| Python Fundamentals pilot | Invited |',
+      '| March 2026 bootcamp | Closed |',
+      '',
+      'See [the course](https://codeschoolofguam.com/courses/python-fundamentals) or https://codeschoolofguam.com/faq.',
+    ].join('\n') },
+  ]))
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', { configurable: true, value: vi.fn() })
+  vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true })))
+  render(<ChatWindow onClose={vi.fn()} />)
+  const log = screen.getByRole('log')
+
+  const table = log.querySelector('table')!
+  expect(table).toBeTruthy()
+  expect(Array.from(table.querySelectorAll('th')).map((cell) => cell.textContent)).toEqual(['Offer', 'Status'])
+  expect(table.querySelectorAll('tbody tr')).toHaveLength(2)
+  expect(table.parentElement!.className).toContain('overflow-x-auto')
+  expect(log.textContent).not.toContain('| --- |')
+
+  const pre = log.querySelector('pre')!
+  expect(pre.className).toContain('overflow-x-auto')
+  expect(pre.textContent).toContain('expenses = {')
+
+  const bubble = pre.closest('.chat-markdown')!.parentElement!
+  expect(bubble.className).not.toMatch(/\boverflow-hidden\b/)
+  expect(bubble.className).toContain('min-w-0')
+  expect(bubble.className).toContain('[overflow-wrap:anywhere]')
+
+  const links = Array.from(log.querySelectorAll('a'))
+  expect(links.map((link) => link.getAttribute('href'))).toEqual(['https://codeschoolofguam.com/courses/python-fundamentals', 'https://codeschoolofguam.com/faq'])
+  for (const link of links) {
+    expect(link.className).toContain('break-words')
+    expect(link.className).not.toContain('break-all')
+  }
+})
+
+test('chat controls are touch sized and the message field does not trigger iOS focus zoom', () => {
+  sessionStorage.clear()
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', { configurable: true, value: vi.fn() })
+  vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: true })))
+  render(<ChatWindow onClose={vi.fn()} />)
+  const input = screen.getByRole('textbox', { name: 'Message the Code School assistant' })
+  expect(input.className).toContain('text-base')
+  expect(input.className).not.toMatch(/\btext-sm\b/)
+  for (const name of ['Close chat', 'Expand chat', 'Send message']) {
+    const control = screen.getByRole('button', { name })
+    expect(control.className).toContain('h-11')
+    expect(control.className).toContain('w-11')
+  }
+  const dialog = screen.getByRole('dialog')
+  expect(dialog.className).toContain('csg-chat-window')
+  expect(dialog.className).not.toContain('transition-all')
+})
