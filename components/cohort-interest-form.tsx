@@ -46,6 +46,7 @@ export function CohortInterestForm() {
   return (
     <form
       name="next-cohort-interest"
+      aria-label="Full bootcamp updates list"
       method="POST"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
@@ -58,22 +59,22 @@ export function CohortInterestForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <label className="block text-sm font-semibold text-slate-800">
           Name <span className="text-ruby-600">*</span>
-          <input required name="name" autoComplete="name" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
+          <input required name="name" autoComplete="name" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
         </label>
         <label className="block text-sm font-semibold text-slate-800">
           Email <span className="text-ruby-600">*</span>
-          <input required type="email" name="email" autoComplete="email" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
+          <input required type="email" name="email" autoComplete="email" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
         </label>
       </div>
 
       <label className="block text-sm font-semibold text-slate-800">
         Phone <span className="font-normal text-slate-500">(optional)</span>
-        <input type="tel" name="phone" autoComplete="tel" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
+        <input type="tel" name="phone" autoComplete="tel" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" />
       </label>
 
       <label className="block text-sm font-semibold text-slate-800">
         What meeting times would usually work for you? <span className="text-ruby-600">*</span>
-        <select required name="preferred_timing" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
+        <select required name="preferred_timing" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select a preference</option>
           <option value="Weekday daytime">Weekday daytime</option>
           <option value="Weekday evenings">Weekday evenings</option>
@@ -84,7 +85,7 @@ export function CohortInterestForm() {
 
       <label className="block text-sm font-semibold text-slate-800">
         Current coding experience <span className="text-ruby-600">*</span>
-        <select required name="experience_level" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
+        <select required name="experience_level" defaultValue="" className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select your experience</option>
           <option value="Complete beginner">Complete beginner</option>
           <option value="Some self-study">Some self-study</option>
@@ -95,11 +96,11 @@ export function CohortInterestForm() {
 
       <label className="block text-sm font-semibold text-slate-800">
         What would you most like to accomplish? <span className="text-ruby-600">*</span>
-        <textarea required name="primary_goal" rows={4} className="mt-2 w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-normal outline-none transition focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" placeholder="For example: change careers, build a product, or add AI skills..." />
+        <textarea required name="primary_goal" rows={4} className="mt-2 w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700" placeholder="For example: change careers, build a product, or add AI skills..." />
       </label>
 
       <label className="flex items-start gap-3 rounded-lg bg-slate-50 p-4 text-sm text-slate-700">
-        <input required type="checkbox" name="update_consent" value="yes" className="mt-1 h-4 w-4 rounded border-slate-300 text-ruby-600 focus:ring-ruby-500" />
+        <input required type="checkbox" name="update_consent" value="yes" className="mt-0.5 h-5 w-5 shrink-0 rounded border-slate-400 text-ruby-700 focus:ring-ruby-600" />
         <span>I agree to receive email updates about Code School of Guam&apos;s next cohort and related information sessions. <span className="text-ruby-600">*</span></span>
       </label>
 
@@ -109,7 +110,7 @@ export function CohortInterestForm() {
         </div>
       )}
 
-      <button disabled={submitState === "submitting"} type="submit" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 text-base font-bold text-white shadow-lg transition hover:bg-ruby-700 disabled:cursor-wait disabled:opacity-70">
+      <button disabled={submitState === "submitting"} type="submit" className="csg-press inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3.5 text-base font-bold text-white shadow-lg hover:bg-ruby-700 active:bg-ruby-800 disabled:cursor-wait disabled:opacity-70">
         {submitState === "submitting" ? <><Loader2 className="h-5 w-5 animate-spin" /> Saving your interest</> : "Join the interest list"}
       </button>
       <p className="text-center text-xs leading-5 text-slate-500">This is an interest list, not an application or seat reservation. Future bootcamp dates, schedule, and tuition have not been announced.</p>

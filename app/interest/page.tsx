@@ -21,7 +21,7 @@ export default function InterestPage() {
 
 
         <div className="relative mx-auto max-w-3xl text-center">
-          <div className="csg-label inline-flex items-center gap-2 text-[10px] text-ruby-700"><GraduationCap className="h-4 w-4" /> Next cohort planning</div>
+          <div className="csg-label inline-flex items-center gap-2 text-ruby-700"><GraduationCap className="h-4 w-4" aria-hidden="true" /> Full bootcamp · next cohort planning</div>
           <h1 className="mt-6 font-serif text-5xl font-semibold leading-[0.98] tracking-[-0.04em] sm:text-6xl md:text-7xl">Be first to hear about the next Code School of Guam cohort.</h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600">The next full bootcamp dates have not been announced. Join the interest list to receive confirmed dates and application details when they&apos;re ready.</p>
           <div className="mt-7 flex flex-wrap justify-center gap-5 text-sm text-slate-600">
@@ -43,8 +43,9 @@ export default function InterestPage() {
           </div>
         </aside>
         <div className="border-t-2 border-ruby-600 bg-white p-6 shadow-[0_18px_50px_rgba(15,23,42,0.08)] sm:p-8">
-          <p className="csg-label text-[10px] text-ruby-700">Next cohort interest</p>
-          <h2 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Tell us what would work for you.</h2>
+          <p className="csg-label text-ruby-700">Full bootcamp updates list</p>
+          <h2 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Get full bootcamp updates</h2>
+          <p className="mt-3 text-sm leading-6 text-slate-600">For future full bootcamp cohorts only. For short focused courses such as Python Fundamentals, use the <Link href="/courses#course-interest" className="font-bold text-ruby-800 underline underline-offset-4">focused-course list</Link>.</p>
           <div className="mt-7"><CohortInterestForm /></div>
         </div>
       </section>

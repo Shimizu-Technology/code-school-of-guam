@@ -80,6 +80,31 @@ for (const [name, Form] of forms) {
   })
 }
 
+const offerLabels = {
+  'next-cohort-interest': 'Full bootcamp updates list',
+  'python-fundamentals-interest': 'Python Fundamentals updates list',
+  'focused-courses-interest': 'Focused-course updates list',
+} as const
+
+for (const [name, Form] of forms) {
+  test(`${name} names its offer, keeps fields at 16px, and keeps the consent checkbox full size`, () => {
+    const { container } = render(<Form />)
+    expect(screen.getByRole('form', { name: offerLabels[name] }).getAttribute('name')).toBe(name)
+    const form = container.querySelector('form')!
+    const fields = form.querySelectorAll<HTMLElement>('input:not([type="hidden"]):not([type="checkbox"]):not([name="bot-field"]), select, textarea')
+    expect(fields.length).toBeGreaterThan(2)
+    for (const field of fields) {
+      expect(field.className, field.getAttribute('name')!).toContain('text-base')
+      expect(field.className).not.toMatch(/\btext-sm\b/)
+    }
+    for (const field of form.querySelectorAll<HTMLElement>('[placeholder]')) expect(field.className).toContain('placeholder:text-slate-500')
+    const consent = form.querySelector<HTMLInputElement>('[name="update_consent"]')!
+    expect(consent.className).toContain('shrink-0')
+    expect(consent.className).toContain('h-5')
+    expect(consent.className).toContain('w-5')
+  })
+}
+
 test('bootcamp interest collects availability without suggesting a start date', () => {
   const { container } = render(<CohortInterestForm />)
   expect(container.textContent).toContain('dates, schedule, and tuition have not been announced')

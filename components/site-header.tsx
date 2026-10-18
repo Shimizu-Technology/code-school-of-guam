@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowUpRight, Menu } from "lucide-react"
+import { ArrowRight, Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const primaryNavItems = [
@@ -29,7 +29,7 @@ export function SiteHeader() {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 16)
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -58,35 +58,35 @@ export function SiteHeader() {
 
           <div className="hidden items-center gap-2 lg:flex">
             {primaryNavItems.map((item) => (
-              <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className={`rounded-md px-3 py-2 text-sm font-semibold transition ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-600 hover:bg-[#eee7da] hover:text-slate-950"}`}>
+              <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} className={`csg-press rounded-md px-3 py-2 text-sm font-semibold active:bg-[#e4dccd] ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-600 hover:bg-[#eee7da] hover:text-slate-950"}`}>
                 {item.label}
               </Link>
             ))}
           </div>
 
-          <Link href="/courses#course-interest" className="hidden items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-ruby-500 lg:inline-flex">
-            Course updates <ArrowUpRight className="h-4 w-4" />
+          <Link href="/courses#course-interest" className="csg-press hidden items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-ruby-500 active:bg-ruby-800 lg:inline-flex">
+            Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
 
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <button type="button" className="rounded-md p-2 text-slate-700 hover:bg-[#eee7da] hover:text-slate-950 lg:hidden" aria-label="Open menu">
+              <button type="button" className="csg-press -mr-1.5 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-slate-700 hover:bg-[#eee7da] hover:text-slate-950 active:bg-[#e4dccd] lg:hidden" aria-label="Open menu">
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
             <SheetContent side="right" onCloseAutoFocus={(event) => { if (window.matchMedia("(min-width: 1024px)").matches) { event.preventDefault(); brandRef.current?.focus() } }} className="max-h-dvh w-[min(88vw,26rem)] overflow-y-auto border-[#ded7c9] bg-[#faf7f0] p-0 text-slate-950 lg:hidden">
-              <SheetHeader className="border-b border-[#ded7c9] px-6 py-5 text-left">
+              <SheetHeader className="border-b border-[#ded7c9] py-5 pl-6 pr-16 text-left">
                 <SheetTitle className="font-serif text-2xl text-slate-950">Explore Code School</SheetTitle>
                 <SheetDescription className="text-slate-600">Courses, the full bootcamp, student work, and school information.</SheetDescription>
               </SheetHeader>
               <nav aria-label="Mobile navigation" className="space-y-1 px-4 py-5">
                 {primaryNavItems.map((item) => (
-                  <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setMobileMenuOpen(false)} className={`block rounded-md px-4 py-3 font-semibold ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-700 hover:bg-[#eee7da] hover:text-slate-950"}`}>{item.label}</Link>
+                  <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setMobileMenuOpen(false)} className={`block rounded-md px-4 py-3 transition-[background-color,color] duration-150 ease-out font-semibold active:bg-[#e4dccd] ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-700 hover:bg-[#eee7da] hover:text-slate-950"}`}>{item.label}</Link>
                 ))}
                 <div className="my-4 border-t border-[#ded7c9] pt-4">
-                  {secondaryNavItems.map((item) => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setMobileMenuOpen(false)} className={`block rounded-md px-4 py-3 text-sm font-semibold ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-700 hover:bg-[#eee7da]"}`}>{item.label}</Link>)}
+                  {secondaryNavItems.map((item) => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setMobileMenuOpen(false)} className={`block rounded-md px-4 py-3 transition-[background-color,color] duration-150 ease-out text-sm font-semibold active:bg-[#e4dccd] ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-700 hover:bg-[#eee7da]"}`}>{item.label}</Link>)}
                 </div>
-                <Link href="/courses#course-interest" onClick={() => setMobileMenuOpen(false)} className="mt-5 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white hover:bg-ruby-500">Course updates <ArrowUpRight className="h-4 w-4" /></Link>
+                <Link href="/courses#course-interest" onClick={() => setMobileMenuOpen(false)} className="csg-press mt-5 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white hover:bg-ruby-500 active:bg-ruby-800">Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
               </nav>
             </SheetContent>
           </Sheet>

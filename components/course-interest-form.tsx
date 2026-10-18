@@ -5,7 +5,8 @@ import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react"
 
 type SubmitState = "idle" | "submitting" | "success" | "error"
 
-const inputClass = "mt-2 min-h-12 w-full rounded-md border border-slate-300 bg-white px-4 py-3 font-normal text-slate-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-600"
+// text-base keeps fields at 16px so iOS Safari does not zoom on focus.
+const inputClass = "mt-2 min-h-12 w-full rounded-md border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-600"
 
 export function CourseInterestForm() {
   const [submitState, setSubmitState] = useState<SubmitState>("idle")
@@ -44,7 +45,7 @@ export function CourseInterestForm() {
   }
 
   return (
-    <form name="focused-courses-interest" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={handleSubmit} className="space-y-5">
+    <form name="focused-courses-interest" aria-label="Focused-course updates list" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={handleSubmit} className="space-y-5">
       <input type="hidden" name="form-name" value="focused-courses-interest" />
       <p className="hidden" aria-hidden="true"><label>Do not fill this out: <input name="bot-field" tabIndex={-1} autoComplete="off" /></label></p>
       <div className="grid gap-5 sm:grid-cols-2">
@@ -73,11 +74,11 @@ export function CourseInterestForm() {
         <textarea name="goal" rows={3} className={`${inputClass} resize-y`} placeholder="Tell us about a project, another course you would take, or where you are starting." />
       </label>
       <label className="flex items-start gap-3 text-sm leading-6 text-slate-700">
-        <input required type="checkbox" name="update_consent" value="yes" className="mt-1 h-5 w-5 rounded border-slate-400 text-ruby-700 focus:ring-ruby-600" />
+        <input required type="checkbox" name="update_consent" value="yes" className="mt-1 h-5 w-5 shrink-0 rounded border-slate-400 text-ruby-700 focus:ring-ruby-600" />
         <span>I agree to receive email updates about Code School of Guam focused courses. <span className="text-ruby-700">*</span></span>
       </label>
       {submitState === "error" && <div className="border-l-4 border-red-600 bg-red-50 p-4 text-sm text-red-800" role="alert">We couldn&apos;t save your response. Please try again or email <a className="font-bold underline" href="mailto:codeschoolofguam@gmail.com">codeschoolofguam@gmail.com</a>.</div>}
-      <button type="submit" disabled={submitState === "submitting"} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-ruby-700 px-5 py-3 font-bold text-white transition hover:bg-ruby-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700 disabled:cursor-wait disabled:opacity-70">
+      <button type="submit" disabled={submitState === "submitting"} className="csg-press inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-ruby-700 px-5 py-3 font-bold text-white hover:bg-ruby-800 active:bg-ruby-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700 disabled:cursor-wait disabled:opacity-70">
         {submitState === "submitting" ? <><Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" /> Saving your interest</> : <>Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></>}
       </button>
       <p className="text-xs leading-5 text-slate-500">This is an updates list. Course dates, prices, and enrollment will be announced only when each course is ready.</p>
