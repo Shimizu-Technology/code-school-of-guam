@@ -74,12 +74,12 @@ export function ChatButton() {
           if (!isOpen && window.scrollY <= CHAT_VISIBILITY_SCROLL_Y) setIsVisible(false);
         }}
         data-visible={shown ? "true" : "false"}
-        className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-[opacity,scale,translate,background-color,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:h-14 md:w-14 ${
+        className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-[opacity,scale,translate,background-color,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 md:h-14 md:w-14 ${
           shown ? "visible scale-100 opacity-100 active:scale-[0.97]" : "pointer-events-none invisible scale-95 opacity-0"
         } ${
           isOpen
-            ? "bg-slate-700 text-white hover:bg-slate-800 focus-visible:ring-slate-500"
-            : "bg-ruby-600 text-white hover:bg-ruby-700 focus-visible:ring-ruby-500"
+            ? "bg-slate-700 text-white hover:bg-slate-800"
+            : "bg-ruby-600 text-white hover:bg-ruby-700"
         }`}
         aria-label={isOpen ? "Close chat" : "Open chat"}
       >

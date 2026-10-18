@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { ChatWindow } from '../components/chat-window'
 
 const originalScroll = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'scrollIntoView')
@@ -67,9 +67,8 @@ test('assistant answers wrap long words, scroll wide code and GFM tables, and ke
   render(<ChatWindow onClose={vi.fn()} />)
   const log = screen.getByRole('log')
 
-  const table = log.querySelector('table')!
-  expect(table).toBeTruthy()
-  expect(Array.from(table.querySelectorAll('th')).map((cell) => cell.textContent)).toEqual(['Offer', 'Status'])
+  const table = within(log).getByRole('table')
+  expect(within(table).getAllByRole('columnheader').map((cell) => cell.textContent)).toEqual(['Offer', 'Status'])
   expect(table.querySelectorAll('tbody tr')).toHaveLength(2)
   expect(table.parentElement!.className).toContain('overflow-x-auto')
   expect(log.textContent).not.toContain('| --- |')
