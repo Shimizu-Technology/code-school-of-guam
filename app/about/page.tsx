@@ -28,7 +28,7 @@ export default function AboutPage() {
             <Link href="/courses" className="csg-press mt-8 inline-flex min-h-12 items-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-semibold text-white hover:bg-ruby-500 active:bg-ruby-800">Explore how to start <ArrowRight className="h-4 w-4" /></Link>
           </div>
           <figure className="overflow-hidden border border-[#ded7c9] bg-white">
-            <Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending an AI workshop" width={1280} height={960} priority sizes="(min-width: 1200px) 500px, (min-width: 1024px) 42vw, 100vw" className="aspect-[4/3] w-full object-cover" />
+            <Image src="/images/uog-intro-to-ai.webp" alt="University of Guam staff attending an AI workshop" width={1280} height={960} priority quality={60} sizes="(min-width: 1200px) 500px, (min-width: 1024px) 42vw, 100vw" className="aspect-[4/3] w-full object-cover" />
             <figcaption className="px-4 py-3 text-xs leading-relaxed text-slate-600">Leon teaching a University of Guam staff workshop, July 2025.</figcaption>
           </figure>
         </div>
