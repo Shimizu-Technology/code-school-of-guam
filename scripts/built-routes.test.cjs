@@ -89,3 +89,31 @@ test('the /courses hero offers a course-updates action that is visible on phones
   assert.doesNotMatch(cta.className + ' ' + cta.parentElement.className, /(^|\s)hidden(\s|$)/)
   assert.ok(doc.getElementById('course-interest'))
 })
+
+test('the homepage keeps reviewed claims, real media, and no concept-review aids', () => {
+  const doc = new JSDOM(pages.get('/')).window.document
+  const main = doc.querySelector('main')
+  const text = main.textContent
+  // Graduate teaching line must stay consistent with the chatbot's reviewed knowledge.
+  const about = fs.readFileSync(path.join('data/knowledge/about.md'), 'utf8')
+  assert.match(about, /Audreana Crane is a CSG graduate who teaches introductory coding at Father Dueñas Memorial School/)
+  assert.match(text, /Audreana, a Cohort 1 graduate, now teaches a beginner version of the course at Father Dueñas Memorial School\./)
+  // Static stats match /projects (6 + 5 graduates across two 2025 cohorts).
+  const projects = new JSDOM(pages.get('/projects')).window.document.querySelector('main').textContent
+  assert.match(projects, /11 graduates across Cohorts 1 and 2/)
+  for (const stat of ['11', '100%']) assert.ok(Array.from(main.querySelectorAll('.home-stats dd')).some((dd) => dd.textContent === stat), `missing stat ${stat}`)
+  // Review aids from the concept mockup are not shipped.
+  assert.doesNotMatch(text, /Concept|Motion on|Notes on|mockup/i)
+  // The clip is muted, inline, lazy, and its media exists.
+  const video = main.querySelector('video')
+  assert.ok(video, 'missing capstone clip')
+  assert.ok(video.hasAttribute('loop') && video.hasAttribute('playsinline'))
+  assert.equal(video.getAttribute('preload'), 'none')
+  for (const src of [video.getAttribute('poster'), video.querySelector('source').getAttribute('src')]) {
+    assert.ok(fs.existsSync(path.join('public', src)), `missing media ${src}`)
+  }
+  // Every image has alt text; photos of people are described, decorative avatars are empty.
+  for (const img of main.querySelectorAll('img')) assert.ok(img.hasAttribute('alt'), `image without alt: ${img.getAttribute('src')}`)
+  // Each section the header or CTAs link to exists.
+  for (const id of ['path', 'work', 'teaching', 'stories', 'start']) assert.ok(doc.getElementById(id), `missing #${id}`)
+})
