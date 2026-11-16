@@ -64,13 +64,23 @@ export function StoryDeck() {
     event.currentTarget.style.transform = `translate3d(${d.dx}px, 0, 0) rotate(${d.dx * 0.06}deg)`
   }
 
-  const onPointerEnd = (event: ReactPointerEvent<HTMLElement>) => {
+  // Ends a drag and returns the card to rest. Returns the gesture, or null.
+  const endDrag = (event: ReactPointerEvent<HTMLElement>) => {
     const d = drag.current
-    if (!d || event.pointerId !== d.id) return
+    if (!d || event.pointerId !== d.id) return null
     drag.current = null
     const el = event.currentTarget
     delete el.dataset.dragging
     el.style.transform = ""
+    return d
+  }
+
+  // A cancelled pointer (for example, the browser taking over a scroll) never advances the deck.
+  const onPointerCancel = (event: ReactPointerEvent<HTMLElement>) => { endDrag(event) }
+
+  const onPointerEnd = (event: ReactPointerEvent<HTMLElement>) => {
+    const d = endDrag(event)
+    if (!d) return
     const velocity = Math.abs(d.dx) / Math.max(1, performance.now() - d.t0)
     if (Math.abs(d.dx) > 110 || (velocity > 0.11 && Math.abs(d.dx) > 12)) sendBack(d.dx > 0 ? 1 : -1)
   }
@@ -109,7 +119,7 @@ export function StoryDeck() {
               onPointerDown={(event) => onPointerDown(event, index)}
               onPointerMove={onPointerMove}
               onPointerUp={onPointerEnd}
-              onPointerCancel={onPointerEnd}
+              onPointerCancel={onPointerCancel}
             >
               <div className="home-qmark" aria-hidden="true">“</div>
               <blockquote>{story.quote}</blockquote>

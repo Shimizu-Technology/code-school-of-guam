@@ -119,17 +119,25 @@ export function LearningRoute() {
       if (!raf) raf = requestAnimationFrame(step)
     }
 
+    // Geometry or viewport changes rebuild the path and recompute progress
+    // from the current viewport, so the route never waits for a scroll.
+    const refresh = () => {
+      build()
+      if (motionOK) onScroll()
+    }
     build()
-    const resize = new ResizeObserver(() => build())
+    const resize = new ResizeObserver(refresh)
     resize.observe(journey)
     if (motionOK) {
       shown = target = measure()
       paint(shown)
       window.addEventListener("scroll", onScroll, { passive: true })
+      window.addEventListener("resize", onScroll)
     }
     return () => {
       resize.disconnect()
       window.removeEventListener("scroll", onScroll)
+      window.removeEventListener("resize", onScroll)
       cancelAnimationFrame(raf)
     }
   }, [motionOK])
