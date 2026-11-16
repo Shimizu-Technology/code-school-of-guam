@@ -39,7 +39,7 @@
     "@eslint/js": "^9.39.0",
     "@fontsource-variable/manrope": "^5.2.8",
     "@fontsource-variable/newsreader": "^5.2.8",
-    "@next/eslint-plugin-next": "14.2.35",
+    "@next/eslint-plugin-next": "^15.5.29",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^22",
@@ -59,10 +59,10 @@
   },
   "overrides": {
     "brace-expansion@^1.1.7": "^1.1.21",
-    "@next/eslint-plugin-next": {
-      "glob": "^10.5.0"
-    },
-    "postcss": "$postcss"
+    "postcss": "$postcss",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.8"
+    }
   },
   "engines": {
     "node": ">=22.12.0"
