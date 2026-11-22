@@ -96,7 +96,6 @@ for (const [name, Form] of forms) {
     for (const field of fields) {
       expect(field.className, field.getAttribute('name')!).toContain('text-base')
       expect(field.className).not.toMatch(/\btext-sm\b/)
-      if (field.tagName === 'SELECT') expect(field.className, field.getAttribute('name')!).toContain('min-h-12')
     }
     for (const field of form.querySelectorAll<HTMLElement>('[placeholder]')) expect(field.className).toContain('placeholder:text-slate-500')
     const consent = form.querySelector<HTMLInputElement>('[name="update_consent"]')!

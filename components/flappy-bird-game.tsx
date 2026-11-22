@@ -377,8 +377,10 @@ export default function FlappyBirdGame() {
     <div className="relative w-full">
       <Card className="w-full mx-auto bg-linear-to-b from-slate-900 to-slate-800 text-white shadow-2xl border-0 overflow-hidden">
         <CardHeader className="bg-linear-to-r from-ruby-600 to-red-600 text-center py-4">
-          <CardTitle className="text-xl md:text-2xl font-bold">
-            <Bird className="w-6 h-6 inline mr-2" /> Flappy Bird
+          <CardTitle asChild className="text-xl md:text-2xl font-bold">
+            <h2>
+              <Bird className="w-6 h-6 inline mr-2" aria-hidden="true" /> Flappy Bird
+            </h2>
           </CardTitle>
           <p className="text-ruby-100 text-sm mt-1">
             Tap or press space to play!
@@ -435,9 +437,9 @@ export default function FlappyBirdGame() {
               {gameState !== 'playing' && (
                 <Button
                   onClick={startGame}
-                  className="bg-ruby-600 hover:bg-ruby-700 text-white transition-all hover:scale-105 shadow-lg text-sm md:text-base px-4 py-2 md:px-6"
+                  className="csg-press h-auto min-h-11 bg-ruby-600 hover:bg-ruby-700 active:bg-ruby-800 text-white shadow-lg text-sm md:text-base px-4 py-2.5 md:px-6"
                 >
-                  {gameState === 'gameOver' ? <><RefreshCw className="w-4 h-4 mr-1 inline" /> Play Again</> : <><Rocket className="w-4 h-4 mr-1 inline" /> Start Game</>}
+                  {gameState === 'gameOver' ? <><RefreshCw className="w-4 h-4 mr-1 inline" aria-hidden="true" /> Play Again</> : <><Rocket className="w-4 h-4 mr-1 inline" aria-hidden="true" /> Start Game</>}
                 </Button>
               )}
               {highScore > 0 && (
@@ -447,7 +449,7 @@ export default function FlappyBirdGame() {
                     setHighScore(0)
                   }}
                   variant="outline"
-                  className="border-slate-600 text-slate-400 hover:text-white hover:border-slate-500 text-xs px-3 py-2"
+                  className="csg-press h-auto min-h-11 border-slate-600 text-slate-300 hover:text-white hover:border-slate-500 text-xs px-3 py-2"
                   title="Reset high score"
                 >
                   Reset

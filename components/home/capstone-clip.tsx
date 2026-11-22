@@ -95,7 +95,6 @@ export function CapstoneClip() {
         loop
         playsInline
         preload="metadata"
-        poster={CAPSTONE_CLIP.poster}
         data-ready={hasFrame ? "true" : "false"}
         aria-label={CAPSTONE_CLIP.label}
         disablePictureInPicture

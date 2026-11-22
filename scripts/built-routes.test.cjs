@@ -88,9 +88,15 @@ test('/faq emits FAQPage structured data and /flappy-bird has clean single-chrom
   assert.equal(flappyDoc.querySelectorAll('header').length, 1)
   assert.equal(flappyDoc.querySelectorAll('footer').length, 1)
   assert.doesNotMatch(flappyDoc.body.textContent, /2025 Code School/)
+  // Heading levels inside main must not skip from h1 directly to h3.
+  const headings = Array.from(flappyDoc.querySelectorAll('main h1, main h2, main h3, main h4')).map((el) => Number(el.tagName[1]))
+  assert.equal(headings[0], 1)
+  for (let i = 1; i < headings.length; i++) {
+    assert.ok(headings[i] <= headings[i - 1] + 1, `/flappy-bird skipped heading level h${headings[i - 1]} -> h${headings[i]}`)
+  }
 })
 
-test('custom 404 page renders branded navigation links', () => {
+test('custom 404 page renders branded navigation links without canonical or og:url pointing to /', () => {
   const notFoundHtml = fs.readFileSync(path.join('.next/server/app/_not-found.html'), 'utf8')
   const doc = new JSDOM(notFoundHtml).window.document
   const main = doc.querySelector('main')
@@ -98,6 +104,58 @@ test('custom 404 page renders branded navigation links', () => {
   assert.ok(main.querySelector('a[href="/"]'), '404 missing home link')
   assert.ok(main.querySelector('a[href="/courses"]'), '404 missing courses link')
   assert.ok(main.querySelector('a[href="/programs"]'), '404 missing programs link')
+  assert.equal(doc.querySelector('link[rel="canonical"]'), null, '404 should not emit canonical')
+  assert.equal(doc.querySelector('meta[property="og:url"]'), null, '404 should not emit og:url')
+
+  const homeDoc = new JSDOM(pages.get('/')).window.document
+  assert.equal(homeDoc.querySelector('link[rel="canonical"]')?.getAttribute('href'), 'https://codeschoolofguam.com')
+  assert.equal(homeDoc.querySelector('meta[property="og:url"]')?.getAttribute('content'), 'https://codeschoolofguam.com')
+})
+
+test('security headers are configured in Next.js routes manifest for all HTML and asset paths', () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join('.next', 'routes-manifest.json'), 'utf8'))
+  const catchAll = (manifest.headers || []).find((entry) => entry.source === '/:path*')
+  assert.ok(catchAll, 'missing /:path* headers entry in routes-manifest.json')
+  const byKey = new Map(catchAll.headers.map((h) => [h.key, h.value]))
+  assert.equal(byKey.get('X-Frame-Options'), 'DENY')
+  assert.equal(byKey.get('Referrer-Policy'), 'strict-origin-when-cross-origin')
+  assert.equal(byKey.get('Permissions-Policy'), 'camera=(), microphone=(), geolocation=()')
+})
+
+test('built CSS resolves every form <select> to an explicit >= 48px height for WebKit', () => {
+  const cssDir = path.join('.next', 'static', 'css')
+  const cssText = fs.readdirSync(cssDir)
+    .filter((file) => file.endsWith('.css'))
+    .map((file) => fs.readFileSync(path.join(cssDir, file), 'utf8'))
+    .join('\n')
+  const spacingMatch = cssText.match(/--spacing:\s*([\d.]+)rem/)
+  const spacingPx = spacingMatch ? parseFloat(spacingMatch[1]) * 16 : 4
+
+  function resolveExplicitHeightPx(el) {
+    for (const cls of Array.from(el.classList).reverse()) {
+      const escaped = cls.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      const rule = cssText.match(new RegExp(`\\.${escaped}\\s*\\{[^}]*?\\bheight:\\s*([^;!}]+)`))
+      if (!rule) continue
+      const val = rule[1].trim()
+      const calcSpacing = val.match(/calc\(var\(--spacing\)\s*\*\s*([\d.]+)\)/)
+      if (calcSpacing) return parseFloat(calcSpacing[1]) * spacingPx
+      const rem = val.match(/^([\d.]+)rem$/)
+      if (rem) return parseFloat(rem[1]) * 16
+      const px = val.match(/^([\d.]+)px$/)
+      if (px) return parseFloat(px[1])
+    }
+    return null
+  }
+
+  for (const route of ['/interest', '/courses', '/courses/python-fundamentals']) {
+    const doc = new JSDOM(pages.get(route)).window.document
+    const selects = Array.from(doc.querySelectorAll('select'))
+    assert.ok(selects.length > 0, `${route}: expected select fields`)
+    for (const select of selects) {
+      const resolvedPx = resolveExplicitHeightPx(select)
+      assert.ok(resolvedPx !== null && resolvedPx >= 48, `${route} select[name="${select.getAttribute('name')}"] resolved explicit height ${resolvedPx}px (expected >= 48px)`)
+    }
+  }
 })
 
 test('/policies permanently redirects to the FAQ tuition and policies section', () => {
@@ -156,12 +214,17 @@ test('the homepage keeps reviewed claims, real media, and no concept-review aids
   for (const stat of ['11', '100%']) assert.ok(Array.from(main.querySelectorAll('.home-stats dd')).some((dd) => dd.textContent === stat), `missing stat ${stat}`)
   // Review aids from the concept mockup are not shipped.
   assert.doesNotMatch(text, /Concept|Motion on|Notes on|mockup/i)
-  // The clip is muted, inline, metadata-preloaded with poster fallback, and its media exists.
+  // The clip is muted, inline, metadata-preloaded with underlying poster image, and its media exists.
   const video = main.querySelector('video')
   assert.ok(video, 'missing capstone clip')
   assert.ok(video.hasAttribute('loop') && video.hasAttribute('playsinline'))
   assert.equal(video.getAttribute('preload'), 'metadata')
-  for (const src of [video.getAttribute('poster'), video.querySelector('source').getAttribute('src')]) {
+  assert.equal(video.hasAttribute('poster'), false, 'video should rely on underlying poster Image without duplicate poster attribute')
+  const posterImg = main.querySelector('img.home-live-poster')
+  assert.ok(posterImg, 'missing underlying capstone poster image')
+  const posterUrl = new URL(posterImg.getAttribute('src'), 'https://codeschoolofguam.com')
+  const posterAsset = posterUrl.pathname === '/_next/image' ? posterUrl.searchParams.get('url') : posterUrl.pathname
+  for (const src of [posterAsset, video.querySelector('source').getAttribute('src')]) {
     assert.ok(fs.existsSync(path.join('public', src)), `missing media ${src}`)
   }
   // Every image has alt text; photos of people are described, decorative avatars are empty.

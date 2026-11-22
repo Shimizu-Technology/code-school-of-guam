@@ -74,7 +74,7 @@ export function CohortInterestForm() {
 
       <label className="block text-sm font-semibold text-slate-800">
         What meeting times would usually work for you? <span className="text-ruby-600">*</span>
-        <select required name="preferred_timing" defaultValue="" className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
+        <select required name="preferred_timing" defaultValue="" className="mt-2 h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select a preference</option>
           <option value="Weekday daytime">Weekday daytime</option>
           <option value="Weekday evenings">Weekday evenings</option>
@@ -85,7 +85,7 @@ export function CohortInterestForm() {
 
       <label className="block text-sm font-semibold text-slate-800">
         Current coding experience <span className="text-ruby-600">*</span>
-        <select required name="experience_level" defaultValue="" className="mt-2 min-h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
+        <select required name="experience_level" defaultValue="" className="mt-2 h-12 w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-base font-normal text-slate-950 placeholder:text-slate-500 outline-none transition-[border-color] focus-visible:border-ruby-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">
           <option value="" disabled>Select your experience</option>
           <option value="Complete beginner">Complete beginner</option>
           <option value="Some self-study">Some self-study</option>

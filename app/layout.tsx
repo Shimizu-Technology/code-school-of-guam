@@ -19,13 +19,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Code School of Guam" }],
   creator: "Leon Shimizu",
   metadataBase: new URL('https://codeschoolofguam.com'),
-  alternates: {
-    canonical: '/',
-  },
   ...buildSocialMetadata({
     title: "Code School of Guam - Focused Courses and Full Bootcamp",
     description: "Start with a focused coding course or explore the full software development bootcamp. Beginner Python is being tested with an invited group in early 2027.",
-    url: 'https://codeschoolofguam.com',
   }),
   robots: {
     index: true,

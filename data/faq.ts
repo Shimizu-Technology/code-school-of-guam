@@ -1,6 +1,12 @@
+export interface FaqLink {
+  label: string
+  href: string
+}
+
 export interface FaqItem {
   question: string
   answer: string
+  links?: FaqLink[]
 }
 
 export interface FaqGroup {
@@ -93,7 +99,8 @@ export const faqGroups: FaqGroup[] = [
       },
       {
         question: "What resources do you recommend to get started with coding?",
-        answer: "We recommend trying Python directly in our browser tool Hafa Code (code.shimizu-technology.com), or exploring free coding platforms like freeCodeCamp to practice coding concepts in-browser before starting."
+        answer: "We recommend trying Python directly in our browser tool Hafa Code, or exploring free coding platforms like freeCodeCamp to practice coding concepts in-browser before starting.",
+        links: [{ label: "Hafa Code", href: "https://code.shimizu-technology.com" }],
       },
     ],
   },

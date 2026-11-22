@@ -1,5 +1,6 @@
 "use client"
 
+import { Fragment, type ReactNode } from "react"
 import Link from "next/link"
 import {
   Accordion,
@@ -8,7 +9,35 @@ import {
   AccordionTrigger
 } from "@/components/ui/accordion"
 import { ArrowRight, Mail, Phone } from "lucide-react"
-import { faqGroups } from "@/data/faq"
+import { faqGroups, type FaqItem } from "@/data/faq"
+
+function renderFaqAnswer(item: FaqItem): ReactNode {
+  if (!item.links?.length) return item.answer
+  let nodes: ReactNode[] = [item.answer]
+  for (const link of item.links) {
+    nodes = nodes.flatMap<ReactNode>((node, idx) => {
+      if (typeof node !== "string" || !node.includes(link.label)) return [node]
+      const parts = node.split(link.label)
+      return parts.flatMap<ReactNode>((part, partIdx) =>
+        partIdx < parts.length - 1
+          ? [
+              <Fragment key={`${idx}-${partIdx}-t`}>{part}</Fragment>,
+              <a
+                key={`${idx}-${partIdx}-a`}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-ruby-700 underline underline-offset-4 hover:text-ruby-800"
+              >
+                {link.label}
+              </a>,
+            ]
+          : [<Fragment key={`${idx}-${partIdx}-t`}>{part}</Fragment>]
+      )
+    })
+  }
+  return nodes
+}
 
 export default function FAQPage() {
   return (
@@ -33,7 +62,7 @@ export default function FAQPage() {
               {group.items.map((faq) => (
                 <AccordionItem key={faq.question} value={faq.question} className="border-0">
                   <AccordionTrigger className="py-5 text-left text-base font-semibold leading-snug text-slate-950 [overflow-wrap:anywhere] hover:no-underline hover:text-ruby-700 md:text-lg">{faq.question}</AccordionTrigger>
-                  <AccordionContent className="max-w-prose pb-6 pr-7 text-base leading-relaxed text-slate-600 [overflow-wrap:anywhere]">{faq.answer}</AccordionContent>
+                  <AccordionContent className="max-w-prose pb-6 pr-7 text-base leading-relaxed text-slate-600 [overflow-wrap:anywhere]">{renderFaqAnswer(faq)}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>

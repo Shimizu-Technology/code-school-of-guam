@@ -16,13 +16,13 @@ export function buildSocialMetadata({
 }: {
   title: string
   description: string
-  url: string
+  url?: string
 }): Pick<Metadata, "openGraph" | "twitter"> {
   return {
     openGraph: {
       title,
       description,
-      url,
+      ...(url ? { url } : {}),
       siteName: "Code School of Guam",
       images: [SOCIAL_CARD_IMAGE],
       locale: "en_US",

@@ -1,7 +1,18 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import "./home.css"
+import { buildSocialMetadata } from "@/lib/metadata"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  ...buildSocialMetadata({
+    title: "Code School of Guam - Focused Courses and Full Bootcamp",
+    description: "Start with a focused coding course or explore the full software development bootcamp. Beginner Python is being tested with an invited group in early 2027.",
+    url: "https://codeschoolofguam.com",
+  }),
+}
 import { HeroEditor } from "@/components/home/hero-editor"
 import { LearningRoute } from "@/components/home/learning-route"
 import { CapstoneClip } from "@/components/home/capstone-clip"

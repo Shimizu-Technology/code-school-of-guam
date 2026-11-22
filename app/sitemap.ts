@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-const LAST_MODIFIED = new Date('2026-11-22')
+const LAST_MODIFIED = new Date()
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://codeschoolofguam.com'

@@ -56,7 +56,7 @@ test('the story deck shows one story at a time and Next moves to the following g
   for (const img of container.querySelectorAll('img')) expect(fs.existsSync(path.join('public', img.getAttribute('src')!))).toBe(true)
 })
 
-test('the capstone clip is silent, inline, metadata-preloaded with poster fallback, and with reduced motion waits for the visitor to press Play', async () => {
+test('the capstone clip is silent, inline, metadata-preloaded with an underlying poster image, and with reduced motion waits for the visitor to press Play', async () => {
   reducedMotion()
   const play = vi.fn(() => Promise.resolve())
   const pause = vi.fn()
@@ -68,7 +68,7 @@ test('the capstone clip is silent, inline, metadata-preloaded with poster fallba
   expect(video.loop).toBe(true)
   expect(video.hasAttribute('playsinline')).toBe(true)
   expect(video.getAttribute('preload')).toBe('metadata')
-  expect(video.getAttribute('poster')).toBe(CAPSTONE_CLIP.poster)
+  expect(video.hasAttribute('poster')).toBe(false)
   expect(container.querySelector('img.home-live-poster')?.getAttribute('src')).toBe(CAPSTONE_CLIP.poster)
   expect(play).not.toHaveBeenCalled()
   const toggle = screen.getByRole('button', { name: 'Play capstone clip' })
@@ -76,6 +76,38 @@ test('the capstone clip is silent, inline, metadata-preloaded with poster fallba
   await act(async () => { fireEvent.click(toggle) })
   expect(play).toHaveBeenCalledTimes(1)
   for (const file of [CAPSTONE_CLIP.src, CAPSTONE_CLIP.poster]) expect(fs.existsSync(path.join('public', file))).toBe(true)
+})
+
+test('the capstone clip keeps data-ready false until loadeddata fires', () => {
+  reducedMotion()
+  const { container } = render(<CapstoneClip />)
+  const video = container.querySelector('video')!
+  expect(video.getAttribute('data-ready')).toBe('false')
+  fireEvent(video, new Event('loadeddata'))
+  expect(video.getAttribute('data-ready')).toBe('true')
+})
+
+test('the capstone clip marks data-ready true when playing fires', () => {
+  reducedMotion()
+  const { container } = render(<CapstoneClip />)
+  const video = container.querySelector('video')!
+  expect(video.getAttribute('data-ready')).toBe('false')
+  fireEvent(video, new Event('playing'))
+  expect(video.getAttribute('data-ready')).toBe('true')
+})
+
+test('the capstone clip marks data-ready true immediately when readyState is already >= 2', () => {
+  reducedMotion()
+  const orig = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'readyState')
+  Object.defineProperty(HTMLMediaElement.prototype, 'readyState', { configurable: true, get: () => 2 })
+  try {
+    const { container } = render(<CapstoneClip />)
+    const video = container.querySelector('video')!
+    expect(video.getAttribute('data-ready')).toBe('true')
+  } finally {
+    if (orig) Object.defineProperty(HTMLMediaElement.prototype, 'readyState', orig)
+    else delete (HTMLMediaElement.prototype as unknown as Record<string, unknown>).readyState
+  }
 })
 
 // matchMedia whose answers can change while a component is mounted.

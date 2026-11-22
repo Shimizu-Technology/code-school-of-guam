@@ -54,7 +54,7 @@ export function PythonInterestForm() {
         </label>
       </div>
       <label className="block text-sm font-bold text-slate-900">How much coding have you done?
-        <select name="experience_level" defaultValue="" className="mt-2 min-h-12 w-full rounded-md border border-slate-300 bg-white px-4 py-3 text-base font-normal text-slate-950 placeholder:text-slate-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-600">
+        <select name="experience_level" defaultValue="" className="mt-2 h-12 w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-base font-normal text-slate-950 placeholder:text-slate-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-600">
           <option value="">Select an option</option>
           <option value="No experience">I&apos;m completely new</option>
           <option value="Some self-study">I&apos;ve tried a few lessons</option>

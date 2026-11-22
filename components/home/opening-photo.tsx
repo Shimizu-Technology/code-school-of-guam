@@ -33,9 +33,9 @@ export function OpeningPhoto() {
     let shown = -1
     let target = 0
     let raf = 0
+    let stickyTop = parseFloat(getComputedStyle(sticky).top) || 0
     const measure = () => {
       const rect = section.getBoundingClientRect()
-      const stickyTop = parseFloat(getComputedStyle(sticky).top) || 0
       const distance = rect.height - sticky.offsetHeight
       return distance > 0 ? Math.min(1, Math.max(0, (stickyTop - rect.top) / distance)) : 1
     }
@@ -50,12 +50,16 @@ export function OpeningPhoto() {
       target = measure()
       if (!raf) raf = requestAnimationFrame(step)
     }
+    const onResize = () => {
+      stickyTop = parseFloat(getComputedStyle(sticky).top) || 0
+      onScroll()
+    }
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
-    window.addEventListener("resize", onScroll)
+    window.addEventListener("resize", onResize)
     return () => {
       window.removeEventListener("scroll", onScroll)
-      window.removeEventListener("resize", onScroll)
+      window.removeEventListener("resize", onResize)
       cancelAnimationFrame(raf)
     }
   }, [motionOK])
