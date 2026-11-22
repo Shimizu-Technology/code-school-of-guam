@@ -240,9 +240,10 @@ test('/partners and /projects ship verified Guam proof and named graduate capsto
   const partnersDoc = new JSDOM(pages.get('/partners')).window.document
   const partnersMain = partnersDoc.querySelector('main')
   const partnersText = partnersMain.textContent
-  for (const proof of ['University of Guam', 'Audreana Crane', 'Father Dueñas', 'Alanna Cruz', 'DMR', 'Shimizu Technology', '11 graduates']) {
+  for (const proof of ['University of Guam', 'Audreana Crane', 'Father Dueñas', 'Alanna Cruz', 'DMR', 'Shimizu Technology', '11 graduates', 'CSG Learn tracks Cohort 3 onward', 'September 2026']) {
     assert.ok(partnersText.includes(proof), `/partners missing verified proof: ${proof}`)
   }
+  assert.doesNotMatch(partnersText, /sponsored seats|1–2 business days|direct introductions/i)
   // Never ship Father Dueñas student photos.
   for (const img of partnersMain.querySelectorAll('img')) {
     assert.doesNotMatch(img.getAttribute('src') || '', /fd|father-duenas/i)

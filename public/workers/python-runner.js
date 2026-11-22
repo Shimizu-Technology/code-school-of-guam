@@ -2,6 +2,9 @@
  * On-demand Pyodide Web Worker for the Code School of Guam hero Python runner.
  * Loaded only when a visitor clicks Run or Write your own — never on initial page load.
  * Classic worker (importScripts) for broad desktop, iOS Safari, and Android Chrome support.
+ *
+ * Security note: Pyodide is pinned to exact release v0.27.5 on jsDelivr because classic
+ * worker `importScripts()` does not support Subresource Integrity (SRI) attributes.
  */
 
 const PYODIDE_INDEX_URL = "https://cdn.jsdelivr.net/pyodide/v0.27.5/full/";
@@ -166,14 +169,19 @@ import builtins, sys
 def __csg_blocked_input(prompt=""):
     raise RuntimeError("input() is not supported in this quick preview. Open in Hafa Code for interactive input.")
 
-__csg_orig_input = builtins.input
+__csg_orig_builtins = dict(builtins.__dict__)
+__csg_orig_stdout = sys.stdout
+__csg_orig_stderr = sys.stderr
 builtins.input = __csg_blocked_input
 try:
     __csg_ns = {"__name__": "__main__", "__file__": __csg_filename__}
     __csg_compiled = compile(__csg_user_code__, __csg_filename__, "exec")
     exec(__csg_compiled, __csg_ns)
 finally:
-    builtins.input = __csg_orig_input
+    builtins.__dict__.clear()
+    builtins.__dict__.update(__csg_orig_builtins)
+    sys.stdout = __csg_orig_stdout
+    sys.stderr = __csg_orig_stderr
     sys.stdout.flush()
     sys.stderr.flush()
 `);
@@ -183,7 +191,7 @@ finally:
           type: "result",
           stdout: collector.stdout,
           stderr: collector.stderr,
-          exitCode: collector.stderr ? 1 : 0,
+          exitCode: 0,
         });
       }
     } catch (err) {

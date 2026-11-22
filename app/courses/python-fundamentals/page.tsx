@@ -10,6 +10,7 @@ import { buildSocialMetadata } from "@/lib/metadata"
 const HAFA_CODE_EXPENSE_URL = buildHafaCodePythonUrl(DEFAULT_PYTHON_CODE, {
   title: "Expense summary",
   filename: "expense_summary.py",
+  starterKey: "csg-site-expense-summary",
 })
 
 export const metadata: Metadata = {
@@ -138,7 +139,7 @@ export default function PythonFundamentalsPage() {
               />
               <div className="min-w-0 text-sm">
                 <p className="font-bold text-slate-950">Taught by Leon Shimizu</p>
-                <p className="mt-0.5 leading-5 text-slate-600">Founder of Code School of Guam &amp; Shimizu Technology. Former Actualize instructor and software engineer.</p>
+                <p className="mt-0.5 leading-5 text-slate-600">Founder of Code School of Guam &amp; Shimizu Technology. Actualize instructor and software engineer.</p>
                 <Link href="/about" className="mt-1 inline-flex min-h-11 items-center gap-1 font-bold text-ruby-800 underline underline-offset-4">
                   About Leon <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>

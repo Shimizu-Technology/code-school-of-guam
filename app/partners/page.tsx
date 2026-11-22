@@ -8,12 +8,12 @@ import { buildSocialMetadata } from "@/lib/metadata"
 export const metadata: Metadata = {
   title: "For Schools, Employers & Partners",
   description:
-    "Partner with Code School of Guam for faculty AI workshops, introductory coding curriculum support, local team Python and SQL training, or sponsored learner seats.",
+    "Explore Code School of Guam workshops and training for Guam schools, universities, local employers, and community organizations.",
   alternates: { canonical: "/partners" },
   ...buildSocialMetadata({
     title: "Partner with Code School of Guam",
     description:
-      "Practical coding and AI workshops for Guam schools, employers, and community sponsors — taught on island by local engineers.",
+      "Practical coding and AI workshops for Guam schools, employers, and community organizations — taught on island by local engineers.",
     url: "/partners",
   }),
 }
@@ -24,30 +24,30 @@ const partnerTracks = [
     eyebrow: "Track 01",
     title: "Schools & Universities",
     summary:
-      "Practical AI workshops for faculty and staff, introductory coding curriculum support, and guest sessions grounded in browser-first tools like Hafa Code.",
-    proofLabel: "Local work so far",
+      "We offer practical AI workshops for faculty and staff, introductory coding curriculum support, and guest sessions grounded in browser-first tools like Hafa Code.",
+    proofLabel: "Local background",
     proof:
-      "Leon led a July 2025 AI workshop for University of Guam staff, and Cohort 1 graduate Audreana Crane now teaches introductory coding at Father Dueñas Memorial School.",
+      "Leon led a July 2025 AI workshop for University of Guam staff. Independently, Cohort 1 graduate Audreana Crane teaches introductory coding at Father Dueñas Memorial School.",
   },
   {
     icon: Building2,
     eyebrow: "Track 02",
     title: "Guam Employers & Teams",
     summary:
-      "Focused training in Python, automation, SQL, and practical AI workflows for staff — plus direct introductions to vetted Code School of Guam graduates.",
-    proofLabel: "Local work so far",
+      "We offer focused training in Python, automation, SQL, and practical AI workflows tailored for local staff.",
+    proofLabel: "Local background",
     proof:
-      "Cohort 1 graduate Alanna Cruz now works in software at DMR, and students learn around production systems built and maintained in Guam by Shimizu Technology.",
+      "Cohort 1 graduate Alanna Cruz works in software at DMR, and CSG students learn around production systems built and maintained in Guam by Shimizu Technology.",
   },
   {
     icon: Handshake,
     eyebrow: "Track 03",
-    title: "Workforce & Community Sponsors",
+    title: "Workforce & Community Organizations",
     summary:
-      "Sponsor seats for local learners in upcoming focused courses or future cohorts, backed by CSG Learn project submissions, instructor reviews, and completion records.",
-    proofLabel: "Local work so far",
+      "We offer group coding workshops and structured training programs for local organizations, with lessons and project reviews organized in CSG Learn.",
+    proofLabel: "Local background",
     proof:
-      "11 graduates completed Cohorts 1 and 2 in 2025 (100% completion across those first two cohorts), with structured tracking built into CSG Learn.",
+      "11 graduates completed Cohorts 1 and 2 in 2025 (100% completion across those first two cohorts). CSG Learn tracks Cohort 3 onward, and the alumni library launched in September 2026.",
   },
 ] as const
 
@@ -57,12 +57,12 @@ export default function PartnersPage() {
       <section className="csg-page-hero bg-[#faf7f0] text-slate-950">
         <div className="container mx-auto grid gap-10 px-4 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14">
           <div>
-            <p className="csg-label text-ruby-700">For Guam schools, employers &amp; sponsors</p>
+            <p className="csg-label text-ruby-700">For Guam schools, employers &amp; community</p>
             <h1 className="mt-5 max-w-3xl font-serif text-5xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-6xl">
               Partner with Code School of Guam.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-              We work with Guam educators, local employers, and community organizations to build practical coding and AI skills on island — with local instruction and real projects.
+              We offer practical coding and AI training for Guam educators, local employers, and community organizations — taught on island around real projects.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#partner-inquiry" className="csg-button">
@@ -100,7 +100,7 @@ export default function PartnersPage() {
               Built on local teaching and verifiable student work.
             </h2>
             <p className="mt-4 text-lg leading-8 text-slate-600">
-              Every partnership is scoped around real goals, clear schedules, and honest expectations — whether it is a single staff workshop, a focused Python track, or sponsored seats for local learners.
+              We scope every engagement around real goals, clear schedules, and honest expectations — whether it is a single staff workshop, a focused Python track, or group training for a local organization.
             </p>
           </div>
 
@@ -144,7 +144,7 @@ export default function PartnersPage() {
             <div className="border-t-2 border-[#c8bfb0] pt-4">
               <h3 className="text-lg font-bold text-slate-950">Structured review (CSG Learn)</h3>
               <p className="mt-2 text-sm leading-6 text-slate-700">
-                Lessons, exercises, project submissions, and instructor reviews live in one place, giving sponsors and learners clear progress records.
+                Lessons, exercises, project submissions, and instructor reviews live in one place, giving learners and training partners clear progress records.
               </p>
             </div>
           </div>
@@ -159,7 +159,7 @@ export default function PartnersPage() {
               Tell us what your school or team needs.
             </h2>
             <p className="mt-5 max-w-lg leading-7 text-slate-600">
-              Share your organization, goals, and rough timeline. Leon reads every note personally and replies within 1–2 business days (Guam time).
+              Share your organization, goals, and rough timeline. Leon reads every note personally.
             </p>
             <div className="mt-8 space-y-2 border-t border-[#ded7c9] pt-6 text-sm text-slate-700">
               <a

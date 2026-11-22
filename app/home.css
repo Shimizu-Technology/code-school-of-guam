@@ -105,6 +105,7 @@
   .home-run:hover { background: var(--home-ruby-dark); }
   .home-run-stop:hover { background: #475569; }
 }
+.home-code-region:focus-visible, .home-term:focus-visible { outline: 2px solid #f2a7a2; outline-offset: -2px; }
 .home-code {
   margin: 0;
   padding: 16px 18px 14px 0;

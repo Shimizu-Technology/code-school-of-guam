@@ -40,7 +40,7 @@ const featuredCapstones = [
   {
     name: "Shared Shores GU",
     cohort: "Cohort 2 · Guam-focused",
-    subtitle: "Guam-focused web app",
+    subtitle: "Guam rental marketplace",
     summary: "Built and presented live during Cohort 2 capstone day in December 2025.",
     timestampLabel: "1:00:27",
     href: "https://www.youtube.com/watch?v=bWuS_YuiRzI&t=3627s",

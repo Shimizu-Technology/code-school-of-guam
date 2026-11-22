@@ -1,18 +1,10 @@
 import { afterEach, expect, test, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { CohortInterestForm } from '../components/cohort-interest-form'
 import { PythonInterestForm } from '../components/python-interest-form'
-import { CourseInterestForm } from '../components/course-interest-form'
 import { UnifiedInquiryForm, type InquiryMode } from '../components/unified-inquiry-form'
 import { readFileSync } from 'node:fs'
 
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
-
-const forms = [
-  ['next-cohort-interest', CohortInterestForm],
-  ['python-fundamentals-interest', PythonInterestForm],
-  ['focused-courses-interest', CourseInterestForm],
-] as const
 
 function fillRequiredFields(form: HTMLFormElement) {
   fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Test Learner' } })
@@ -31,86 +23,49 @@ function fillRequiredFields(form: HTMLFormElement) {
   expect(form.checkValidity()).toBe(true)
 }
 
-for (const [name, Form] of forms) {
-  test(`${name} has the same named fields as Netlify discovery and requires consent`, () => {
-    const { container } = render(<Form />)
-    const form = container.querySelector('form')!
-    const discovery = new DOMParser().parseFromString(readFileSync('public/__forms.html', 'utf8'), 'text/html').querySelector(`form[name="${name}"]`)!
-    const names = (el: Element) => Array.from(el.querySelectorAll('[name]')).map((input) => input.getAttribute('name')).sort()
-    expect(form.getAttribute('name')).toBe(name)
-    expect(names(form)).toEqual(names(discovery))
-    expect(form.querySelector<HTMLInputElement>('[name="update_consent"]')!.required).toBe(true)
-    expect(form.querySelector<HTMLInputElement>('[name="email"]')!.type).toBe('email')
-  })
+test('python-fundamentals-interest has the same named fields as Netlify discovery and requires consent', () => {
+  const { container } = render(<PythonInterestForm />)
+  const form = container.querySelector('form')!
+  const discovery = new DOMParser().parseFromString(readFileSync('public/__forms.html', 'utf8'), 'text/html').querySelector('form[name="python-fundamentals-interest"]')!
+  const names = (el: Element) => Array.from(el.querySelectorAll('[name]')).map((input) => input.getAttribute('name')).sort()
+  expect(form.getAttribute('name')).toBe('python-fundamentals-interest')
+  expect(names(form)).toEqual(names(discovery))
+  expect(form.querySelector<HTMLInputElement>('[name="update_consent"]')!.required).toBe(true)
+  expect(form.querySelector<HTMLInputElement>('[name="email"]')!.type).toBe('email')
+})
 
-  test(`${name} posts encoded form data and announces success only after the response`, async () => {
-    let finish!: (response: { ok: boolean }) => void
-    const request = vi.fn(() => new Promise((resolve) => { finish = resolve }))
-    vi.stubGlobal('fetch', request)
-    const { container } = render(<Form />)
-    const form = container.querySelector('form')!
-    fillRequiredFields(form)
-    fireEvent.submit(form)
-    expect(request).toHaveBeenCalledTimes(1)
-    const [url, options] = request.mock.calls[0] as unknown as [string, RequestInit]
-    expect(url).toBe('/__forms.html')
-    expect(options.method).toBe('POST')
-    const body = new URLSearchParams(String(options.body))
-    expect(body.get('form-name')).toBe(name)
-    expect(body.get('name')).toBe('Test Learner')
-    expect(body.get('email')).toBe('learner@example.invalid')
-    expect(body.get('update_consent')).toBe('yes')
-    if (name === 'next-cohort-interest') expect(body.get('preferred_timing')).toBe('Weekday daytime')
-    expect(screen.queryByRole('status')).toBeNull()
-    expect(form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(true)
-    finish({ ok: true })
-    await waitFor(() => expect(screen.getByRole('status')).toBeTruthy())
-    expect(container.querySelector('form')).toBeNull()
-  })
+test('python-fundamentals-interest posts encoded form data, announces success, and retains input on failure', async () => {
+  let finish!: (response: { ok: boolean }) => void
+  const request = vi.fn(() => new Promise((resolve) => { finish = resolve }))
+  vi.stubGlobal('fetch', request)
+  const { container, unmount } = render(<PythonInterestForm />)
+  const form = container.querySelector('form')!
+  fillRequiredFields(form)
+  fireEvent.submit(form)
+  expect(request).toHaveBeenCalledTimes(1)
+  const [url, options] = request.mock.calls[0] as unknown as [string, RequestInit]
+  expect(url).toBe('/__forms.html')
+  expect(options.method).toBe('POST')
+  const body = new URLSearchParams(String(options.body))
+  expect(body.get('form-name')).toBe('python-fundamentals-interest')
+  expect(body.get('name')).toBe('Test Learner')
+  expect(body.get('email')).toBe('learner@example.invalid')
+  expect(body.get('update_consent')).toBe('yes')
+  expect(screen.queryByRole('status')).toBeNull()
+  expect(form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(true)
+  finish({ ok: true })
+  await waitFor(() => expect(screen.getByRole('status')).toBeTruthy())
+  expect(container.querySelector('form')).toBeNull()
+  unmount()
 
-  test(`${name} retains a learner's response and offers contact when submission fails`, async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }))
-    const { container } = render(<Form />)
-    const form = container.querySelector('form')!
-    fillRequiredFields(form)
-    fireEvent.submit(form)
-    await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
-    expect(form.querySelector<HTMLInputElement>('[name="name"]')!.value).toBe('Test Learner')
-    expect(screen.getByRole('link', { name: 'codeschoolofguam@gmail.com' }).getAttribute('href')).toBe('mailto:codeschoolofguam@gmail.com')
-    expect(form.querySelector<HTMLButtonElement>('button[type="submit"]')!.disabled).toBe(false)
-  })
-}
-
-const offerLabels = {
-  'next-cohort-interest': 'Full bootcamp updates list',
-  'python-fundamentals-interest': 'Python Fundamentals updates list',
-  'focused-courses-interest': 'Focused-course updates list',
-} as const
-
-for (const [name, Form] of forms) {
-  test(`${name} names its offer, keeps fields at 16px, and keeps the consent checkbox full size`, () => {
-    const { container } = render(<Form />)
-    expect(screen.getByRole('form', { name: offerLabels[name] }).getAttribute('name')).toBe(name)
-    const form = container.querySelector('form')!
-    const fields = form.querySelectorAll<HTMLElement>('input:not([type="hidden"]):not([type="checkbox"]):not([name="bot-field"]), select, textarea')
-    expect(fields.length).toBeGreaterThan(2)
-    for (const field of fields) {
-      expect(field.className, field.getAttribute('name')!).toContain('text-base')
-      expect(field.className).not.toMatch(/\btext-sm\b/)
-    }
-    for (const field of form.querySelectorAll<HTMLElement>('[placeholder]')) expect(field.className).toContain('placeholder:text-slate-500')
-    const consent = form.querySelector<HTMLInputElement>('[name="update_consent"]')!
-    expect(consent.className).toContain('shrink-0')
-    expect(consent.className).toContain('h-5')
-    expect(consent.className).toContain('w-5')
-  })
-}
-
-test('bootcamp interest collects availability without suggesting a start date', () => {
-  const { container } = render(<CohortInterestForm />)
-  expect(container.textContent).toContain('dates, schedule, and tuition have not been announced')
-  expect(container.textContent).not.toMatch(/January|February|2027/)
-  expect(Array.from(container.querySelectorAll('select[name="preferred_timing"] option')).map((option) => option.textContent)).toEqual(['Select a preference', 'Weekday daytime', 'Weekday evenings', 'Weekends', "I'm flexible"])
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false }))
+  const errView = render(<PythonInterestForm />)
+  const errForm = errView.container.querySelector('form')!
+  fillRequiredFields(errForm)
+  fireEvent.submit(errForm)
+  await waitFor(() => expect(screen.getByRole('alert')).toBeTruthy())
+  expect(errForm.querySelector<HTMLInputElement>('[name="name"]')!.value).toBe('Test Learner')
+  expect(screen.getByRole('link', { name: 'codeschoolofguam@gmail.com' }).getAttribute('href')).toBe('mailto:codeschoolofguam@gmail.com')
 })
 
 const unifiedModes: readonly [InquiryMode, string, string][] = [
@@ -135,10 +90,19 @@ for (const [mode, formName, ariaLabel] of unifiedModes) {
     const requiredNames = Array.from(form.querySelectorAll('[required]')).map((el) => el.getAttribute('name')).sort()
     expect(requiredNames).toEqual(['email', 'name', 'update_consent'])
 
+    const fields = form.querySelectorAll<HTMLElement>('input:not([type="hidden"]):not([type="checkbox"]):not([name="bot-field"]), select, textarea')
+    for (const field of fields) {
+      expect(field.className, field.getAttribute('name')!).toContain('text-base')
+      expect(field.className).not.toMatch(/\btext-sm\b/)
+    }
     for (const select of form.querySelectorAll<HTMLSelectElement>('select')) {
       expect(select.className).toContain('h-12')
       expect(select.className).toContain('text-base')
     }
+    const consent = form.querySelector<HTMLInputElement>('[name="update_consent"]')!
+    expect(consent.className).toContain('shrink-0')
+    expect(consent.className).toContain('h-5')
+    expect(consent.className).toContain('w-5')
 
     fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Guam Learner' } })
     fireEvent.change(form.querySelector('[name="email"]')!, { target: { value: 'learner@example.invalid' } })
@@ -152,11 +116,28 @@ for (const [mode, formName, ariaLabel] of unifiedModes) {
   })
 }
 
-test('UnifiedInquiryForm chips switch active mode and Netlify form name cleanly', () => {
-  render(<UnifiedInquiryForm defaultMode="course" />)
-  expect(screen.getByRole('form', { name: 'Focused-course updates list' }).getAttribute('name')).toBe('focused-courses-interest')
+test('UnifiedInquiryForm preserves typed Name and Email when switching chips', () => {
+  const { container } = render(<UnifiedInquiryForm defaultMode="course" />)
+  const nameInput = () => container.querySelector<HTMLInputElement>('input[name="name"]')!
+  const emailInput = () => container.querySelector<HTMLInputElement>('input[name="email"]')!
+
+  fireEvent.change(nameInput(), { target: { value: 'Maria Santos' } })
+  fireEvent.change(emailInput(), { target: { value: 'maria@example.invalid' } })
+
   fireEvent.click(screen.getByRole('button', { name: 'School / employer partner' }))
   expect(screen.getByRole('form', { name: 'Partner inquiry form' }).getAttribute('name')).toBe('partner-inquiry')
+  expect(nameInput().value).toBe('Maria Santos')
+  expect(emailInput().value).toBe('maria@example.invalid')
+
   fireEvent.click(screen.getByRole('button', { name: 'Full bootcamp' }))
   expect(screen.getByRole('form', { name: 'Full bootcamp updates list' }).getAttribute('name')).toBe('next-cohort-interest')
+  expect(nameInput().value).toBe('Maria Santos')
+  expect(emailInput().value).toBe('maria@example.invalid')
+})
+
+test('UnifiedInquiryForm bootcamp mode collects availability without suggesting a start date', () => {
+  const { container } = render(<UnifiedInquiryForm defaultMode="bootcamp" />)
+  expect(container.textContent).toContain('dates, schedule, and tuition have not been announced')
+  expect(container.textContent).not.toMatch(/January|February|2027/)
+  expect(Array.from(container.querySelectorAll('select[name="preferred_timing"] option')).map((option) => option.textContent)).toEqual(['Select a preference', 'Weekday daytime', 'Weekday evenings', 'Weekends', "I'm flexible"])
 })

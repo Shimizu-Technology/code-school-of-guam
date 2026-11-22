@@ -1,6 +1,7 @@
 export const HAFA_CODE_BASE_URL = "https://code.shimizu-technology.com"
 
-const MAX_ENCODED_URL_LENGTH = 8000
+// Matches Hafa Code's STARTER_LINK_MAX_LENGTH so longer user edits still carry over.
+export const MAX_ENCODED_URL_LENGTH = 64_000
 
 function bytesToBase64Url(bytes: Uint8Array): string {
   let binary = ""

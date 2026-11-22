@@ -61,17 +61,17 @@ const PARTNER_CALLOUTS = [
   {
     icon: GraduationCap,
     title: "Schools & Universities",
-    body: "Faculty AI workshops and intro coding curriculum support — building on our July 2025 UOG staff workshop and Audreana teaching intro coding at Father Dueñas.",
+    body: "We offer faculty AI workshops and intro coding curriculum support. Leon led a July 2025 AI workshop for University of Guam staff, and Cohort 1 graduate Audreana Crane teaches intro coding at Father Dueñas.",
   },
   {
     icon: Building2,
     title: "Guam Employers & Teams",
-    body: "Practical Python, SQL, and AI training for local teams, plus connections with vetted graduates like Alanna Cruz (now working in software at DMR).",
+    body: "We offer practical Python, SQL, and AI training for local teams. Cohort 1 graduate Alanna Cruz works in software at DMR, and students learn around real Shimizu Technology systems.",
   },
   {
     icon: Handshake,
-    title: "Workforce & Sponsors",
-    body: "Sponsor seats for local learners in focused courses or future cohorts, backed by CSG Learn project submissions and instructor reviews.",
+    title: "Workforce & Community",
+    body: "We offer group coding workshops and structured training for local organizations, with lessons and project reviews organized in CSG Learn.",
   },
 ] as const
 
@@ -183,11 +183,11 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-8">
           <div className="home-split">
             <div>
-              <p className="csg-label text-ruby-700">For Guam schools, employers &amp; sponsors</p>
+              <p className="csg-label text-ruby-700">For Guam schools, employers &amp; community</p>
               <h2 id="home-partners-title" className="home-h2" data-reveal>Partner with Code School of Guam.</h2>
             </div>
             <div data-reveal>
-              <p className="text-lg leading-8 text-slate-600">We work with Guam educators, local businesses, and community sponsors to build practical coding and AI capability on island.</p>
+              <p className="text-lg leading-8 text-slate-600">We&apos;d love to work with Guam educators, local businesses, and community organizations to offer practical coding and AI training on island.</p>
               <Link href="/partners" className="mt-3 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4">Explore partnerships <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
             </div>
           </div>

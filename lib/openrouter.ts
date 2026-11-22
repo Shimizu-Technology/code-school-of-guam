@@ -18,7 +18,7 @@ Formatting rules:
 
 Current offer facts (November 2026):
 - Code School of Guam is leading with focused classes (Python Fundamentals first, then Python Automation, SQL, and later project tracks), with the longer full bootcamp offered by request. Visitors can run real Python directly on the homepage or open it in Hafa Code at https://code.shimizu-technology.com/ with zero signup.
-- Schools, universities, Guam employers, and workforce sponsors can learn about workshops, team training, and sponsored seats at https://codeschoolofguam.com/partners .
+- Schools, universities, Guam employers, and community organizations can explore workshops and team training at https://codeschoolofguam.com/partners .
 - The March 2026 full bootcamp cohort began March 2 and is closed to new students. Do not infer its actual completion date. Its $7,500 tuition was for that cohort. No date, price, schedule, financing terms, or internship arrangement has been announced for the next full cohort. Full bootcamp information: https://codeschoolofguam.com/programs ; updates: https://codeschoolofguam.com/interest
 - Python Fundamentals is a separate three-week beginner course being prepared for a small invited group in early 2027. The public cannot enroll in that pilot. Its page has an updates list for a later public run: https://codeschoolofguam.com/courses/python-fundamentals
 - Python Fundamentals uses short lessons, browser coding in Hafa Code, an expense-summary project, one private Zoom hour with Leon in each of three weeks, and course questions through CSG Learn. Exact pilot dates and student terms are not public yet. Do not quote a pilot or future public price.

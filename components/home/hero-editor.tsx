@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { ArrowUpRight, Pencil, Play, RotateCcw, Square } from "lucide-react"
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from "react"
 import { buildHafaCodePythonUrl } from "@/lib/hafa-code-link"
 
 type Token = readonly [kind: "" | "k" | "s" | "n" | "f", text: string]
@@ -41,7 +41,10 @@ export const EDITOR_OUTPUT = [
 ] as const
 
 export const RUN_EXECUTION_TIMEOUT_MS = 5000
-export const RUNTIME_STARTUP_TIMEOUT_MS = 25000
+export const RUNTIME_SLOW_HINT_MS = 10000
+export const RUNTIME_LOAD_SAFETY_TIMEOUT_MS = 90000
+export const STOP_GUARD_MS = 400
+export const HERO_STARTER_KEY = "csg-site-expense-summary"
 
 type RunStatus = "idle" | "loading" | "running" | "done" | "error"
 
@@ -70,6 +73,7 @@ export function HeroEditor() {
   const [code, setCode] = useState(DEFAULT_PYTHON_CODE)
   const [isEditing, setIsEditing] = useState(false)
   const [status, setStatus] = useState<RunStatus>("idle")
+  const [slowLoadHint, setSlowLoadHint] = useState(false)
   const [stdoutLines, setStdoutLines] = useState<string[]>([...EDITOR_OUTPUT])
   const [stderrText, setStderrText] = useState("")
   const [noticeText, setNoticeText] = useState("")
@@ -80,30 +84,52 @@ export function HeroEditor() {
   const workerReadyRef = useRef(false)
   const runIdRef = useRef(0)
   const activeRunIdRef = useRef<string | null>(null)
-  const timeoutRef = useRef<number | null>(null)
+  const runStartedAtRef = useRef(0)
+  const execTimeoutRef = useRef<number | null>(null)
+  const loadHintTimeoutRef = useRef<number | null>(null)
+  const loadSafetyTimeoutRef = useRef<number | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const runButtonRef = useRef<HTMLButtonElement>(null)
+  const termRef = useRef<HTMLDivElement>(null)
 
   const isModified = code !== DEFAULT_PYTHON_CODE
   const isBusy = status === "loading" || status === "running"
 
-  const clearTimer = useCallback(() => {
-    if (timeoutRef.current !== null) {
-      window.clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
+  const clearTimers = useCallback(() => {
+    if (execTimeoutRef.current !== null) {
+      window.clearTimeout(execTimeoutRef.current)
+      execTimeoutRef.current = null
+    }
+    if (loadHintTimeoutRef.current !== null) {
+      window.clearTimeout(loadHintTimeoutRef.current)
+      loadHintTimeoutRef.current = null
+    }
+    if (loadSafetyTimeoutRef.current !== null) {
+      window.clearTimeout(loadSafetyTimeoutRef.current)
+      loadSafetyTimeoutRef.current = null
     }
   }, [])
 
   const terminateWorker = useCallback(() => {
-    clearTimer()
+    clearTimers()
     activeRunIdRef.current = null
+    setSlowLoadHint(false)
     if (workerRef.current) {
       workerRef.current.terminate()
       workerRef.current = null
     }
     workerReadyRef.current = false
-  }, [clearTimer])
+  }, [clearTimers])
 
   useEffect(() => terminateWorker, [terminateWorker])
+
+  // Keep tracebacks and output-cap notices scrolled into view inside the bounded terminal.
+  useEffect(() => {
+    if (!termRef.current) return
+    if (hasExecuted || stderrText || noticeText) {
+      termRef.current.scrollTop = termRef.current.scrollHeight
+    }
+  }, [stdoutLines, stderrText, noticeText, hasExecuted])
 
   const ensureWorker = useCallback(() => {
     if (workerRef.current) return workerRef.current
@@ -112,6 +138,7 @@ export function HeroEditor() {
     }
     const worker = new Worker("/workers/python-runner.js")
     worker.onmessage = (event: MessageEvent<WorkerMessage>) => {
+      if (workerRef.current !== worker) return
       const msg = event.data
       if (!msg) return
       if (msg.type === "ready") {
@@ -122,10 +149,12 @@ export function HeroEditor() {
 
       if (msg.type === "started") {
         workerReadyRef.current = true
+        clearTimers()
+        setSlowLoadHint(false)
         setStatus("running")
         setStatusAnnouncement("Running expense_summary.py")
-        clearTimer()
-        timeoutRef.current = window.setTimeout(() => {
+        // Start the 5s execution timeout only once Pyodide is loaded and Python starts executing.
+        execTimeoutRef.current = window.setTimeout(() => {
           terminateWorker()
           setStatus("error")
           setNoticeText("Stopped after 5 seconds — check for an infinite loop.")
@@ -146,8 +175,9 @@ export function HeroEditor() {
       }
 
       if (msg.type === "result") {
-        clearTimer()
+        clearTimers()
         activeRunIdRef.current = null
+        setSlowLoadHint(false)
         const outLines = splitLines(msg.stdout ?? "")
         const err = (msg.stderr ?? "").trim()
         setStdoutLines(outLines)
@@ -173,6 +203,7 @@ export function HeroEditor() {
     }
 
     worker.onerror = () => {
+      if (workerRef.current !== worker) return
       terminateWorker()
       setStderrText("Python runtime failed to load. Check your connection or open in Hafa Code.")
       setNoticeText("")
@@ -182,7 +213,7 @@ export function HeroEditor() {
 
     workerRef.current = worker
     return worker
-  }, [clearTimer, terminateWorker])
+  }, [clearTimers, terminateWorker])
 
   const startWarmup = useCallback(() => {
     if (workerRef.current) return
@@ -194,28 +225,35 @@ export function HeroEditor() {
     }
   }, [ensureWorker])
 
-  const handleRun = useCallback(() => {
-    clearTimer()
+  const startRun = useCallback(() => {
+    clearTimers()
     const runId = `run-${++runIdRef.current}`
     activeRunIdRef.current = runId
+    runStartedAtRef.current = Date.now()
+    // Clear previous output immediately so timeout/stop notices never sit under stale lines.
+    setStdoutLines([])
     setStderrText("")
     setNoticeText("")
+    setSlowLoadHint(false)
     const needsLoad = !workerReadyRef.current
     setStatus(needsLoad ? "loading" : "running")
     setStatusAnnouncement(needsLoad ? "Loading Python runtime in your browser…" : "Running expense_summary.py")
 
     try {
       const worker = ensureWorker()
-      timeoutRef.current = window.setTimeout(() => {
+      if (needsLoad) {
+        loadHintTimeoutRef.current = window.setTimeout(() => {
+          setSlowLoadHint(true)
+          setStatusAnnouncement("Still loading Python (first time only)…")
+        }, RUNTIME_SLOW_HINT_MS)
+      }
+      // Generous safety cap while waiting for runtime load/start; does not interrupt slow mobile downloads early.
+      loadSafetyTimeoutRef.current = window.setTimeout(() => {
         terminateWorker()
         setStatus("error")
-        setNoticeText(
-          needsLoad
-            ? "Python took too long to load. Check your connection and try again, or open in Hafa Code."
-            : "Stopped after 5 seconds — check for an infinite loop.",
-        )
-        setStatusAnnouncement("Program stopped after timeout.")
-      }, needsLoad ? RUNTIME_STARTUP_TIMEOUT_MS : RUN_EXECUTION_TIMEOUT_MS)
+        setNoticeText("Python took too long to load. Check your connection and try again, or open in Hafa Code.")
+        setStatusAnnouncement("Python runtime load timed out.")
+      }, RUNTIME_LOAD_SAFETY_TIMEOUT_MS)
 
       worker.postMessage({ id: runId, type: "run", code, filename: "expense_summary.py" })
     } catch (err) {
@@ -224,14 +262,28 @@ export function HeroEditor() {
       setStatus("error")
       setStatusAnnouncement("Could not start Python.")
     }
-  }, [clearTimer, code, ensureWorker, terminateWorker])
+  }, [clearTimers, code, ensureWorker, terminateWorker])
 
-  const handleStop = useCallback(() => {
-    terminateWorker()
-    setStatus("idle")
-    setNoticeText("Stopped.")
-    setStatusAnnouncement("Execution stopped.")
-  }, [terminateWorker])
+  const handleRunClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      if (event.detail > 1) return
+      startRun()
+    },
+    [startRun],
+  )
+
+  const handleStopClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      // Guard against a double-click/double-tap on Run accidentally hitting the swapped Stop button.
+      if (event.detail > 1) return
+      if (Date.now() - runStartedAtRef.current < STOP_GUARD_MS) return
+      terminateWorker()
+      setStatus("idle")
+      setNoticeText("Stopped.")
+      setStatusAnnouncement("Execution stopped.")
+    },
+    [terminateWorker],
+  )
 
   const handleEnterEdit = useCallback(() => {
     setIsEditing(true)
@@ -242,7 +294,8 @@ export function HeroEditor() {
   }, [startWarmup])
 
   const handleReset = useCallback(() => {
-    if (isBusy) terminateWorker()
+    // Always terminate the worker on Reset so any mutated Python globals/builtins start fresh.
+    terminateWorker()
     setCode(DEFAULT_PYTHON_CODE)
     setStdoutLines([...EDITOR_OUTPUT])
     setStderrText("")
@@ -250,17 +303,29 @@ export function HeroEditor() {
     setStatus("idle")
     setHasExecuted(false)
     setStatusAnnouncement("Reset to the default expense_summary.py example.")
-  }, [isBusy, terminateWorker])
+    requestAnimationFrame(() => {
+      if (isEditing && textareaRef.current) {
+        textareaRef.current.focus()
+      } else {
+        runButtonRef.current?.focus()
+      }
+    })
+  }, [isEditing, terminateWorker])
 
   const handleEditorKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
       event.preventDefault()
-      if (!isBusy) handleRun()
+      if (!isBusy) startRun()
     }
   }
 
   const hafaCodeUrl = useMemo(
-    () => buildHafaCodePythonUrl(code, { title: "Expense summary", filename: "expense_summary.py" }),
+    () =>
+      buildHafaCodePythonUrl(code, {
+        title: "Expense summary",
+        filename: "expense_summary.py",
+        starterKey: HERO_STARTER_KEY,
+      }),
     [code],
   )
 
@@ -299,7 +364,7 @@ export function HeroEditor() {
             <button
               type="button"
               className="home-run home-run-stop"
-              onClick={handleStop}
+              onClick={handleStopClick}
               aria-label="Stop running Python"
             >
               <Square className="h-3 w-3 fill-current" aria-hidden="true" />
@@ -307,9 +372,10 @@ export function HeroEditor() {
             </button>
           ) : (
             <button
+              ref={runButtonRef}
               type="button"
               className="home-run"
-              onClick={handleRun}
+              onClick={handleRunClick}
               aria-label={isEditing ? "Run your Python code" : "Run the Python example in your browser"}
             >
               <Play className="h-3 w-3 fill-current" aria-hidden="true" />
@@ -345,21 +411,29 @@ export function HeroEditor() {
           </p>
         </div>
       ) : (
-        <pre className="home-code" aria-label="Sample Python code: expense_summary.py">
-          {EDITOR_LINES.map((line, li) => (
-            <span key={li} className="home-ln">
-              {renderTokenizedLine(line)}
-            </span>
-          ))}
-        </pre>
+        /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable code region must be keyboard focusable */
+        <div role="region" aria-label="Sample Python code: expense_summary.py" tabIndex={0} className="home-code-region">
+          <pre className="home-code">
+            {EDITOR_LINES.map((line, li) => (
+              <span key={li} className="home-ln">
+                {renderTokenizedLine(line)}
+              </span>
+            ))}
+          </pre>
+        </div>
       )}
 
-      <div className="home-term" role="region" aria-label="Python program output">
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable output region must be keyboard focusable */}
+      <div ref={termRef} className="home-term" role="region" aria-label="Python program output" tabIndex={0}>
         <div className="home-term-bar">
           <span className="home-term-line">
             <span className="home-term-prompt">$</span> python expense_summary.py
           </span>
-          {status === "loading" ? <span className="home-term-status">Loading Python…</span> : null}
+          {status === "loading" ? (
+            <span className="home-term-status">
+              {slowLoadHint ? "Still loading Python (first time only)…" : "Loading Python…"}
+            </span>
+          ) : null}
           {status === "running" ? <span className="home-term-status">Running…</span> : null}
           {status === "done" && hasExecuted ? <span className="home-term-status home-term-status-ok">Ran in browser</span> : null}
         </div>

@@ -62,13 +62,12 @@ const MODE_CONFIG: Record<
     formName: "partner-inquiry",
     ariaLabel: "Partner inquiry form",
     heading: "Start a partner conversation",
-    intro: "For Guam schools, universities, employers, or workforce sponsors exploring training or partnerships.",
+    intro: "For Guam schools, universities, employers, or community organizations exploring workshops or training.",
     submitLabel: "Send partner inquiry",
     successHeading: "We received your partnership inquiry.",
-    successBody:
-      "Leon reviews every partnership note personally and aims to reply within 1–2 business days (Guam time).",
+    successBody: "Leon reads every partnership note personally and will follow up by email.",
     consentText: "I agree to be contacted by Code School of Guam about this partnership inquiry.",
-    footerNote: "Direct reply from Leon within 1–2 business days (Guam time). Or email codeschoolofguam@gmail.com.",
+    footerNote: "Leon reads every note personally. Or email codeschoolofguam@gmail.com.",
   },
 }
 
@@ -82,6 +81,8 @@ export function UnifiedInquiryForm({
   showHeading?: boolean
 }) {
   const [mode, setMode] = useState<InquiryMode>(defaultMode)
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
   const [submitState, setSubmitState] = useState<SubmitState>("idle")
 
   const config = MODE_CONFIG[mode]
@@ -102,6 +103,8 @@ export function UnifiedInquiryForm({
       })
       if (!response.ok) throw new Error("Submission failed")
       form.reset()
+      setName("")
+      setEmail("")
       setSubmitState("success")
     } catch {
       setSubmitState("error")
@@ -160,7 +163,6 @@ export function UnifiedInquiryForm({
       </div>
 
       <form
-        key={mode}
         name={config.formName}
         aria-label={config.ariaLabel}
         method="POST"
@@ -179,11 +181,26 @@ export function UnifiedInquiryForm({
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-bold text-slate-900">
             Name <span className="text-ruby-700">*</span>
-            <input required name="name" autoComplete="name" className={inputClass} />
+            <input
+              required
+              name="name"
+              autoComplete="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className={inputClass}
+            />
           </label>
           <label className="block text-sm font-bold text-slate-900">
             Email <span className="text-ruby-700">*</span>
-            <input required type="email" name="email" autoComplete="email" className={inputClass} />
+            <input
+              required
+              type="email"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className={inputClass}
+            />
           </label>
         </div>
 
@@ -267,7 +284,7 @@ export function UnifiedInquiryForm({
                 <select name="partnership_type" defaultValue="Schools & Universities" className={selectClass}>
                   <option value="Schools & Universities">Schools &amp; Universities</option>
                   <option value="Guam Employers & Teams">Guam Employers &amp; Teams</option>
-                  <option value="Workforce & Community Sponsors">Workforce &amp; Community Sponsors</option>
+                  <option value="Workforce & Community Organizations">Workforce &amp; Community Organizations</option>
                   <option value="Other">Other partnership idea</option>
                 </select>
               </label>
@@ -278,7 +295,7 @@ export function UnifiedInquiryForm({
                 name="goal"
                 rows={3}
                 className={`${inputClass} resize-y`}
-                placeholder="Share a workshop idea, staff training goal, or sponsorship question."
+                placeholder="Share a workshop idea, staff training goal, or group training question."
               />
             </label>
           </>
