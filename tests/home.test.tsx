@@ -127,14 +127,14 @@ test('hero editor renders highlighted code with output hidden and no worker on m
   expect(container.querySelector('.home-term')!.textContent).not.toContain('Food: $61')
   expect(MockPythonWorker.instances).toHaveLength(0)
   expect(screen.getByRole('button', { name: 'Run the Python example in your browser' })).toBeTruthy()
-  expect(screen.getByRole('button', { name: /Write your own/ })).toBeTruthy()
+  expect(screen.getByRole('button', { name: /Edit Python code/ })).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Python Fundamentals' }).getAttribute('href')).toBe('/courses/python-fundamentals')
   const hafaHref = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
   expect(hafaHref).toContain('https://code.shimizu-technology.com/?lang=python#project=')
   expect(hafaHref).toContain(`starter=${HERO_STARTER_KEY}`)
 })
 
-test('hero editor runs Python in a Web Worker on click, supports Write your own, Reset, timeout, and output cap', async () => {
+test('hero editor runs Python in a Web Worker on click, supports Edit Python code, Reset, timeout, and output cap', async () => {
   reducedMotion()
   vi.useFakeTimers()
   try {
@@ -171,8 +171,8 @@ test('hero editor runs Python in a Web Worker on click, supports Write your own,
     expect(container.querySelector('.home-term')!.textContent).toContain('Ran in browser')
     expect(container.querySelector('.home-term')!.textContent).toContain('Under budget by $2')
 
-    // Write your own lazily loads the editor in place of the highlighted copy and updates the Hafa Code link.
-    fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+    // Edit Python code lazily loads the editor in place of the highlighted copy and updates the Hafa Code link.
+    fireEvent.click(screen.getByRole('button', { name: /Edit Python code/ }))
     await editorLoaded()
     act(() => { vi.advanceTimersByTime(20) })
     expect(container.querySelector('.home-code-static')).toBeNull()
@@ -301,7 +301,7 @@ test('buildHafaCodePythonLink handles below-cap payloads and oversized fallback 
   Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
   vi.stubGlobal('Worker', MockPythonWorker)
   renderHero()
-  fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+  fireEvent.click(screen.getByRole('button', { name: /Edit Python code/ }))
   await editorLoaded()
   const textarea = screen.getByRole('textbox', { name: /Python code editor/ })
   fireEvent.change(textarea, { target: { value: hugeCode } })
@@ -566,7 +566,7 @@ test('sliding between coding keys does not insert the neighboring key', async ()
   liveMedia({ '(pointer: coarse)': true })
   vi.stubGlobal('Worker', MockPythonWorker)
   renderHero()
-  fireEvent.click(screen.getByRole('button', { name: 'Write your own' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Edit Python code' }))
   await editorLoaded()
   editorSpy.runKey = []
   const keys = screen.getByRole('toolbar', { name: 'Coding keys' })
@@ -597,7 +597,7 @@ test('every example updates its code, caption, worker filename, and Hafa Code pa
   vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = renderHero()
   for (const example of PYTHON_EXAMPLES) {
-    fireEvent.click(screen.getByRole('combobox', { name: 'Python example' }))
+    fireEvent.click(screen.getByRole('combobox', { name: /^Python example(?: \(modified\))?$/ }))
     fireEvent.click(screen.getByRole('option', { name: example.filename }))
     await editorLoaded()
     const params = new URLSearchParams(screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!.split('#')[1])
@@ -630,4 +630,15 @@ test('examples have distinct starters and compact, noninteractive programs; the 
   const chamorro = PYTHON_EXAMPLES.find(example => example.filename === 'chamorro_hello.py')!.code
   expect(chamorro).toContain('Håfa adai')
   expect(chamorro).toContain("Si Yu'os ma'åse'")
+})
+
+test('Clear followed immediately by Run posts the pending cleared code', async () => {
+  reducedMotion()
+  MockPythonWorker.instances = []
+  vi.stubGlobal('Worker', MockPythonWorker)
+  renderHero()
+  fireEvent.click(screen.getByRole('button', { name: 'Clear Python editor' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+  expect(MockPythonWorker.instances.at(-1)!.posted.find(message => (message as { type: string }).type === 'run')).toMatchObject({ code: CLEAR_PYTHON_CODE })
+  await editorLoaded()
 })

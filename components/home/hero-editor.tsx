@@ -332,7 +332,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   // Keep tracebacks and output-cap notices scrolled into view inside the bounded terminal.
   useEffect(() => {
     if (!termRef.current) return
-    if (hasExecuted || stderrText || noticeText) {
+    if (stderrText || noticeText) {
       termRef.current.scrollTop = termRef.current.scrollHeight
     }
   }, [stdoutLines, stderrText, noticeText, hasExecuted])
@@ -483,7 +483,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         setStatusAnnouncement("Python runtime load timed out.")
       }, RUNTIME_LOAD_SAFETY_TIMEOUT_MS)
 
-      worker.postMessage({ id: runId, type: "run", code: codeRef.current, filename: exampleRef.current.filename })
+      worker.postMessage({ id: runId, type: "run", code: pendingClearRef.current ? CLEAR_PYTHON_CODE : codeRef.current, filename: exampleRef.current.filename })
     } catch (err) {
       terminateWorker()
       setStderrText(err instanceof Error ? err.message : "Could not start Python.")
@@ -626,12 +626,17 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   }, [])
 
   const loadEditor = useCallback(
-    (tap?: { clientX: number; clientY: number }) => {
+    (tap?: { clientX: number; clientY: number }, { focus = true }: { focus?: boolean } = {}) => {
+      focusOnReadyRef.current = focus
+      if (!focus) removeProxy()
       if (editorRef.current) {
-        editorRef.current.focus()
+        if (focus) editorRef.current.focus()
         return
       }
-      if (editorLoadingRef.current) return
+      if (editorLoadingRef.current) {
+        if (focus && getCoarse()) holdKeyboard(24)
+        return
+      }
       editorLoadingRef.current = true
 
       const area = codeAreaRef.current
@@ -641,10 +646,10 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       const tapOffset =
         tap && areaRect ? { x: tap.clientX - areaRect.left, y: tap.clientY - areaRect.top } : null
       const scrollTop = staticScroller?.scrollTop ?? 0
-      if (getCoarse()) holdKeyboard(tapOffset?.y ?? 24)
+      if (focus && getCoarse()) holdKeyboard(tapOffset?.y ?? 24)
 
       setEditorMode("loading")
-      startWarmup()
+      if (focus) startWarmup()
 
       import("./python-editor")
         .then((mod) => {
@@ -677,9 +682,10 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           editorRef.current = editor
           editor.view.scrollDOM.scrollTop = scrollTop
           const newRect = parent.getBoundingClientRect()
-          if (tapOffset) editor.placeCursorAt(newRect.left + tapOffset.x, newRect.top + tapOffset.y)
-          else editor.placeCursorAtEnd()
-          focusOnReadyRef.current = true
+          if (focusOnReadyRef.current) {
+            if (tapOffset) editor.placeCursorAt(newRect.left + tapOffset.x, newRect.top + tapOffset.y)
+            else editor.placeCursorAtEnd()
+          }
           setEditorMode("ready")
         })
         .catch(() => {
@@ -772,7 +778,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     setExample(next)
     updateCode(next.code)
     editorRef.current?.setDoc(next.code)
-    loadEditor()
+    loadEditor(undefined, { focus: false })
     setStatusAnnouncement(`Selected ${next.filename}. ${next.caption}.`)
   }, [clearOutput, loadEditor, updateCode])
 
@@ -816,7 +822,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         </div>
         <div className="home-editor-actions">
           {!isEditing ? (
-            <button type="button" className="home-ed-btn" onClick={handleEnterEdit} aria-label="Write your own">
+            <button type="button" className="home-ed-btn" onClick={handleEnterEdit} aria-label="Edit Python code">
               <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
               Edit
             </button>
@@ -866,13 +872,13 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           <div
             ref={staticRef}
             role="region"
-            aria-label={`Sample Python code: ${HERO_FILENAME}`}
+            aria-label={`Sample Python code: ${example.filename}`}
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable code region must be keyboard focusable
             tabIndex={0}
             className="home-code-scroller"
             onClick={handleStaticClick}
           >
-            {staticCode}
+            {example.filename === HERO_FILENAME ? staticCode : <pre className="home-code-fallback">{code}</pre>}
           </div>
         ) : null}
         <div ref={mountRef} className="home-cm-mount" />
@@ -921,11 +927,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         {stdoutLines.map((line, i) => (
           <span
             key={`${i}-${line}`}
-            className={
-              !stderrText && !noticeText && i === stdoutLines.length - 1 && line.startsWith("Under budget")
-                ? "home-term-line home-term-ok"
-                : "home-term-line"
-            }
+            className="home-term-line"
           >
             {line}
           </span>

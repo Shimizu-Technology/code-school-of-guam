@@ -107,7 +107,7 @@ export default function HomePage() {
               <Link href="/programs" className="csg-button-secondary">Full program (by request)</Link>
             </div>
             <p className="home-fade mt-4 max-w-lg text-sm leading-6 text-slate-600" style={{ ["--i" as string]: 3 }}>
-              Try the Python example on this page right now — click <strong>Run</strong> or <strong>Write your own</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
+              Try the Python example on this page right now — click <strong>Run</strong> or <strong>Edit</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
             </p>
           </div>
           <HeroEditor staticCode={<PythonCodeStatic code={DEFAULT_PYTHON_CODE} />} />

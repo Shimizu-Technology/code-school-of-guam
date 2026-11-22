@@ -44,7 +44,7 @@ async function replaceProgram(page: Page, program: string) {
 }
 
 async function openEditor(page: Page, projectName: string) {
-  const button = page.getByRole('button', { name: 'Write your own' })
+  const button = page.getByRole('button', { name: 'Edit Python code' })
   if (isTouch(projectName)) await button.tap()
   else await button.click()
   await expect(page.locator('.cm-content')).toBeVisible()
@@ -371,7 +371,7 @@ test('delayed editor import transfers focus directly from the proxy and inserts 
   let release!: () => void
   const gate = new Promise<void>(resolve => { release = resolve })
   await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
-  await page.getByRole('button', { name: 'Write your own' }).tap()
+  await page.getByRole('button', { name: 'Edit Python code' }).tap()
   await expect(page.locator('.home-focus-proxy')).toBeFocused()
   await page.keyboard.insertText('\nprint("buffered")')
   await page.evaluate(() => {
@@ -401,7 +401,7 @@ test('rejected editor import retains pending input on retry, and Reset clears pe
     const gate = new Promise<void>(resolve => { release = resolve })
     const fail = async (route: import('@playwright/test').Route) => { await gate; await route.abort() }
     await page.route('**/_next/static/chunks/*.js', fail)
-    await page.getByRole('button', { name: 'Write your own' }).tap()
+    await page.getByRole('button', { name: 'Edit Python code' }).tap()
     await page.keyboard.insertText('\nprint("pending")')
     if (reset) await page.getByRole('button', { name: 'Reset to original Python example' }).tap()
     release()
@@ -464,7 +464,7 @@ test('Clear from the static view is undoable; editing, reset and the example pic
     await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
   } else await page.keyboard.press(`${mod()}+z`)
   await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
-  const picker = page.getByRole('combobox', { name: 'Python example' })
+  const picker = page.getByRole('combobox', { name: /^Python example(?: \(modified\))?$/ })
   if (isTouch(testInfo.project.name)) await picker.tap()
   else await picker.click()
   await expect(page.getByRole('listbox', { name: 'Python examples' })).toBeVisible()
@@ -481,7 +481,7 @@ test('all seven examples execute cleanly in real Pyodide and carry their code in
   test.setTimeout(240_000)
   await page.goto('/', { waitUntil: 'networkidle' })
   for (const example of PYTHON_EXAMPLES) {
-    await page.getByRole('combobox', { name: 'Python example' }).click()
+    await page.getByRole('combobox', { name: /^Python example(?: \(modified\))?$/ }).click()
     await page.getByRole('option', { name: example.filename, exact: true }).click()
     await expect(page.locator('.home-term')).toBeHidden()
     await expect(page.locator('.home-example-caption')).toHaveText(example.caption)
@@ -495,5 +495,108 @@ test('all seven examples execute cleanly in real Pyodide and carry their code in
     await expect(page.locator('.home-term')).toContainText(example.lastOutput)
     await expect(page.locator('.home-term-err')).toHaveCount(0)
     if (example.filename === 'guam_weather.py') await shot(page, '09-weather-ran', testInfo.project.name)
+  }
+})
+
+test('Edit keeps the editor top, header height and code position stable across toolbar breakpoints', async ({ page }, testInfo) => {
+  test.skip(isTouch(testInfo.project.name), 'desktop breakpoint coverage')
+  for (const width of [600, 640, 1200, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/', { waitUntil: 'networkidle' })
+    await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
+    const geometry = () => page.evaluate(() => {
+      const rect = (selector: string) => document.querySelector(selector)!.getBoundingClientRect()
+      return { top: rect('figure.home-editor').top + scrollY, codeTop: rect('.home-code-area').top + scrollY, headerHeight: rect('.home-editor-top').height }
+    })
+    const before = await geometry()
+    await page.getByRole('button', { name: 'Edit Python code' }).click()
+    await expect(page.locator('.cm-content')).toBeFocused()
+    const after = await geometry()
+    for (const metric of ['top', 'codeTop', 'headerHeight'] as const) {
+      expect(Math.abs(after[metric] - before[metric]), `${width}px ${metric}`).toBeLessThanOrEqual(0.6)
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0)
+  }
+})
+
+test('touch picker clears the keyboard viewport, scrolls to its last options and keeps focus after selecting', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'touch keyboard viewport')
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await openEditor(page, testInfo.project.name)
+  await page.evaluate(() => (window as unknown as { __setKeyboard: (h: number) => void }).__setKeyboard(440))
+  const picker = page.getByRole('combobox', { name: /^Python example/ })
+  for (const filename of ['bubble_sort.py', 'password_check.py', 'chamorro_hello.py']) {
+    await picker.tap()
+    const list = page.getByRole('listbox', { name: 'Python examples' })
+    await expect(list).toBeVisible()
+    expect(await list.evaluate(el => el.parentElement === document.body)).toBe(true)
+    await expect.poll(() => list.evaluate(el => {
+      const r = el.getBoundingClientRect(), vv = window.visualViewport!
+      return r.top >= vv.offsetTop && r.bottom <= vv.offsetTop + vv.height && el.scrollHeight > el.clientHeight
+    })).toBe(true)
+    // Options must not cancel pointerdown: native touch swipes should scroll the list.
+    expect(await list.getByRole('option').first().evaluate(el => {
+      const event = new PointerEvent('pointerdown', { bubbles: true, cancelable: true, pointerType: 'touch' })
+      el.dispatchEvent(event)
+      return event.defaultPrevented
+    })).toBe(false)
+    const option = list.getByRole('option', { name: filename, exact: true })
+    await option.scrollIntoViewIfNeeded()
+    await option.tap()
+    await expect(picker).toBeFocused()
+    await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES.find(example => example.filename === filename)!.code)
+    await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
+    await expect(page.getByRole('toolbar', { name: 'Coding keys' })).toHaveCount(0)
+  }
+})
+
+test('background example load failure shows the selected source without opening the keyboard', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.route('**/_next/static/chunks/*.js', route => route.abort())
+  const picker = page.getByRole('combobox', { name: /^Python example/ })
+  await picker.click()
+  await page.getByRole('option', { name: 'guam_weather.py', exact: true }).click()
+  await expect(page.locator('.home-code-note-error')).toBeVisible()
+  await expect(picker).toBeFocused()
+  await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
+  const fallback = page.getByRole('region', { name: 'Sample Python code: guam_weather.py' })
+  await expect(fallback.locator('pre')).toHaveText(PYTHON_EXAMPLES[1].code)
+  await page.unroute('**/_next/static/chunks/*.js')
+  await page.getByRole('button', { name: 'Edit Python code' }).click()
+  await expect(page.locator('.cm-content')).toBeFocused()
+  expect(await editorText(page)).toBe(PYTHON_EXAMPLES[1].code)
+})
+
+test('Clear then Run during a delayed editor load executes the cleared program', async ({ page }) => {
+  test.setTimeout(150_000)
+  await page.goto('/', { waitUntil: 'networkidle' })
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
+  await page.getByRole('button', { name: 'Clear Python editor' }).click()
+  await page.locator('.home-editor-actions').getByRole('button', { name: 'Run your Python code' }).click()
+  await expect(page.locator('.home-term-note')).toHaveText('(Program finished with no output)', { timeout: 120_000 })
+  await expect(page.locator('.home-term-err')).toHaveCount(0)
+  release()
+  await expect.poll(() => editorText(page)).toBe(CLEAR_PYTHON_CODE)
+})
+
+test('clean multi-line output starts at line one and output typography follows viewport breakpoints', async ({ page }, testInfo) => {
+  test.setTimeout(150_000)
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await openEditor(page, testInfo.project.name)
+  await replaceProgram(page, 'for n in range(40):\n    print("Line", n)')
+  await page.locator('.home-editor-actions').getByRole('button', { name: 'Run your Python code' }).click()
+  await expect(page.locator('.home-term-status-ok')).toBeVisible({ timeout: 120_000 })
+  const term = page.locator('.home-term')
+  await expect(term).toContainText('Line 39')
+  expect(await term.evaluate(el => el.scrollTop)).toBe(0)
+  expect(await page.locator('.home-term-bar').evaluate(el => {
+    const r = el.getBoundingClientRect(), parent = el.parentElement!.getBoundingClientRect()
+    return r.top >= parent.top && r.bottom <= parent.bottom
+  })).toBe(true)
+  for (const [width, font] of [[350, '11px'], [390, '12px'], [1440, '13px']] as const) {
+    await page.setViewportSize({ width, height: 844 })
+    await expect(term).toHaveCSS('font-size', font)
   }
 })

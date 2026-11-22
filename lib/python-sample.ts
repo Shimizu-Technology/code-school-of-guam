@@ -120,7 +120,8 @@ export const PYTHON_EXAMPLES: readonly PythonExample[] = [
     code: [
       'numbers = [5, 1, 4, 2, 8]',
       'print("Start:", numbers)',
-      'for end in range(4, 0, -1):',
+      'n = len(numbers)',
+      'for end in range(n - 1, 0, -1):',
       '    for i in range(end):',
       '        a, b = numbers[i:i + 2]',
       '        if a > b:',
