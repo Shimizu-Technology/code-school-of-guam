@@ -1,5 +1,5 @@
 import { afterEach, expect, test, vi } from 'vitest'
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import fs from 'node:fs'
 import path from 'node:path'
 import {
@@ -13,6 +13,8 @@ import {
   RUNTIME_SLOW_HINT_MS,
   STOP_GUARD_MS,
 } from '../components/home/hero-editor'
+import { PythonCodeStatic } from '../components/home/python-code-static'
+import type { PythonEditorOptions } from '../components/home/python-editor'
 import { buildHafaCodePythonLink, buildHafaCodePythonUrl, MAX_ENCODED_URL_LENGTH } from '../lib/hafa-code-link'
 import { StoryDeck } from '../components/home/story-deck'
 import { CapstoneClip, CAPSTONE_CLIP } from '../components/home/capstone-clip'
@@ -20,6 +22,50 @@ import { LearningRoute } from '../components/home/learning-route'
 import { OpeningPhoto } from '../components/home/opening-photo'
 
 vi.mock('next/image', () => ({ default: ({ fill: _fill, quality: _quality, ...props }: Record<string, unknown>) => <img alt="" {...props} /> }))
+
+// The real CodeMirror editor is covered in python-editor.test.tsx; here a textarea stands in
+// for the lazily imported chunk so the runner, Reset and link flows stay fast and synchronous.
+const editorSpy = vi.hoisted(() => ({ runKey: [] as string[], instances: 0 }))
+vi.mock('../components/home/python-editor', () => ({
+  createPythonEditor: (opts: PythonEditorOptions) => {
+    editorSpy.instances += 1
+    const ta = document.createElement('textarea')
+    ta.setAttribute('aria-label', opts.ariaLabel)
+    ta.value = opts.doc
+    const sync = () => opts.onChange(ta.value)
+    ta.addEventListener('input', sync)
+    ta.addEventListener('change', sync)
+    ta.addEventListener('focus', () => opts.onFocusChange(true))
+    ta.addEventListener('blur', () => opts.onFocusChange(false))
+    ta.addEventListener('keydown', (event) => { if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') opts.onRun() })
+    opts.parent.appendChild(ta)
+    return {
+      view: { scrollDOM: { scrollTop: 0 } },
+      getDoc: () => ta.value,
+      setDoc: (doc: string) => { ta.value = doc; opts.onChange(doc) },
+      focus: () => ta.focus(),
+      blur: () => ta.blur(),
+      placeCursorAt: () => {},
+      placeCursorAtEnd: () => {},
+      insertAtCursor: () => {},
+      runKey: (key: string) => { editorSpy.runKey.push(key) },
+      revealCursor: () => {},
+      destroy: () => ta.remove(),
+    }
+  },
+}))
+
+function renderHero() {
+  return render(<HeroEditor staticCode={<PythonCodeStatic code={DEFAULT_PYTHON_CODE} />} />)
+}
+
+/** Lets the lazily imported (mocked) editor module resolve and mount. */
+async function editorLoaded() {
+  await act(async () => {
+    await import('../components/home/python-editor')
+    for (let i = 0; i < 5; i++) await Promise.resolve()
+  })
+}
 
 afterEach(async () => { cleanup(); await new Promise((resolve) => setTimeout(resolve, 0)); vi.unstubAllGlobals() })
 
@@ -59,13 +105,24 @@ test('hero editor renders complete beginner program and output immediately witho
   reducedMotion()
   MockPythonWorker.instances = []
   vi.stubGlobal('Worker', MockPythonWorker)
-  const { container } = render(<HeroEditor />)
-  const code = container.querySelector('.home-code')!.textContent!
+  const { container } = renderHero()
+  const code = container.querySelector('.home-code-static')!.textContent!
   expect(code).toContain('for item, cost in expenses.items():')
-  expect(container.querySelector('.home-code')!.hasAttribute('aria-label')).toBe(false)
+  expect(container.querySelector('.home-code-static')!.hasAttribute('aria-label')).toBe(false)
   expect(screen.getByRole('region', { name: 'Sample Python code: expense_summary.py' }).tabIndex).toBe(0)
   expect(screen.getByRole('region', { name: 'Python program output' }).tabIndex).toBe(0)
-  expect(container.querySelectorAll('.home-ln')).toHaveLength(EDITOR_LINES.length)
+  expect(container.querySelectorAll('.home-code-row')).toHaveLength(EDITOR_LINES.length)
+  // Highlighted before any editor code loads: keywords, strings, numbers and calls all have colors.
+  const classOf = (text: string) => Array.from(container.querySelectorAll('.home-code-static span[class^="home-tok-"]')).find((el) => el.textContent === text)?.className
+  expect(classOf('for')).toBe('home-tok-k')
+  expect(classOf('"Food"')).toBe('home-tok-s')
+  expect(classOf('120')).toBe('home-tok-n')
+  expect(classOf('print')).toBe('home-tok-f')
+  // Wrapped lines hang one indent deeper than their own indentation.
+  const rows = container.querySelectorAll<HTMLElement>('.home-code-line')
+  expect(rows[0].style.getPropertyValue('--hang')).toBe('4ch')
+  expect(rows[11].style.getPropertyValue('--hang')).toBe('8ch')
+  expect(editorSpy.instances).toBe(0)
   for (const line of EDITOR_OUTPUT) expect(container.querySelector('.home-term')!.textContent).toContain(line)
   expect(MockPythonWorker.instances).toHaveLength(0)
   expect(screen.getByRole('button', { name: 'Run the Python example in your browser' })).toBeTruthy()
@@ -76,13 +133,13 @@ test('hero editor renders complete beginner program and output immediately witho
   expect(hafaHref).toContain(`starter=${HERO_STARTER_KEY}`)
 })
 
-test('hero editor runs Python in a Web Worker on click, supports Write your own, Reset, timeout, and output cap', () => {
+test('hero editor runs Python in a Web Worker on click, supports Write your own, Reset, timeout, and output cap', async () => {
   reducedMotion()
   vi.useFakeTimers()
   try {
     MockPythonWorker.instances = []
     vi.stubGlobal('Worker', MockPythonWorker)
-    const { container } = render(<HeroEditor />)
+    const { container } = renderHero()
 
     // Clicking Run spawns the static worker on demand and clears stale output.
     fireEvent.click(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
@@ -113,9 +170,14 @@ test('hero editor runs Python in a Web Worker on click, supports Write your own,
     expect(container.querySelector('.home-term')!.textContent).toContain('Ran in browser')
     expect(container.querySelector('.home-term')!.textContent).toContain('Under budget by $2')
 
-    // Write your own switches to an editable textarea and updates the Hafa Code link.
+    // Write your own lazily loads the editor in place of the highlighted copy and updates the Hafa Code link.
     fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+    await editorLoaded()
+    act(() => { vi.advanceTimersByTime(20) })
+    expect(container.querySelector('.home-code-static')).toBeNull()
     const textarea = screen.getByRole('textbox', { name: /Python code editor/ }) as HTMLTextAreaElement
+    expect(document.activeElement).toBe(textarea)
+    expect(textarea.value).toBe(DEFAULT_PYTHON_CODE)
     fireEvent.change(textarea, { target: { value: 'print(6 * 7)' } })
     const hafaHref = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
     const hashParams = new URLSearchParams(hafaHref.split('#')[1])
@@ -180,7 +242,7 @@ test('hero editor enforces the generous load safety cap and moves focus to Run a
   try {
     MockPythonWorker.instances = []
     vi.stubGlobal('Worker', MockPythonWorker)
-    const { container } = render(<HeroEditor />)
+    const { container } = renderHero()
 
     fireEvent.click(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
     const worker = MockPythonWorker.instances[0]
@@ -237,8 +299,9 @@ test('buildHafaCodePythonLink handles below-cap payloads and oversized fallback 
   const writeText = vi.fn().mockResolvedValue(undefined)
   Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
   vi.stubGlobal('Worker', MockPythonWorker)
-  render(<HeroEditor />)
+  renderHero()
   fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+  await editorLoaded()
   const textarea = screen.getByRole('textbox', { name: /Python code editor/ })
   fireEvent.change(textarea, { target: { value: hugeCode } })
   expect(screen.getByRole('note').textContent).toContain('too large to preload in a link')
@@ -288,8 +351,56 @@ test('python-runner worker keeps short tracebacks intact and enforces the output
   expect(String(capped.message)).toContain('200 lines / 8 KB')
 })
 
-test('editor lines fit a phone: no line is longer than 38 characters', () => {
-  for (const line of EDITOR_LINES) expect(line.map(([, text]) => text).join('').length).toBeLessThanOrEqual(38)
+test('editor lines stay short: no sample line is longer than 38 characters', () => {
+  for (const line of EDITOR_LINES) expect(line.length).toBeLessThanOrEqual(38)
+})
+
+test('tapping the highlighted code loads the editor; Cmd/Ctrl+Enter runs and touch screens get coding keys with Run', async () => {
+  // Touch screen: (pointer: coarse) matches; everything else (including reduced motion) does not.
+  vi.stubGlobal('matchMedia', vi.fn((query: string) => ({ matches: query === '(pointer: coarse)', addEventListener: vi.fn(), removeEventListener: vi.fn() })))
+  MockPythonWorker.instances = []
+  editorSpy.runKey = []
+  vi.stubGlobal('Worker', MockPythonWorker)
+  const { container } = renderHero()
+  fireEvent.click(screen.getByRole('region', { name: 'Sample Python code: expense_summary.py' }), { clientX: 40, clientY: 40 })
+  // iOS needs focus inside the tap to raise the keyboard; an invisible holder takes it until the editor mounts.
+  expect(document.activeElement?.classList.contains('home-focus-proxy')).toBe(true)
+  await editorLoaded()
+  await act(async () => { await new Promise((resolve) => setTimeout(resolve, 30)) })
+  expect(container.querySelector('.home-focus-proxy')).toBeNull()
+  const textarea = screen.getByRole('textbox', { name: /Python code editor/ })
+  expect(document.activeElement).toBe(textarea)
+
+  const keys = screen.getByRole('toolbar', { name: 'Coding keys' })
+  for (const name of ['Indent (Tab)', 'Insert colon', 'Insert parentheses', 'Insert square brackets', 'Insert curly braces', 'Insert quotes', 'Insert equals sign', 'Insert hash (comment)', 'Move cursor left', 'Move cursor right', 'Undo']) {
+    fireEvent.click(within(keys).getByRole('button', { name }))
+  }
+  expect(editorSpy.runKey).toEqual(['tab', 'colon', 'parens', 'brackets', 'braces', 'quotes', 'equals', 'hash', 'left', 'right', 'undo'])
+  // Key presses never take focus from the editor (the keyboard stays open).
+  const pointerDown = new Event('pointerdown', { bubbles: true, cancelable: true })
+  within(keys).getByRole('button', { name: 'Insert colon' }).dispatchEvent(pointerDown)
+  expect(pointerDown.defaultPrevented).toBe(true)
+
+  fireEvent.click(within(keys).getByRole('button', { name: 'Run your Python code' }))
+  expect(MockPythonWorker.instances.at(-1)!.posted.at(-1)).toMatchObject({ type: 'run', code: DEFAULT_PYTHON_CODE })
+  expect(screen.getByRole('status', { name: '' }).textContent).toMatch(/Loading Python|Running/)
+
+  // Cmd/Ctrl+Enter from the editor runs too (ignored while a run is already active).
+  const worker = MockPythonWorker.instances.at(-1)!
+  const run = worker.posted.at(-1) as { id: string }
+  act(() => {
+    worker.emit({ id: run.id, type: 'started' })
+    worker.emit({ id: run.id, type: 'result', stdout: 'ok\n', stderr: '', exitCode: 0 })
+  })
+  fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true })
+  expect(worker.posted.filter((m) => (m as { type: string }).type === 'run')).toHaveLength(2)
+})
+
+test('the hero editor client component keeps CodeMirror and the highlighter out of first-load JavaScript', () => {
+  const source = fs.readFileSync(path.join('components', 'home', 'hero-editor.tsx'), 'utf8')
+  const staticImports = source.match(/^import (?!type ).*$/gm) ?? []
+  for (const line of staticImports) expect(line).not.toMatch(/@codemirror|@lezer|python-highlight|python-editor/)
+  expect(source).toContain('import("./python-editor")')
 })
 
 test('the sample output matches what the program prints', () => {

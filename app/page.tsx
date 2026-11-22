@@ -5,6 +5,8 @@ import { ArrowRight, Building2, GraduationCap, Handshake } from "lucide-react"
 import "./home.css"
 import { buildSocialMetadata } from "@/lib/metadata"
 import { HeroEditor } from "@/components/home/hero-editor"
+import { PythonCodeStatic } from "@/components/home/python-code-static"
+import { DEFAULT_PYTHON_CODE } from "@/lib/python-sample"
 import { LearningRoute } from "@/components/home/learning-route"
 import { CapstoneClip } from "@/components/home/capstone-clip"
 import { OpeningPhoto } from "@/components/home/opening-photo"
@@ -108,7 +110,7 @@ export default function HomePage() {
               Try the Python example on this page right now — click <strong>Run</strong> or <strong>Write your own</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
             </p>
           </div>
-          <HeroEditor />
+          <HeroEditor staticCode={<PythonCodeStatic code={DEFAULT_PYTHON_CODE} />} />
         </div>
         <div className="border-t border-[#ded7c9]">
           <div className="container mx-auto flex flex-wrap gap-x-6 gap-y-1 px-4 py-4 text-sm leading-6 text-slate-600 sm:px-8">
