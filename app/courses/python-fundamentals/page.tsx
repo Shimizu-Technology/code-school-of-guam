@@ -3,14 +3,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowDown, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Code2, MessageCircle, PlayCircle, Video } from "lucide-react"
 import { PythonInterestForm } from "@/components/python-interest-form"
-import { DEFAULT_PYTHON_CODE } from "@/components/home/hero-editor"
+import { DEFAULT_PYTHON_CODE, HERO_STARTER_KEY } from "@/lib/python-sample"
 import { buildHafaCodePythonUrl } from "@/lib/hafa-code-link"
 import { buildSocialMetadata } from "@/lib/metadata"
 
 const HAFA_CODE_EXPENSE_URL = buildHafaCodePythonUrl(DEFAULT_PYTHON_CODE, {
   title: "Expense summary",
   filename: "expense_summary.py",
-  starterKey: "csg-site-expense-summary",
+  starterKey: HERO_STARTER_KEY,
 })
 
 export const metadata: Metadata = {

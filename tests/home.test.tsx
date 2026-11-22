@@ -13,7 +13,7 @@ import {
   RUNTIME_SLOW_HINT_MS,
   STOP_GUARD_MS,
 } from '../components/home/hero-editor'
-import { buildHafaCodePythonUrl } from '../lib/hafa-code-link'
+import { buildHafaCodePythonLink, buildHafaCodePythonUrl, MAX_ENCODED_URL_LENGTH } from '../lib/hafa-code-link'
 import { StoryDeck } from '../components/home/story-deck'
 import { CapstoneClip, CAPSTONE_CLIP } from '../components/home/capstone-clip'
 import { LearningRoute } from '../components/home/learning-route'
@@ -204,7 +204,7 @@ test('hero editor enforces the generous load safety cap and moves focus to Run a
   }
 })
 
-test('buildHafaCodePythonUrl encodes UTF-8 Python code with starterKey and supports larger payloads', () => {
+test('buildHafaCodePythonLink handles below-cap payloads and oversized fallback with copy notice in HeroEditor', async () => {
   const url = buildHafaCodePythonUrl('print("Håfa Adai!")\n', {
     title: 'Greeting',
     filename: 'main.py',
@@ -221,9 +221,71 @@ test('buildHafaCodePythonUrl encodes UTF-8 Python code with starterKey and suppo
   })
   expect(hashParams.get('starter')).toBe('csg-site-greeting')
 
-  const largeCode = 'x = 1\n'.repeat(1600) // ~9,600 chars (> old 8,000 cap, well under 64,000)
-  const largeUrl = buildHafaCodePythonUrl(largeCode, { starterKey: 'csg-large' })
-  expect(largeUrl).toContain('#project=')
+  const mediumCode = 'x = 1\n'.repeat(1600) // ~9,600 chars, under 64,000 URL cap
+  const mediumLink = buildHafaCodePythonLink(mediumCode, { starterKey: 'csg-medium' })
+  expect(mediumLink.truncated).toBe(false)
+  expect(mediumLink.url).toContain('#project=')
+  expect(mediumLink.url.length).toBeLessThanOrEqual(MAX_ENCODED_URL_LENGTH)
+
+  const hugeCode = 'x = 1234567890\n'.repeat(4000) // ~60,000 chars -> base64 > 64,000 cap
+  const hugeLink = buildHafaCodePythonLink(hugeCode, { starterKey: 'csg-huge' })
+  expect(hugeLink.truncated).toBe(true)
+  expect(hugeLink.url).toBe('https://code.shimizu-technology.com/?lang=python')
+
+  // HeroEditor surfaces a clear notice and Copy button when code exceeds the link cap.
+  reducedMotion()
+  const writeText = vi.fn().mockResolvedValue(undefined)
+  Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
+  vi.stubGlobal('Worker', MockPythonWorker)
+  render(<HeroEditor />)
+  fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+  const textarea = screen.getByRole('textbox', { name: /Python code editor/ })
+  fireEvent.change(textarea, { target: { value: hugeCode } })
+  expect(screen.getByRole('note').textContent).toContain('too large to preload in a link')
+  await act(async () => {
+    fireEvent.click(screen.getByRole('button', { name: /Copy code/ }))
+  })
+  expect(writeText).toHaveBeenCalledWith(hugeCode)
+  expect(screen.getByRole('button', { name: /Copied/ })).toBeTruthy()
+})
+
+test('python-runner worker keeps short tracebacks intact and enforces the output cap on oversized exceptions', async () => {
+  const workerSrc = fs.readFileSync(path.join('public', 'workers', 'python-runner.js'), 'utf8')
+  let nextError: Error | null = null
+  const posted: Array<Record<string, unknown>> = []
+  const fakeSelf: Record<string, unknown> = {
+    importScripts: () => {},
+    loadPyodide: async () => ({
+      setStdout: () => {},
+      setStderr: () => {},
+      setStdin: () => {},
+      globals: { set: () => {}, delete: () => {} },
+      runPython: () => {},
+      runPythonAsync: async () => {
+        if (nextError) throw nextError
+      },
+    }),
+    postMessage: (msg: Record<string, unknown>) => posted.push(msg),
+    onmessage: null,
+  }
+  new Function('self', workerSrc)(fakeSelf)
+  const onmessage = fakeSelf.onmessage as (event: { data: Record<string, unknown> }) => Promise<void>
+
+  // Short traceback stays intact with exitCode 1.
+  nextError = new Error('Traceback (most recent call last):\n  File "expense_summary.py", line 1, in <module>\nZeroDivisionError: division by zero')
+  await onmessage({ data: { id: 'r1', type: 'run', code: '1 / 0', filename: 'expense_summary.py' } })
+  const shortResult = posted.find((m) => m.id === 'r1' && m.type === 'result')!
+  expect(shortResult).toBeTruthy()
+  expect(shortResult.exitCode).toBe(1)
+  expect(String(shortResult.stderr)).toContain('ZeroDivisionError: division by zero')
+
+  // Oversized exception message is capped through the 8 KB / 200-line budget.
+  nextError = new Error('ValueError: ' + 'x'.repeat(20_000))
+  await onmessage({ data: { id: 'r2', type: 'run', code: 'raise ValueError("x"*20000)', filename: 'expense_summary.py' } })
+  const capped = posted.find((m) => m.id === 'r2' && m.type === 'output_limit')!
+  expect(capped).toBeTruthy()
+  expect(String(capped.stderr).length).toBeLessThanOrEqual(8192)
+  expect(String(capped.message)).toContain('200 lines / 8 KB')
 })
 
 test('editor lines fit a phone: no line is longer than 38 characters', () => {

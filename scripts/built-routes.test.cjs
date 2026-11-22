@@ -263,4 +263,18 @@ test('/partners and /projects ship verified Guam proof and named graduate capsto
     assert.ok(projectsText.includes(name), `/projects missing capstone ${name}`)
     assert.ok(projectLinks.includes(href), `/projects missing timestamp link ${href}`)
   }
+
+  // Server-rendered /courses/python-fundamentals Hafa Code link must encode the real Python sample (not a client proxy).
+  const pyDoc = new JSDOM(pages.get('/courses/python-fundamentals')).window.document
+  const hafaLink = Array.from(pyDoc.querySelectorAll('a')).find((a) => /Open in Hafa Code/i.test(a.textContent || ''))
+  assert.ok(hafaLink, '/courses/python-fundamentals missing Open in Hafa Code link')
+  const href = hafaLink.getAttribute('href') || ''
+  assert.match(href, /^https:\/\/code\.shimizu-technology\.com\/\?lang=python#/)
+  const hashParams = new URLSearchParams(href.split('#')[1])
+  assert.equal(hashParams.get('starter'), 'csg-site-expense-summary')
+  const decoded = JSON.parse(Buffer.from(hashParams.get('project'), 'base64url').toString('utf8'))
+  assert.equal(decoded.kind, 'python')
+  assert.equal(decoded.entryPath, 'expense_summary.py')
+  assert.match(decoded.files[0].content, /^expenses = \{/)
+  assert.match(decoded.files[0].content, /Under budget by \$\{left\}/)
 })

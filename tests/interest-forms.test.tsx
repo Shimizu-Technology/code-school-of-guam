@@ -116,23 +116,57 @@ for (const [mode, formName, ariaLabel] of unifiedModes) {
   })
 }
 
-test('UnifiedInquiryForm preserves typed Name and Email when switching chips', () => {
+test('UnifiedInquiryForm preserves typed Name and Email when switching chips, and resets consent', () => {
   const { container } = render(<UnifiedInquiryForm defaultMode="course" />)
   const nameInput = () => container.querySelector<HTMLInputElement>('input[name="name"]')!
   const emailInput = () => container.querySelector<HTMLInputElement>('input[name="email"]')!
+  const consentBox = () => container.querySelector<HTMLInputElement>('input[name="update_consent"]')!
 
   fireEvent.change(nameInput(), { target: { value: 'Maria Santos' } })
   fireEvent.change(emailInput(), { target: { value: 'maria@example.invalid' } })
+  fireEvent.click(consentBox())
+  expect(consentBox().checked).toBe(true)
 
   fireEvent.click(screen.getByRole('button', { name: 'School / employer partner' }))
   expect(screen.getByRole('form', { name: 'Partner inquiry form' }).getAttribute('name')).toBe('partner-inquiry')
   expect(nameInput().value).toBe('Maria Santos')
   expect(emailInput().value).toBe('maria@example.invalid')
+  expect(consentBox().checked).toBe(false)
 
+  fireEvent.click(consentBox())
+  expect(consentBox().checked).toBe(true)
   fireEvent.click(screen.getByRole('button', { name: 'Full bootcamp' }))
   expect(screen.getByRole('form', { name: 'Full bootcamp updates list' }).getAttribute('name')).toBe('next-cohort-interest')
   expect(nameInput().value).toBe('Maria Santos')
   expect(emailInput().value).toBe('maria@example.invalid')
+  expect(consentBox().checked).toBe(false)
+})
+
+test('UnifiedInquiryForm disables topic chips mid-submit and shows success for the submitted mode', async () => {
+  let finish!: (response: { ok: boolean }) => void
+  vi.stubGlobal('fetch', vi.fn(() => new Promise((resolve) => { finish = resolve })))
+
+  const { container } = render(<UnifiedInquiryForm defaultMode="course" />)
+  const form = container.querySelector('form')!
+  fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Maria Santos' } })
+  fireEvent.change(form.querySelector('[name="email"]')!, { target: { value: 'maria@example.invalid' } })
+  fireEvent.click(form.querySelector('[name="update_consent"]')!)
+  fireEvent.submit(form)
+
+  const courseChip = screen.getByRole('button', { name: 'Focused courses' }) as HTMLButtonElement
+  const bootcampChip = screen.getByRole('button', { name: 'Full bootcamp' }) as HTMLButtonElement
+  const partnerChip = screen.getByRole('button', { name: 'School / employer partner' }) as HTMLButtonElement
+  expect(courseChip.disabled).toBe(true)
+  expect(bootcampChip.disabled).toBe(true)
+  expect(partnerChip.disabled).toBe(true)
+
+  // Attempting to switch chips mid-flight cannot change the active mode or success copy.
+  fireEvent.click(partnerChip)
+  expect(form.getAttribute('name')).toBe('focused-courses-interest')
+
+  finish({ ok: true })
+  await waitFor(() => expect(screen.getByRole('status')).toBeTruthy())
+  expect(screen.getByRole('status').textContent).toContain('We saved your course interest.')
 })
 
 test('UnifiedInquiryForm bootcamp mode collects availability without suggesting a start date', () => {

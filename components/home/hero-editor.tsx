@@ -1,50 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, Pencil, Play, RotateCcw, Square } from "lucide-react"
+import { ArrowUpRight, Check, Copy, Pencil, Play, RotateCcw, Square } from "lucide-react"
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from "react"
-import { buildHafaCodePythonUrl } from "@/lib/hafa-code-link"
+import { buildHafaCodePythonLink } from "@/lib/hafa-code-link"
+import { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_STARTER_KEY, type Token } from "@/lib/python-sample"
 
-type Token = readonly [kind: "" | "k" | "s" | "n" | "f", text: string]
-
-// A plain beginner program: a dictionary, sum(), a for loop, and an if.
-// Every line is short enough to fit a 390px phone without scrolling.
-export const EDITOR_LINES: readonly (readonly Token[])[] = [
-  [["", "expenses = {"]],
-  [["", "    "], ["s", '"Food"'], ["", ": "], ["n", "61"], ["", ","]],
-  [["", "    "], ["s", '"Transport"'], ["", ": "], ["n", "48"], ["", ","]],
-  [["", "    "], ["s", '"Supplies"'], ["", ": "], ["n", "9"], ["", ","]],
-  [["", "}"]],
-  [["", "budget = "], ["n", "120"]],
-  [],
-  [["", "total = "], ["f", "sum"], ["", "(expenses."], ["f", "values"], ["", "())"]],
-  [["f", "print"], ["", "("], ["s", 'f"Total: ${total}"'], ["", ")"]],
-  [],
-  [["k", "for"], ["", " item, cost "], ["k", "in"], ["", " expenses."], ["f", "items"], ["", "():"]],
-  [["", "    "], ["f", "print"], ["", "("], ["s", 'f"{item}: ${cost}"'], ["", ")"]],
-  [],
-  [["", "left = budget - total"]],
-  [["k", "if"], ["", " left >= "], ["n", "0"], ["", ":"]],
-  [["", "    "], ["f", "print"], ["", "("], ["s", 'f"Under budget by ${left}"'], ["", ")"]],
-]
-
-export const DEFAULT_PYTHON_CODE = EDITOR_LINES.map((line) =>
-  line.map(([, text]) => text).join("")
-).join("\n")
-
-export const EDITOR_OUTPUT = [
-  "Total: $118",
-  "Food: $61",
-  "Transport: $48",
-  "Supplies: $9",
-  "Under budget by $2",
-] as const
+export { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_STARTER_KEY }
 
 export const RUN_EXECUTION_TIMEOUT_MS = 5000
 export const RUNTIME_SLOW_HINT_MS = 10000
 export const RUNTIME_LOAD_SAFETY_TIMEOUT_MS = 90000
 export const STOP_GUARD_MS = 400
-export const HERO_STARTER_KEY = "csg-site-expense-summary"
 
 type RunStatus = "idle" | "loading" | "running" | "done" | "error"
 
@@ -79,6 +46,7 @@ export function HeroEditor() {
   const [noticeText, setNoticeText] = useState("")
   const [statusAnnouncement, setStatusAnnouncement] = useState("")
   const [hasExecuted, setHasExecuted] = useState(false)
+  const [copiedCode, setCopiedCode] = useState(false)
 
   const workerRef = useRef<Worker | null>(null)
   const workerReadyRef = useRef(false)
@@ -89,6 +57,7 @@ export function HeroEditor() {
   const loadHintTimeoutRef = useRef<number | null>(null)
   const loadSafetyTimeoutRef = useRef<number | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const gutterRef = useRef<HTMLDivElement>(null)
   const runButtonRef = useRef<HTMLButtonElement>(null)
   const termRef = useRef<HTMLDivElement>(null)
 
@@ -319,9 +288,26 @@ export function HeroEditor() {
     }
   }
 
-  const hafaCodeUrl = useMemo(
+  const handleCopyCode = useCallback(async () => {
+    try {
+      await navigator.clipboard?.writeText(code)
+      setCopiedCode(true)
+      setStatusAnnouncement("Python code copied to clipboard.")
+      window.setTimeout(() => setCopiedCode(false), 2000)
+    } catch {
+      setStatusAnnouncement("Could not copy automatically. Select the code in the editor to copy it.")
+    }
+  }, [code])
+
+  const handleEditorScroll = useCallback(() => {
+    if (gutterRef.current && textareaRef.current) {
+      gutterRef.current.scrollTop = textareaRef.current.scrollTop
+    }
+  }, [])
+
+  const hafaCodeLink = useMemo(
     () =>
-      buildHafaCodePythonUrl(code, {
+      buildHafaCodePythonLink(code, {
         title: "Expense summary",
         filename: "expense_summary.py",
         starterKey: HERO_STARTER_KEY,
@@ -387,7 +373,7 @@ export function HeroEditor() {
 
       {isEditing ? (
         <div className="home-code-edit-wrap">
-          <div className="home-code-gutter" aria-hidden="true">
+          <div ref={gutterRef} className="home-code-gutter" aria-hidden="true">
             {Array.from({ length: lineCount }, (_, i) => (
               <span key={i}>{i + 1}</span>
             ))}
@@ -397,7 +383,7 @@ export function HeroEditor() {
             value={code}
             onChange={(event) => setCode(event.target.value)}
             onKeyDown={handleEditorKeyDown}
-            rows={Math.min(22, Math.max(16, lineCount))}
+            onScroll={handleEditorScroll}
             spellCheck={false}
             autoCapitalize="none"
             autoCorrect="off"
@@ -467,7 +453,7 @@ export function HeroEditor() {
         </Link>
         <span className="home-pill">Runs in your browser</span>
         <a
-          href={hafaCodeUrl}
+          href={hafaCodeLink.url}
           target="_blank"
           rel="noopener noreferrer"
           className="home-pill-ext"
@@ -475,6 +461,15 @@ export function HeroEditor() {
           Open in Hafa Code <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </a>
       </div>
+      {hafaCodeLink.truncated ? (
+        <div className="home-editor-oversize" role="note">
+          <span>Code is too large to preload in a link — copy it, then paste in Hafa Code.</span>
+          <button type="button" className="home-ed-btn home-ed-btn-sm" onClick={handleCopyCode}>
+            {copiedCode ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+            {copiedCode ? "Copied" : "Copy code"}
+          </button>
+        </div>
+      ) : null}
     </figure>
   )
 }

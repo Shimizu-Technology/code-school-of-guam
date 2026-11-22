@@ -104,6 +104,7 @@ function createOutputCollector(id) {
   }
 
   return {
+    append,
     stdoutWriter: {
       isatty: true,
       write(buf) {
@@ -202,14 +203,19 @@ finally:
       }
       if (!collector.limited) {
         const cleaned = cleanTraceback(err instanceof Error ? err.message : String(err), filename);
-        const stderr = collector.stderr ? `${collector.stderr}\n${cleaned}` : cleaned;
-        self.postMessage({
-          id,
-          type: "result",
-          stdout: collector.stdout,
-          stderr,
-          exitCode: 1,
-        });
+        const prefix = collector.stderr ? "\n" : "";
+        // Route exception text through the same 200-line / 8 KB output budget as stdout/stderr.
+        // Short tracebacks stay intact; oversized exceptions trigger output_limit cleanly.
+        collector.append("stderr", prefix + cleaned);
+        if (!collector.limited) {
+          self.postMessage({
+            id,
+            type: "result",
+            stdout: collector.stdout,
+            stderr: collector.stderr,
+            exitCode: 1,
+          });
+        }
       }
     } finally {
       pyodide.globals.delete("__csg_user_code__");

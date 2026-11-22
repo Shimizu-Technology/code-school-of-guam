@@ -83,12 +83,16 @@ export function UnifiedInquiryForm({
   const [mode, setMode] = useState<InquiryMode>(defaultMode)
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
+  const [consent, setConsent] = useState(false)
   const [submitState, setSubmitState] = useState<SubmitState>("idle")
+  const [submittedMode, setSubmittedMode] = useState<InquiryMode | null>(null)
 
   const config = MODE_CONFIG[mode]
+  const isSubmitting = submitState === "submitting"
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const targetMode = mode
     setSubmitState("submitting")
 
     const form = event.currentTarget
@@ -105,6 +109,8 @@ export function UnifiedInquiryForm({
       form.reset()
       setName("")
       setEmail("")
+      setConsent(false)
+      setSubmittedMode(targetMode)
       setSubmitState("success")
     } catch {
       setSubmitState("error")
@@ -112,14 +118,18 @@ export function UnifiedInquiryForm({
   }
 
   if (submitState === "success") {
+    const successConfig = MODE_CONFIG[submittedMode ?? mode]
     return (
       <div className="border-l-4 border-green-600 bg-green-50 p-7" role="status">
         <CheckCircle2 className="h-8 w-8 text-green-700" aria-hidden="true" />
-        <h3 className="mt-4 font-serif text-3xl font-semibold text-slate-950">{config.successHeading}</h3>
-        <p className="mt-3 text-slate-700">{config.successBody}</p>
+        <h3 className="mt-4 font-serif text-3xl font-semibold text-slate-950">{successConfig.successHeading}</h3>
+        <p className="mt-3 text-slate-700">{successConfig.successBody}</p>
         <button
           type="button"
-          onClick={() => setSubmitState("idle")}
+          onClick={() => {
+            setSubmittedMode(null)
+            setSubmitState("idle")
+          }}
           className="mt-5 min-h-11 font-bold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700"
         >
           Submit another response
@@ -145,12 +155,17 @@ export function UnifiedInquiryForm({
             <button
               key={item}
               type="button"
+              disabled={isSubmitting}
               aria-pressed={selected}
               onClick={() => {
-                setMode(item)
+                if (isSubmitting) return
+                if (item !== mode) {
+                  setMode(item)
+                  setConsent(false)
+                }
                 setSubmitState("idle")
               }}
-              className={`csg-press min-h-11 rounded-md border px-3.5 py-2 text-sm font-bold ${
+              className={`csg-press min-h-11 rounded-md border px-3.5 py-2 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-60 ${
                 selected
                   ? "border-ruby-700 bg-[#f7eeeb] text-ruby-800"
                   : "border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:text-slate-950"
@@ -303,10 +318,13 @@ export function UnifiedInquiryForm({
 
         <label className="flex items-start gap-3 text-sm leading-6 text-slate-700">
           <input
+            key={mode}
             required
             type="checkbox"
             name="update_consent"
             value="yes"
+            checked={consent}
+            onChange={(event) => setConsent(event.target.checked)}
             className="mt-1 h-5 w-5 shrink-0 rounded border-slate-400 text-ruby-700 focus:ring-ruby-600"
           />
           <span>
