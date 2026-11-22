@@ -35,5 +35,6 @@ export default defineConfig([
     },
   },
   { files: ['tests/**'], rules: { '@next/next/no-img-element': 'off' } },
+  { files: ['public/workers/**/*.js'], languageOptions: { globals: globals.worker } },
   { files: ['**/*.cjs', 'tailwind.config.ts'], rules: { '@typescript-eslint/no-require-imports': 'off' } },
 ])

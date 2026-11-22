@@ -2,7 +2,18 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import fs from 'node:fs'
 import path from 'node:path'
-import { HeroEditor, EDITOR_LINES, EDITOR_OUTPUT } from '../components/home/hero-editor'
+import {
+  HeroEditor,
+  DEFAULT_PYTHON_CODE,
+  EDITOR_LINES,
+  EDITOR_OUTPUT,
+  HERO_STARTER_KEY,
+  RUN_EXECUTION_TIMEOUT_MS,
+  RUNTIME_LOAD_SAFETY_TIMEOUT_MS,
+  RUNTIME_SLOW_HINT_MS,
+  STOP_GUARD_MS,
+} from '../components/home/hero-editor'
+import { buildHafaCodePythonLink, buildHafaCodePythonUrl, MAX_ENCODED_URL_LENGTH } from '../lib/hafa-code-link'
 import { StoryDeck } from '../components/home/story-deck'
 import { CapstoneClip, CAPSTONE_CLIP } from '../components/home/capstone-clip'
 import { LearningRoute } from '../components/home/learning-route'
@@ -18,16 +29,263 @@ function reducedMotion() {
   vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} unobserve() {} })
 }
 
-test('with reduced motion the editor shows the complete beginner program and its output', () => {
+class MockPythonWorker {
+  static instances: MockPythonWorker[] = []
+  readonly url: string
+  onmessage: ((event: MessageEvent) => void) | null = null
+  onerror: ((event: ErrorEvent) => void) | null = null
+  posted: unknown[] = []
+  terminated = false
+
+  constructor(url: string) {
+    this.url = url
+    MockPythonWorker.instances.push(this)
+  }
+
+  postMessage(data: unknown) {
+    this.posted.push(data)
+  }
+
+  terminate() {
+    this.terminated = true
+  }
+
+  emit(data: unknown) {
+    this.onmessage?.({ data } as MessageEvent)
+  }
+}
+
+test('hero editor renders complete beginner program and output immediately without creating a worker on mount', () => {
   reducedMotion()
+  MockPythonWorker.instances = []
+  vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = render(<HeroEditor />)
   const code = container.querySelector('.home-code')!.textContent!
   expect(code).toContain('for item, cost in expenses.items():')
+  expect(container.querySelector('.home-code')!.hasAttribute('aria-label')).toBe(false)
+  expect(screen.getByRole('region', { name: 'Sample Python code: expense_summary.py' }).tabIndex).toBe(0)
+  expect(screen.getByRole('region', { name: 'Python program output' }).tabIndex).toBe(0)
   expect(container.querySelectorAll('.home-ln')).toHaveLength(EDITOR_LINES.length)
-  expect(container.querySelector('.home-caret')).toBeNull()
   for (const line of EDITOR_OUTPUT) expect(container.querySelector('.home-term')!.textContent).toContain(line)
-  expect(screen.getByRole('button', { name: 'Run the sample program again' })).toBeTruthy()
+  expect(MockPythonWorker.instances).toHaveLength(0)
+  expect(screen.getByRole('button', { name: 'Run the Python example in your browser' })).toBeTruthy()
+  expect(screen.getByRole('button', { name: /Write your own/ })).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Python Fundamentals' }).getAttribute('href')).toBe('/courses/python-fundamentals')
+  const hafaHref = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
+  expect(hafaHref).toContain('https://code.shimizu-technology.com/?lang=python#project=')
+  expect(hafaHref).toContain(`starter=${HERO_STARTER_KEY}`)
+})
+
+test('hero editor runs Python in a Web Worker on click, supports Write your own, Reset, timeout, and output cap', () => {
+  reducedMotion()
+  vi.useFakeTimers()
+  try {
+    MockPythonWorker.instances = []
+    vi.stubGlobal('Worker', MockPythonWorker)
+    const { container } = render(<HeroEditor />)
+
+    // Clicking Run spawns the static worker on demand and clears stale output.
+    fireEvent.click(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
+    expect(MockPythonWorker.instances).toHaveLength(1)
+    const worker = MockPythonWorker.instances[0]
+    expect(worker.url).toBe('/workers/python-runner.js')
+    const runMsg = worker.posted[0] as { id: string; type: string; code: string }
+    expect(runMsg.type).toBe('run')
+    expect(runMsg.code).toBe(DEFAULT_PYTHON_CODE)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Loading Python')
+    expect(container.querySelector('.home-term')!.textContent).not.toContain('Food: $61')
+
+    // Double-click / immediate click on swapped Stop button (< 400ms) is ignored so warm load is not killed.
+    fireEvent.click(screen.getByRole('button', { name: 'Stop running Python' }))
+    expect(worker.terminated).toBe(false)
+
+    // Slow mobile load: past 25s it still does NOT terminate the worker; after 10s it shows a helpful hint.
+    act(() => { vi.advanceTimersByTime(RUNTIME_SLOW_HINT_MS) })
+    expect(worker.terminated).toBe(false)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Still loading Python (first time only)')
+    act(() => { vi.advanceTimersByTime(20_000) })
+    expect(worker.terminated).toBe(false)
+
+    act(() => {
+      worker.emit({ id: runMsg.id, type: 'started' })
+      worker.emit({ id: runMsg.id, type: 'result', stdout: 'Total: $118\nUnder budget by $2\n', stderr: '', exitCode: 0 })
+    })
+    expect(container.querySelector('.home-term')!.textContent).toContain('Ran in browser')
+    expect(container.querySelector('.home-term')!.textContent).toContain('Under budget by $2')
+
+    // Write your own switches to an editable textarea and updates the Hafa Code link.
+    fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+    const textarea = screen.getByRole('textbox', { name: /Python code editor/ }) as HTMLTextAreaElement
+    fireEvent.change(textarea, { target: { value: 'print(6 * 7)' } })
+    const hafaHref = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
+    const hashParams = new URLSearchParams(hafaHref.split('#')[1])
+    const decoded = JSON.parse(Buffer.from(hashParams.get('project')!, 'base64url').toString('utf8'))
+    expect(decoded.kind).toBe('python')
+    expect(decoded.files[0].content).toBe('print(6 * 7)')
+    expect(hashParams.get('starter')).toBe(HERO_STARTER_KEY)
+
+    // Running edited code and hitting 5s timeout (after `started`) terminates the worker cleanly.
+    fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+    const run2 = worker.posted[1] as { id: string; code: string }
+    expect(run2.code).toBe('print(6 * 7)')
+    act(() => { worker.emit({ id: run2.id, type: 'started' }) })
+    act(() => { vi.advanceTimersByTime(RUN_EXECUTION_TIMEOUT_MS) })
+    expect(worker.terminated).toBe(true)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Stopped after 5 seconds')
+    expect(container.querySelector('.home-term')!.textContent).not.toContain('Under budget by $2')
+
+    // Output-limit message terminates the next worker and displays the cap notice.
+    fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+    const worker2 = MockPythonWorker.instances[1]
+    const run3 = worker2.posted[0] as { id: string }
+    act(() => {
+      worker2.emit({ id: run3.id, type: 'output_limit', stdout: 'spam\n', stderr: '', message: 'Output stopped after 200 lines.' })
+    })
+    expect(worker2.terminated).toBe(true)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Output stopped after 200 lines.')
+
+    // Stop after the 400ms guard terminates a running worker cleanly.
+    fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+    const worker3 = MockPythonWorker.instances[2]
+    act(() => { vi.advanceTimersByTime(STOP_GUARD_MS + 50) })
+    fireEvent.click(screen.getByRole('button', { name: 'Stop running Python' }))
+    expect(worker3.terminated).toBe(true)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Stopped.')
+
+    // Reset ALWAYS terminates an idle warm worker (prevents poisoned builtins state) and moves focus to editor.
+    fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+    const worker4 = MockPythonWorker.instances[3]
+    const run4 = worker4.posted[0] as { id: string }
+    act(() => {
+      worker4.emit({ id: run4.id, type: 'started' })
+      worker4.emit({ id: run4.id, type: 'result', stdout: '42\n', stderr: '', exitCode: 0 })
+    })
+    expect(worker4.terminated).toBe(false)
+    fireEvent.click(screen.getByRole('button', { name: 'Reset to default Python example' }))
+    expect(worker4.terminated).toBe(true)
+    // Stale message from terminated worker is ignored.
+    act(() => { worker4.emit({ id: run4.id, type: 'ready' }) })
+    act(() => { vi.advanceTimersByTime(20) })
+    expect(document.activeElement).toBe(textarea)
+    expect(textarea.value).toBe(DEFAULT_PYTHON_CODE)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Food: $61')
+  } finally {
+    vi.useRealTimers()
+  }
+})
+
+test('hero editor enforces the generous load safety cap and moves focus to Run after read-only Reset', () => {
+  reducedMotion()
+  vi.useFakeTimers()
+  try {
+    MockPythonWorker.instances = []
+    vi.stubGlobal('Worker', MockPythonWorker)
+    const { container } = render(<HeroEditor />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
+    const worker = MockPythonWorker.instances[0]
+    act(() => { vi.advanceTimersByTime(RUNTIME_LOAD_SAFETY_TIMEOUT_MS) })
+    expect(worker.terminated).toBe(true)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Python took too long to load')
+
+    // Complete a run in read-only mode, then click Reset and verify focus moves to Run (not body).
+    fireEvent.click(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
+    const worker2 = MockPythonWorker.instances[1]
+    const run2 = worker2.posted[0] as { id: string }
+    act(() => {
+      worker2.emit({ id: run2.id, type: 'started' })
+      worker2.emit({ id: run2.id, type: 'result', stdout: 'ok\n', stderr: '', exitCode: 0 })
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Reset to default Python example' }))
+    act(() => { vi.advanceTimersByTime(20) })
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
+  } finally {
+    vi.useRealTimers()
+  }
+})
+
+test('buildHafaCodePythonLink handles below-cap payloads and oversized fallback with copy notice in HeroEditor', async () => {
+  const url = buildHafaCodePythonUrl('print("Håfa Adai!")\n', {
+    title: 'Greeting',
+    filename: 'main.py',
+    starterKey: 'csg-site-greeting',
+  })
+  expect(url.startsWith('https://code.shimizu-technology.com/?lang=python#project=')).toBe(true)
+  const hashParams = new URLSearchParams(url.split('#')[1])
+  const payload = JSON.parse(Buffer.from(hashParams.get('project')!, 'base64url').toString('utf8'))
+  expect(payload).toEqual({
+    title: 'Greeting',
+    kind: 'python',
+    entryPath: 'main.py',
+    files: [{ path: 'main.py', content: 'print("Håfa Adai!")\n' }],
+  })
+  expect(hashParams.get('starter')).toBe('csg-site-greeting')
+
+  const mediumCode = 'x = 1\n'.repeat(1600) // ~9,600 chars, under 64,000 URL cap
+  const mediumLink = buildHafaCodePythonLink(mediumCode, { starterKey: 'csg-medium' })
+  expect(mediumLink.truncated).toBe(false)
+  expect(mediumLink.url).toContain('#project=')
+  expect(mediumLink.url.length).toBeLessThanOrEqual(MAX_ENCODED_URL_LENGTH)
+
+  const hugeCode = 'x = 1234567890\n'.repeat(4000) // ~60,000 chars -> base64 > 64,000 cap
+  const hugeLink = buildHafaCodePythonLink(hugeCode, { starterKey: 'csg-huge' })
+  expect(hugeLink.truncated).toBe(true)
+  expect(hugeLink.url).toBe('https://code.shimizu-technology.com/?lang=python')
+
+  // HeroEditor surfaces a clear notice and Copy button when code exceeds the link cap.
+  reducedMotion()
+  const writeText = vi.fn().mockResolvedValue(undefined)
+  Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
+  vi.stubGlobal('Worker', MockPythonWorker)
+  render(<HeroEditor />)
+  fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+  const textarea = screen.getByRole('textbox', { name: /Python code editor/ })
+  fireEvent.change(textarea, { target: { value: hugeCode } })
+  expect(screen.getByRole('note').textContent).toContain('too large to preload in a link')
+  await act(async () => {
+    fireEvent.click(screen.getByRole('button', { name: /Copy code/ }))
+  })
+  expect(writeText).toHaveBeenCalledWith(hugeCode)
+  expect(screen.getByRole('button', { name: /Copied/ })).toBeTruthy()
+})
+
+test('python-runner worker keeps short tracebacks intact and enforces the output cap on oversized exceptions', async () => {
+  const workerSrc = fs.readFileSync(path.join('public', 'workers', 'python-runner.js'), 'utf8')
+  let nextError: Error | null = null
+  const posted: Array<Record<string, unknown>> = []
+  const fakeSelf: Record<string, unknown> = {
+    importScripts: () => {},
+    loadPyodide: async () => ({
+      setStdout: () => {},
+      setStderr: () => {},
+      setStdin: () => {},
+      globals: { set: () => {}, delete: () => {} },
+      runPython: () => {},
+      runPythonAsync: async () => {
+        if (nextError) throw nextError
+      },
+    }),
+    postMessage: (msg: Record<string, unknown>) => posted.push(msg),
+    onmessage: null,
+  }
+  new Function('self', workerSrc)(fakeSelf)
+  const onmessage = fakeSelf.onmessage as (event: { data: Record<string, unknown> }) => Promise<void>
+
+  // Short traceback stays intact with exitCode 1.
+  nextError = new Error('Traceback (most recent call last):\n  File "expense_summary.py", line 1, in <module>\nZeroDivisionError: division by zero')
+  await onmessage({ data: { id: 'r1', type: 'run', code: '1 / 0', filename: 'expense_summary.py' } })
+  const shortResult = posted.find((m) => m.id === 'r1' && m.type === 'result')!
+  expect(shortResult).toBeTruthy()
+  expect(shortResult.exitCode).toBe(1)
+  expect(String(shortResult.stderr)).toContain('ZeroDivisionError: division by zero')
+
+  // Oversized exception message is capped through the 8 KB / 200-line budget.
+  nextError = new Error('ValueError: ' + 'x'.repeat(20_000))
+  await onmessage({ data: { id: 'r2', type: 'run', code: 'raise ValueError("x"*20000)', filename: 'expense_summary.py' } })
+  const capped = posted.find((m) => m.id === 'r2' && m.type === 'output_limit')!
+  expect(capped).toBeTruthy()
+  expect(String(capped.stderr).length).toBeLessThanOrEqual(8192)
+  expect(String(capped.message)).toContain('200 lines / 8 KB')
 })
 
 test('editor lines fit a phone: no line is longer than 38 characters', () => {

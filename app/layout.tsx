@@ -81,8 +81,8 @@ const jsonLd = {
     itemListElement: [
       {
         '@type': 'Course',
-        name: 'Full-Stack Development & AI Engineering Bootcamp',
-        description: 'Full-stack development and AI engineering across Ruby, Rails, React, and Python. The March 2026 cohort is closed; future cohort dates and terms have not been announced.',
+        name: 'Python Fundamentals',
+        description: 'Three-week beginner Python course being tested with an invited group in early 2027; public enrollment is not open.',
         provider: {
           '@type': 'Organization',
           name: 'Code School of Guam',
@@ -90,8 +90,8 @@ const jsonLd = {
       },
       {
         '@type': 'Course',
-        name: 'Python Fundamentals',
-        description: 'Three-week beginner Python course being tested with an invited group in early 2027; public enrollment is not open.',
+        name: 'Full-Stack Development & AI Engineering Bootcamp',
+        description: 'Full-stack development and AI engineering across Ruby, Rails, React, and Python, offered by request. The March 2026 cohort is closed; future cohort dates and terms have not been announced.',
         provider: {
           '@type': 'Organization',
           name: 'Code School of Guam',

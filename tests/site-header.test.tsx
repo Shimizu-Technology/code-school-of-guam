@@ -13,6 +13,7 @@ test('navigation identifies the current learning path and closes an open menu at
   vi.stubGlobal('matchMedia', vi.fn(() => media))
   render(<SiteHeader />)
   expect(screen.getByRole('link', { name: 'Courses' }).getAttribute('aria-current')).toBe('page')
+  expect(screen.getByRole('link', { name: 'Partners' }).getAttribute('href')).toBe('/partners')
   expect(screen.getByRole('link', { name: 'Student work' }).getAttribute('aria-current')).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: 'Open menu' }))
   expect(screen.getByRole('dialog')).toBeTruthy()

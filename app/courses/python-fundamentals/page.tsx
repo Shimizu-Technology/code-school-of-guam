@@ -1,8 +1,17 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
-import { ArrowDown, ArrowRight, CalendarDays, Check, Clock3, Code2, MessageCircle, PlayCircle, Video } from "lucide-react"
+import { ArrowDown, ArrowRight, ArrowUpRight, CalendarDays, Check, Clock3, Code2, MessageCircle, PlayCircle, Video } from "lucide-react"
 import { PythonInterestForm } from "@/components/python-interest-form"
+import { DEFAULT_PYTHON_CODE, HERO_STARTER_KEY } from "@/lib/python-sample"
+import { buildHafaCodePythonUrl } from "@/lib/hafa-code-link"
 import { buildSocialMetadata } from "@/lib/metadata"
+
+const HAFA_CODE_EXPENSE_URL = buildHafaCodePythonUrl(DEFAULT_PYTHON_CODE, {
+  title: "Expense summary",
+  filename: "expense_summary.py",
+  starterKey: HERO_STARTER_KEY,
+})
 
 export const metadata: Metadata = {
   title: "Python Fundamentals Course",
@@ -45,7 +54,17 @@ export default function PythonFundamentalsPage() {
               <p>Food: $61</p><p>Transport: $48</p><p>Supplies: $9</p>
               <p className="mt-2 text-green-300">Under budget by $2</p>
             </div>
-            <p className="mt-7 border-t border-white/10 pt-4 text-xs leading-5 text-slate-400">This is the sample program you&apos;ll build step by step. No prior coding experience required.</p>
+            <div className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4 text-xs leading-5 text-slate-400">
+              <span>This is the sample program you&apos;ll build step by step. No prior coding experience required.</span>
+              <a
+                href={HAFA_CODE_EXPENSE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-1 font-bold text-[#ffd2cd] underline underline-offset-4 hover:text-white"
+              >
+                Open in Hafa Code <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -105,7 +124,28 @@ export default function PythonFundamentalsPage() {
 
       <section className="border-y border-slate-200 bg-white py-16 md:py-24">
         <div className="container mx-auto grid gap-12 px-4 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div><p className="csg-label text-ruby-700">Inside the guided pilot</p><h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Learn on your schedule. Get help from a person.</h2><p className="mt-5 max-w-xl leading-7 text-slate-600">The lessons and code practice live in CSG Learn and <a href="https://code.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Hafa Code</a>. In the invited guided pilot, Leon works through your own code with you on Zoom each week, then gives you a concrete next step.</p></div>
+          <div>
+            <p className="csg-label text-ruby-700">Inside the guided pilot</p>
+            <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Learn on your schedule. Get help from a person.</h2>
+            <p className="mt-5 max-w-xl leading-7 text-slate-600">The lessons and code practice live in CSG Learn and <a href="https://code.shimizu-technology.com/" target="_blank" rel="noopener noreferrer" className="font-semibold text-ruby-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Hafa Code</a>. In the invited guided pilot, Leon works through your own code with you on Zoom each week, then gives you a concrete next step.</p>
+            <div className="mt-7 flex items-center gap-4 rounded-xl border border-[#ded7c9] bg-[#faf7f0] p-4">
+              <Image
+                src="/images/leon-shimizu.webp"
+                alt="Leon Shimizu, founder and instructor"
+                width={72}
+                height={72}
+                sizes="72px"
+                className="h-16 w-16 shrink-0 rounded-lg object-cover object-top"
+              />
+              <div className="min-w-0 text-sm">
+                <p className="font-bold text-slate-950">Taught by Leon Shimizu</p>
+                <p className="mt-0.5 leading-5 text-slate-600">Founder of Code School of Guam &amp; Shimizu Technology. Actualize instructor and software engineer.</p>
+                <Link href="/about" className="mt-1 inline-flex min-h-11 items-center gap-1 font-bold text-ruby-800 underline underline-offset-4">
+                  About Leon <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          </div>
           <div className="space-y-0 border-t border-slate-200">
             {[
               [Clock3, "Short, focused lessons", "Nine lessons across three weeks, with exercises and weekly checkpoints."],

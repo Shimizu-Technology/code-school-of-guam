@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 const primaryNavItems = [
   { href: "/courses", label: "Courses" },
   { href: "/projects", label: "Student work" },
+  { href: "/partners", label: "Partners" },
   { href: "/about", label: "About" },
 ]
 
