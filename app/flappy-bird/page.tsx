@@ -1,189 +1,110 @@
-import FlappyBirdGame from "@/components/flappy-bird-game"
+import type { Metadata } from "next"
 import Link from "next/link"
-import { ChevronLeft, Gamepad2 } from "lucide-react"
+import { ArrowLeft, ArrowRight, Gamepad2 } from "lucide-react"
+import FlappyBirdGame from "@/components/flappy-bird-game"
+import { buildSocialMetadata } from "@/lib/metadata"
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Flappy Bird Demo",
   description: "Play our Flappy Bird clone and see how coding can create fun games!",
   alternates: { canonical: "/flappy-bird" },
-  openGraph: {
+  ...buildSocialMetadata({
     title: "Flappy Bird Demo | Code School of Guam",
     description: "Play a student-friendly browser game and see what learning to code can create.",
     url: "/flappy-bird",
-  },
+  }),
 }
+
+const concepts = [
+  { title: "React Hooks", detail: "State management and side effects" },
+  { title: "Canvas API", detail: "2D graphics and game rendering" },
+  { title: "Game Loop", detail: "Animation with requestAnimationFrame" },
+  { title: "Physics Simulation", detail: "Gravity and collision detection" },
+  { title: "Event Handling", detail: "Keyboard and touch input" },
+  { title: "Local Storage", detail: "Data persistence and high scores" },
+  { title: "Responsive Design", detail: "Mobile-first development" },
+  { title: "TypeScript", detail: "Type safety and better code" },
+] as const
 
 export default function FlappyBirdPage() {
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-50 to-white">
-      {/* Header */}
-      <header className="bg-linear-to-r from-slate-900 to-slate-800 text-white py-6 shadow-xs">
-        <div className="container mx-auto px-4 md:px-6">
+    <div className="bg-[#fbfaf7]">
+      <section className="csg-page-hero bg-[#faf7f0] text-slate-950">
+        <div className="container mx-auto px-4 sm:px-8">
           <Link
-            href="/"
-            className="text-ruby-400 hover:text-ruby-300 flex items-center transition-all hover:scale-105 group"
+            href="/projects"
+            className="csg-press inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-ruby-700 underline underline-offset-4 hover:text-ruby-800"
           >
-            <ChevronLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
-            Back to Home
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back to student work
           </Link>
-        </div>
-      </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 md:px-6 py-8 md:py-12">
-        {/* Hero Section */}
-        <div className="text-center mb-8 md:mb-12">
-          <div className="inline-flex items-center px-4 py-2 bg-ruby-100 border border-ruby-200 rounded-full text-ruby-800 text-sm font-medium mb-4">
-            <Gamepad2 className="w-4 h-4 mr-1 inline" /> Interactive Demo
+          <div className="mx-auto mt-6 max-w-3xl text-center">
+            <p className="csg-label inline-flex items-center gap-2 text-ruby-700">
+              <Gamepad2 className="h-4 w-4" aria-hidden="true" /> Interactive demo
+            </p>
+            <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight text-slate-950 md:text-6xl">
+              Flappy Bird <span className="text-ruby-700">Clone</span>
+            </h1>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">
+              A school demonstration of state, loops, collision detection, and responsive design. Tap or press space to fly and avoid the pipes.
+            </p>
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 text-slate-900 tracking-tight">
-            Flappy Bird <span className="text-ruby-600">Clone</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-6">
-            Experience what you can build! This game showcases the skills you&apos;ll master at Code School of Guam.
-          </p>
-          <p className="text-base text-slate-500 max-w-2xl mx-auto">
-            Tap or press space to make the bird fly, avoid the pipes, and see how high you can score!
-          </p>
         </div>
+      </section>
 
-        {/* The Game - Mobile Optimized */}
-        <div className="max-w-lg mx-auto mb-12">
+      <div className="container mx-auto px-4 py-12 sm:px-8 md:py-16">
+        <div className="mx-auto mb-14 max-w-lg">
           <FlappyBirdGame />
         </div>
 
-        {/* How It's Built Section */}
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-            <div className="bg-linear-to-r from-ruby-600 to-red-600 px-6 md:px-8 py-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-                How This Game Was Built
-              </h2>
-              <p className="text-ruby-100">
-                Real-world coding concepts you&apos;ll learn in our program
-              </p>
+        <section className="mx-auto max-w-4xl overflow-hidden rounded-xl border border-[#ded7c9] bg-white">
+          <div className="bg-[#141b25] px-6 py-6 text-white md:px-8">
+            <p className="csg-label text-ruby-200">Under the hood</p>
+            <h2 className="mt-2 font-serif text-3xl font-semibold md:text-4xl">
+              How this game was built
+            </h2>
+            <p className="mt-2 text-slate-300">
+              Real-world programming ideas behind a small browser game.
+            </p>
+          </div>
+
+          <div className="p-6 md:p-8">
+            <p className="text-base leading-7 text-slate-600 md:text-lg">
+              This Flappy Bird clone demonstrates core programming concepts using React, TypeScript, and HTML5 Canvas.
+            </p>
+
+            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+              {concepts.map((concept) => (
+                <div key={concept.title} className="flex items-start gap-3">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-ruby-700" aria-hidden="true" />
+                  <div>
+                    <h3 className="font-bold text-slate-950">{concept.title}</h3>
+                    <p className="text-sm text-slate-600">{concept.detail}</p>
+                  </div>
+                </div>
+              ))}
             </div>
 
-            <div className="p-6 md:p-8">
-              <p className="text-slate-600 mb-6 text-lg">
-                This Flappy Bird clone demonstrates key programming concepts using React and HTML5 Canvas -
-                the same technologies taught in our bootcamp.
+            <div className="mt-8 rounded-xl border border-[#ded7c9] bg-[#faf7f0] p-6">
+              <h3 className="font-serif text-2xl font-semibold text-slate-950">
+                Ready to build your own projects?
+              </h3>
+              <p className="mt-2 text-slate-600">
+                Explore our focused coding courses or join updates for future full bootcamp cohorts.
               </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div className="space-y-3">
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">React Hooks</h4>
-                      <p className="text-sm text-slate-600">State management and side effects</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Canvas API</h4>
-                      <p className="text-sm text-slate-600">2D graphics and game rendering</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Game Loop</h4>
-                      <p className="text-sm text-slate-600">Animation with requestAnimationFrame</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Physics Simulation</h4>
-                      <p className="text-sm text-slate-600">Gravity and collision detection</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Event Handling</h4>
-                      <p className="text-sm text-slate-600">Keyboard and touch input</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Local Storage</h4>
-                      <p className="text-sm text-slate-600">Data persistence and high scores</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">Responsive Design</h4>
-                      <p className="text-sm text-slate-600">Mobile-first development</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="bg-ruby-100 rounded-full p-2 mr-3 mt-0.5">
-                      <div className="w-2 h-2 bg-ruby-600 rounded-full"></div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-slate-900">TypeScript</h4>
-                      <p className="text-sm text-slate-600">Type safety and better code</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-linear-to-r from-ruby-50 to-red-50 rounded-xl p-6 border border-ruby-200">
-                <h3 className="text-xl font-bold text-slate-900 mb-3">
-                  Ready to Build Your Own Games & Apps?
-                </h3>
-                <p className="text-slate-600 mb-4">
-                  Our 2026 cohort is already building interactive applications like this one.
-                  Contact us for future cohort updates.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-          <Link
-            href="/"
-                    className="inline-flex h-12 items-center justify-center rounded-md bg-ruby-600 px-6 text-base font-medium text-white shadow-xs transition-all hover:bg-ruby-700 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
-                  >
-                    View Our Program
-                  </Link>
-                  <Link
-                    href="/interest"
-                    className="inline-flex h-12 items-center justify-center rounded-md border border-ruby-600 bg-white px-6 text-base font-medium text-ruby-600 shadow transition-all hover:bg-ruby-50 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ruby-400 flex-1 sm:flex-none"
-                  >
-                    Join the Interest List
-                  </Link>
-                </div>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <Link href="/courses" className="csg-button">
+                  Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link href="/interest" className="csg-button-secondary">
+                  Bootcamp updates
+                </Link>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
-
-      {/* Footer */}
-      <footer className="bg-linear-to-r from-slate-900 to-slate-800 text-white py-8 mt-16">
-        <div className="container mx-auto px-4 md:px-6 text-center">
-          <p className="text-slate-300">&copy; 2025 Code School of Guam. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   )
 }

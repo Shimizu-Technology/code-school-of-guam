@@ -32,12 +32,12 @@ const productionExamples = [
     surface: "bg-[#f8efe0]",
   },
   {
-    title: "CSG Learning Hub",
+    title: "CSG Learn",
     type: "School learning platform",
     description: "The private platform for lessons, recordings, grading, progress tracking, and cohort management.",
     image: "/CSG-Logo.png",
     href: "https://learn.codeschoolofguam.com/",
-    surface: "bg-[#101827]",
+    surface: "bg-[#191920]",
   },
   {
     title: "Hafaloha Orders",

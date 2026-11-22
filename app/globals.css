@@ -111,7 +111,19 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
   button:not(:disabled), [role="button"] { cursor: pointer; }
+  button, a, [role="button"] {
+    touch-action: manipulation;
+  }
+  button, [role="button"] {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
 
   /* Body with a modern sans-serif font, slightly larger base text */
   body {
@@ -172,9 +184,11 @@
   box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
 }
 
-.csg-inner .hover\:shadow-md:hover,
-.csg-inner .hover\:shadow-lg:hover {
-  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .csg-inner .hover\:shadow-md:hover,
+  .csg-inner .hover\:shadow-lg:hover {
+    box-shadow: 0 16px 38px rgba(15, 23, 42, 0.1);
+  }
 }
 
 .csg-inner section[id] {

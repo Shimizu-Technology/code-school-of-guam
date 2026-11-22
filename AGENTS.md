@@ -19,7 +19,7 @@ GitHub Quality runs the complete gate on pull requests and main. Verify the curr
 
 ## Public content contracts
 
-December 2026 Python is an adult-only invited pilot capped at five learners. Public enrollment is closed; other focused courses are in development. The March 2026 full bootcamp is closed, its $7,500 tuition and original schedule are historical, and enrolled learners use individual completion/restart arrangements. Future full bootcamp dates, tuition, and schedule are unannounced. Interest lists do not reserve seats.
+Early 2027 Python is an adult-only invited pilot capped at five learners. Public enrollment is closed; other focused courses are in development. Planned self-paced learners receive instructor review of their projects (without private Zoom meetings). The March 2026 full bootcamp is closed, its $7,500 tuition and original schedule are historical, and enrolled learners use individual completion/restart arrangements. Future full bootcamp dates, tuition, and schedule are unannounced. Interest lists do not reserve seats.
 
 Keep all three Netlify form names, fields, consent, honeypots, and discovery HTML synchronized. Preserve routes and the chatbot's reviewed-source allowlist. Any knowledge source edit requires a new immutable version/hash and matching current fallback; external publication is separate and must not silently call paid providers. A missing manifest safely uses the reviewed fallback.
 

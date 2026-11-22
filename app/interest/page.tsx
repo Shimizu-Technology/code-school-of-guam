@@ -2,16 +2,17 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { CalendarDays, GraduationCap, Mail } from "lucide-react"
 import { CohortInterestForm } from "@/components/cohort-interest-form"
+import { buildSocialMetadata } from "@/lib/metadata"
 
 export const metadata: Metadata = {
   title: "Next Cohort Interest List",
   description: "Get notified when Code School of Guam confirms its next coding bootcamp cohort.",
   alternates: { canonical: "/interest" },
-  openGraph: {
+  ...buildSocialMetadata({
     title: "Next Cohort Interest List | Code School of Guam",
     description: "Get notified when Code School of Guam confirms its next coding bootcamp cohort.",
     url: "/interest",
-  },
+  }),
 }
 
 export default function InterestPage() {

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { motionAllowedNow, useMotionOK } from "./use-motion-ok"
 
@@ -12,7 +13,8 @@ export const CAPSTONE_CLIP = {
 /**
  * Silent 9-second loop. With motion allowed it plays while on screen and pauses
  * off screen. With reduced motion it shows the poster and plays only on request.
- * The Pause/Play control is always available once the page is interactive.
+ * An underlying poster image stays visible until the first video frame renders,
+ * preventing WebKit from showing a blank dark-gray box before playback starts.
  */
 export function CapstoneClip() {
   const motionOK = useMotionOK()
@@ -21,6 +23,7 @@ export function CapstoneClip() {
   const userPlayedRef = useRef(false)
   const [mounted, setMounted] = useState(false)
   const [paused, setPaused] = useState(true)
+  const [hasFrame, setHasFrame] = useState(false)
 
   useEffect(() => setMounted(true), [])
 
@@ -31,8 +34,12 @@ export function CapstoneClip() {
     if (!video) return
     video.muted = true
     const sync = () => setPaused(video.paused)
+    const onFrame = () => setHasFrame(true)
+    if (video.readyState >= 2) setHasFrame(true)
     video.addEventListener("play", sync)
     video.addEventListener("pause", sync)
+    video.addEventListener("loadeddata", onFrame)
+    video.addEventListener("playing", onFrame)
     let observer: IntersectionObserver | undefined
     if ("IntersectionObserver" in window) {
       observer = new IntersectionObserver((entries) => {
@@ -49,6 +56,8 @@ export function CapstoneClip() {
       observer?.disconnect()
       video.removeEventListener("play", sync)
       video.removeEventListener("pause", sync)
+      video.removeEventListener("loadeddata", onFrame)
+      video.removeEventListener("playing", onFrame)
     }
   }, [motionOK])
 
@@ -69,6 +78,14 @@ export function CapstoneClip() {
 
   return (
     <figure className="home-live-media">
+      <Image
+        src={CAPSTONE_CLIP.poster}
+        alt=""
+        fill
+        sizes="(min-width: 900px) 640px, 100vw"
+        quality={75}
+        className="home-live-poster"
+      />
       <video
         ref={videoRef}
         id="home-capstone-clip"
@@ -77,8 +94,8 @@ export function CapstoneClip() {
         muted
         loop
         playsInline
-        preload="none"
-        poster={CAPSTONE_CLIP.poster}
+        preload="metadata"
+        data-ready={hasFrame ? "true" : "false"}
         aria-label={CAPSTONE_CLIP.label}
         disablePictureInPicture
       >

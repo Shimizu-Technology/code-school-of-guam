@@ -1,72 +1,74 @@
 import { MetadataRoute } from 'next'
 
+const LAST_MODIFIED = new Date()
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://codeschoolofguam.com'
-  
+
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
       url: `${baseUrl}/programs`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/courses`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/courses/python-fundamentals`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/curriculum`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/internship`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/projects`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/interest`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
     {
       url: `${baseUrl}/faq`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
       url: `${baseUrl}/flappy-bird`,
-      lastModified: new Date(),
+      lastModified: LAST_MODIFIED,
       changeFrequency: 'yearly',
       priority: 0.3,
     },

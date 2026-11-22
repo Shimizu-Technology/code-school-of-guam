@@ -1,7 +1,18 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 import "./home.css"
+import { buildSocialMetadata } from "@/lib/metadata"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  ...buildSocialMetadata({
+    title: "Code School of Guam - Focused Courses and Full Bootcamp",
+    description: "Start with a focused coding course or explore the full software development bootcamp. Beginner Python is being tested with an invited group in early 2027.",
+    url: "https://codeschoolofguam.com",
+  }),
+}
 import { HeroEditor } from "@/components/home/hero-editor"
 import { LearningRoute } from "@/components/home/learning-route"
 import { CapstoneClip } from "@/components/home/capstone-clip"
@@ -72,14 +83,14 @@ export default function HomePage() {
               <Link href="/courses" className="csg-button home-arrow">Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
               <Link href="/programs" className="csg-button-secondary">Full bootcamp</Link>
             </div>
-            <p className="home-fade mt-4 max-w-lg text-sm leading-6 text-slate-600" style={{ ["--i" as string]: 3 }}>December&apos;s Python pilot is for invited adults. Public courses are being prepared.</p>
+            <p className="home-fade mt-4 max-w-lg text-sm leading-6 text-slate-600" style={{ ["--i" as string]: 3 }}>The early 2027 Python pilot is for invited adults. Public courses are being prepared.</p>
           </div>
           <HeroEditor />
         </div>
         <div className="border-t border-[#ded7c9]">
           <div className="container mx-auto flex flex-wrap gap-x-6 gap-y-1 px-4 py-4 text-sm leading-6 text-slate-600 sm:px-8">
             <strong className="text-ruby-800">Current status</strong>
-            <span>December Python: invited pilot.</span>
+            <span>Early 2027 Python: invited pilot.</span>
             <span>Other courses: in development.</span>
             <span>March 2026 bootcamp: closed.</span>
             <span>Future bootcamp dates: unannounced.</span>

@@ -57,7 +57,7 @@ export function CourseInterestForm() {
         </label>
       </div>
       <label className="block text-sm font-bold text-slate-900">Which course interests you most? <span className="text-ruby-700">*</span>
-        <select required name="first_choice" defaultValue="" className={inputClass}>
+        <select required name="first_choice" defaultValue="" className={`${inputClass} h-12 py-2`}>
           <option value="" disabled>Choose one</option>
           <option value="Python Fundamentals">Python Fundamentals</option>
           <option value="Ruby Fundamentals">Ruby Fundamentals</option>

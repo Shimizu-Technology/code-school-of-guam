@@ -7,42 +7,22 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Metadata, Viewport } from "next"
 import { ChatButton } from '@/components/chat-button'
+import { buildSocialMetadata } from '@/lib/metadata'
 
 export const metadata: Metadata = {
   title: {
     default: "Code School of Guam - Focused Courses and Full Bootcamp",
     template: "%s | Code School of Guam"
   },
-  description: "Learn to code with focused courses and a full software development bootcamp from Code School of Guam. A beginner Python course is being tested with an invited group in December 2026.",
-  keywords: "Code School, Guam, Programming, Software Development, Ruby on Rails, React.js, Python, AI Engineering, AI-powered applications, Coding Bootcamp, Learn to Code Guam 2026, Full-stack developer bootcamp",
+  description: "Learn to code with focused courses and a full software development bootcamp from Code School of Guam. A beginner Python course is being tested with an invited group in early 2027.",
+  keywords: "Code School, Guam, Programming, Software Development, Ruby on Rails, React.js, Python, AI Engineering, AI-powered applications, Coding Bootcamp, Learn to Code Guam, Full-stack developer bootcamp",
   authors: [{ name: "Code School of Guam" }],
   creator: "Leon Shimizu",
   metadataBase: new URL('https://codeschoolofguam.com'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
+  ...buildSocialMetadata({
     title: "Code School of Guam - Focused Courses and Full Bootcamp",
-    description: "Start with a focused coding course or explore the full software development bootcamp. Beginner Python is being tested with an invited group in December 2026.",
-    url: 'https://codeschoolofguam.com',
-    siteName: 'Code School of Guam',
-    images: [
-      {
-        url: '/images/code-school-social-card.png',
-        width: 1200,
-        height: 630,
-        alt: 'Code School of Guam — learn to build software that matters',
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: "Code School of Guam - Learn to Build Software",
-    description: "Focused coding courses and a full bootcamp from Guam. Beginner Python is being tested with an invited group in December 2026.",
-    images: ['/images/code-school-social-card.png'],
-  },
+    description: "Start with a focused coding course or explore the full software development bootcamp. Beginner Python is being tested with an invited group in early 2027.",
+  }),
   robots: {
     index: true,
     follow: true,
@@ -77,10 +57,14 @@ const jsonLd = {
   description: "Focused coding courses and a full software development bootcamp taught from Guam. The March 2026 full bootcamp cohort is closed to new students.",
   url: 'https://codeschoolofguam.com',
   logo: 'https://codeschoolofguam.com/CSG-Logo.png',
-  image: 'https://codeschoolofguam.com/CSG-Logo.png',
+  image: 'https://codeschoolofguam.com/images/code-school-social-card.png',
+  telephone: '+1-671-483-0219',
+  email: 'codeschoolofguam@gmail.com',
+  areaServed: 'Guam',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Guam',
+    addressRegion: 'GU',
     addressCountry: 'US',
   },
   founder: {
@@ -89,6 +73,7 @@ const jsonLd = {
   },
   sameAs: [
     'https://shimizu-technology.com',
+    'https://learn.codeschoolofguam.com',
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -106,7 +91,7 @@ const jsonLd = {
       {
         '@type': 'Course',
         name: 'Python Fundamentals',
-        description: 'Three-week beginner Python course being tested with an invited group in December 2026; public enrollment is not open.',
+        description: 'Three-week beginner Python course being tested with an invited group in early 2027; public enrollment is not open.',
         provider: {
           '@type': 'Organization',
           name: 'Code School of Guam',

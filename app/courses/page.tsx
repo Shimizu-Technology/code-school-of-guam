@@ -2,11 +2,17 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight, Code2, GraduationCap, Route } from "lucide-react"
 import { CourseInterestForm } from "@/components/course-interest-form"
+import { buildSocialMetadata } from "@/lib/metadata"
 
 export const metadata: Metadata = {
   title: "Focused Coding Courses",
-  description: "Explore Code School of Guam's beginner and project-based coding course plans. Python Fundamentals begins with a five-learner invited pilot in December 2026; public enrollment is not open.",
+  description: "Explore Code School of Guam's beginner and project-based coding course plans. Python Fundamentals begins with a five-learner invited pilot in early 2027; public enrollment is not open.",
   alternates: { canonical: "/courses" },
+  ...buildSocialMetadata({
+    title: "Focused Coding Courses | Code School of Guam",
+    description: "Explore Code School of Guam's beginner and project-based coding course plans. Python Fundamentals begins with a five-learner invited pilot in early 2027; public enrollment is not open.",
+    url: "/courses",
+  }),
 }
 
 const entryCourses = [
@@ -39,7 +45,7 @@ export default function CoursesPage() {
             </div>
           </div>
           <div className="border-l-2 border-ruby-500 pl-6 text-sm leading-7 text-slate-600 sm:text-base">
-            <p>Our first guided course is a five-learner Python pilot by invitation in December 2026. The other courses below are in development. Join the interest list to help us decide what to build and offer next.</p>
+            <p>Our first guided course is a five-learner Python pilot by invitation in early 2027. The other courses below are in development. Join the interest list to help us decide what to build and offer next.</p>
             <Link href="/programs" className="mt-5 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline decoration-ruby-400 underline-offset-4">Looking for the full bootcamp? <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
         </div>
@@ -50,8 +56,8 @@ export default function CoursesPage() {
           <div><p className="csg-label text-ruby-700">A format that can grow</p><h2 className="mt-3 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Practice independently. Get personal guidance when you need it.</h2></div>
           <div className="space-y-5 leading-7 text-slate-700">
             <div className="grid gap-6 sm:grid-cols-2">
-              <article className="border-t-2 border-[#c8bfb0] pt-4"><h3 className="text-lg font-bold text-slate-950">Self-paced · planned</h3><p className="mt-2 text-sm leading-6">Recordings, exercises, a project, and a defined course-question messaging window. Enrollment is not open yet.</p></article>
-              <article className="border-t-2 border-ruby-700 pt-4"><h3 className="text-lg font-bold text-slate-950">Guided · invited pilot first</h3><p className="mt-2 text-sm leading-6">The same materials with private instructor meetings and personal feedback. December&apos;s Python pilot tests this format with Leon; later runs are not open yet.</p></article>
+              <article className="border-t-2 border-[#c8bfb0] pt-4"><h3 className="text-lg font-bold text-slate-950">Self-paced · planned</h3><p className="mt-2 text-sm leading-6">Recordings, exercises, a project with instructor review, and a defined course-question messaging window. Enrollment is not open yet.</p></article>
+              <article className="border-t-2 border-ruby-700 pt-4"><h3 className="text-lg font-bold text-slate-950">Guided · invited pilot first</h3><p className="mt-2 text-sm leading-6">The same materials with private instructor meetings and live personal feedback. The early 2027 Python pilot tests this format with Leon; later runs are not open yet.</p></article>
             </div>
             <p className="max-w-prose text-sm leading-6">Build a small project yourself before exploring an optional agent-assisted extension and testing its results. Guided capacity starts with five learners per instructor and depends on available meeting hours. Trained alumni may teach later runs as the school grows.</p>
             <p className="max-w-prose text-sm leading-6">The invited pilot is for adults. Future teen courses are being planned with guardian involvement and appropriate support; details for younger learners will be developed separately.</p>
@@ -64,7 +70,7 @@ export default function CoursesPage() {
           <div>
             <p className="csg-label text-ruby-700">First guided course · invited pilot</p>
             <h2 className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">Python Fundamentals</h2>
-            <p className="mt-5 leading-7 text-slate-600">Three guided weeks for adults starting from zero. Write and run code in Hafa Code, get feedback in CSG Learn, and meet privately with Leon for one hour each week. The December invited run is capped at five learners because each person receives three private teaching hours.</p>
+            <p className="mt-5 leading-7 text-slate-600">Three guided weeks for adults starting from zero. Write and run code in Hafa Code, get feedback in CSG Learn, and meet privately with Leon for one hour each week. The early 2027 invited run is capped at five learners because each person receives three private teaching hours.</p>
           </div>
           <div className="border-t-4 border-ruby-700 bg-[#f4f0e9] p-7 sm:p-9">
             <div className="grid gap-7 sm:grid-cols-2">
