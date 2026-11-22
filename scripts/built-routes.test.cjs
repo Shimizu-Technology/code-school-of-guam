@@ -4,7 +4,7 @@ const path = require('node:path')
 const test = require('node:test')
 const { JSDOM } = require('jsdom')
 
-const routes = ['/', '/courses', '/courses/python-fundamentals', '/programs', '/curriculum', '/projects', '/internship', '/about', '/faq', '/interest', '/flappy-bird']
+const routes = ['/', '/courses', '/courses/python-fundamentals', '/partners', '/programs', '/curriculum', '/projects', '/internship', '/about', '/faq', '/interest', '/flappy-bird']
 const pages = new Map(routes.map((route) => {
   const file = route === '/' ? 'index.html' : `${route.slice(1)}.html`
   return [route, fs.readFileSync(path.join('.next/server/app', file), 'utf8')]
@@ -147,7 +147,7 @@ test('built CSS resolves every form <select> to an explicit >= 48px height for W
     return null
   }
 
-  for (const route of ['/interest', '/courses', '/courses/python-fundamentals']) {
+  for (const route of ['/interest', '/courses', '/courses/python-fundamentals', '/partners']) {
     const doc = new JSDOM(pages.get(route)).window.document
     const selects = Array.from(doc.querySelectorAll('select'))
     assert.ok(selects.length > 0, `${route}: expected select fields`)
@@ -178,6 +178,7 @@ test('each interest form is introduced by a heading that names its offer', () =>
     ['/courses', 'focused-courses-interest', /focused-course updates/i],
     ['/courses/python-fundamentals', 'python-fundamentals-interest', /Python Fundamentals updates/],
     ['/interest', 'next-cohort-interest', /full bootcamp updates/i],
+    ['/partners', 'partner-inquiry', /partner conversation/i],
   ]
   for (const [route, formName, heading] of expectations) {
     const doc = new JSDOM(pages.get(route)).window.document
@@ -230,5 +231,35 @@ test('the homepage keeps reviewed claims, real media, and no concept-review aids
   // Every image has alt text; photos of people are described, decorative avatars are empty.
   for (const img of main.querySelectorAll('img')) assert.ok(img.hasAttribute('alt'), `image without alt: ${img.getAttribute('src')}`)
   // Each section the header or CTAs link to exists.
-  for (const id of ['path', 'work', 'teaching', 'stories', 'start']) assert.ok(doc.getElementById(id), `missing #${id}`)
+  for (const id of ['path', 'work', 'teaching', 'stories', 'partners', 'start']) assert.ok(doc.getElementById(id), `missing #${id}`)
+  // On-demand Python Web Worker exists in public/workers/.
+  assert.ok(fs.existsSync(path.join('public', 'workers', 'python-runner.js')), 'missing public/workers/python-runner.js')
+})
+
+test('/partners and /projects ship verified Guam proof and named graduate capstones', () => {
+  const partnersDoc = new JSDOM(pages.get('/partners')).window.document
+  const partnersMain = partnersDoc.querySelector('main')
+  const partnersText = partnersMain.textContent
+  for (const proof of ['University of Guam', 'Audreana Crane', 'Father Dueñas', 'Alanna Cruz', 'DMR', 'Shimizu Technology', '11 graduates']) {
+    assert.ok(partnersText.includes(proof), `/partners missing verified proof: ${proof}`)
+  }
+  // Never ship Father Dueñas student photos.
+  for (const img of partnersMain.querySelectorAll('img')) {
+    assert.doesNotMatch(img.getAttribute('src') || '', /fd|father-duenas/i)
+    assert.doesNotMatch(img.getAttribute('alt') || '', /father dueñas|fd students/i)
+  }
+
+  const projectsDoc = new JSDOM(pages.get('/projects')).window.document
+  const projectsMain = projectsDoc.querySelector('main')
+  const projectsText = projectsMain.textContent
+  const projectLinks = Array.from(projectsMain.querySelectorAll('a')).map((a) => a.getAttribute('href'))
+  for (const [name, href] of [
+    ['BlueStar: Micronesian Wayfinding', 'https://www.youtube.com/watch?v=bWuS_YuiRzI&t=2223s'],
+    ['Shared Shores GU', 'https://www.youtube.com/watch?v=bWuS_YuiRzI&t=3627s'],
+    ['Indecisive', 'https://www.youtube.com/watch?v=MNzZeL33jiw&t=739s'],
+    ['The Weekly Dish', 'https://www.youtube.com/watch?v=MNzZeL33jiw&t=3436s'],
+  ]) {
+    assert.ok(projectsText.includes(name), `/projects missing capstone ${name}`)
+    assert.ok(projectLinks.includes(href), `/projects missing timestamp link ${href}`)
+  }
 })

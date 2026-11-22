@@ -5,9 +5,10 @@ import { ArrowRight, ArrowUpRight, Mail, Phone } from "lucide-react"
 const footerLinks = [
   ["Focused Courses", "/courses"],
   ["Python Fundamentals", "/courses/python-fundamentals"],
+  ["Student Work", "/projects"],
+  ["Partners", "/partners"],
   ["Full Bootcamp", "/programs"],
   ["Bootcamp Curriculum", "/curriculum"],
-  ["Student Work", "/projects"],
   ["Internship", "/internship"],
   ["About", "/about"],
   ["FAQ", "/faq"],

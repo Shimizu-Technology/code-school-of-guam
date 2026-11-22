@@ -9,7 +9,7 @@
       <input type="email" name="email">
       <input type="tel" name="phone">
       <select name="preferred_timing"><option>Weekday daytime</option><option>Weekday evenings</option><option>Weekends</option><option>Flexible</option></select>
-      <select name="experience_level"><option>Complete beginner</option></select>
+      <select name="experience_level"><option>Complete beginner</option><option>Some self-study</option><option>Built a few projects</option><option>Professional experience</option></select>
       <textarea name="primary_goal"></textarea>
       <input type="checkbox" name="update_consent" value="yes">
     </form>
@@ -41,6 +41,21 @@
         <option value="APIs with Ruby on Rails">APIs with Ruby on Rails</option>
         <option value="AI Engineering with Python">AI Engineering with Python</option>
         <option value="Agent Workflows for Developers">Agent Workflows for Developers</option>
+      </select>
+      <textarea name="goal"></textarea>
+      <input type="checkbox" name="update_consent" value="yes">
+    </form>
+    <form name="partner-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="partner-inquiry">
+      <input name="bot-field">
+      <input name="name">
+      <input type="email" name="email">
+      <input name="organization">
+      <select name="partnership_type">
+        <option value="Schools &amp; Universities">Schools &amp; Universities</option>
+        <option value="Guam Employers &amp; Teams">Guam Employers &amp; Teams</option>
+        <option value="Workforce &amp; Community Sponsors">Workforce &amp; Community Sponsors</option>
+        <option value="Other">Other</option>
       </select>
       <textarea name="goal"></textarea>
       <input type="checkbox" name="update_consent" value="yes">

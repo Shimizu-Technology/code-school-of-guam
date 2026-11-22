@@ -1,18 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Building2, GraduationCap, Handshake } from "lucide-react"
 import "./home.css"
 import { buildSocialMetadata } from "@/lib/metadata"
-
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-  ...buildSocialMetadata({
-    title: "Code School of Guam - Focused Courses and Full Bootcamp",
-    description: "Start with a focused coding course or explore the full software development bootcamp. Beginner Python is being tested with an invited group in early 2027.",
-    url: "https://codeschoolofguam.com",
-  }),
-}
 import { HeroEditor } from "@/components/home/hero-editor"
 import { LearningRoute } from "@/components/home/learning-route"
 import { CapstoneClip } from "@/components/home/capstone-clip"
@@ -20,6 +11,16 @@ import { OpeningPhoto } from "@/components/home/opening-photo"
 import { StoryDeck } from "@/components/home/story-deck"
 import { WeightedHeading } from "@/components/home/weighted-heading"
 import { RevealOnScroll } from "@/components/home/reveal-on-scroll"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  ...buildSocialMetadata({
+    title: "Code School of Guam - Focused Coding Classes & Full Program",
+    description:
+      "Start with focused coding classes — Python Fundamentals first, followed by Python Automation and SQL — taught from Guam with instructor review. Full bootcamp available by request.",
+    url: "https://codeschoolofguam.com",
+  }),
+}
 
 const HEADLINE_WORDS = ["Learn", "to", "build", "software", "that"]
 
@@ -56,15 +57,33 @@ const PHOTOS = [
   },
 ]
 
+const PARTNER_CALLOUTS = [
+  {
+    icon: GraduationCap,
+    title: "Schools & Universities",
+    body: "Faculty AI workshops and intro coding curriculum support — building on our July 2025 UOG staff workshop and Audreana teaching intro coding at Father Dueñas.",
+  },
+  {
+    icon: Building2,
+    title: "Guam Employers & Teams",
+    body: "Practical Python, SQL, and AI training for local teams, plus connections with vetted graduates like Alanna Cruz (now working in software at DMR).",
+  },
+  {
+    icon: Handshake,
+    title: "Workforce & Sponsors",
+    body: "Sponsor seats for local learners in focused courses or future cohorts, backed by CSG Learn project submissions and instructor reviews.",
+  },
+] as const
+
 export default function HomePage() {
   return (
     <div id="home" className="home bg-[#faf7f0]">
       <RevealOnScroll rootId="home" />
 
       <section className="home-hero border-b border-[#ded7c9]" aria-labelledby="home-title">
-        <div className="container mx-auto grid gap-10 px-4 py-10 sm:px-8 md:py-14 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-14 lg:py-16">
+        <div className="container mx-auto grid gap-10 px-4 py-10 sm:px-8 md:py-14 lg:grid-cols-[1.02fr_1.08fr] lg:items-center lg:gap-12 lg:py-16">
           <div className="min-w-0">
-            <p className="csg-label home-fade text-ruby-700" style={{ ["--i" as string]: 0 }}>Learn to code · Taught from Guam</p>
+            <p className="csg-label home-fade text-ruby-700" style={{ ["--i" as string]: 0 }}>Focused coding classes · Taught from Guam</p>
             <h1 id="home-title" className="home-title">
               {HEADLINE_WORDS.map((word, i) => (
                 <span key={word}><span className="home-w"><span className="home-wi" style={{ ["--i" as string]: i }}>{word}</span></span>{" "}</span>
@@ -78,22 +97,26 @@ export default function HomePage() {
                 </em>
               </span>
             </h1>
-            <p className="home-fade mt-6 max-w-[34rem] text-lg leading-8 text-slate-600" style={{ ["--i" as string]: 1 }}>Start with a focused course and a useful project, or explore the full bootcamp for a longer path through software development.</p>
+            <p className="home-fade mt-6 max-w-[34rem] text-lg leading-8 text-slate-600" style={{ ["--i" as string]: 1 }}>
+              Start with a focused class — Python Fundamentals first, then Python Automation and SQL — and finish a working project with instructor review. The full bootcamp remains available as a longer program by request.
+            </p>
             <div className="home-fade mt-7 flex flex-wrap gap-3" style={{ ["--i" as string]: 2 }}>
-              <Link href="/courses" className="csg-button home-arrow">Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-              <Link href="/programs" className="csg-button-secondary">Full bootcamp</Link>
+              <Link href="/courses" className="csg-button home-arrow">Explore focused courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+              <Link href="/programs" className="csg-button-secondary">Full program (by request)</Link>
             </div>
-            <p className="home-fade mt-4 max-w-lg text-sm leading-6 text-slate-600" style={{ ["--i" as string]: 3 }}>The early 2027 Python pilot is for invited adults. Public courses are being prepared.</p>
+            <p className="home-fade mt-4 max-w-lg text-sm leading-6 text-slate-600" style={{ ["--i" as string]: 3 }}>
+              Try the Python example on this page right now — click <strong>Run</strong> or <strong>Write your own</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
+            </p>
           </div>
           <HeroEditor />
         </div>
         <div className="border-t border-[#ded7c9]">
           <div className="container mx-auto flex flex-wrap gap-x-6 gap-y-1 px-4 py-4 text-sm leading-6 text-slate-600 sm:px-8">
             <strong className="text-ruby-800">Current status</strong>
-            <span>Early 2027 Python: invited pilot.</span>
-            <span>Other courses: in development.</span>
+            <span>Early 2027 Python Fundamentals: invited pilot.</span>
+            <span>Python Automation &amp; SQL: in development.</span>
             <span>March 2026 bootcamp: closed.</span>
-            <span>Future bootcamp dates: unannounced.</span>
+            <span>Future full program: by request / dates unannounced.</span>
           </div>
         </div>
       </section>
@@ -102,8 +125,8 @@ export default function HomePage() {
         <div className="container mx-auto px-4 sm:px-8">
           <div className="max-w-3xl">
             <p className="csg-label text-ruby-700">How learning works here</p>
-            <h2 id="home-path-title" className="home-h2" data-reveal>One step, then the next.</h2>
-            <p className="home-lead" data-reveal>Start small, build something real, and get help along the way. Go further when you&apos;re ready.</p>
+            <h2 id="home-path-title" className="home-h2" data-reveal>One focused class, then the next.</h2>
+            <p className="home-lead" data-reveal>Start small, build something real, and get instructor review on your project. Add the next focused skill when you&apos;re ready.</p>
           </div>
           <LearningRoute />
         </div>
@@ -156,14 +179,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section id="partners" className="home-section border-t border-[#ded7c9] bg-[#fffdf8]" aria-labelledby="home-partners-title">
+        <div className="container mx-auto px-4 sm:px-8">
+          <div className="home-split">
+            <div>
+              <p className="csg-label text-ruby-700">For Guam schools, employers &amp; sponsors</p>
+              <h2 id="home-partners-title" className="home-h2" data-reveal>Partner with Code School of Guam.</h2>
+            </div>
+            <div data-reveal>
+              <p className="text-lg leading-8 text-slate-600">We work with Guam educators, local businesses, and community sponsors to build practical coding and AI capability on island.</p>
+              <Link href="/partners" className="mt-3 inline-flex min-h-11 items-center gap-2 font-bold text-ruby-800 underline underline-offset-4">Explore partnerships <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {PARTNER_CALLOUTS.map(({ icon: Icon, title, body }) => (
+              <article key={title} className="rounded-2xl border border-[#ded7c9] bg-[#faf7f0] p-7">
+                <Icon className="h-5 w-5 text-ruby-700" aria-hidden="true" />
+                <h3 className="mt-4 font-serif text-2xl font-medium text-slate-950">{title}</h3>
+                <p className="mt-2.5 text-sm leading-6 text-slate-600">{body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="start" className="home-cta" aria-labelledby="home-cta-title">
         <div className="container mx-auto px-4 sm:px-8">
           <p className="csg-label text-ruby-200">Next step</p>
           <WeightedHeading id="home-cta-title" text="Find your starting point." />
-          <p className="mt-6 max-w-[40rem] text-[17px] leading-7 text-slate-300">Explore the courses being prepared and tell us what you&apos;d like to learn. For the longer program, join the separate bootcamp updates list; dates and tuition are unannounced.</p>
+          <p className="mt-6 max-w-[40rem] text-[17px] leading-7 text-slate-300">Start with our focused classes as they open — Python Fundamentals first, then Python Automation and SQL. Looking for a full program or a school/employer partnership? Reach out from one place.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/courses#course-interest" className="csg-button home-arrow">Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
-            <Link href="/interest" className="csg-press inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/35 px-5 py-3 font-bold text-white hover:bg-white/10 active:bg-white/20">Bootcamp updates</Link>
+            <Link href="/courses#course-interest" className="csg-button home-arrow">Focused course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            <Link href="/partners" className="csg-press inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/35 px-5 py-3 font-bold text-white hover:bg-white/10 active:bg-white/20">Partner with us</Link>
+            <Link href="/interest" className="csg-press inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-white/20 px-5 py-3 font-bold text-slate-200 hover:bg-white/10 active:bg-white/20">Full program updates</Link>
           </div>
           <p className="home-prompt" aria-hidden="true"><b>$</b> python start_here.py <span className="home-caret home-caret-cta" /></p>
         </div>

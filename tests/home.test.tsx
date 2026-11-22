@@ -2,7 +2,8 @@ import { afterEach, expect, test, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import fs from 'node:fs'
 import path from 'node:path'
-import { HeroEditor, EDITOR_LINES, EDITOR_OUTPUT } from '../components/home/hero-editor'
+import { HeroEditor, DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, RUN_EXECUTION_TIMEOUT_MS } from '../components/home/hero-editor'
+import { buildHafaCodePythonUrl } from '../lib/hafa-code-link'
 import { StoryDeck } from '../components/home/story-deck'
 import { CapstoneClip, CAPSTONE_CLIP } from '../components/home/capstone-clip'
 import { LearningRoute } from '../components/home/learning-route'
@@ -18,16 +19,121 @@ function reducedMotion() {
   vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} unobserve() {} })
 }
 
-test('with reduced motion the editor shows the complete beginner program and its output', () => {
+class MockPythonWorker {
+  static instances: MockPythonWorker[] = []
+  readonly url: string
+  onmessage: ((event: MessageEvent) => void) | null = null
+  onerror: ((event: ErrorEvent) => void) | null = null
+  posted: unknown[] = []
+  terminated = false
+
+  constructor(url: string) {
+    this.url = url
+    MockPythonWorker.instances.push(this)
+  }
+
+  postMessage(data: unknown) {
+    this.posted.push(data)
+  }
+
+  terminate() {
+    this.terminated = true
+  }
+
+  emit(data: unknown) {
+    this.onmessage?.({ data } as MessageEvent)
+  }
+}
+
+test('hero editor renders complete beginner program and output immediately without creating a worker on mount', () => {
   reducedMotion()
+  MockPythonWorker.instances = []
+  vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = render(<HeroEditor />)
   const code = container.querySelector('.home-code')!.textContent!
   expect(code).toContain('for item, cost in expenses.items():')
   expect(container.querySelectorAll('.home-ln')).toHaveLength(EDITOR_LINES.length)
-  expect(container.querySelector('.home-caret')).toBeNull()
   for (const line of EDITOR_OUTPUT) expect(container.querySelector('.home-term')!.textContent).toContain(line)
-  expect(screen.getByRole('button', { name: 'Run the sample program again' })).toBeTruthy()
+  expect(MockPythonWorker.instances).toHaveLength(0)
+  expect(screen.getByRole('button', { name: 'Run the Python example in your browser' })).toBeTruthy()
+  expect(screen.getByRole('button', { name: /Write your own/ })).toBeTruthy()
   expect(screen.getByRole('link', { name: 'Python Fundamentals' }).getAttribute('href')).toBe('/courses/python-fundamentals')
+  expect(screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')).toContain('https://code.shimizu-technology.com/?lang=python#project=')
+})
+
+test('hero editor runs Python in a Web Worker on click, supports Write your own, Reset, timeout, and output cap', () => {
+  reducedMotion()
+  vi.useFakeTimers()
+  try {
+    MockPythonWorker.instances = []
+    vi.stubGlobal('Worker', MockPythonWorker)
+    const { container } = render(<HeroEditor />)
+
+    // Clicking Run spawns the static worker on demand.
+    fireEvent.click(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
+    expect(MockPythonWorker.instances).toHaveLength(1)
+    const worker = MockPythonWorker.instances[0]
+    expect(worker.url).toBe('/workers/python-runner.js')
+    const runMsg = worker.posted[0] as { id: string; type: string; code: string }
+    expect(runMsg.type).toBe('run')
+    expect(runMsg.code).toBe(DEFAULT_PYTHON_CODE)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Loading Python')
+
+    act(() => {
+      worker.emit({ id: runMsg.id, type: 'started' })
+      worker.emit({ id: runMsg.id, type: 'result', stdout: 'Total: $118\nUnder budget by $2\n', stderr: '', exitCode: 0 })
+    })
+    expect(container.querySelector('.home-term')!.textContent).toContain('Ran in browser')
+    expect(container.querySelector('.home-term')!.textContent).toContain('Under budget by $2')
+
+    // Write your own switches to an editable textarea and updates the Hafa Code link.
+    fireEvent.click(screen.getByRole('button', { name: /Write your own/ }))
+    const textarea = screen.getByRole('textbox', { name: /Python code editor/ }) as HTMLTextAreaElement
+    fireEvent.change(textarea, { target: { value: 'print(6 * 7)' } })
+    const hafaHref = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
+    const encoded = hafaHref.split('#project=')[1]
+    const decoded = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8'))
+    expect(decoded.kind).toBe('python')
+    expect(decoded.files[0].content).toBe('print(6 * 7)')
+
+    // Running edited code and hitting 5s timeout terminates the worker cleanly.
+    fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+    const run2 = worker.posted[1] as { id: string; code: string }
+    expect(run2.code).toBe('print(6 * 7)')
+    act(() => { worker.emit({ id: run2.id, type: 'started' }) })
+    act(() => { vi.advanceTimersByTime(RUN_EXECUTION_TIMEOUT_MS) })
+    expect(worker.terminated).toBe(true)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Stopped after 5 seconds')
+
+    // Output-limit message terminates the next worker and displays the cap notice.
+    fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+    const worker2 = MockPythonWorker.instances[1]
+    const run3 = worker2.posted[0] as { id: string }
+    act(() => {
+      worker2.emit({ id: run3.id, type: 'output_limit', stdout: 'spam\n', stderr: '', message: 'Output stopped after 200 lines.' })
+    })
+    expect(worker2.terminated).toBe(true)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Output stopped after 200 lines.')
+
+    // Reset restores the original expense_summary.py code and sample output.
+    fireEvent.click(screen.getByRole('button', { name: 'Reset to default Python example' }))
+    expect(textarea.value).toBe(DEFAULT_PYTHON_CODE)
+    expect(container.querySelector('.home-term')!.textContent).toContain('Food: $61')
+  } finally {
+    vi.useRealTimers()
+  }
+})
+
+test('buildHafaCodePythonUrl encodes UTF-8 Python code in Hafa Code project link format', () => {
+  const url = buildHafaCodePythonUrl('print("Håfa Adai!")\n', { title: 'Greeting', filename: 'main.py' })
+  expect(url.startsWith('https://code.shimizu-technology.com/?lang=python#project=')).toBe(true)
+  const payload = JSON.parse(Buffer.from(url.split('#project=')[1], 'base64url').toString('utf8'))
+  expect(payload).toEqual({
+    title: 'Greeting',
+    kind: 'python',
+    entryPath: 'main.py',
+    files: [{ path: 'main.py', content: 'print("Håfa Adai!")\n' }],
+  })
 })
 
 test('editor lines fit a phone: no line is longer than 38 characters', () => {

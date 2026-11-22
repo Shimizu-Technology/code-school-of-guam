@@ -1,8 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { motionAllowedNow, useMotionOK } from "./use-motion-ok"
+import { ArrowUpRight, Pencil, Play, RotateCcw, Square } from "lucide-react"
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
+import { buildHafaCodePythonUrl } from "@/lib/hafa-code-link"
 
 type Token = readonly [kind: "" | "k" | "s" | "n" | "f", text: string]
 
@@ -27,157 +28,378 @@ export const EDITOR_LINES: readonly (readonly Token[])[] = [
   [["", "    "], ["f", "print"], ["", "("], ["s", 'f"Under budget by ${left}"'], ["", ")"]],
 ]
 
-export const EDITOR_OUTPUT = ["Total: $118", "Food: $61", "Transport: $48", "Supplies: $9", "Under budget by $2"] as const
+export const DEFAULT_PYTHON_CODE = EDITOR_LINES.map((line) =>
+  line.map(([, text]) => text).join("")
+).join("\n")
 
-// Typing schedule: [line, token, characters] at a time offset in ms.
-type Step = { at: number; line: number; token: number; chars: number }
+export const EDITOR_OUTPUT = [
+  "Total: $118",
+  "Food: $61",
+  "Transport: $48",
+  "Supplies: $9",
+  "Under budget by $2",
+] as const
 
-function buildSchedule() {
-  const steps: Step[] = []
-  let t = 200
-  EDITOR_LINES.forEach((line, li) => {
-    if (!line.length) t += 60
-    line.forEach(([kind, text], ti) => {
-      for (let c = 1; c <= text.length; c++) {
-        steps.push({ at: t, line: li, token: ti, chars: c })
-        t += kind === "s" ? 7 : 12
-      }
-    })
-    t += 60
-  })
-  return { steps, typedAt: t }
+export const RUN_EXECUTION_TIMEOUT_MS = 5000
+export const RUNTIME_STARTUP_TIMEOUT_MS = 25000
+
+type RunStatus = "idle" | "loading" | "running" | "done" | "error"
+
+interface WorkerMessage {
+  id?: string
+  type?: "ready" | "started" | "result" | "output_limit" | "error"
+  stdout?: string
+  stderr?: string
+  exitCode?: number
+  message?: string
 }
 
-const RUN_PRESS = 160
-const RUN_FIRST_LINE = 380
-const RUN_LINE_GAP = 220
-
-type Frame = { line: number; token: number; chars: number } | "all"
-
-function renderLine(line: readonly Token[], upto: { token: number; chars: number } | null) {
+function renderTokenizedLine(line: readonly Token[]) {
   if (!line.length) return " "
-  return line.map(([kind, text], ti) => {
-    if (upto && ti > upto.token) return null
-    const shown = upto && ti === upto.token ? text.slice(0, upto.chars) : text
-    return kind ? <span key={ti} className={`home-tok-${kind}`}>{shown}</span> : <span key={ti}>{shown}</span>
-  })
+  return line.map(([kind, text], ti) =>
+    kind ? <span key={ti} className={`home-tok-${kind}`}>{text}</span> : <span key={ti}>{text}</span>
+  )
+}
+
+function splitLines(text: string): string[] {
+  if (!text) return []
+  return text.replace(/\r\n/g, "\n").replace(/\n$/, "").split("\n")
 }
 
 export function HeroEditor() {
-  const motionOK = useMotionOK()
-  const schedule = useMemo(buildSchedule, [])
-  const rootRef = useRef<HTMLElement>(null)
-  const rafRef = useRef(0)
-  const startedRef = useRef(false)
-  const [frame, setFrame] = useState<Frame>("all")
-  // Output lines shown and whether the Run button looks pressed.
-  const [outputCount, setOutputCount] = useState<number>(EDITOR_OUTPUT.length)
-  const [pressed, setPressed] = useState(false)
-  const [ready, setReady] = useState(false)
+  const [code, setCode] = useState(DEFAULT_PYTHON_CODE)
+  const [isEditing, setIsEditing] = useState(false)
+  const [status, setStatus] = useState<RunStatus>("idle")
+  const [stdoutLines, setStdoutLines] = useState<string[]>([...EDITOR_OUTPUT])
+  const [stderrText, setStderrText] = useState("")
+  const [noticeText, setNoticeText] = useState("")
+  const [statusAnnouncement, setStatusAnnouncement] = useState("")
+  const [hasExecuted, setHasExecuted] = useState(false)
 
-  const stop = () => cancelAnimationFrame(rafRef.current)
+  const workerRef = useRef<Worker | null>(null)
+  const workerReadyRef = useRef(false)
+  const runIdRef = useRef(0)
+  const activeRunIdRef = useRef<string | null>(null)
+  const timeoutRef = useRef<number | null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
-  const run = useCallback((typeFirst: boolean) => {
-    stop()
-    const start = performance.now()
-    const runAt = typeFirst ? schedule.typedAt + 200 : 0
-    const tick = (now: number) => {
-      const elapsed = now - start
-      if (typeFirst && elapsed < schedule.typedAt) {
-        // Binary search the last step that has started.
-        let lo = 0
-        let hi = schedule.steps.length - 1
-        let found = -1
-        while (lo <= hi) {
-          const mid = (lo + hi) >> 1
-          if (schedule.steps[mid].at <= elapsed) { found = mid; lo = mid + 1 } else hi = mid - 1
-        }
-        const step = found >= 0 ? schedule.steps[found] : { line: 0, token: -1, chars: 0 }
-        setFrame({ line: step.line, token: step.token, chars: step.chars })
-        setOutputCount(-1)
-      } else {
-        setFrame("all")
-        const sinceRun = elapsed - runAt
-        setPressed(sinceRun >= 0 && sinceRun < RUN_PRESS)
-        const lines = sinceRun < RUN_PRESS ? -1 : Math.min(EDITOR_OUTPUT.length, Math.floor((sinceRun - RUN_FIRST_LINE) / RUN_LINE_GAP) + 1)
-        setOutputCount(Math.max(sinceRun < RUN_PRESS ? -1 : 0, lines))
-        if (lines >= EDITOR_OUTPUT.length) return
-      }
-      rafRef.current = requestAnimationFrame(tick)
+  const isModified = code !== DEFAULT_PYTHON_CODE
+  const isBusy = status === "loading" || status === "running"
+
+  const clearTimer = useCallback(() => {
+    if (timeoutRef.current !== null) {
+      window.clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
     }
-    rafRef.current = requestAnimationFrame(tick)
-  }, [schedule])
+  }, [])
 
-  // Type the program once, the first time the editor is on screen.
-  useEffect(() => {
-    // During hydration the first pass is the still version; wait for the real preference.
-    if (!motionOK && motionAllowedNow()) return
-    if (!motionOK) {
-      stop()
-      setFrame("all")
-      setOutputCount(EDITOR_OUTPUT.length)
-      setPressed(false)
-      setReady(true)
-      return
+  const terminateWorker = useCallback(() => {
+    clearTimer()
+    activeRunIdRef.current = null
+    if (workerRef.current) {
+      workerRef.current.terminate()
+      workerRef.current = null
     }
-    const el = rootRef.current
-    if (!el || startedRef.current) { setReady(true); return }
-    setFrame({ line: 0, token: -1, chars: 0 })
-    setOutputCount(-1)
-    setReady(true)
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting) && !startedRef.current) {
-        startedRef.current = true
-        observer.disconnect()
-        run(true)
-      }
-    }, { threshold: 0.3 })
-    observer.observe(el)
-    return () => { observer.disconnect(); stop() }
-  }, [motionOK, run])
+    workerReadyRef.current = false
+  }, [clearTimer])
 
-  const replay = () => {
-    startedRef.current = true
-    if (motionOK) run(false)
-    else { setFrame("all"); setOutputCount(EDITOR_OUTPUT.length) }
+  useEffect(() => terminateWorker, [terminateWorker])
+
+  const ensureWorker = useCallback(() => {
+    if (workerRef.current) return workerRef.current
+    if (typeof Worker === "undefined") {
+      throw new Error("This browser does not support Web Workers for in-browser Python.")
+    }
+    const worker = new Worker("/workers/python-runner.js")
+    worker.onmessage = (event: MessageEvent<WorkerMessage>) => {
+      const msg = event.data
+      if (!msg) return
+      if (msg.type === "ready") {
+        workerReadyRef.current = true
+        return
+      }
+      if (!msg.id || msg.id !== activeRunIdRef.current) return
+
+      if (msg.type === "started") {
+        workerReadyRef.current = true
+        setStatus("running")
+        setStatusAnnouncement("Running expense_summary.py")
+        clearTimer()
+        timeoutRef.current = window.setTimeout(() => {
+          terminateWorker()
+          setStatus("error")
+          setNoticeText("Stopped after 5 seconds — check for an infinite loop.")
+          setStatusAnnouncement("Program stopped after 5 second timeout.")
+        }, RUN_EXECUTION_TIMEOUT_MS)
+        return
+      }
+
+      if (msg.type === "output_limit") {
+        terminateWorker()
+        setStdoutLines(splitLines(msg.stdout ?? ""))
+        setStderrText(msg.stderr ?? "")
+        setNoticeText(msg.message ?? "Output limit reached.")
+        setStatus("error")
+        setHasExecuted(true)
+        setStatusAnnouncement("Program stopped because it reached the output limit.")
+        return
+      }
+
+      if (msg.type === "result") {
+        clearTimer()
+        activeRunIdRef.current = null
+        const outLines = splitLines(msg.stdout ?? "")
+        const err = (msg.stderr ?? "").trim()
+        setStdoutLines(outLines)
+        setStderrText(err)
+        setNoticeText(outLines.length === 0 && !err ? "(Program finished with no output)" : "")
+        setStatus(msg.exitCode === 0 ? "done" : "error")
+        setHasExecuted(true)
+        setStatusAnnouncement(
+          msg.exitCode === 0
+            ? `Program finished${outLines.length ? ` with ${outLines.length} lines of output` : " with no output"}.`
+            : "Program finished with a Python error.",
+        )
+        return
+      }
+
+      if (msg.type === "error") {
+        terminateWorker()
+        setStderrText(msg.message ?? "Could not run Python in this browser.")
+        setNoticeText("")
+        setStatus("error")
+        setStatusAnnouncement("Could not run Python in this browser.")
+      }
+    }
+
+    worker.onerror = () => {
+      terminateWorker()
+      setStderrText("Python runtime failed to load. Check your connection or open in Hafa Code.")
+      setNoticeText("")
+      setStatus("error")
+      setStatusAnnouncement("Python runtime failed to load.")
+    }
+
+    workerRef.current = worker
+    return worker
+  }, [clearTimer, terminateWorker])
+
+  const startWarmup = useCallback(() => {
+    if (workerRef.current) return
+    try {
+      const worker = ensureWorker()
+      worker.postMessage({ id: "warmup", type: "warmup" })
+    } catch {
+      // Errors are surfaced cleanly if the user clicks Run.
+    }
+  }, [ensureWorker])
+
+  const handleRun = useCallback(() => {
+    clearTimer()
+    const runId = `run-${++runIdRef.current}`
+    activeRunIdRef.current = runId
+    setStderrText("")
+    setNoticeText("")
+    const needsLoad = !workerReadyRef.current
+    setStatus(needsLoad ? "loading" : "running")
+    setStatusAnnouncement(needsLoad ? "Loading Python runtime in your browser…" : "Running expense_summary.py")
+
+    try {
+      const worker = ensureWorker()
+      timeoutRef.current = window.setTimeout(() => {
+        terminateWorker()
+        setStatus("error")
+        setNoticeText(
+          needsLoad
+            ? "Python took too long to load. Check your connection and try again, or open in Hafa Code."
+            : "Stopped after 5 seconds — check for an infinite loop.",
+        )
+        setStatusAnnouncement("Program stopped after timeout.")
+      }, needsLoad ? RUNTIME_STARTUP_TIMEOUT_MS : RUN_EXECUTION_TIMEOUT_MS)
+
+      worker.postMessage({ id: runId, type: "run", code, filename: "expense_summary.py" })
+    } catch (err) {
+      terminateWorker()
+      setStderrText(err instanceof Error ? err.message : "Could not start Python.")
+      setStatus("error")
+      setStatusAnnouncement("Could not start Python.")
+    }
+  }, [clearTimer, code, ensureWorker, terminateWorker])
+
+  const handleStop = useCallback(() => {
+    terminateWorker()
+    setStatus("idle")
+    setNoticeText("Stopped.")
+    setStatusAnnouncement("Execution stopped.")
+  }, [terminateWorker])
+
+  const handleEnterEdit = useCallback(() => {
+    setIsEditing(true)
+    startWarmup()
+    requestAnimationFrame(() => {
+      textareaRef.current?.focus()
+    })
+  }, [startWarmup])
+
+  const handleReset = useCallback(() => {
+    if (isBusy) terminateWorker()
+    setCode(DEFAULT_PYTHON_CODE)
+    setStdoutLines([...EDITOR_OUTPUT])
+    setStderrText("")
+    setNoticeText("")
+    setStatus("idle")
+    setHasExecuted(false)
+    setStatusAnnouncement("Reset to the default expense_summary.py example.")
+  }, [isBusy, terminateWorker])
+
+  const handleEditorKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+      event.preventDefault()
+      if (!isBusy) handleRun()
+    }
   }
 
-  const typing = frame !== "all"
+  const hafaCodeUrl = useMemo(
+    () => buildHafaCodePythonUrl(code, { title: "Expense summary", filename: "expense_summary.py" }),
+    [code],
+  )
+
+  const lineCount = useMemo(() => Math.max(EDITOR_LINES.length, code.split("\n").length), [code])
 
   return (
-    <figure ref={rootRef} className="home-editor home-fade" style={{ ["--i" as string]: 3 }} data-ready={ready ? "" : undefined} aria-labelledby="home-editor-caption">
+    <figure className="home-editor" aria-labelledby="home-editor-caption">
       <div className="home-editor-top">
-        <div className="home-editor-tabs" aria-hidden="true"><i /><i /><i /><span>expense_summary.py</span></div>
-        <button type="button" className="home-run" data-pressed={pressed ? "" : undefined} onClick={replay} aria-label="Run the sample program again">
-          <svg viewBox="0 0 10 12" width="9" height="11" aria-hidden="true"><path d="M0 0 10 6 0 12Z" fill="currentColor" /></svg>
-          Run
-        </button>
+        <div className="home-editor-tabs" aria-hidden="true">
+          <i /><i /><i />
+          <span>expense_summary.py</span>
+        </div>
+        <div className="home-editor-actions">
+          {!isEditing ? (
+            <button
+              type="button"
+              className="home-ed-btn"
+              onClick={handleEnterEdit}
+            >
+              <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+              Write your own
+            </button>
+          ) : null}
+          {isModified || hasExecuted ? (
+            <button
+              type="button"
+              className="home-ed-btn"
+              onClick={handleReset}
+              aria-label="Reset to default Python example"
+            >
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+              Reset
+            </button>
+          ) : null}
+          {isBusy ? (
+            <button
+              type="button"
+              className="home-run home-run-stop"
+              onClick={handleStop}
+              aria-label="Stop running Python"
+            >
+              <Square className="h-3 w-3 fill-current" aria-hidden="true" />
+              Stop
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="home-run"
+              onClick={handleRun}
+              aria-label={isEditing ? "Run your Python code" : "Run the Python example in your browser"}
+            >
+              <Play className="h-3 w-3 fill-current" aria-hidden="true" />
+              Run
+            </button>
+          )}
+        </div>
       </div>
-      <pre className="home-code" aria-hidden="true">
-        {EDITOR_LINES.map((line, li) => {
-          if (typing && li > frame.line) return null
-          const upto = typing && li === frame.line ? { token: frame.token, chars: frame.chars } : null
-          return (
+
+      {isEditing ? (
+        <div className="home-code-edit-wrap">
+          <div className="home-code-gutter" aria-hidden="true">
+            {Array.from({ length: lineCount }, (_, i) => (
+              <span key={i}>{i + 1}</span>
+            ))}
+          </div>
+          <textarea
+            ref={textareaRef}
+            value={code}
+            onChange={(event) => setCode(event.target.value)}
+            onKeyDown={handleEditorKeyDown}
+            rows={Math.min(22, Math.max(16, lineCount))}
+            spellCheck={false}
+            autoCapitalize="none"
+            autoCorrect="off"
+            autoComplete="off"
+            aria-label="Python code editor for expense_summary.py"
+            aria-describedby="home-editor-hint"
+            className="home-code-input"
+          />
+          <p id="home-editor-hint" className="sr-only">
+            Edit the Python code, then press Run or Control plus Enter to execute it in your browser. Press Tab to move to the next button.
+          </p>
+        </div>
+      ) : (
+        <pre className="home-code" aria-label="Sample Python code: expense_summary.py">
+          {EDITOR_LINES.map((line, li) => (
             <span key={li} className="home-ln">
-              {renderLine(line, upto)}
-              {upto ? <span className="home-caret" /> : null}
+              {renderTokenizedLine(line)}
             </span>
-          )
-        })}
-      </pre>
-      <div className="home-term" aria-hidden="true">
-        {outputCount >= 0 ? <span className="home-term-line"><span className="home-term-prompt">$</span> python expense_summary.py</span> : null}
-        {EDITOR_OUTPUT.slice(0, Math.max(0, outputCount)).map((line, i) => (
-          <span key={line} className={i === EDITOR_OUTPUT.length - 1 ? "home-term-line home-term-ok" : "home-term-line"}>{line}</span>
+          ))}
+        </pre>
+      )}
+
+      <div className="home-term" role="region" aria-label="Python program output">
+        <div className="home-term-bar">
+          <span className="home-term-line">
+            <span className="home-term-prompt">$</span> python expense_summary.py
+          </span>
+          {status === "loading" ? <span className="home-term-status">Loading Python…</span> : null}
+          {status === "running" ? <span className="home-term-status">Running…</span> : null}
+          {status === "done" && hasExecuted ? <span className="home-term-status home-term-status-ok">Ran in browser</span> : null}
+        </div>
+        {stdoutLines.map((line, i) => (
+          <span
+            key={`${i}-${line}`}
+            className={
+              !stderrText && !noticeText && i === stdoutLines.length - 1 && line.startsWith("Under budget")
+                ? "home-term-line home-term-ok"
+                : "home-term-line"
+            }
+          >
+            {line}
+          </span>
         ))}
+        {stderrText ? <pre className="home-term-err">{stderrText}</pre> : null}
+        {noticeText ? <span className="home-term-line home-term-note">{noticeText}</span> : null}
       </div>
+
+      <p className="sr-only" aria-live="polite" role="status">
+        {statusAnnouncement}
+      </p>
+
       <figcaption id="home-editor-caption" className="sr-only">
-        Sample program from Python Fundamentals: expense_summary.py adds up three expenses, prints each one, and reports that the $118 total is under the $120 budget by $2.
+        Interactive Python editor with expense_summary.py: sums three expenses, prints each category, and shows the remaining budget. Click Run to execute real Python in your browser, or Write your own to edit the code.
       </figcaption>
+
       <div className="home-editor-foot">
-        <Link href="/courses/python-fundamentals" className="home-pill home-pill-link">Python Fundamentals</Link>
-        <span className="home-pill">3 guided weeks</span>
-        <span className="home-pill">Weekly private Zoom hour</span>
+        <Link href="/courses/python-fundamentals" className="home-pill home-pill-link">
+          Python Fundamentals
+        </Link>
+        <span className="home-pill">Runs in your browser</span>
+        <a
+          href={hafaCodeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="home-pill-ext"
+        >
+          Open in Hafa Code <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
       </div>
     </figure>
   )

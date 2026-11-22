@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { CohortInterestForm } from '../components/cohort-interest-form'
 import { PythonInterestForm } from '../components/python-interest-form'
 import { CourseInterestForm } from '../components/course-interest-form'
+import { UnifiedInquiryForm, type InquiryMode } from '../components/unified-inquiry-form'
 import { readFileSync } from 'node:fs'
 
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
@@ -110,4 +111,52 @@ test('bootcamp interest collects availability without suggesting a start date', 
   expect(container.textContent).toContain('dates, schedule, and tuition have not been announced')
   expect(container.textContent).not.toMatch(/January|February|2027/)
   expect(Array.from(container.querySelectorAll('select[name="preferred_timing"] option')).map((option) => option.textContent)).toEqual(['Select a preference', 'Weekday daytime', 'Weekday evenings', 'Weekends', "I'm flexible"])
+})
+
+const unifiedModes: readonly [InquiryMode, string, string][] = [
+  ['course', 'focused-courses-interest', 'Focused-course updates list'],
+  ['bootcamp', 'next-cohort-interest', 'Full bootcamp updates list'],
+  ['partner', 'partner-inquiry', 'Partner inquiry form'],
+]
+
+for (const [mode, formName, ariaLabel] of unifiedModes) {
+  test(`UnifiedInquiryForm (${mode}) matches Netlify __forms.html, requires only 3 fields, and uses 16px + h-12 selects`, async () => {
+    const request = vi.fn().mockResolvedValue({ ok: true })
+    vi.stubGlobal('fetch', request)
+    const { container } = render(<UnifiedInquiryForm defaultMode={mode} />)
+    const form = screen.getByRole('form', { name: ariaLabel }) as HTMLFormElement
+    expect(form.getAttribute('name')).toBe(formName)
+
+    const discovery = new DOMParser().parseFromString(readFileSync('public/__forms.html', 'utf8'), 'text/html').querySelector(`form[name="${formName}"]`)!
+    const names = (el: Element) => Array.from(el.querySelectorAll('[name]')).map((input) => input.getAttribute('name')).sort()
+    expect(names(form)).toEqual(names(discovery))
+
+    // Only Name, Email, and Consent are required (low friction).
+    const requiredNames = Array.from(form.querySelectorAll('[required]')).map((el) => el.getAttribute('name')).sort()
+    expect(requiredNames).toEqual(['email', 'name', 'update_consent'])
+
+    for (const select of form.querySelectorAll<HTMLSelectElement>('select')) {
+      expect(select.className).toContain('h-12')
+      expect(select.className).toContain('text-base')
+    }
+
+    fireEvent.change(form.querySelector('[name="name"]')!, { target: { value: 'Guam Learner' } })
+    fireEvent.change(form.querySelector('[name="email"]')!, { target: { value: 'learner@example.invalid' } })
+    fireEvent.click(form.querySelector('[name="update_consent"]')!)
+    expect(form.checkValidity()).toBe(true)
+    fireEvent.submit(form)
+    await waitFor(() => expect(screen.getByRole('status')).toBeTruthy())
+    const [, options] = request.mock.calls[0] as [string, RequestInit]
+    expect(new URLSearchParams(String(options.body)).get('form-name')).toBe(formName)
+    expect(container.querySelector('form')).toBeNull()
+  })
+}
+
+test('UnifiedInquiryForm chips switch active mode and Netlify form name cleanly', () => {
+  render(<UnifiedInquiryForm defaultMode="course" />)
+  expect(screen.getByRole('form', { name: 'Focused-course updates list' }).getAttribute('name')).toBe('focused-courses-interest')
+  fireEvent.click(screen.getByRole('button', { name: 'School / employer partner' }))
+  expect(screen.getByRole('form', { name: 'Partner inquiry form' }).getAttribute('name')).toBe('partner-inquiry')
+  fireEvent.click(screen.getByRole('button', { name: 'Full bootcamp' }))
+  expect(screen.getByRole('form', { name: 'Full bootcamp updates list' }).getAttribute('name')).toBe('next-cohort-interest')
 })
