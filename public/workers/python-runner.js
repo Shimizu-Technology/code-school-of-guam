@@ -131,7 +131,7 @@ function createOutputCollector(id) {
   };
 }
 
-self.onmessage = async (event) => {
+async function handleMessage(event) {
   const data = event.data || {};
   const { id, type, code, filename = "expense_summary.py" } = data;
 
@@ -228,4 +228,13 @@ finally:
       message: err instanceof Error ? err.message : "Could not start the Python runtime.",
     });
   }
+}
+
+let runQueue = Promise.resolve();
+self.onmessage = (event) => {
+  if (event.data?.type === "run") {
+    runQueue = runQueue.then(() => handleMessage(event));
+    return runQueue;
+  }
+  return handleMessage(event);
 };

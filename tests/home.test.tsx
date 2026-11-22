@@ -1,10 +1,10 @@
 import { afterEach, expect, test, vi } from 'vitest'
 import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import fs from 'node:fs'
+import { createHash } from 'node:crypto'
 import path from 'node:path'
 import {
   HeroEditor,
-  DEFAULT_PYTHON_CODE as EXPENSE_CODE,
   EDITOR_OUTPUT,
   EDITOR_LINES,
   RUN_EXECUTION_TIMEOUT_MS,
@@ -47,7 +47,7 @@ vi.mock('../components/home/python-editor', () => ({
       blur: () => ta.blur(),
       placeCursorAt: () => {},
       placeCursorAtEnd: () => {},
-      insertAtCursor: () => {},
+      insertAtCursor: (text: string) => { ta.value += text; opts.onChange(ta.value) },
       runKey: (key: string) => { editorSpy.runKey.push(key) },
       revealCursor: () => {},
       destroy: () => ta.remove(),
@@ -232,7 +232,7 @@ test('hero editor runs Python in a Web Worker on click, supports Edit Python cod
     act(() => { vi.advanceTimersByTime(20) })
     expect(document.activeElement).toBe(textarea)
     expect(textarea.value).toBe(DEFAULT_PYTHON_CODE)
-    expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(true)
+    expect(container.querySelector('.home-output-prompt')!.textContent).toContain('Press Run')
   } finally {
     vi.useRealTimers()
   }
@@ -606,7 +606,7 @@ test('every example updates its code, caption, worker filename, and Hafa Code pa
     expect(params.get('starter')).toBe(example.starterKey)
     expect(project).toMatchObject({ title: example.title, entryPath: example.filename, files: [{ path: example.filename, content: example.code }] })
     expect(container.querySelector('.home-example-caption')!.textContent).toBe(example.caption)
-    expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(true)
+    expect(container.querySelector('.home-output-prompt')!.textContent).toContain('Press Run')
     fireEvent.click(screen.getByRole('button', { name: /Run (your Python code|the Python example in your browser)/ }))
     const worker = MockPythonWorker.instances.at(-1)!
     const run = worker.posted.at(-1) as { id: string }
@@ -622,7 +622,8 @@ test('every example updates its code, caption, worker filename, and Hafa Code pa
 
 test('examples have distinct starters and compact, noninteractive programs; the original is unchanged', () => {
   expect(new Set(PYTHON_EXAMPLES.map(example => example.starterKey)).size).toBe(7)
-  expect(PYTHON_EXAMPLES[0].code).toBe(EXPENSE_CODE)
+  // SHA-256 of DEFAULT_PYTHON_CODE evaluated from main 0f45cf6:lib/python-sample.ts.
+  expect(createHash('sha256').update(PYTHON_EXAMPLES[0].code).digest('hex')).toBe('55c2f21657d492f466443b7033887b54024770743c9e21ea6eeda34986e24aca')
   for (const example of PYTHON_EXAMPLES.slice(1)) {
     expect(example.code.split('\n').length).toBeLessThanOrEqual(14)
     expect(example.code).not.toContain('input(')
@@ -644,7 +645,7 @@ test('Clear followed immediately by Run posts the pending cleared code', async (
   await editorLoaded()
 })
 
-test('Clear updates the pending document and Hafa link immediately; Run snapshots buffered input without consuming it', async () => {
+test('Clear updates the pending document and Hafa link immediately; Run waits for buffered input to transfer', async () => {
   liveMedia({ '(pointer: coarse)': true })
   MockPythonWorker.instances = []
   vi.stubGlobal('Worker', MockPythonWorker)
@@ -658,8 +659,9 @@ test('Clear updates the pending document and Hafa link immediately; Run snapshot
   const proxy = container.querySelector<HTMLTextAreaElement>('.home-focus-proxy')!
   proxy.value = 'print("hello")'
   fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
-  const run = MockPythonWorker.instances.at(-1)!.posted.find(message => (message as { type: string }).type === 'run')
-  expect(run).toMatchObject({ code: CLEAR_PYTHON_CODE + 'print("hello")' })
+  expect(MockPythonWorker.instances.at(-1)!.posted.some(message => (message as { type: string }).type === 'run')).toBe(false)
   expect(proxy.value).toBe('print("hello")')
   await editorLoaded()
+  const run = MockPythonWorker.instances.at(-1)!.posted.find(message => (message as { type: string }).type === 'run')
+  expect(run).toMatchObject({ code: CLEAR_PYTHON_CODE + 'print("hello")' })
 })

@@ -15,6 +15,7 @@ import {
   type ReactNode,
 } from "react"
 import { createPortal } from "react-dom"
+import { EditorActionsMenu } from "./editor-actions-menu"
 import { ExamplePicker } from "./example-picker"
 import { buildHafaCodePythonLink } from "@/lib/hafa-code-link"
 import { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_STARTER_KEY, PYTHON_EXAMPLES, CLEAR_PYTHON_CODE } from "@/lib/python-sample"
@@ -237,13 +238,19 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const clearUndoDocRef = useRef<string | null>(null)
   const transferPendingRef = useRef(false)
   const [outputVisible, setOutputVisible] = useState(false)
-  const [autoPending, setAutoPending] = useState(true)
-  const [outputStale, setOutputStale] = useState(false)
+  const [lastRun, setLastRun] = useState<{ code: string; filename: string } | null>(null)
+  const lastRunRef = useRef<{ code: string; filename: string } | null>(null)
+  const [pendingText, setPendingText] = useState("")
+  const [automaticRun, setAutomaticRun] = useState(false)
+  const [runQueued, setRunQueued] = useState(false)
+  const queuedRunRef = useRef(false)
   const interactedRef = useRef(false)
   const automaticRunRef = useRef(false)
+  const autoObserverRef = useRef<IntersectionObserver | null>(null)
   const cancelAutoRun = useCallback(() => {
     interactedRef.current = true
-    setAutoPending(false)
+    autoObserverRef.current?.disconnect()
+    autoObserverRef.current = null
   }, [])
   const [revealRequested, setRevealRequested] = useState(false)
   const [code, setCode] = useState(INITIAL_EXAMPLE.code)
@@ -289,7 +296,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
   const isEditing = editorMode === "loading" || editorMode === "ready"
   const isModified = code !== example.code
-  const isBusy = status === "loading" || status === "running"
+  const isBusy = runQueued || status === "loading" || status === "running"
+  const outputStale = hasExecuted && !!lastRun && (lastRun.code !== code + pendingText || lastRun.filename !== example.filename)
 
   const updateCode = useCallback((next: string) => {
     codeRef.current = next
@@ -321,6 +329,34 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     }
     workerReadyRef.current = false
   }, [clearTimers])
+
+  // Discard an obsolete automatic result without discarding its runtime download.
+  const invalidateAutomaticRun = useCallback(() => {
+    if (!automaticRunRef.current || !activeRunIdRef.current) return
+    clearTimers()
+    activeRunIdRef.current = null
+    automaticRunRef.current = false
+    setAutomaticRun(false)
+    setStatus("idle")
+    setOutputVisible(false)
+    setSlowLoadHint(false)
+    setLastRun(null)
+    lastRunRef.current = null
+  }, [clearTimers])
+
+  const quietAutomaticFailure = useCallback(() => {
+    if (!automaticRunRef.current) return false
+    terminateWorker()
+    automaticRunRef.current = false
+    setAutomaticRun(false)
+    setStatus("idle")
+    setHasExecuted(false)
+    setStdoutLines([])
+    setStderrText("")
+    setNoticeText("Couldn't load Python here. Press Run to try again, or open it in Hafa Code.")
+    setStatusAnnouncement("")
+    return true
+  }, [terminateWorker])
 
   useEffect(() => terminateWorker, [terminateWorker])
 
@@ -404,6 +440,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       if (workerRef.current !== worker) return
       const msg = event.data
       if (!msg) return
+      if (msg.type === "started" || msg.type === "result") workerReadyRef.current = true
       if (msg.type === "ready") {
         workerReadyRef.current = true
         return
@@ -418,6 +455,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         if (!automaticRunRef.current) setStatusAnnouncement(`Running ${exampleRef.current.filename}`)
         // Start the 5s execution timeout only once Pyodide is loaded and Python starts executing.
         execTimeoutRef.current = window.setTimeout(() => {
+          if (quietAutomaticFailure()) return
           terminateWorker()
           setStatus("error")
           setNoticeText("Stopped after 5 seconds — check for an infinite loop.")
@@ -427,6 +465,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       }
 
       if (msg.type === "output_limit") {
+        if (quietAutomaticFailure()) return
         terminateWorker()
         setStdoutLines(splitLines(msg.stdout ?? ""))
         setStderrText(msg.stderr ?? "")
@@ -438,6 +477,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       }
 
       if (msg.type === "result") {
+        if (msg.exitCode !== 0 && quietAutomaticFailure()) return
         clearTimers()
         activeRunIdRef.current = null
         setSlowLoadHint(false)
@@ -448,8 +488,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         setNoticeText(outLines.length === 0 && !err ? "(Program finished with no output)" : "")
         setStatus(msg.exitCode === 0 ? "done" : "error")
         setHasExecuted(true)
-        setStatusAnnouncement(
-          automaticRunRef.current ? "Example output ready" : msg.exitCode === 0
+        if (!automaticRunRef.current) setStatusAnnouncement(
+          msg.exitCode === 0
             ? `Program finished${outLines.length ? ` with ${outLines.length} lines of output` : " with no output"}.`
             : "Program finished with a Python error.",
         )
@@ -457,6 +497,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       }
 
       if (msg.type === "error") {
+        if (quietAutomaticFailure()) return
         terminateWorker()
         setStderrText(msg.message ?? "Could not run Python in this browser.")
         setNoticeText("")
@@ -467,6 +508,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
     worker.onerror = () => {
       if (workerRef.current !== worker) return
+      if (!activeRunIdRef.current) { terminateWorker(); return }
+      if (quietAutomaticFailure()) return
       terminateWorker()
       setStderrText("Python runtime failed to load. Check your connection or open in Hafa Code.")
       setNoticeText("")
@@ -476,7 +519,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
     workerRef.current = worker
     return worker
-  }, [clearTimers, terminateWorker])
+  }, [clearTimers, quietAutomaticFailure, terminateWorker])
 
   const startWarmup = useCallback(() => {
     if (workerRef.current) return
@@ -489,10 +532,35 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   }, [ensureWorker])
 
   const startRun = useCallback((automatic = false) => {
-    if (activeRunIdRef.current) return
+    if (activeRunIdRef.current) {
+      if (!automatic && automaticRunRef.current) {
+        automaticRunRef.current = false
+        setAutomaticRun(false)
+        runStartedAtRef.current = Date.now()
+        setStatusAnnouncement(workerReadyRef.current ? `Running ${exampleRef.current.filename}` : "Loading Python runtime in your browser…")
+      }
+      return
+    }
+    // The lazy adapter owns mapping a tap to a document position. Wait for that
+    // transfer rather than appending buffered text to a different program.
+    if (!automatic && !editorRef.current && (pendingInputRef.current || proxyRef.current?.value)) {
+      if (!editorLoadingRef.current) {
+        setStatusAnnouncement("The editor didn’t load. Choose Try again before running.")
+        return
+      }
+      queuedRunRef.current = true
+      setRunQueued(true)
+      runStartedAtRef.current = Date.now()
+      setStatusAnnouncement("Waiting for the editor before running your code…")
+      return
+    }
+    const source = { code: editorRef.current?.getDoc() ?? codeRef.current, filename: exampleRef.current.filename }
+    lastRunRef.current = source
+    setLastRun(source)
     automaticRunRef.current = automatic
-    setAutoPending(false)
-    setOutputStale(false)
+    setAutomaticRun(automatic)
+    setStatusAnnouncement("")
+    setHasExecuted(false)
     setOutputVisible(true)
     setRevealRequested(false)
     clearTimers()
@@ -518,28 +586,30 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       }
       // Generous safety cap while waiting for runtime load/start; does not interrupt slow mobile downloads early.
       loadSafetyTimeoutRef.current = window.setTimeout(() => {
+        if (quietAutomaticFailure()) return
         terminateWorker()
         setStatus("error")
         setNoticeText("Python took too long to load. Check your connection and try again, or open in Hafa Code.")
         setStatusAnnouncement("Python runtime load timed out.")
       }, RUNTIME_LOAD_SAFETY_TIMEOUT_MS)
 
-      worker.postMessage({ id: runId, type: "run", code: codeRef.current + pendingInputRef.current + (proxyRef.current?.value ?? ""), filename: exampleRef.current.filename })
+      worker.postMessage({ id: runId, type: "run", ...source })
     } catch (err) {
+      if (quietAutomaticFailure()) return
       terminateWorker()
       setStderrText(err instanceof Error ? err.message : "Could not start Python.")
       setStatus("error")
       setStatusAnnouncement("Could not start Python.")
     }
-  }, [clearTimers, ensureWorker, terminateWorker])
+  }, [clearTimers, ensureWorker, quietAutomaticFailure, terminateWorker])
 
   // Visibility, load and idle are all required; no worker is created for an unseen hero.
   useEffect(() => {
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
     if (typeof IntersectionObserver === "undefined" || connection?.saveData || ["slow-2g", "2g"].includes(connection?.effectiveType ?? "")) {
-      setAutoPending(false)
       return
     }
+    if (interactedRef.current) return
     let disposed = false
     let visible = false
     let idle = false
@@ -549,13 +619,15 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       if (disposed || !visible || !idle || interactedRef.current) return
       disposed = true
       observer.disconnect()
+      autoObserverRef.current = null
       startRun(true)
     }
     const observer = new IntersectionObserver(entries => {
       visible = entries.some(entry => entry.isIntersecting)
       attempt()
     })
-    if (figureRef.current) observer.observe(figureRef.current)
+    autoObserverRef.current = observer
+    if (!interactedRef.current && figureRef.current) observer.observe(figureRef.current)
     const afterLoad = () => {
       const ready = () => { idle = true; attempt() }
       if (window.requestIdleCallback) idleId = window.requestIdleCallback(ready, { timeout: 2000 })
@@ -566,6 +638,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     return () => {
       disposed = true
       observer.disconnect()
+      if (autoObserverRef.current === observer) autoObserverRef.current = null
       window.removeEventListener("load", afterLoad)
       if (idleId !== undefined) window.cancelIdleCallback(idleId)
       if (timer !== undefined) window.clearTimeout(timer)
@@ -584,6 +657,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const stopRun = useCallback(() => {
     // Guard against a double-tap on Run accidentally hitting the swapped Stop button.
     if (Date.now() - runStartedAtRef.current < STOP_GUARD_MS) return
+    queuedRunRef.current = false
+    setRunQueued(false)
     terminateWorker()
     setStatus("idle")
     setNoticeText("Stopped.")
@@ -601,7 +676,6 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   // Cmd/Ctrl+Enter inside the editor: run and keep typing.
   useEffect(() => {
     runFromEditorRef.current = () => {
-      if (activeRunIdRef.current) return
       startRun()
       requestOutputReveal()
     }
@@ -609,7 +683,6 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
   /** Run from the coding keys: close the keyboard first, then show the output. */
   const handleKeysRun = useCallback(() => {
-    if (activeRunIdRef.current) return
     const wasOpen = keyboardOpen()
     editorRef.current?.blur()
     startRun()
@@ -698,12 +771,16 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     proxy.setAttribute("autocorrect", "off")
     proxy.setAttribute("autocomplete", "off")
     proxy.spellcheck = false
+    proxy.addEventListener("input", () => {
+      invalidateAutomaticRun()
+      setPendingText(pendingInputRef.current + proxy.value)
+    })
     proxy.tabIndex = -1
     proxy.style.top = `${Math.max(0, offsetY)}px`
     area.appendChild(proxy)
     proxyRef.current = proxy
     proxy.focus({ preventScroll: true })
-  }, [])
+  }, [invalidateAutomaticRun])
 
   const loadEditor = useCallback(
     (tap?: { clientX: number; clientY: number }, { focus = true }: { focus?: boolean } = {}) => {
@@ -743,12 +820,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
             onChange: (next) => {
               codeRef.current = next
               setCode(next)
-              setOutputStale(true)
-              if (automaticRunRef.current && activeRunIdRef.current) {
-                terminateWorker()
-                setStatus("idle")
-                setOutputVisible(false)
-              }
+              setPendingText("")
+              if (lastRunRef.current && next !== lastRunRef.current.code) invalidateAutomaticRun()
             },
             onRun: () => runFromEditorRef.current(),
             onFocusChange: (focused) => {
@@ -775,12 +848,14 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         })
         .catch(() => {
           editorLoadingRef.current = false
+          queuedRunRef.current = false
+          setRunQueued(false)
           pendingInputRef.current += removeProxy()
           setEditorMode("failed")
           setStatusAnnouncement("The code editor did not load. Check your connection and try again.")
         })
     },
-    [holdKeyboard, removeProxy, startWarmup, terminateWorker],
+    [holdKeyboard, invalidateAutomaticRun, removeProxy, startWarmup],
   )
 
   // Focus once the editor is visible (an invisible element cannot take focus).
@@ -802,9 +877,16 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     const typed = pendingInputRef.current + (proxyRef.current?.value ?? "")
     editor.insertAtCursor(typed, shouldFocus)
     pendingInputRef.current = ""
+    setPendingText("")
     removeProxy()
+    if (queuedRunRef.current) {
+      queuedRunRef.current = false
+      setRunQueued(false)
+      startRun()
+      requestOutputReveal()
+    }
     if (shouldFocus) editor.revealCursor()
-  }, [editorMode, removeProxy])
+  }, [editorMode, removeProxy, requestOutputReveal, startRun])
 
   const handleEnterEdit = useCallback(() => loadEditor(), [loadEditor])
 
@@ -819,18 +901,25 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   )
 
   const clearOutput = useCallback(() => {
-    terminateWorker()
+    if (activeRunIdRef.current && automaticRunRef.current) invalidateAutomaticRun()
+    else terminateWorker()
+    automaticRunRef.current = false
+    setAutomaticRun(false)
+    queuedRunRef.current = false
+    setRunQueued(false)
+    setLastRun(null)
+    lastRunRef.current = null
+    setPendingText("")
     setStdoutLines([])
     setStderrText("")
     setNoticeText("")
     setStatus("idle")
     setHasExecuted(false)
-    setOutputStale(false)
     setOutputVisible(false)
     setRevealRequested(false)
     pendingInputRef.current = ""
     if (proxyRef.current) proxyRef.current.value = ""
-  }, [terminateWorker])
+  }, [invalidateAutomaticRun, terminateWorker])
 
   const handleReset = useCallback(() => {
     clearOutput()
@@ -908,14 +997,11 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     <figure
       ref={figureRef}
       className="home-editor"
-      onPointerDownCapture={cancelAutoRun}
-      onFocusCapture={cancelAutoRun}
-      onKeyDownCapture={cancelAutoRun}
       aria-labelledby="home-editor-caption"
       data-editing={isEditing ? "" : undefined}
       data-keyboard={showKeys && keyboardIsOpen ? "open" : undefined}
     >
-      <div className="home-editor-top">
+      <div className="home-editor-top" onPointerDownCapture={cancelAutoRun} onFocusCapture={cancelAutoRun} onKeyDownCapture={cancelAutoRun}>
         <div className="home-editor-tabs">
           <i aria-hidden="true" />
           <i aria-hidden="true" />
@@ -923,18 +1009,16 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           <ExamplePicker value={example.filename} modified={isModified} onChange={handleExample} />
         </div>
         <div className="home-editor-actions">
-          {!isEditing ? (
-            <button type="button" className="home-ed-btn" onClick={handleEnterEdit} aria-label="Edit Python code" title="Edit Python code">
-              <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-              <span>Edit</span>
-            </button>
-          ) : null}
-          <button type="button" className="home-ed-btn" onClick={handleClear} aria-label="Clear Python editor" title="Clear Python editor">
+          <button type="button" className="home-ed-btn" onClick={handleEnterEdit} aria-label="Edit Python code" title="Edit Python code">
+            <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Edit</span>
+          </button>
+          <button type="button" className="home-ed-btn home-editor-secondary" onClick={handleClear} aria-label="Clear Python editor" title="Clear Python editor">
             <Eraser className="h-3.5 w-3.5" aria-hidden="true" /> <span>Clear</span>
           </button>
           <button
             type="button"
-            className="home-ed-btn"
+            className="home-ed-btn home-editor-secondary"
             onClick={handleReset}
             aria-label="Reset to original Python example"
             title="Reset to original Python example"
@@ -942,7 +1026,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Reset</span>
           </button>
-          {isBusy && !(automaticRunRef.current && status === "loading") ? (
+          <EditorActionsMenu onClear={handleClear} onReset={handleReset} />
+          {isBusy && !(automaticRun && status === "loading") ? (
             <button
               type="button"
               className="home-run home-run-stop"
@@ -969,9 +1054,9 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
       <p className="home-example-caption">{example.caption}</p>
 
-      <div ref={codeAreaRef} className="home-code-area" data-mode={editorMode}>
+      <div ref={codeAreaRef} className="home-code-area" data-mode={editorMode} onPointerDownCapture={cancelAutoRun} onFocusCapture={cancelAutoRun} onKeyDownCapture={cancelAutoRun}>
         {editorMode !== "ready" ? (
-          /* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- Tapping the code is a pointer shortcut; keyboard users press "Write your own". The region is focusable so it can scroll. */
+          /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- This scrollable code region supports pointer and Enter/Space activation as an alternative to Edit. */
           <div
             ref={staticRef}
             role="region"
@@ -980,6 +1065,12 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
             tabIndex={0}
             className="home-code-scroller"
             onClick={handleStaticClick}
+            onKeyDown={event => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                loadEditor()
+              }
+            }}
           >
             {example === INITIAL_EXAMPLE && code === INITIAL_EXAMPLE.code ? staticCode : <pre className="home-code-fallback">{code}</pre>}
           </div>
@@ -1014,12 +1105,12 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       </p>
 
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable output region must be keyboard focusable */}
-      <div ref={termRef} className="home-term" data-reserved={autoPending || automaticRunRef.current && !outputStale && outputVisible ? "" : undefined} data-stale={outputStale ? "" : undefined} role="region" aria-label="Python program output" tabIndex={0} hidden={!outputVisible && !autoPending}>
+      <div ref={termRef} className="home-term" data-stale={outputStale ? "" : undefined} role="region" aria-label="Python program output" tabIndex={0}>
         <div className="home-term-bar">
           <span className="home-term-line">
             <span className="home-term-prompt">$</span> python {example.filename}
           </span>
-          {autoPending ? <span className="home-term-status">Starting Python…</span> : null}
+
           {status === "loading" ? (
             <span className="home-term-status">
               {slowLoadHint ? "Still loading Python (first time only)…" : "Loading Python…"}
@@ -1028,6 +1119,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           {status === "running" ? <span className="home-term-status">Running…</span> : null}
           {status === "done" && hasExecuted && !outputStale ? <span className="home-term-status home-term-status-ok">Ran in browser</span> : null}
         </div>
+        {!outputVisible ? <p className="home-output-prompt">Press Run to see the output.</p> : null}
         {outputStale ? <span className="home-term-note">Code changed. Press Run to update the output.</span> : null}
         {stdoutLines.map((line, i) => (
           <span
@@ -1042,8 +1134,6 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         {stderrText ? <pre className="home-term-err">{stderrText}</pre> : null}
         {noticeText ? <span className="home-term-line home-term-note">{noticeText}</span> : null}
       </div>
-
-      {!outputVisible && !autoPending ? <p className="home-output-prompt">Press Run to see the output.</p> : null}
 
       <p className="sr-only" aria-live="polite" role="status">
         {statusAnnouncement}
