@@ -118,7 +118,8 @@
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   box-shadow: inset 0 0 0 1px #243042;
 }
-.home-example-picker { position: relative; min-width: 0; }
+.home-example-picker { position: relative; min-width: 0; flex: 1; }
+.home-editor-file { width: 100%; }
 .home-editor-file > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .home-editor-file:focus-visible { outline: 2px solid #8fb8ff; outline-offset: 2px; }
 .home-example-list {
@@ -331,14 +332,19 @@
   .home-pill-link:hover { text-decoration-color: #fff; }
   .home-pill-ext:hover { color: #fff; }
 }
-/* The header uses a fixed two-row layout on phones, independent of the Edit button. */
+/* Keep the filename and controls on one row, including at 320px. */
 @media (max-width: 640px) {
-  .home-editor-top { grid-template-columns: minmax(0, 1fr); }
+  .home-editor-top { gap: 4px; padding-inline: 4px; }
+  .home-editor-actions { gap: 2px; }
+  .home-editor-actions .home-ed-btn { width: 40px; min-height: 40px; padding: 0; }
+  .home-editor-actions .home-ed-btn > span { display: none; }
+  .home-editor-tabs { font-size: 12px; }
+  .home-editor-file { padding-inline: 3px; gap: 2px; }
   .home-editor-actions { justify-content: flex-end; }
 }
 @media (max-width: 1399px) { .home-editor-tabs > i { display: none; } }
 @media (max-width: 640px), (pointer: coarse) {
-  .home-editor-tabs, .home-example-list { font-size: 16px; }
+  .home-example-list { font-size: 16px; }
 }
 @media (max-width: 480px) {
   .home-editor-top { padding: 4px 8px; row-gap: 6px; }
@@ -532,3 +538,12 @@ body[data-coding-keys="open"] .chat-launcher { visibility: hidden; pointer-event
 /* Reserve the desktop hint strip before editing so the centered hero never jumps. */
 .home-code-hint[data-visible="false"] { visibility: hidden; }
 @media (pointer: coarse) { .home-code-hint { display: none; } }
+
+.home-editor-actions .home-run { width: 66px; min-height: 44px; padding-inline: 6px; flex-shrink: 0; }
+.home-term[data-reserved] { height: 14rem; min-height: 14rem; max-height: 14rem; }
+.home-term { font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace; font-variant-ligatures: none; }
+.home-term[data-stale] > .home-term-line { opacity: 0.55; }
+.home-output-prompt { margin: 0; padding: 10px 14px; border-top: 1px solid #222d3b; color: #a7b3c4; background: #0f151e; font-size: 13px; }
+
+/* Paint block runs as one proportional bar; system block-glyph fallback varies on iOS. */
+.home-term-block { display: inline-block; height: 0.95em; vertical-align: -0.08em; background: #dce4ef; color: transparent; overflow: hidden; }

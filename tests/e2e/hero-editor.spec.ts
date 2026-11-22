@@ -53,6 +53,8 @@ async function openEditor(page: Page, projectName: string) {
 }
 
 test.beforeEach(async ({ page }) => {
+  // Legacy interaction scenarios explicitly exercise the data-saving click-to-run path.
+  await page.addInitScript(() => Object.defineProperty(navigator, 'connection', { configurable: true, value: { saveData: true } }))
   // A controllable visualViewport so we can simulate the on-screen keyboard (it cannot be opened in automation).
   if (process.env.E2E_BASE_URL?.includes('deploy-preview-')) {
     // Netlify injects its Collaborate drawer only on hosted previews.
@@ -90,7 +92,7 @@ test('first load: highlighted code with no editor JavaScript and no sideways ove
     if (response.request().resourceType() === 'script') scripts.push(await response.text().catch(() => ''))
   })
   await page.goto('/', { waitUntil: 'networkidle' })
-  const code = page.getByRole('region', { name: 'Sample Python code: expense_summary.py' })
+  const code = page.getByRole('region', { name: 'Sample Python code: guam_weather.py' })
   await expect(code.locator('.home-tok-k').first()).toHaveText('for')
   await expect(code.locator('.home-tok-s').first()).toHaveCSS('color', 'rgb(165, 227, 185)')
   expect(scripts.some((src) => src.includes('cm-gutterElement'))).toBe(false)
@@ -110,7 +112,7 @@ test('tapping the code swaps in CodeMirror with no layout shift and the cursor w
     if (body && /cm-gutterElement|highlightTree|FormatReplacement|placeCursorAtEnd/.test(body.toString())) editorChunks.push(body.length)
   })
   await page.goto('/', { waitUntil: 'networkidle' })
-  const region = page.getByRole('region', { name: 'Sample Python code: expense_summary.py' })
+  const region = page.getByRole('region', { name: 'Sample Python code: guam_weather.py' })
   await region.scrollIntoViewIfNeeded()
   const before = await page.evaluate(() => ({
     lines: Array.from(document.querySelectorAll('.home-code-line')).map((el) => {
@@ -120,8 +122,8 @@ test('tapping the code swaps in CodeMirror with no layout shift and the cursor w
     area: Math.round(document.querySelector('.home-code-area')!.getBoundingClientRect().height),
     color: getComputedStyle(document.querySelector('.home-code-static .home-tok-f')!).color,
   }))
-  // Tap the word "left" on line 14.
-  const target = region.locator('.home-code-row').nth(13)
+  // Tap the rain chart print call on line 11.
+  const target = region.locator('.home-code-row').nth(10)
   const box = (await target.boundingBox())!
   const point = { x: box.x + 80, y: box.y + box.height / 2 }
   if (isTouch(testInfo.project.name)) await page.touchscreen.tap(point.x, point.y)
@@ -148,7 +150,7 @@ test('tapping the code swaps in CodeMirror with no layout shift and the cursor w
     expect(Math.abs(height - before.lines[i][1])).toBeLessThanOrEqual(0.6)
   })
   expect(after.color).toBe(before.color)
-  expect(after.cursorLine).toBe(14)
+  expect(after.cursorLine).toBe(11)
   const gz = editorChunks.reduce((a, b) => a + b, 0)
   testInfo.annotations.push({ type: 'editor-chunk-decoded-bytes', description: String(gz) })
   console.log(`[${testInfo.project.name}] editor chunks loaded on tap: ${editorChunks.length} files, ${(gz / 1024).toFixed(1)} KB decoded body sizes`)
@@ -217,7 +219,7 @@ test('Run executes the edited program and brings the output into view; Reset res
   const reset = page.getByRole('button', { name: 'Reset to original Python example' })
   if (isTouch(testInfo.project.name)) await reset.tap()
   else await reset.click()
-  await expect.poll(() => editorText(page)).toContain('for item, cost in expenses.items():')
+  await expect.poll(() => editorText(page)).toContain('for month, mm in rain.items():')
   await expect(page.locator('.home-term')).toBeHidden()
   // Reset is undoable.
   if (isTouch(testInfo.project.name)) {
@@ -463,11 +465,12 @@ test('Clear from the static view is undoable; editing, reset and the example pic
   if (isTouch(testInfo.project.name)) {
     await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
   } else await page.keyboard.press(`${mod()}+z`)
-  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[1].code)
   const picker = page.getByRole('combobox', { name: /^Python example(?: \(modified\))?$/ })
   if (isTouch(testInfo.project.name)) await picker.tap()
   else await picker.click()
   await expect(page.getByRole('listbox', { name: 'Python examples' })).toBeVisible()
+  await expect(picker).toBeFocused()
   await shot(page, '08-picker-open', testInfo.project.name)
   await page.keyboard.press('End')
   await page.keyboard.press('Enter')
@@ -555,16 +558,16 @@ test('background example load failure shows the selected source without opening 
   await page.route('**/_next/static/chunks/*.js', route => route.abort())
   const picker = page.getByRole('combobox', { name: /^Python example/ })
   await picker.click()
-  await page.getByRole('option', { name: 'guam_weather.py', exact: true }).click()
+  await page.getByRole('option', { name: 'expense_summary.py', exact: true }).click()
   await expect(page.locator('.home-code-note-error')).toBeVisible()
   await expect(picker).toBeFocused()
   await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
-  const fallback = page.getByRole('region', { name: 'Sample Python code: guam_weather.py' })
-  await expect(fallback.locator('pre')).toHaveText(PYTHON_EXAMPLES[1].code)
+  const fallback = page.getByRole('region', { name: 'Sample Python code: expense_summary.py' })
+  await expect(fallback.locator('pre')).toHaveText(PYTHON_EXAMPLES[0].code)
   await page.unroute('**/_next/static/chunks/*.js')
   await page.getByRole('button', { name: 'Edit Python code' }).click()
   await expect(page.locator('.cm-content')).toBeFocused()
-  expect(await editorText(page)).toBe(PYTHON_EXAMPLES[1].code)
+  expect(await editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
 })
 
 test('Clear then Run during a delayed editor load executes the cleared program', async ({ page }) => {
@@ -625,7 +628,7 @@ test('slow Clear immediately updates the document/link and Run includes buffered
   await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
   await expect.poll(() => editorText(page)).toBe(CLEAR_PYTHON_CODE)
   await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
-  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[1].code)
 })
 
 test('Clear remains current through an import rejection and retry seeds the original document for Undo', async ({ page }, testInfo) => {
@@ -643,18 +646,28 @@ test('Clear remains current through an import rejection and retry seeds the orig
   expect(await editorText(page)).toBe(CLEAR_PYTHON_CODE)
   if (isTouch(testInfo.project.name)) await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
   else await page.keyboard.press(`${mod()}+z`)
-  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[1].code)
 })
 
-test('a delayed import does not reclaim focus after the visitor tabs out of the editor workflow', async ({ page }) => {
+test('a delayed import does not reclaim focus after the visitor leaves the editor workflow', async ({ page }, testInfo) => {
   await page.goto('/', { waitUntil: 'networkidle' })
   let release!: () => void
   const gate = new Promise<void>(resolve => { release = resolve })
   await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
   await page.getByRole('button', { name: 'Edit Python code' }).click()
+  // iPhone emulation has no hardware Tab navigation; keep an explicit outside
+  // focus target for touch, and reach the same target with Tab on desktop.
+  await page.evaluate(() => {
+    const next = document.createElement('button')
+    next.textContent = 'Outside editor test target'
+    document.querySelector('figure.home-editor')!.after(next)
+  })
   const elsewhere = page.getByRole('link', { name: /Open in Hafa Code/ })
   await elsewhere.focus()
-  await page.keyboard.press('Tab')
+  const next = page.getByRole('button', { name: 'Outside editor test target' })
+  if (isTouch(testInfo.project.name)) await next.focus()
+  else await page.keyboard.press('Tab')
+  await expect(next).toBeFocused()
   await expect.poll(() => page.evaluate(() => !!document.activeElement && !document.activeElement.closest('figure.home-editor'))).toBe(true)
   const focused = await page.evaluate(() => { document.activeElement!.setAttribute('data-focus-before-ready', 'true'); return document.activeElement!.tagName })
   release()
@@ -685,4 +698,170 @@ test('first toolbar Run waits for keyboard close before revealing output; header
   await page.getByRole('button', { name: 'Reset to original Python example' }).tap()
   await page.locator('.home-editor-actions').getByRole('button', { name: 'Run your Python code' }).tap()
   await expect(page.locator('.home-term')).toHaveAttribute('data-reveals', '2')
+})
+
+async function enableAutomaticRun(page: Page, visible = true) {
+  await page.addInitScript(({ visible }) => {
+    Object.defineProperty(navigator, 'connection', { configurable: true, value: { saveData: false, effectiveType: '4g' } })
+    // Hold the idle gate so screenshots and interaction races are deterministic.
+    window.requestIdleCallback = callback => {
+      ;(window as unknown as { __releaseIdle: () => void }).__releaseIdle = () => callback({ didTimeout: false, timeRemaining: () => 50 })
+      return 1
+    }
+    window.cancelIdleCallback = () => {}
+    if (!visible) {
+      window.IntersectionObserver = class {
+        constructor(callback: IntersectionObserverCallback) {
+          ;(window as unknown as { __showEditor: () => void }).__showEditor = () => callback([{ isIntersecting: true } as IntersectionObserverEntry], this)
+        }
+        observe() {}
+        disconnect() {}
+        unobserve() {}
+        takeRecords() { return [] }
+        root = null
+        rootMargin = '0px'
+        thresholds = [0]
+      }
+    }
+  }, { visible })
+}
+
+async function releaseIdle(page: Page) {
+  await expect.poll(() => page.evaluate(() => typeof (window as unknown as { __releaseIdle?: () => void }).__releaseIdle)).toBe('function')
+  await page.evaluate(() => (window as unknown as { __releaseIdle: () => void }).__releaseIdle())
+}
+
+test('one-row toolbar fits at 320, 375, 390 and 430px with touch targets', async ({ page }) => {
+  for (const width of [320, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 812 })
+    await page.goto('/', { waitUntil: 'networkidle' })
+    const boxes = await page.locator('.home-editor-top button').evaluateAll(elements => elements.map(el => {
+      const r = el.getBoundingClientRect()
+      return { x: r.x, y: r.y, width: r.width, height: r.height }
+    }))
+    expect(Math.max(...boxes.map(r => r.y)) - Math.min(...boxes.map(r => r.y))).toBeLessThanOrEqual(2)
+    for (const box of boxes) {
+      expect(box.x).toBeGreaterThanOrEqual(0)
+      expect(box.x + box.width).toBeLessThanOrEqual(width)
+      expect(box.height).toBeGreaterThanOrEqual(40)
+    }
+    expect(boxes.at(-1)!.height).toBeGreaterThanOrEqual(44)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  }
+})
+
+test('automatic first visit runs real weather without scrolling, focus movement or layout shift', async ({ page }, testInfo) => {
+  test.setTimeout(150_000)
+  await page.setViewportSize({ width: isTouch(testInfo.project.name) ? 375 : 1440, height: isTouch(testInfo.project.name) ? 812 : 900 })
+  await enableAutomaticRun(page)
+  const transfers: { url: string; decodedBytes: number; transferBytes: number }[] = []
+  page.on('response', async response => {
+    if (response.url().includes('cdn.jsdelivr.net/pyodide/')) {
+      const body = await response.body().catch(() => null)
+      if (body) {
+        const sizes = await response.request().sizes()
+        transfers.push({ url: response.url(), decodedBytes: body.length, transferBytes: sizes.responseBodySize })
+      }
+    }
+  })
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
+  await expect(page.locator('.home-term')).toContainText('Starting Python…')
+  await shot(page, 'r4-loading', testInfo.project.name, 'viewport')
+  const before = await page.evaluate(() => {
+    document.body.setAttribute('data-focus-baseline', '')
+    ;(window as unknown as { __shifts: number }).__shifts = 0
+    if (PerformanceObserver.supportedEntryTypes.includes('layout-shift')) {
+      new PerformanceObserver(list => {
+        for (const entry of list.getEntries()) {
+          const shift = entry as PerformanceEntry & { value: number; hadRecentInput: boolean }
+          if (!shift.hadRecentInput) (window as unknown as { __shifts: number }).__shifts += shift.value
+        }
+      }).observe({ type: 'layout-shift' })
+    }
+    return { scroll: scrollY, focused: document.activeElement?.tagName }
+  })
+  const started = Date.now()
+  await releaseIdle(page)
+  await expect(page.locator('.home-term-status-ok')).toHaveText('Ran in browser', { timeout: 120_000 })
+  await expect(page.locator('.home-term')).toContainText('Sep ███████ 350 mm')
+  const bars = await page.locator('.home-term-block').evaluateAll(elements => elements.map(el => ({ characters: el.textContent!.length, width: el.getBoundingClientRect().width })))
+  for (const bar of bars) expect(Math.abs(bar.width / bar.characters - bars[0].width)).toBeLessThan(0.1)
+  expect(await page.locator('.home-term').evaluate(el => el.scrollHeight <= el.clientHeight)).toBe(true)
+  expect(await page.evaluate(() => scrollY)).toBe(before.scroll)
+  expect(await page.evaluate(() => document.activeElement?.tagName)).toBe(before.focused)
+  const cls = await page.evaluate(() => (window as unknown as { __shifts: number }).__shifts)
+  expect(cls).toBeLessThan(0.01)
+  console.log(JSON.stringify({ project: testInfo.project.name, timeToOutputMs: Date.now() - started, cls, pyodideResponseBytes: transfers.reduce((sum, item) => sum + item.transferBytes, 0), transfers }))
+  await shot(page, 'r4-first-visit', testInfo.project.name, 'viewport')
+  await openEditor(page, testInfo.project.name)
+  await replaceProgram(page, 'print("changed")')
+  await expect(page.locator('.home-term')).toHaveAttribute('data-stale', '')
+  await expect(page.locator('.home-term')).toContainText('Press Run to update')
+  await expect(page.locator('.home-term-status-ok')).toHaveCount(0)
+  await page.getByRole('combobox', { name: /^Python example/ }).click()
+  await page.getByRole('option', { name: 'tip_split.py', exact: true }).click()
+  await expect(page.locator('.home-term')).toBeHidden()
+  await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
+})
+
+test('save-data leaves compact click-to-run output and never loads Python', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: isTouch(testInfo.project.name) ? 375 : 1440, height: isTouch(testInfo.project.name) ? 812 : 900 })
+  const workers: string[] = []
+  page.on('worker', worker => workers.push(worker.url()))
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
+  await expect(page.locator('.home-term')).toBeHidden()
+  await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
+  expect(workers).toEqual([])
+  await shot(page, 'r4-save-data', testInfo.project.name, 'viewport')
+})
+
+test('interaction before visibility cancels automatic run; unseen editor loads no worker', async ({ page }) => {
+  await enableAutomaticRun(page, false)
+  const workers: string[] = []
+  page.on('worker', worker => workers.push(worker.url()))
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.getByRole('combobox', { name: /^Python example/ }).focus()
+  await releaseIdle(page)
+  await page.evaluate(() => (window as unknown as { __showEditor: () => void }).__showEditor())
+  await expect(page.locator('.home-term')).toBeHidden()
+  await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
+  expect(workers).toEqual([])
+})
+
+test('Run during automatic runtime loading shares the in-flight execution', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: isTouch(testInfo.project.name) ? 375 : 1440, height: isTouch(testInfo.project.name) ? 812 : 900 })
+  test.setTimeout(150_000)
+  await enableAutomaticRun(page)
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  // Delay the actual worker script, leaving the real Pyodide execution intact.
+  let runs = 0
+  await page.route('**/workers/python-runner.js', async route => {
+    const response = await route.fetch()
+    await gate
+    await route.fulfill({ response, body: (await response.text()).replace('if (type !== "run") return;', 'if (type !== "run") return; self.postMessage({ type: "count-run" });') })
+  })
+  await page.addInitScript(() => {
+    const OriginalWorker = window.Worker
+    window.Worker = class extends OriginalWorker {
+      constructor(url: string | URL, options?: WorkerOptions) {
+        super(url, options)
+        this.addEventListener('message', event => {
+          if (event.data.type === 'count-run') document.body.dataset.pythonRuns = String(Number(document.body.dataset.pythonRuns ?? 0) + 1)
+        })
+      }
+    }
+  })
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
+  await releaseIdle(page)
+  await expect(page.locator('.home-term-status')).toHaveText('Loading Python…')
+  await shot(page, 'r4-loading', testInfo.project.name, 'viewport')
+  await page.locator('.home-editor-actions .home-run').click()
+  release()
+  await expect(page.locator('.home-term-status-ok')).toBeVisible({ timeout: 120_000 })
+  runs = Number(await page.locator('body').getAttribute('data-python-runs'))
+  expect(runs).toBe(1)
 })

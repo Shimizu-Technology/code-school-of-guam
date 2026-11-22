@@ -14,7 +14,11 @@ export function ExamplePicker({ value, modified, onChange }: { value: string; mo
   const list = useRef<HTMLUListElement>(null)
   const id = useId()
   const selected = PYTHON_EXAMPLES.findIndex(example => example.filename === value)
-  const show = () => { setActive(selected); setOpen(true) }
+  const show = () => {
+    trigger.current?.focus({ preventScroll: true })
+    setActive(selected)
+    setOpen(true)
+  }
   const choose = (index: number) => {
     setOpen(false)
     trigger.current?.focus({ preventScroll: true })
@@ -101,6 +105,7 @@ export function ExamplePicker({ value, modified, onChange }: { value: string; mo
         aria-controls={id}
         aria-activedescendant={open ? `${id}-${active}` : undefined}
         className="home-editor-file"
+        title={value}
         onClick={() => open ? setOpen(false) : show()}
         onKeyDown={event => {
           if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {

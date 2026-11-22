@@ -1,6 +1,6 @@
 /**
  * On-demand Pyodide Web Worker for the Code School of Guam hero Python runner.
- * Loaded only when a visitor clicks Run or Write your own — never on initial page load.
+ * Loaded for a visible, idle first example or when a visitor asks to run/edit.
  * Classic worker (importScripts) for broad desktop, iOS Safari, and Android Chrome support.
  *
  * Security note: Pyodide is pinned to exact release v0.27.5 on jsDelivr because classic

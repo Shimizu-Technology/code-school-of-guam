@@ -4,10 +4,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   HeroEditor,
-  DEFAULT_PYTHON_CODE,
-  EDITOR_LINES,
+  DEFAULT_PYTHON_CODE as EXPENSE_CODE,
   EDITOR_OUTPUT,
-  HERO_STARTER_KEY,
+  EDITOR_LINES,
   RUN_EXECUTION_TIMEOUT_MS,
   RUNTIME_LOAD_SAFETY_TIMEOUT_MS,
   RUNTIME_SLOW_HINT_MS,
@@ -56,6 +55,8 @@ vi.mock('../components/home/python-editor', () => ({
   },
 }))
 
+const DEFAULT_PYTHON_CODE = PYTHON_EXAMPLES[1].code
+
 function renderHero() {
   return render(<HeroEditor staticCode={<PythonCodeStatic code={DEFAULT_PYTHON_CODE} />} />)
 }
@@ -102,27 +103,27 @@ class MockPythonWorker {
   }
 }
 
-test('hero editor renders highlighted code with output hidden and no worker on mount', () => {
+test('hero editor reserves output space with highlighted weather code and no worker on mount', () => {
   reducedMotion()
   MockPythonWorker.instances = []
   vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = renderHero()
   const code = container.querySelector('.home-code-static')!.textContent!
-  expect(code).toContain('for item, cost in expenses.items():')
+  expect(code).toContain('for month, mm in rain.items():')
   expect(container.querySelector('.home-code-static')!.hasAttribute('aria-label')).toBe(false)
-  expect(screen.getByRole('region', { name: 'Sample Python code: expense_summary.py' }).tabIndex).toBe(0)
-  expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(true)
-  expect(container.querySelectorAll('.home-code-row')).toHaveLength(EDITOR_LINES.length)
+  expect(screen.getByRole('region', { name: 'Sample Python code: guam_weather.py' }).tabIndex).toBe(0)
+  expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(false)
+  expect(container.querySelectorAll('.home-code-row')).toHaveLength(DEFAULT_PYTHON_CODE.split('\n').length)
   // Highlighted before any editor code loads: keywords, strings, numbers and calls all have colors.
   const classOf = (text: string) => Array.from(container.querySelectorAll('.home-code-static span[class^="home-tok-"]')).find((el) => el.textContent === text)?.className
   expect(classOf('for')).toBe('home-tok-k')
-  expect(classOf('"Food"')).toBe('home-tok-s')
-  expect(classOf('120')).toBe('home-tok-n')
+  expect(classOf('"Guam: sample data"')).toBe('home-tok-s')
+  expect(classOf('77')).toBe('home-tok-n')
   expect(classOf('print')).toBe('home-tok-f')
   // Wrapped lines hang one indent deeper than their own indentation.
   const rows = container.querySelectorAll<HTMLElement>('.home-code-line')
   expect(rows[0].style.getPropertyValue('--hang')).toBe('4ch')
-  expect(rows[11].style.getPropertyValue('--hang')).toBe('8ch')
+  expect(rows[10].style.getPropertyValue('--hang')).toBe('8ch')
   expect(editorSpy.instances).toBe(0)
   expect(container.querySelector('.home-term')!.textContent).not.toContain('Food: $61')
   expect(MockPythonWorker.instances).toHaveLength(0)
@@ -131,7 +132,7 @@ test('hero editor renders highlighted code with output hidden and no worker on m
   expect(screen.getByRole('link', { name: 'Python Fundamentals' }).getAttribute('href')).toBe('/courses/python-fundamentals')
   const hafaHref = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
   expect(hafaHref).toContain('https://code.shimizu-technology.com/?lang=python#project=')
-  expect(hafaHref).toContain(`starter=${HERO_STARTER_KEY}`)
+  expect(hafaHref).toContain(`starter=${PYTHON_EXAMPLES[1].starterKey}`)
 })
 
 test('hero editor runs Python in a Web Worker on click, supports Edit Python code, Reset, timeout, and output cap', async () => {
@@ -185,7 +186,7 @@ test('hero editor runs Python in a Web Worker on click, supports Edit Python cod
     const decoded = JSON.parse(Buffer.from(hashParams.get('project')!, 'base64url').toString('utf8'))
     expect(decoded.kind).toBe('python')
     expect(decoded.files[0].content).toBe('print(6 * 7)')
-    expect(hashParams.get('starter')).toBe(HERO_STARTER_KEY)
+    expect(hashParams.get('starter')).toBe(PYTHON_EXAMPLES[1].starterKey)
 
     // Running edited code and hitting 5s timeout (after `started`) terminates the worker cleanly.
     fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
@@ -363,7 +364,7 @@ test('tapping the highlighted code loads the editor; Cmd/Ctrl+Enter runs and tou
   editorSpy.runKey = []
   vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = renderHero()
-  fireEvent.click(screen.getByRole('region', { name: 'Sample Python code: expense_summary.py' }), { clientX: 40, clientY: 40 })
+  fireEvent.click(screen.getByRole('region', { name: 'Sample Python code: guam_weather.py' }), { clientX: 40, clientY: 40 })
   // iOS needs focus inside the tap to raise the keyboard; an invisible holder takes it until the editor mounts.
   expect(document.activeElement?.classList.contains('home-focus-proxy')).toBe(true)
   await editorLoaded()
@@ -621,7 +622,7 @@ test('every example updates its code, caption, worker filename, and Hafa Code pa
 
 test('examples have distinct starters and compact, noninteractive programs; the original is unchanged', () => {
   expect(new Set(PYTHON_EXAMPLES.map(example => example.starterKey)).size).toBe(7)
-  expect(PYTHON_EXAMPLES[0].code).toBe(DEFAULT_PYTHON_CODE)
+  expect(PYTHON_EXAMPLES[0].code).toBe(EXPENSE_CODE)
   for (const example of PYTHON_EXAMPLES.slice(1)) {
     expect(example.code.split('\n').length).toBeLessThanOrEqual(14)
     expect(example.code).not.toContain('input(')
