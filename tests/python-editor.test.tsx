@@ -49,6 +49,7 @@ test('Tab indents a line from its start and inserts spaces to the next stop mid-
   expect(show(apply(stateOf('|print(1)'), accessoryCommands.tab))).toBe('    |print(1)')
   expect(show(apply(stateOf('x = 1|'), accessoryCommands.tab))).toBe('x = 1   |')
   expect(show(apply(stateOf('ab|'), accessoryCommands.tab))).toBe('ab  |')
+  expect(show(apply(stateOf('\tx|'), accessoryCommands.tab))).toBe('\tx   |')
   expect(show(apply(stateOf('[a\nb]'), accessoryCommands.tab))).toBe('    [a\n    b]')
 })
 
@@ -62,7 +63,7 @@ test('left/right keys move the cursor across characters and lines; Undo reverts 
   expect(show(apply(typed, undo))).toBe('print|')
 })
 
-test('Enter after a colon indents the next line; Python dedent keywords outdent', () => {
+test('Enter after a colon adds an indent level; return keeps the current indentation', () => {
   expect(show(apply(stateOf('for x in y:|'), insertNewlineAndIndent))).toBe('for x in y:\n    |')
   expect(show(apply(stateOf('if a:\n    if b:|'), insertNewlineAndIndent))).toBe('if a:\n    if b:\n        |')
   expect(show(apply(stateOf('def f():\n    return 1|'), insertNewlineAndIndent))).toBe('def f():\n    return 1\n    |')
@@ -127,4 +128,35 @@ test('hanging indent: one level deeper than the line, capped for deeply nested c
   expect(hangingIndentCh('\tprint(x)')).toBe(8)
   expect(hangingIndentCh(' '.repeat(40) + 'x')).toBe(16)
   expect(highlightPythonLines('a\n\nb')).toHaveLength(3)
+})
+
+
+test('accessory pairs register their closers, and iOS smart quotes use the same bracket state', () => {
+  const parent = document.createElement('div')
+  document.body.appendChild(parent)
+  editor = createPythonEditor({ parent, doc: 'print', ariaLabel: 'Python', onChange: noop, onRun: noop, onFocusChange: noop })
+  const view = editor.view
+  editor.placeCursorAtEnd()
+  const type = (text: string) => {
+    const { from, to } = view.state.selection.main
+    const handled = view.state.facet(EditorView.inputHandler).some(handler => handler(view, from, to, text, () => view.state.update(view.state.replaceSelection(text))))
+    if (!handled) view.dispatch(view.state.replaceSelection(text))
+  }
+  editor.runKey('parens')
+  editor.runKey('quotes')
+  type('Hi')
+  type('”')
+  type(')')
+  expect(editor.getDoc()).toBe('print("Hi")')
+  expect(view.state.selection.main.head).toBe(view.state.doc.length)
+  editor.setDoc('')
+  type('‘')
+  type('Guam')
+  type('’')
+  expect(editor.getDoc()).toBe("'Guam'")
+  editor.setDoc('')
+  type('“')
+  type('Hi')
+  type('”')
+  expect(editor.getDoc()).toBe('"Hi"')
 })

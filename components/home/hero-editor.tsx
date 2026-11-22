@@ -46,14 +46,14 @@ const CODING_KEYS: ReadonlyArray<{ key: AccessoryKey; label: string; glyph: stri
   { key: "tab", label: "Indent (Tab)", glyph: "⇥", wide: true },
   { key: "colon", label: "Insert colon", glyph: ":" },
   { key: "parens", label: "Insert parentheses", glyph: "( )", wide: true },
-  { key: "brackets", label: "Insert square brackets", glyph: "[ ]", wide: true },
-  { key: "braces", label: "Insert curly braces", glyph: "{ }", wide: true },
   { key: "quotes", label: "Insert quotes", glyph: '" "', wide: true },
   { key: "equals", label: "Insert equals sign", glyph: "=" },
+  { key: "undo", label: "Undo", glyph: "↶" },
+  { key: "brackets", label: "Insert square brackets", glyph: "[ ]", wide: true },
+  { key: "braces", label: "Insert curly braces", glyph: "{ }", wide: true },
   { key: "hash", label: "Insert hash (comment)", glyph: "#" },
   { key: "left", label: "Move cursor left", glyph: "←" },
   { key: "right", label: "Move cursor right", glyph: "→" },
-  { key: "undo", label: "Undo", glyph: "↶" },
 ]
 
 function splitLines(text: string): string[] {
@@ -111,20 +111,20 @@ const TAP_SLOP_PX = 10
  * still work.
  */
 function usePress() {
-  const startRef = useRef<{ id: number; x: number; y: number } | null>(null)
+  const startRef = useRef<{ id: number; x: number; y: number; target: HTMLButtonElement } | null>(null)
   const pressedAtRef = useRef(0)
   return useCallback(
     (action: () => void) => ({
       onPointerDown: (event: PointerEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        startRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY }
+        startRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, target: event.currentTarget }
       },
       onPointerUp: (event: PointerEvent<HTMLButtonElement>) => {
         const start = startRef.current
         startRef.current = null
-        if (!start || start.id !== event.pointerId) return
-        if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > TAP_SLOP_PX) return
         pressedAtRef.current = Date.now()
+        if (!start || start.id !== event.pointerId || start.target !== event.currentTarget) return
+        if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > TAP_SLOP_PX) return
         action()
       },
       onPointerCancel: () => {
@@ -152,6 +152,7 @@ function CodingKeys({ busy, onKey, onRun, onStop, onLayout }: CodingKeysProps) {
   useLayoutEffect(() => {
     const bar = barRef.current
     if (!bar) return
+    document.body.dataset.codingKeys = "open"
     const vv = window.visualViewport
     let frame = 0
     const place = () => {
@@ -173,11 +174,15 @@ function CodingKeys({ busy, onKey, onRun, onStop, onLayout }: CodingKeysProps) {
     vv?.addEventListener("resize", schedule)
     vv?.addEventListener("scroll", schedule)
     window.addEventListener("resize", schedule)
+    window.addEventListener("scroll", schedule, { passive: true })
     return () => {
       if (frame) cancelAnimationFrame(frame)
       vv?.removeEventListener("resize", schedule)
       vv?.removeEventListener("scroll", schedule)
       window.removeEventListener("resize", schedule)
+      window.removeEventListener("scroll", schedule)
+      delete document.body.dataset.codingKeys
+      onLayout(0, false, window.innerHeight)
     }
   }, [onLayout])
 
@@ -257,6 +262,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const proxyRef = useRef<HTMLTextAreaElement | null>(null)
   const editorRef = useRef<PythonEditorHandle | null>(null)
   const editorLoadingRef = useRef(false)
+  const pendingInputRef = useRef("")
+  const keyboardWasOpenRef = useRef(false)
   const codeRef = useRef(DEFAULT_PYTHON_CODE)
   const keysHeightRef = useRef(0)
   const blurTimerRef = useRef<number | null>(null)
@@ -544,12 +551,17 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const handleKeysLayout = useCallback((height: number, open: boolean, visibleHeight: number) => {
     keysHeightRef.current = height
     setKeyboardIsOpen(open)
+    if (!height) keyboardWasOpenRef.current = false
     const figure = figureRef.current
     if (!figure) return
     if (open) {
       // Fit the code between the visible header and the coding keys while typing.
-      const room = visibleHeight - visibleHeaderHeight() - height - 16
-      figure.style.setProperty("--code-kb-max-h", `${Math.max(96, Math.round(room))}px`)
+      const areaTop = (codeAreaRef.current?.getBoundingClientRect().top ?? 0) - (window.visualViewport?.offsetTop ?? 0)
+      const room = Math.min(
+        visibleHeight - visibleHeaderHeight() - height - 8,
+        visibleHeight - Math.max(0, areaTop) - height - 8,
+      )
+      figure.style.setProperty("--code-kb-max-h", `${Math.max(48, Math.round(room))}px`)
     } else {
       figure.style.removeProperty("--code-kb-max-h")
     }
@@ -557,7 +569,6 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
   // When the keyboard opens, line the code up under the header so the whole (shrunk) editor
   // sits between the header and the coding keys; then keep the cursor in view.
-  const keyboardWasOpenRef = useRef(false)
   useEffect(() => {
     if (editorMode !== "ready" || !editorFocused) return
     if (keyboardIsOpen && !keyboardWasOpenRef.current) {
@@ -566,11 +577,12 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       if (area && vv) {
         const offset = area.getBoundingClientRect().top - vv.offsetTop - (visibleHeaderHeight() + 8)
         if (Math.abs(offset) > 4) window.scrollBy({ top: offset, behavior: "auto" })
+        handleKeysLayout(keysHeightRef.current, true, vv.height)
       }
     }
     keyboardWasOpenRef.current = keyboardIsOpen
     editorRef.current?.revealCursor()
-  }, [keyboardIsOpen, editorMode, editorFocused])
+  }, [keyboardIsOpen, editorMode, editorFocused, handleKeysLayout])
 
   const removeProxy = useCallback(() => {
     const proxy = proxyRef.current
@@ -657,13 +669,12 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           const newRect = parent.getBoundingClientRect()
           if (tapOffset) editor.placeCursorAt(newRect.left + tapOffset.x, newRect.top + tapOffset.y)
           else editor.placeCursorAtEnd()
-          editor.insertAtCursor(removeProxy())
           focusOnReadyRef.current = true
           setEditorMode("ready")
         })
         .catch(() => {
           editorLoadingRef.current = false
-          removeProxy()
+          pendingInputRef.current += removeProxy()
           setEditorMode("failed")
           setStatusAnnouncement("The code editor did not load. Check your connection and try again.")
         })
@@ -675,9 +686,16 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   useLayoutEffect(() => {
     if (editorMode !== "ready" || !focusOnReadyRef.current) return
     focusOnReadyRef.current = false
-    editorRef.current?.focus()
-    editorRef.current?.revealCursor()
-  }, [editorMode])
+    const editor = editorRef.current
+    if (!editor) return
+    // Transfer focus directly from the still-mounted iOS holder, with no body-focus gap.
+    editor.focus()
+    const typed = pendingInputRef.current + (proxyRef.current?.value ?? "")
+    editor.insertAtCursor(typed)
+    pendingInputRef.current = ""
+    removeProxy()
+    editor.revealCursor()
+  }, [editorMode, removeProxy])
 
   const handleEnterEdit = useCallback(() => loadEditor(), [loadEditor])
 
@@ -694,6 +712,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const handleReset = useCallback(() => {
     // Always terminate the worker on Reset so any mutated Python globals/builtins start fresh.
     terminateWorker()
+    pendingInputRef.current = ""
+    if (proxyRef.current) proxyRef.current.value = ""
     updateCode(DEFAULT_PYTHON_CODE)
     // An undoable replace, so Undo brings the visitor's own code back.
     editorRef.current?.setDoc(DEFAULT_PYTHON_CODE)
@@ -760,7 +780,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
               Write your own
             </button>
           ) : null}
-          {isModified || hasExecuted ? (
+          {isModified || hasExecuted || editorMode === "loading" || editorMode === "failed" ? (
             <button
               type="button"
               className="home-ed-btn"
@@ -825,21 +845,22 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
             </button>
           </p>
         ) : null}
-        {editorMode === "ready" && editorFocused && !isCoarse ? (
-          <p className="home-code-hint" aria-hidden="true">
-            <span>
-              <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves
-            </span>
-            <span>
-              <kbd>{modifierLabel}</kbd>+<kbd>Enter</kbd> runs
-            </span>
-          </p>
-        ) : null}
         <p id="home-editor-hint" className="sr-only">
           Tab indents. Press Escape, then Tab, to leave the editor. Press Control or Command plus Enter to run the code
           in your browser.
         </p>
       </div>
+
+      {editorMode === "ready" && editorFocused && !isCoarse ? (
+        <p className="home-code-hint" aria-hidden="true">
+          <span>
+            <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves
+          </span>
+          <span>
+            <kbd>{modifierLabel}</kbd>+<kbd>Enter</kbd> runs
+          </span>
+        </p>
+      ) : null}
 
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable output region must be keyboard focusable */}
       <div ref={termRef} className="home-term" role="region" aria-label="Python program output" tabIndex={0}>

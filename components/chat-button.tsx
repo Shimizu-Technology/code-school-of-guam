@@ -74,7 +74,7 @@ export function ChatButton() {
           if (!isOpen && window.scrollY <= CHAT_VISIBILITY_SCROLL_Y) setIsVisible(false);
         }}
         data-visible={shown ? "true" : "false"}
-        className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-[opacity,scale,translate,background-color,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 md:h-14 md:w-14 ${
+        className={`chat-launcher fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/20 shadow-lg transition-[opacity,scale,translate,background-color,visibility] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:-translate-y-0.5 md:h-14 md:w-14 ${
           shown ? "visible scale-100 opacity-100 active:scale-[0.97]" : "pointer-events-none invisible scale-95 opacity-0"
         } ${
           isOpen

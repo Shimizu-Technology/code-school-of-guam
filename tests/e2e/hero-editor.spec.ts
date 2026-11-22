@@ -52,6 +52,17 @@ async function openEditor(page: Page, projectName: string) {
 
 test.beforeEach(async ({ page }) => {
   // A controllable visualViewport so we can simulate the on-screen keyboard (it cannot be opened in automation).
+  if (process.env.E2E_BASE_URL?.includes('deploy-preview-')) {
+    // Netlify injects its Collaborate drawer only on hosted previews.
+    await page.addStyleTag({ content: 'iframe[data-netlify-deploy-preview], iframe#netlify-collaboration, iframe[src*="netlify"][src*="drawer"] { display: none !important; pointer-events: none !important; }' }).catch(() => {})
+    await page.addInitScript(() => {
+      const hideDrawer = () => document.querySelectorAll<HTMLIFrameElement>('iframe').forEach(frame => {
+        if (/netlify/i.test(frame.src + frame.id) && /drawer|collaborat|deploy-preview/i.test(frame.src + frame.id)) frame.style.setProperty('display', 'none', 'important')
+      })
+      new MutationObserver(hideDrawer).observe(document, { childList: true, subtree: true })
+      document.addEventListener('DOMContentLoaded', hideDrawer)
+    })
+  }
   await page.addInitScript(() => {
     const real = window.visualViewport
     if (!real) return
@@ -275,7 +286,11 @@ test('touch: coding keys sit above the keyboard, keep focus, and insert code', a
   await tapKey('Insert quotes')
   await page.keyboard.type('Hi')
   expect(await editorText(page)).toBe('print("Hi")')
+  await page.keyboard.type('")')
+  expect(await editorText(page)).toBe('print("Hi")')
   expect(await focusedInEditor(page)).toBe(true)
+  await tapKey('Move cursor left')
+  await tapKey('Move cursor left')
   await tapKey('Move cursor right')
   await tapKey('Move cursor right')
   await page.keyboard.press('Enter')
@@ -345,4 +360,89 @@ test('reduced motion: no press animation and instant scrolling', async ({ page }
   const durations = await run.evaluate((el) => getComputedStyle(el).transitionDuration.split(',').map((d) => parseFloat(d)))
   for (const d of durations) expect(d).toBeLessThanOrEqual(0.0001)
   test.info().annotations.push({ type: 'project', description: testInfo.project.name })
+})
+
+
+test('delayed editor import transfers focus directly from the proxy and inserts pending input once', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'iOS-style focus handoff')
+  await page.goto('/', { waitUntil: 'networkidle' })
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
+  await page.getByRole('button', { name: 'Write your own' }).tap()
+  await expect(page.locator('.home-focus-proxy')).toBeFocused()
+  await page.keyboard.insertText('\nprint("buffered")')
+  await page.evaluate(() => {
+    const proxy = document.querySelector('.home-focus-proxy')!
+    proxy.addEventListener('focusout', event => {
+      document.body.dataset.handoffTarget = (event as FocusEvent).relatedTarget instanceof HTMLElement && (event as FocusEvent).relatedTarget !== document.body ? 'editor' : 'body'
+    })
+    const remove = proxy.remove.bind(proxy)
+    proxy.remove = () => {
+      document.body.dataset.focusAtRemoval = document.activeElement?.closest('.cm-content') ? 'editor' : 'body'
+      remove()
+    }
+  })
+  release()
+  await expect(page.locator('.cm-content')).toBeFocused()
+  await expect(page.locator('body')).toHaveAttribute('data-handoff-target', 'editor')
+  await expect(page.locator('body')).toHaveAttribute('data-focus-at-removal', 'editor')
+  expect((await editorText(page)).split('buffered')).toHaveLength(2)
+  await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
+})
+
+test('rejected editor import retains pending input on retry, and Reset clears pending input', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'touch proxy buffering')
+  for (const reset of [false, true]) {
+    await page.goto('/', { waitUntil: 'networkidle' })
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    const fail = async (route: import('@playwright/test').Route) => { await gate; await route.abort() }
+    await page.route('**/_next/static/chunks/*.js', fail)
+    await page.getByRole('button', { name: 'Write your own' }).tap()
+    await page.keyboard.insertText('\nprint("pending")')
+    if (reset) await page.getByRole('button', { name: 'Reset to default Python example' }).tap()
+    release()
+    await expect(page.locator('.home-code-note-error')).toContainText('The editor didn’t load.')
+    await page.unroute('**/_next/static/chunks/*.js', fail)
+    await page.getByRole('button', { name: 'Try again' }).tap()
+    await expect(page.locator('.cm-content')).toBeFocused()
+    expect((await editorText(page)).split('pending')).toHaveLength(reset ? 1 : 2)
+    await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
+  }
+})
+
+test('Escape then Tab or Shift-Tab exits even with a selection; desktop hint is below the code', async ({ page }, testInfo) => {
+  test.skip(isTouch(testInfo.project.name), 'desktop keyboard navigation')
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await openEditor(page, testInfo.project.name)
+  const code = await page.locator('.home-code-area').boundingBox()
+  const hint = await page.locator('.home-code-hint').boundingBox()
+  expect(hint!.y).toBeGreaterThanOrEqual(code!.y + code!.height)
+  for (const tab of ['Tab', 'Shift+Tab']) {
+    await page.locator('.cm-content').focus()
+    await page.keyboard.press(`${mod()}+a`)
+    await page.keyboard.press('Escape')
+    await page.keyboard.press(tab)
+    expect(await focusedInEditor(page)).toBe(false)
+  }
+})
+
+test('touch landscape: code clears the coding keys and the chat launcher stays hidden', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'touch landscape')
+  await page.setViewportSize({ width: 844, height: 390 })
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await openEditor(page, testInfo.project.name)
+  await expect(page.locator('body')).toHaveAttribute('data-coding-keys', 'open')
+  await expect(page.locator('.chat-launcher')).toBeHidden()
+  expect(await page.locator('.chat-launcher').evaluate(el => getComputedStyle(el).pointerEvents)).toBe('none')
+  await page.evaluate(() => (window as unknown as { __setKeyboard: (h: number) => void }).__setKeyboard(180))
+  await expect.poll(async () => {
+    const code = (await page.locator('.cm-scroller').boundingBox())!
+    const keys = (await page.locator('.home-keys').boundingBox())!
+    return code.y >= 0 && code.y + code.height <= keys.y
+  }).toBe(true)
+  await page.locator('.cm-content').blur()
+  await expect(page.locator('body')).not.toHaveAttribute('data-coding-keys', 'open')
+  await expect(page.locator('figure.home-editor')).not.toHaveAttribute('style', /code-kb-max-h/)
 })

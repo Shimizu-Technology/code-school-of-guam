@@ -372,6 +372,7 @@ test('tapping the highlighted code loads the editor; Cmd/Ctrl+Enter runs and tou
   expect(document.activeElement).toBe(textarea)
 
   const keys = screen.getByRole('toolbar', { name: 'Coding keys' })
+  expect(Array.from(keys.querySelectorAll('.home-key')).map(key => key.getAttribute('aria-label'))).toEqual(['Indent (Tab)', 'Insert colon', 'Insert parentheses', 'Insert quotes', 'Insert equals sign', 'Undo', 'Insert square brackets', 'Insert curly braces', 'Insert hash (comment)', 'Move cursor left', 'Move cursor right'])
   for (const name of ['Indent (Tab)', 'Insert colon', 'Insert parentheses', 'Insert square brackets', 'Insert curly braces', 'Insert quotes', 'Insert equals sign', 'Insert hash (comment)', 'Move cursor left', 'Move cursor right', 'Undo']) {
     fireEvent.click(within(keys).getByRole('button', { name }))
   }
@@ -557,4 +558,21 @@ test('the opening photo animates only on tall screens with motion allowed, and f
   expect(section.style.getPropertyValue('--p')).toBe('')
   expect(removed).toEqual(expect.arrayContaining(['scroll', 'resize']))
   expect(cancel).toHaveBeenCalled()
+})
+
+
+test('sliding between coding keys does not insert the neighboring key', async () => {
+  liveMedia({ '(pointer: coarse)': true })
+  vi.stubGlobal('Worker', MockPythonWorker)
+  renderHero()
+  fireEvent.click(screen.getByRole('button', { name: 'Write your own' }))
+  await editorLoaded()
+  editorSpy.runKey = []
+  const keys = screen.getByRole('toolbar', { name: 'Coding keys' })
+  const colon = within(keys).getByRole('button', { name: 'Insert colon' })
+  const pair = within(keys).getByRole('button', { name: 'Insert parentheses' })
+  fireEvent.pointerDown(colon, { pointerId: 1, clientX: 20, clientY: 20 })
+  fireEvent.pointerUp(pair, { pointerId: 1, clientX: 23, clientY: 20 })
+  fireEvent.click(pair)
+  expect(editorSpy.runKey).toEqual([])
 })

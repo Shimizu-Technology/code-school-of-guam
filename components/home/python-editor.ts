@@ -4,7 +4,7 @@
  * server-highlighted copy in python-code-static.tsx, which shares the highlighter and
  * CSS so the swap is invisible.
  */
-import { EditorSelection, EditorState, Prec, RangeSetBuilder, findClusterBreak, type StateCommand, type Extension } from "@codemirror/state"
+import { EditorSelection, EditorState, Prec, RangeSetBuilder, findClusterBreak, countColumn, type StateCommand, type Extension } from "@codemirror/state"
 import {
   Decoration,
   EditorView,
@@ -18,7 +18,7 @@ import {
 } from "@codemirror/view"
 import { LanguageSupport, bracketMatching, indentOnInput, indentUnit, syntaxHighlighting } from "@codemirror/language"
 import { defaultKeymap, history, historyKeymap, indentLess, indentMore, redo, undo } from "@codemirror/commands"
-import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete"
+import { closeBrackets, closeBracketsKeymap, insertBracket } from "@codemirror/autocomplete"
 import { pythonLanguage } from "@codemirror/lang-python"
 import { hangingIndentCh, pythonHighlighter } from "@/lib/python-highlight"
 
@@ -50,6 +50,11 @@ function insertText(text: string): StateCommand {
 /** Inserts an empty pair with the cursor inside, or wraps the selection in it. */
 export function wrapPair(open: string, close: string): StateCommand {
   return ({ state, dispatch }) => {
+    if (state.selection.ranges.every((range) => range.empty)) {
+      const tr = insertBracket(state, open)
+      if (tr) { dispatch(tr); return true }
+      return insertText(open)({ state, dispatch })
+    }
     const tr = state.changeByRange((range) => {
       if (range.empty) {
         return {
@@ -84,7 +89,7 @@ export const smartTab: StateCommand = ({ state, dispatch }) => {
   if (!midLine) return indentMore({ state, dispatch })
   const tr = state.changeByRange((range) => {
     const line = state.doc.lineAt(range.head)
-    const column = range.head - line.from
+    const column = countColumn(line.text.slice(0, range.head - line.from), state.tabSize)
     const spaces = INDENT.length - (column % INDENT.length)
     return {
       changes: { from: range.head, insert: " ".repeat(spaces) },
@@ -197,6 +202,10 @@ export function pythonEditorExtensions(options: Pick<PythonEditorOptions, "ariaL
     Prec.highest(
       keymap.of([
         {
+          key: "Escape",
+          run: (view) => { view.setTabFocusMode(2000); return true },
+        },
+        {
           key: "Mod-Enter",
           run: () => {
             options.onRun()
@@ -214,6 +223,19 @@ export function pythonEditorExtensions(options: Pick<PythonEditorOptions, "ariaL
     EditorState.tabSize.of(4),
     indentOnInput(),
     bracketMatching(),
+    // iOS may substitute typographic quotes before the bracket input handler sees them.
+    Prec.highest(EditorView.inputHandler.of((view, from, to, text) => {
+      const normalized = text.replace(/[“”]/g, '"').replace(/[‘’]/g, "'")
+      if (normalized === text || view.state.readOnly) return false
+      const sel = view.state.selection.main
+      const tr = from === sel.from && to === sel.to ? insertBracket(view.state, normalized) : null
+      view.dispatch(tr ?? view.state.update({
+        changes: { from, to, insert: normalized },
+        selection: EditorSelection.cursor(from + normalized.length),
+        userEvent: "input.type",
+      }))
+      return true
+    })),
     closeBrackets(),
     syntaxHighlighting(pythonHighlighter),
     EditorView.lineWrapping,
