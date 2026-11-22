@@ -190,8 +190,8 @@ export interface PythonEditorHandle {
   blur(): void
   /** Puts the cursor at a screen point (falls back to the end of the code). */
   placeCursorAt(clientX: number, clientY: number): void
-  placeCursorAtEnd(): void
-  insertAtCursor(text: string): void
+  placeCursorAtEnd(scrollIntoView?: boolean): void
+  insertAtCursor(text: string, scrollIntoView?: boolean): void
   runKey(key: AccessoryKey): void
   revealCursor(): void
   destroy(): void
@@ -291,12 +291,12 @@ export function createPythonEditor(options: PythonEditorOptions): PythonEditorHa
       const pos = view.posAtCoords({ x: clientX, y: clientY }, false)
       view.dispatch({ selection: EditorSelection.cursor(pos ?? view.state.doc.length) })
     },
-    placeCursorAtEnd() {
-      view.dispatch({ selection: EditorSelection.cursor(view.state.doc.length), scrollIntoView: true })
+    placeCursorAtEnd(scrollIntoView = true) {
+      view.dispatch({ selection: EditorSelection.cursor(view.state.doc.length), scrollIntoView })
     },
-    insertAtCursor(text) {
+    insertAtCursor(text, scrollIntoView = true) {
       if (!text) return
-      view.dispatch(view.state.replaceSelection(text), { scrollIntoView: true, userEvent: "input.type" })
+      view.dispatch(view.state.replaceSelection(text), { scrollIntoView, userEvent: "input.type" })
     },
     runKey(key) {
       accessoryCommands[key]({ state: view.state, dispatch: (tr) => view.dispatch(tr) })

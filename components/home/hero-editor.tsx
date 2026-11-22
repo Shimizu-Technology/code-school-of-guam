@@ -233,7 +233,10 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const [example, setExample] = useState(PYTHON_EXAMPLES[0])
   const exampleRef = useRef(PYTHON_EXAMPLES[0])
   const pendingClearRef = useRef(false)
+  const clearUndoDocRef = useRef<string | null>(null)
+  const transferPendingRef = useRef(false)
   const [outputVisible, setOutputVisible] = useState(false)
+  const [revealRequested, setRevealRequested] = useState(false)
   const [code, setCode] = useState(DEFAULT_PYTHON_CODE)
   const [editorMode, setEditorMode] = useState<EditorMode>("static")
   const [editorFocused, setEditorFocused] = useState(false)
@@ -323,6 +326,26 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   )
 
   useEffect(() => {
+    const cancelOutsideFocus = (event: FocusEvent) => {
+      if (editorLoadingRef.current && !codeAreaRef.current?.contains(event.target as Node)) {
+        focusOnReadyRef.current = false
+      }
+    }
+    const cancelProxyBlur = (event: FocusEvent) => {
+      if (event.target !== proxyRef.current) return
+      if (!event.relatedTarget || !codeAreaRef.current?.contains(event.relatedTarget as Node)) {
+        focusOnReadyRef.current = false
+      }
+    }
+    document.addEventListener("focusin", cancelOutsideFocus)
+    document.addEventListener("focusout", cancelProxyBlur)
+    return () => {
+      document.removeEventListener("focusin", cancelOutsideFocus)
+      document.removeEventListener("focusout", cancelProxyBlur)
+    }
+  }, [])
+
+  useEffect(() => {
     if (!isEditing) return
     const platform =
       (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ?? navigator.platform ?? ""
@@ -355,8 +378,12 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   }, [])
 
   useLayoutEffect(() => {
-    if (outputVisible) revealOutput()
-  }, [outputVisible, revealOutput])
+    if (!outputVisible || !revealRequested) return
+    revealOutput()
+    setRevealRequested(false)
+  }, [outputVisible, revealRequested, revealOutput])
+
+  const requestOutputReveal = useCallback(() => setRevealRequested(true), [])
 
   const ensureWorker = useCallback(() => {
     if (workerRef.current) return workerRef.current
@@ -454,6 +481,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
   const startRun = useCallback(() => {
     setOutputVisible(true)
+    setRevealRequested(false)
     clearTimers()
     const runId = `run-${++runIdRef.current}`
     activeRunIdRef.current = runId
@@ -483,7 +511,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         setStatusAnnouncement("Python runtime load timed out.")
       }, RUNTIME_LOAD_SAFETY_TIMEOUT_MS)
 
-      worker.postMessage({ id: runId, type: "run", code: pendingClearRef.current ? CLEAR_PYTHON_CODE : codeRef.current, filename: exampleRef.current.filename })
+      worker.postMessage({ id: runId, type: "run", code: codeRef.current + pendingInputRef.current + (proxyRef.current?.value ?? ""), filename: exampleRef.current.filename })
     } catch (err) {
       terminateWorker()
       setStderrText(err instanceof Error ? err.message : "Could not start Python.")
@@ -496,9 +524,9 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     (event: MouseEvent<HTMLButtonElement>) => {
       if (event.detail > 1) return
       startRun()
-      revealOutput()
+      requestOutputReveal()
     },
-    [revealOutput, startRun],
+    [requestOutputReveal, startRun],
   )
 
   const stopRun = useCallback(() => {
@@ -523,9 +551,9 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     runFromEditorRef.current = () => {
       if (activeRunIdRef.current) return
       startRun()
-      revealOutput()
+      requestOutputReveal()
     }
-  }, [revealOutput, startRun])
+  }, [requestOutputReveal, startRun])
 
   /** Run from the coding keys: close the keyboard first, then show the output. */
   const handleKeysRun = useCallback(() => {
@@ -535,21 +563,21 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     startRun()
     const vv = window.visualViewport
     if (!wasOpen || !vv) {
-      revealOutput()
+      requestOutputReveal()
       return
     }
     let fallback = 0
     const done = () => {
       vv.removeEventListener("resize", onResize)
       window.clearTimeout(fallback)
-      revealOutput()
+      requestOutputReveal()
     }
     const onResize = () => {
       if (!keyboardOpen()) done()
     }
     vv.addEventListener("resize", onResize)
     fallback = window.setTimeout(done, 700)
-  }, [revealOutput, startRun])
+  }, [requestOutputReveal, startRun])
 
   const handleKey = useCallback((key: AccessoryKey) => {
     const editor = editorRef.current
@@ -657,7 +685,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           if (!parent) throw new Error("Editor container is missing.")
           const editor = mod.createPythonEditor({
             parent,
-            doc: codeRef.current,
+            doc: clearUndoDocRef.current ?? codeRef.current,
             ariaLabel: "Python code editor",
             describedBy: "home-editor-hint",
             onChange: (next) => {
@@ -682,10 +710,9 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           editorRef.current = editor
           editor.view.scrollDOM.scrollTop = scrollTop
           const newRect = parent.getBoundingClientRect()
-          if (focusOnReadyRef.current) {
-            if (tapOffset) editor.placeCursorAt(newRect.left + tapOffset.x, newRect.top + tapOffset.y)
-            else editor.placeCursorAtEnd()
-          }
+          if (tapOffset) editor.placeCursorAt(newRect.left + tapOffset.x, newRect.top + tapOffset.y)
+          else editor.placeCursorAtEnd(false)
+          transferPendingRef.current = true
           setEditorMode("ready")
         })
         .catch(() => {
@@ -700,22 +727,25 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
   // Focus once the editor is visible (an invisible element cannot take focus).
   useLayoutEffect(() => {
-    if (editorMode !== "ready" || !focusOnReadyRef.current) return
+    if (editorMode !== "ready" || !transferPendingRef.current) return
+    transferPendingRef.current = false
+    const shouldFocus = focusOnReadyRef.current
     focusOnReadyRef.current = false
     const editor = editorRef.current
     if (!editor) return
     // Transfer focus directly from the still-mounted iOS holder, with no body-focus gap.
-    editor.focus()
+    if (shouldFocus) editor.focus()
     if (pendingClearRef.current) {
-      editor.setDoc(CLEAR_PYTHON_CODE)
-      editor.placeCursorAtEnd()
+      editor.setDoc(codeRef.current)
+      editor.placeCursorAtEnd(false)
       pendingClearRef.current = false
+      clearUndoDocRef.current = null
     }
     const typed = pendingInputRef.current + (proxyRef.current?.value ?? "")
-    editor.insertAtCursor(typed)
+    editor.insertAtCursor(typed, shouldFocus)
     pendingInputRef.current = ""
     removeProxy()
-    editor.revealCursor()
+    if (shouldFocus) editor.revealCursor()
   }, [editorMode, removeProxy])
 
   const handleEnterEdit = useCallback(() => loadEditor(), [loadEditor])
@@ -738,6 +768,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     setStatus("idle")
     setHasExecuted(false)
     setOutputVisible(false)
+    setRevealRequested(false)
     pendingInputRef.current = ""
     if (proxyRef.current) proxyRef.current.value = ""
   }, [terminateWorker])
@@ -745,16 +776,21 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const handleReset = useCallback(() => {
     clearOutput()
     pendingClearRef.current = false
+    clearUndoDocRef.current = null
     updateCode(exampleRef.current.code)
     // Reset and Clear are whole-document edits, preserving the visitor's undo history.
     editorRef.current?.setDoc(exampleRef.current.code)
     setStatusAnnouncement(`Reset to the original ${exampleRef.current.filename} example.`)
     if (editorRef.current) editorRef.current.focus()
-    else if (proxyRef.current) proxyRef.current.focus()
+    else if (proxyRef.current) {
+      focusOnReadyRef.current = true
+      proxyRef.current.focus()
+    }
     else runButtonRef.current?.focus()
   }, [clearOutput, updateCode])
 
   const handleClear = useCallback(() => {
+    const previous = codeRef.current + pendingInputRef.current + (proxyRef.current?.value ?? "")
     clearOutput()
     const editor = editorRef.current
     if (editor) {
@@ -762,18 +798,22 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       editor.placeCursorAtEnd()
       editor.focus()
     } else {
-      // Mount with the previous code first so Clear can be undone even on first interaction.
+      // Keep the live document current immediately; seed the lazy editor from the
+      // saved document and apply Clear as a history entry once the import resolves.
+      if (!pendingClearRef.current || previous !== CLEAR_PYTHON_CODE) clearUndoDocRef.current = previous
       pendingClearRef.current = true
+      updateCode(CLEAR_PYTHON_CODE)
       loadEditor()
     }
     setStatusAnnouncement("Editor cleared. Write your Python on line two. Undo restores your code.")
-  }, [clearOutput, loadEditor])
+  }, [clearOutput, loadEditor, updateCode])
 
   const handleExample = useCallback((filename: string) => {
     const next = PYTHON_EXAMPLES.find(item => item.filename === filename)
     if (!next || next === exampleRef.current) return
     clearOutput()
     pendingClearRef.current = false
+    clearUndoDocRef.current = null
     exampleRef.current = next
     setExample(next)
     updateCode(next.code)
@@ -878,7 +918,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
             className="home-code-scroller"
             onClick={handleStaticClick}
           >
-            {example.filename === HERO_FILENAME ? staticCode : <pre className="home-code-fallback">{code}</pre>}
+            {example.filename === HERO_FILENAME && code === DEFAULT_PYTHON_CODE ? staticCode : <pre className="home-code-fallback">{code}</pre>}
           </div>
         ) : null}
         <div ref={mountRef} className="home-cm-mount" />

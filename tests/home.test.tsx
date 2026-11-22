@@ -642,3 +642,23 @@ test('Clear followed immediately by Run posts the pending cleared code', async (
   expect(MockPythonWorker.instances.at(-1)!.posted.find(message => (message as { type: string }).type === 'run')).toMatchObject({ code: CLEAR_PYTHON_CODE })
   await editorLoaded()
 })
+
+test('Clear updates the pending document and Hafa link immediately; Run snapshots buffered input without consuming it', async () => {
+  liveMedia({ '(pointer: coarse)': true })
+  MockPythonWorker.instances = []
+  vi.stubGlobal('Worker', MockPythonWorker)
+  const { container } = renderHero()
+  fireEvent.click(screen.getByRole('button', { name: 'Clear Python editor' }))
+  expect(screen.getByRole('combobox', { name: 'Python example (modified)' })).toBeTruthy()
+  const link = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
+  const project = JSON.parse(Buffer.from(new URLSearchParams(link.split('#')[1]).get('project')!, 'base64url').toString())
+  expect(project.files[0].content).toBe(CLEAR_PYTHON_CODE)
+  expect(container.querySelector('.home-code-fallback')!.textContent).toBe(CLEAR_PYTHON_CODE)
+  const proxy = container.querySelector<HTMLTextAreaElement>('.home-focus-proxy')!
+  proxy.value = 'print("hello")'
+  fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
+  const run = MockPythonWorker.instances.at(-1)!.posted.find(message => (message as { type: string }).type === 'run')
+  expect(run).toMatchObject({ code: CLEAR_PYTHON_CODE + 'print("hello")' })
+  expect(proxy.value).toBe('print("hello")')
+  await editorLoaded()
+})

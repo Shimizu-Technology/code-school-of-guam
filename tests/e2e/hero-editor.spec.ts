@@ -600,3 +600,89 @@ test('clean multi-line output starts at line one and output typography follows v
     await expect(term).toHaveCSS('font-size', font)
   }
 })
+
+test('slow Clear immediately updates the document/link and Run includes buffered typing, which later transfers once', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'touch proxy input')
+  test.setTimeout(150_000)
+  await page.goto('/', { waitUntil: 'networkidle' })
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
+  await page.getByRole('button', { name: 'Clear Python editor' }).tap()
+  await expect(page.getByRole('combobox', { name: 'Python example (modified)' })).toBeVisible()
+  const href = await page.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')
+  const payload = new URLSearchParams(href!.split('#')[1]).get('project')!
+  expect(JSON.parse(Buffer.from(payload, 'base64url').toString()).files[0].content).toBe(CLEAR_PYTHON_CODE)
+  await expect(page.locator('.home-code-fallback')).toHaveText(CLEAR_PYTHON_CODE)
+  await page.keyboard.insertText('print("hello")')
+  await page.locator('.home-editor-actions').getByRole('button', { name: 'Run your Python code' }).tap()
+  await expect(page.locator('.home-term-status-ok')).toBeVisible({ timeout: 120_000 })
+  await expect(page.locator('.home-term')).toContainText('hello')
+  expect(await page.locator('.home-focus-proxy').inputValue()).toBe('print("hello")')
+  release()
+  await expect.poll(() => editorText(page)).toBe(CLEAR_PYTHON_CODE + 'print("hello")')
+  await page.locator('.cm-content').focus()
+  await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
+  await expect.poll(() => editorText(page)).toBe(CLEAR_PYTHON_CODE)
+  await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
+})
+
+test('Clear remains current through an import rejection and retry seeds the original document for Undo', async ({ page }, testInfo) => {
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await page.route('**/_next/static/chunks/*.js', route => route.abort())
+  await page.getByRole('button', { name: 'Clear Python editor' }).click()
+  await expect(page.locator('.home-code-note-error')).toBeVisible()
+  await expect(page.getByRole('combobox', { name: 'Python example (modified)' })).toBeVisible()
+  await expect(page.locator('.home-code-fallback')).toHaveText(CLEAR_PYTHON_CODE)
+  const href = await page.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')
+  expect(JSON.parse(Buffer.from(new URLSearchParams(href!.split('#')[1]).get('project')!, 'base64url').toString()).files[0].content).toBe(CLEAR_PYTHON_CODE)
+  await page.unroute('**/_next/static/chunks/*.js')
+  await page.getByRole('button', { name: 'Try again' }).click()
+  await expect(page.locator('.cm-content')).toBeFocused()
+  expect(await editorText(page)).toBe(CLEAR_PYTHON_CODE)
+  if (isTouch(testInfo.project.name)) await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
+  else await page.keyboard.press(`${mod()}+z`)
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
+})
+
+test('a delayed import does not reclaim focus after the visitor tabs out of the editor workflow', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'networkidle' })
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
+  await page.getByRole('button', { name: 'Edit Python code' }).click()
+  const elsewhere = page.getByRole('link', { name: /Open in Hafa Code/ })
+  await elsewhere.focus()
+  await page.keyboard.press('Tab')
+  await expect.poll(() => page.evaluate(() => !!document.activeElement && !document.activeElement.closest('figure.home-editor'))).toBe(true)
+  const focused = await page.evaluate(() => { document.activeElement!.setAttribute('data-focus-before-ready', 'true'); return document.activeElement!.tagName })
+  release()
+  await expect(page.locator('.cm-content')).toBeVisible()
+  await expect(page.locator('[data-focus-before-ready="true"]')).toBeFocused()
+  expect(await page.evaluate(() => document.activeElement!.tagName)).toBe(focused)
+  await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
+})
+
+test('first toolbar Run waits for keyboard close before revealing output; header Run reveals after render', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'touch keyboard close')
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await openEditor(page, testInfo.project.name)
+  await page.evaluate(() => {
+    ;(window as unknown as { __setKeyboard: (h: number) => void }).__setKeyboard(336)
+    const term = document.querySelector<HTMLElement>('.home-term')!
+    term.dataset.reveals = '0'
+    term.scrollIntoView = () => { term.dataset.reveals = String(Number(term.dataset.reveals) + 1) }
+    // Hold only the close-keyboard fallback so assertions don't depend on machine speed.
+    const timeout = window.setTimeout.bind(window)
+    window.setTimeout = ((handler: TimerHandler, delay?: number, ...args: unknown[]) => timeout(handler, delay === 700 ? 10_000 : delay, ...args)) as typeof window.setTimeout
+  })
+  await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Run your Python code' }).tap()
+  await expect(page.locator('.home-term')).toBeVisible()
+  await expect(page.locator('.home-term')).toHaveAttribute('data-reveals', '0')
+  await page.evaluate(() => (window as unknown as { __setKeyboard: (h: number) => void }).__setKeyboard(0))
+  await expect(page.locator('.home-term')).toHaveAttribute('data-reveals', '1')
+  await page.getByRole('button', { name: 'Reset to original Python example' }).tap()
+  await page.locator('.home-editor-actions').getByRole('button', { name: 'Run your Python code' }).tap()
+  await expect(page.locator('.home-term')).toHaveAttribute('data-reveals', '2')
+})
