@@ -17,7 +17,7 @@ import {
   type ViewUpdate,
 } from "@codemirror/view"
 import { LanguageSupport, bracketMatching, indentOnInput, indentUnit, syntaxHighlighting } from "@codemirror/language"
-import { defaultKeymap, history, historyKeymap, indentLess, indentMore, redo, undo } from "@codemirror/commands"
+import { defaultKeymap, history, historyKeymap, indentLess, indentMore, redo, undo, isolateHistory } from "@codemirror/commands"
 import { closeBrackets, closeBracketsKeymap, insertBracket } from "@codemirror/autocomplete"
 import { pythonLanguage } from "@codemirror/lang-python"
 import { hangingIndentCh, pythonHighlighter } from "@/lib/python-highlight"
@@ -282,6 +282,7 @@ export function createPythonEditor(options: PythonEditorOptions): PythonEditorHa
         changes: { from: 0, to: view.state.doc.length, insert: doc },
         selection: EditorSelection.cursor(Math.min(view.state.selection.main.head, doc.length)),
         userEvent: "input.reset",
+        annotations: isolateHistory.of("full"),
       })
     },
     focus: () => view.focus(),

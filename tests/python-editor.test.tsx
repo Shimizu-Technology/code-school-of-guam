@@ -6,7 +6,7 @@ import { EditorView } from '@codemirror/view'
 import { accessoryCommands, createPythonEditor, pythonEditorExtensions, type PythonEditorHandle } from '../components/home/python-editor'
 import { PythonCodeStatic } from '../components/home/python-code-static'
 import { hangingIndentCh, highlightPythonLines } from '../lib/python-highlight'
-import { DEFAULT_PYTHON_CODE } from '../lib/python-sample'
+import { DEFAULT_PYTHON_CODE, CLEAR_PYTHON_CODE } from '../lib/python-sample'
 
 const noop = () => {}
 const extensions = pythonEditorExtensions({ ariaLabel: 'Python code editor', onChange: noop, onRun: noop, onFocusChange: noop })
@@ -159,4 +159,20 @@ test('accessory pairs register their closers, and iOS smart quotes use the same 
   type('Hi')
   type('”')
   expect(editor.getDoc()).toBe('"Hi"')
+})
+
+
+test('Clear is one undoable replacement even immediately after typing, and the cursor can start on line two', () => {
+  const parent = document.createElement('div')
+  document.body.appendChild(parent)
+  editor = createPythonEditor({ parent, doc: 'print("previous")', ariaLabel: 'Python', onChange: noop, onRun: noop, onFocusChange: noop })
+  editor.placeCursorAtEnd()
+  editor.insertAtCursor(' # my edit')
+  const previous = editor.getDoc()
+  editor.setDoc(CLEAR_PYTHON_CODE)
+  editor.placeCursorAtEnd()
+  expect(editor.getDoc()).toBe('# Write your Python here\n')
+  expect(editor.view.state.doc.lineAt(editor.view.state.selection.main.head).number).toBe(2)
+  editor.runKey('undo')
+  expect(editor.getDoc()).toBe(previous)
 })

@@ -290,7 +290,7 @@ test('built / ships highlighted hero code with no editor JavaScript, and the laz
   const chunksDir = path.join('.next', 'static', 'chunks')
   const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]))
   const initial = new Set([...html.matchAll(/\/_next\/static\/chunks\/([^"?]+\.js)/g)].map((m) => path.join(chunksDir, m[1])))
-  const isEditorCode = (src) => /cm-gutterElement|FormatReplacement/.test(src)
+  const isEditorCode = (src) => /cm-gutterElement|FormatReplacement|placeCursorAtEnd\(\)\{/.test(src)
   for (const file of initial) assert.ok(!isEditorCode(fs.readFileSync(file, 'utf8')), `/: first-load chunk ${file} contains CodeMirror`)
   const lazy = walk(chunksDir).filter((f) => f.endsWith('.js') && !initial.has(f) && isEditorCode(fs.readFileSync(f, 'utf8')))
   assert.ok(lazy.length > 0, 'lazy editor chunk not found')

@@ -13,6 +13,7 @@ import {
   RUNTIME_SLOW_HINT_MS,
   STOP_GUARD_MS,
 } from '../components/home/hero-editor'
+import { CLEAR_PYTHON_CODE, PYTHON_EXAMPLES } from '../lib/python-sample'
 import { PythonCodeStatic } from '../components/home/python-code-static'
 import type { PythonEditorOptions } from '../components/home/python-editor'
 import { buildHafaCodePythonLink, buildHafaCodePythonUrl, MAX_ENCODED_URL_LENGTH } from '../lib/hafa-code-link'
@@ -101,7 +102,7 @@ class MockPythonWorker {
   }
 }
 
-test('hero editor renders complete beginner program and output immediately without creating a worker on mount', () => {
+test('hero editor renders highlighted code with output hidden and no worker on mount', () => {
   reducedMotion()
   MockPythonWorker.instances = []
   vi.stubGlobal('Worker', MockPythonWorker)
@@ -110,7 +111,7 @@ test('hero editor renders complete beginner program and output immediately witho
   expect(code).toContain('for item, cost in expenses.items():')
   expect(container.querySelector('.home-code-static')!.hasAttribute('aria-label')).toBe(false)
   expect(screen.getByRole('region', { name: 'Sample Python code: expense_summary.py' }).tabIndex).toBe(0)
-  expect(screen.getByRole('region', { name: 'Python program output' }).tabIndex).toBe(0)
+  expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(true)
   expect(container.querySelectorAll('.home-code-row')).toHaveLength(EDITOR_LINES.length)
   // Highlighted before any editor code loads: keywords, strings, numbers and calls all have colors.
   const classOf = (text: string) => Array.from(container.querySelectorAll('.home-code-static span[class^="home-tok-"]')).find((el) => el.textContent === text)?.className
@@ -123,7 +124,7 @@ test('hero editor renders complete beginner program and output immediately witho
   expect(rows[0].style.getPropertyValue('--hang')).toBe('4ch')
   expect(rows[11].style.getPropertyValue('--hang')).toBe('8ch')
   expect(editorSpy.instances).toBe(0)
-  for (const line of EDITOR_OUTPUT) expect(container.querySelector('.home-term')!.textContent).toContain(line)
+  expect(container.querySelector('.home-term')!.textContent).not.toContain('Food: $61')
   expect(MockPythonWorker.instances).toHaveLength(0)
   expect(screen.getByRole('button', { name: 'Run the Python example in your browser' })).toBeTruthy()
   expect(screen.getByRole('button', { name: /Write your own/ })).toBeTruthy()
@@ -223,14 +224,14 @@ test('hero editor runs Python in a Web Worker on click, supports Write your own,
       worker4.emit({ id: run4.id, type: 'result', stdout: '42\n', stderr: '', exitCode: 0 })
     })
     expect(worker4.terminated).toBe(false)
-    fireEvent.click(screen.getByRole('button', { name: 'Reset to default Python example' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Reset to original Python example' }))
     expect(worker4.terminated).toBe(true)
     // Stale message from terminated worker is ignored.
     act(() => { worker4.emit({ id: run4.id, type: 'ready' }) })
     act(() => { vi.advanceTimersByTime(20) })
     expect(document.activeElement).toBe(textarea)
     expect(textarea.value).toBe(DEFAULT_PYTHON_CODE)
-    expect(container.querySelector('.home-term')!.textContent).toContain('Food: $61')
+    expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(true)
   } finally {
     vi.useRealTimers()
   }
@@ -258,7 +259,7 @@ test('hero editor enforces the generous load safety cap and moves focus to Run a
       worker2.emit({ id: run2.id, type: 'started' })
       worker2.emit({ id: run2.id, type: 'result', stdout: 'ok\n', stderr: '', exitCode: 0 })
     })
-    fireEvent.click(screen.getByRole('button', { name: 'Reset to default Python example' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Reset to original Python example' }))
     act(() => { vi.advanceTimersByTime(20) })
     expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Run the Python example in your browser' }))
   } finally {
@@ -575,4 +576,58 @@ test('sliding between coding keys does not insert the neighboring key', async ()
   fireEvent.pointerUp(pair, { pointerId: 1, clientX: 23, clientY: 20 })
   fireEvent.click(pair)
   expect(editorSpy.runKey).toEqual([])
+})
+
+
+test('Clear loads the editor, focuses it, and Reset restores the selected example', async () => {
+  reducedMotion()
+  vi.stubGlobal('Worker', MockPythonWorker)
+  renderHero()
+  fireEvent.click(screen.getByRole('button', { name: 'Clear Python editor' }))
+  await editorLoaded()
+  const textbox = screen.getByRole('textbox', { name: /Python code editor/ }) as HTMLTextAreaElement
+  expect(textbox.value).toBe(CLEAR_PYTHON_CODE)
+  expect(document.activeElement).toBe(textbox)
+  fireEvent.click(screen.getByRole('button', { name: 'Reset to original Python example' }))
+  expect(textbox.value).toBe(DEFAULT_PYTHON_CODE)
+})
+
+test('every example updates its code, caption, worker filename, and Hafa Code payload; switching clears output', async () => {
+  reducedMotion()
+  vi.stubGlobal('Worker', MockPythonWorker)
+  const { container } = renderHero()
+  for (const example of PYTHON_EXAMPLES) {
+    fireEvent.click(screen.getByRole('combobox', { name: 'Python example' }))
+    fireEvent.click(screen.getByRole('option', { name: example.filename }))
+    await editorLoaded()
+    const params = new URLSearchParams(screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!.split('#')[1])
+    const project = JSON.parse(Buffer.from(params.get('project')!, 'base64url').toString())
+    expect(params.get('starter')).toBe(example.starterKey)
+    expect(project).toMatchObject({ title: example.title, entryPath: example.filename, files: [{ path: example.filename, content: example.code }] })
+    expect(container.querySelector('.home-example-caption')!.textContent).toBe(example.caption)
+    expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(true)
+    fireEvent.click(screen.getByRole('button', { name: /Run (your Python code|the Python example in your browser)/ }))
+    const worker = MockPythonWorker.instances.at(-1)!
+    const run = worker.posted.at(-1) as { id: string }
+    expect(run).toMatchObject({ type: 'run', filename: example.filename, code: example.code })
+    act(() => worker.emit({ id: run.id, type: 'result', stdout: example.lastOutput, exitCode: 0 }))
+    expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(false)
+    fireEvent.click(screen.getByRole('button', { name: 'Clear Python editor' }))
+    await editorLoaded()
+    fireEvent.click(screen.getByRole('button', { name: 'Reset to original Python example' }))
+    expect((screen.getByRole('textbox', { name: /Python code editor/ }) as HTMLTextAreaElement).value).toBe(example.code)
+  }
+})
+
+test('examples have distinct starters and compact, noninteractive programs; the original is unchanged', () => {
+  expect(new Set(PYTHON_EXAMPLES.map(example => example.starterKey)).size).toBe(7)
+  expect(PYTHON_EXAMPLES[0].code).toBe(DEFAULT_PYTHON_CODE)
+  for (const example of PYTHON_EXAMPLES.slice(1)) {
+    expect(example.code.split('\n').length).toBeLessThanOrEqual(14)
+    expect(example.code).not.toContain('input(')
+    expect(example.code.split('\n').every(line => line.length <= 32)).toBe(true)
+  }
+  const chamorro = PYTHON_EXAMPLES.find(example => example.filename === 'chamorro_hello.py')!.code
+  expect(chamorro).toContain('Håfa adai')
+  expect(chamorro).toContain("Si Yu'os ma'åse'")
 })

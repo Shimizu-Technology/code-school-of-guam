@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test'
 import fs from 'node:fs'
 import path from 'node:path'
+import { PYTHON_EXAMPLES, CLEAR_PYTHON_CODE } from '../../lib/python-sample'
 
 const SHOTS = process.env.E2E_SHOTS_DIR ?? path.join('test-results', 'hero-editor')
 fs.mkdirSync(SHOTS, { recursive: true })
@@ -48,6 +49,7 @@ async function openEditor(page: Page, projectName: string) {
   else await button.click()
   await expect(page.locator('.cm-content')).toBeVisible()
   await expect.poll(() => focusedInEditor(page)).toBe(true)
+  await expect(page.locator('.cm-content')).toHaveCSS('font-size', isTouch(projectName) ? '16px' : '14px')
 }
 
 test.beforeEach(async ({ page }) => {
@@ -105,7 +107,7 @@ test('tapping the code swaps in CodeMirror with no layout shift and the cursor w
   page.on('response', async (response) => {
     if (response.request().resourceType() !== 'script') return
     const body = await response.body().catch(() => null)
-    if (body && /cm-gutterElement|highlightTree|FormatReplacement/.test(body.toString())) editorChunks.push(body.length)
+    if (body && /cm-gutterElement|highlightTree|FormatReplacement|placeCursorAtEnd/.test(body.toString())) editorChunks.push(body.length)
   })
   await page.goto('/', { waitUntil: 'networkidle' })
   const region = page.getByRole('region', { name: 'Sample Python code: expense_summary.py' })
@@ -148,8 +150,8 @@ test('tapping the code swaps in CodeMirror with no layout shift and the cursor w
   expect(after.color).toBe(before.color)
   expect(after.cursorLine).toBe(14)
   const gz = editorChunks.reduce((a, b) => a + b, 0)
-  testInfo.annotations.push({ type: 'editor-chunk-transfer-bytes', description: String(gz) })
-  console.log(`[${testInfo.project.name}] editor chunks loaded on tap: ${editorChunks.length} files, ${(gz / 1024).toFixed(1)} KB transferred (decoded body sizes)`)
+  testInfo.annotations.push({ type: 'editor-chunk-decoded-bytes', description: String(gz) })
+  console.log(`[${testInfo.project.name}] editor chunks loaded on tap: ${editorChunks.length} files, ${(gz / 1024).toFixed(1)} KB decoded body sizes`)
   await shot(page, '02-editing-focused', testInfo.project.name)
 })
 
@@ -212,11 +214,11 @@ test('Run executes the edited program and brings the output into view; Reset res
   })
   expect(inView).toBe(true)
   await shot(page, '04-ran', testInfo.project.name)
-  const reset = page.getByRole('button', { name: 'Reset to default Python example' })
+  const reset = page.getByRole('button', { name: 'Reset to original Python example' })
   if (isTouch(testInfo.project.name)) await reset.tap()
   else await reset.click()
   await expect.poll(() => editorText(page)).toContain('for item, cost in expenses.items():')
-  await expect(term).toContainText('Under budget by $2')
+  await expect(page.locator('.home-term')).toBeHidden()
   // Reset is undoable.
   if (isTouch(testInfo.project.name)) {
     await page.locator('.cm-content').focus()
@@ -401,7 +403,7 @@ test('rejected editor import retains pending input on retry, and Reset clears pe
     await page.route('**/_next/static/chunks/*.js', fail)
     await page.getByRole('button', { name: 'Write your own' }).tap()
     await page.keyboard.insertText('\nprint("pending")')
-    if (reset) await page.getByRole('button', { name: 'Reset to default Python example' }).tap()
+    if (reset) await page.getByRole('button', { name: 'Reset to original Python example' }).tap()
     release()
     await expect(page.locator('.home-code-note-error')).toContainText('The editor didn’t load.')
     await page.unroute('**/_next/static/chunks/*.js', fail)
@@ -445,4 +447,53 @@ test('touch landscape: code clears the coding keys and the chat launcher stays h
   await page.locator('.cm-content').blur()
   await expect(page.locator('body')).not.toHaveAttribute('data-coding-keys', 'open')
   await expect(page.locator('figure.home-editor')).not.toHaveAttribute('style', /code-kb-max-h/)
+})
+
+
+test('Clear from the static view is undoable; editing, reset and the example picker work with keyboard and touch', async ({ page }, testInfo) => {
+  await page.goto('/', { waitUntil: 'networkidle' })
+  await expect(page.locator('.home-term')).toBeHidden()
+  const clear = page.getByRole('button', { name: 'Clear Python editor' })
+  if (isTouch(testInfo.project.name)) await clear.tap()
+  else await clear.click()
+  await expect(page.locator('.cm-content')).toBeFocused()
+  await expect.poll(() => editorText(page)).toBe(CLEAR_PYTHON_CODE)
+  await expect(page.locator('.cm-content')).toHaveCSS('font-size', isTouch(testInfo.project.name) ? '16px' : '14px')
+  await shot(page, '07-cleared', testInfo.project.name)
+  if (isTouch(testInfo.project.name)) {
+    await page.getByRole('toolbar', { name: 'Coding keys' }).getByRole('button', { name: 'Undo' }).tap()
+  } else await page.keyboard.press(`${mod()}+z`)
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES[0].code)
+  const picker = page.getByRole('combobox', { name: 'Python example' })
+  if (isTouch(testInfo.project.name)) await picker.tap()
+  else await picker.click()
+  await expect(page.getByRole('listbox', { name: 'Python examples' })).toBeVisible()
+  await shot(page, '08-picker-open', testInfo.project.name)
+  await page.keyboard.press('End')
+  await page.keyboard.press('Enter')
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES.at(-1)!.code)
+  await page.getByRole('button', { name: 'Clear Python editor' }).click()
+  await page.getByRole('button', { name: 'Reset to original Python example' }).click()
+  await expect.poll(() => editorText(page)).toBe(PYTHON_EXAMPLES.at(-1)!.code)
+})
+
+test('all seven examples execute cleanly in real Pyodide and carry their code into Hafa Code', async ({ page }, testInfo) => {
+  test.setTimeout(240_000)
+  await page.goto('/', { waitUntil: 'networkidle' })
+  for (const example of PYTHON_EXAMPLES) {
+    await page.getByRole('combobox', { name: 'Python example' }).click()
+    await page.getByRole('option', { name: example.filename, exact: true }).click()
+    await expect(page.locator('.home-term')).toBeHidden()
+    await expect(page.locator('.home-example-caption')).toHaveText(example.caption)
+    const url = await page.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')
+    const params = new URLSearchParams(url!.split('#')[1])
+    const project = JSON.parse(Buffer.from(params.get('project')!, 'base64url').toString())
+    expect(params.get('starter')).toBe(example.starterKey)
+    expect(project).toMatchObject({ entryPath: example.filename, files: [{ path: example.filename, content: example.code }] })
+    await page.locator('.home-editor-actions').getByRole('button', { name: /Run (your Python code|the Python example in your browser)/ }).click()
+    await expect(page.locator('.home-term-status-ok')).toHaveText('Ran in browser', { timeout: 120_000 })
+    await expect(page.locator('.home-term')).toContainText(example.lastOutput)
+    await expect(page.locator('.home-term-err')).toHaveCount(0)
+    if (example.filename === 'guam_weather.py') await shot(page, '09-weather-ran', testInfo.project.name)
+  }
 })

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, Check, Copy, Pencil, Play, RotateCcw, Square } from "lucide-react"
+import { ArrowUpRight, Check, Copy, Pencil, Play, RotateCcw, Square, Eraser } from "lucide-react"
 import {
   useCallback,
   useEffect,
@@ -15,8 +15,9 @@ import {
   type ReactNode,
 } from "react"
 import { createPortal } from "react-dom"
+import { ExamplePicker } from "./example-picker"
 import { buildHafaCodePythonLink } from "@/lib/hafa-code-link"
-import { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_FILENAME, HERO_STARTER_KEY } from "@/lib/python-sample"
+import { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_FILENAME, HERO_STARTER_KEY, PYTHON_EXAMPLES, CLEAR_PYTHON_CODE } from "@/lib/python-sample"
 // Type-only import: erased at build time, so CodeMirror stays out of first-load JS.
 import type { AccessoryKey, PythonEditorHandle } from "./python-editor"
 
@@ -229,6 +230,10 @@ function CodingKeys({ busy, onKey, onRun, onStop, onLayout }: CodingKeysProps) {
 }
 
 export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
+  const [example, setExample] = useState(PYTHON_EXAMPLES[0])
+  const exampleRef = useRef(PYTHON_EXAMPLES[0])
+  const pendingClearRef = useRef(false)
+  const [outputVisible, setOutputVisible] = useState(false)
   const [code, setCode] = useState(DEFAULT_PYTHON_CODE)
   const [editorMode, setEditorMode] = useState<EditorMode>("static")
   const [editorFocused, setEditorFocused] = useState(false)
@@ -237,7 +242,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const [modifierLabel, setModifierLabel] = useState("Ctrl")
   const [status, setStatus] = useState<RunStatus>("idle")
   const [slowLoadHint, setSlowLoadHint] = useState(false)
-  const [stdoutLines, setStdoutLines] = useState<string[]>([...EDITOR_OUTPUT])
+  const [stdoutLines, setStdoutLines] = useState<string[]>([])
   const [stderrText, setStderrText] = useState("")
   const [noticeText, setNoticeText] = useState("")
   const [statusAnnouncement, setStatusAnnouncement] = useState("")
@@ -271,7 +276,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const focusOnReadyRef = useRef(false)
 
   const isEditing = editorMode === "loading" || editorMode === "ready"
-  const isModified = code !== DEFAULT_PYTHON_CODE
+  const isModified = code !== example.code
   const isBusy = status === "loading" || status === "running"
 
   const updateCode = useCallback((next: string) => {
@@ -349,6 +354,10 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     term.scrollIntoView({ block: "nearest", behavior: prefersReducedMotion() ? "auto" : "smooth" })
   }, [])
 
+  useLayoutEffect(() => {
+    if (outputVisible) revealOutput()
+  }, [outputVisible, revealOutput])
+
   const ensureWorker = useCallback(() => {
     if (workerRef.current) return workerRef.current
     if (typeof Worker === "undefined") {
@@ -370,7 +379,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         clearTimers()
         setSlowLoadHint(false)
         setStatus("running")
-        setStatusAnnouncement(`Running ${HERO_FILENAME}`)
+        setStatusAnnouncement(`Running ${exampleRef.current.filename}`)
         // Start the 5s execution timeout only once Pyodide is loaded and Python starts executing.
         execTimeoutRef.current = window.setTimeout(() => {
           terminateWorker()
@@ -444,6 +453,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   }, [ensureWorker])
 
   const startRun = useCallback(() => {
+    setOutputVisible(true)
     clearTimers()
     const runId = `run-${++runIdRef.current}`
     activeRunIdRef.current = runId
@@ -455,7 +465,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     setSlowLoadHint(false)
     const needsLoad = !workerReadyRef.current
     setStatus(needsLoad ? "loading" : "running")
-    setStatusAnnouncement(needsLoad ? "Loading Python runtime in your browser…" : `Running ${HERO_FILENAME}`)
+    setStatusAnnouncement(needsLoad ? "Loading Python runtime in your browser…" : `Running ${exampleRef.current.filename}`)
 
     try {
       const worker = ensureWorker()
@@ -473,7 +483,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         setStatusAnnouncement("Python runtime load timed out.")
       }, RUNTIME_LOAD_SAFETY_TIMEOUT_MS)
 
-      worker.postMessage({ id: runId, type: "run", code: codeRef.current, filename: HERO_FILENAME })
+      worker.postMessage({ id: runId, type: "run", code: codeRef.current, filename: exampleRef.current.filename })
     } catch (err) {
       terminateWorker()
       setStderrText(err instanceof Error ? err.message : "Could not start Python.")
@@ -643,7 +653,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           const editor = mod.createPythonEditor({
             parent,
             doc: codeRef.current,
-            ariaLabel: `Python code editor for ${HERO_FILENAME}`,
+            ariaLabel: "Python code editor",
             describedBy: "home-editor-hint",
             onChange: (next) => {
               codeRef.current = next
@@ -690,6 +700,11 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     if (!editor) return
     // Transfer focus directly from the still-mounted iOS holder, with no body-focus gap.
     editor.focus()
+    if (pendingClearRef.current) {
+      editor.setDoc(CLEAR_PYTHON_CODE)
+      editor.placeCursorAtEnd()
+      pendingClearRef.current = false
+    }
     const typed = pendingInputRef.current + (proxyRef.current?.value ?? "")
     editor.insertAtCursor(typed)
     pendingInputRef.current = ""
@@ -709,28 +724,57 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
     [loadEditor],
   )
 
-  const handleReset = useCallback(() => {
-    // Always terminate the worker on Reset so any mutated Python globals/builtins start fresh.
+  const clearOutput = useCallback(() => {
     terminateWorker()
-    pendingInputRef.current = ""
-    if (proxyRef.current) proxyRef.current.value = ""
-    updateCode(DEFAULT_PYTHON_CODE)
-    // An undoable replace, so Undo brings the visitor's own code back.
-    editorRef.current?.setDoc(DEFAULT_PYTHON_CODE)
-    setStdoutLines([...EDITOR_OUTPUT])
+    setStdoutLines([])
     setStderrText("")
     setNoticeText("")
     setStatus("idle")
     setHasExecuted(false)
-    setStatusAnnouncement(`Reset to the default ${HERO_FILENAME} example.`)
-    requestAnimationFrame(() => {
-      if (editorRef.current) {
-        editorRef.current.focus()
-      } else {
-        runButtonRef.current?.focus()
-      }
-    })
-  }, [terminateWorker, updateCode])
+    setOutputVisible(false)
+    pendingInputRef.current = ""
+    if (proxyRef.current) proxyRef.current.value = ""
+  }, [terminateWorker])
+
+  const handleReset = useCallback(() => {
+    clearOutput()
+    pendingClearRef.current = false
+    updateCode(exampleRef.current.code)
+    // Reset and Clear are whole-document edits, preserving the visitor's undo history.
+    editorRef.current?.setDoc(exampleRef.current.code)
+    setStatusAnnouncement(`Reset to the original ${exampleRef.current.filename} example.`)
+    if (editorRef.current) editorRef.current.focus()
+    else if (proxyRef.current) proxyRef.current.focus()
+    else runButtonRef.current?.focus()
+  }, [clearOutput, updateCode])
+
+  const handleClear = useCallback(() => {
+    clearOutput()
+    const editor = editorRef.current
+    if (editor) {
+      editor.setDoc(CLEAR_PYTHON_CODE)
+      editor.placeCursorAtEnd()
+      editor.focus()
+    } else {
+      // Mount with the previous code first so Clear can be undone even on first interaction.
+      pendingClearRef.current = true
+      loadEditor()
+    }
+    setStatusAnnouncement("Editor cleared. Write your Python on line two. Undo restores your code.")
+  }, [clearOutput, loadEditor])
+
+  const handleExample = useCallback((filename: string) => {
+    const next = PYTHON_EXAMPLES.find(item => item.filename === filename)
+    if (!next || next === exampleRef.current) return
+    clearOutput()
+    pendingClearRef.current = false
+    exampleRef.current = next
+    setExample(next)
+    updateCode(next.code)
+    editorRef.current?.setDoc(next.code)
+    loadEditor()
+    setStatusAnnouncement(`Selected ${next.filename}. ${next.caption}.`)
+  }, [clearOutput, loadEditor, updateCode])
 
   const handleCopyCode = useCallback(async () => {
     try {
@@ -746,11 +790,11 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const hafaCodeLink = useMemo(
     () =>
       buildHafaCodePythonLink(code, {
-        title: "Expense summary",
-        filename: HERO_FILENAME,
-        starterKey: HERO_STARTER_KEY,
+        title: example.title,
+        filename: example.filename,
+        starterKey: example.starterKey,
       }),
-    [code],
+    [code, example],
   )
 
   const showKeys = editorMode === "ready" && editorFocused && isCoarse
@@ -764,33 +808,31 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       data-keyboard={showKeys && keyboardIsOpen ? "open" : undefined}
     >
       <div className="home-editor-top">
-        <div className="home-editor-tabs" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <span className="home-editor-file">
-            {HERO_FILENAME}
-            {isModified ? <b className="home-editor-dirty" /> : null}
-          </span>
+        <div className="home-editor-tabs">
+          <i aria-hidden="true" />
+          <i aria-hidden="true" />
+          <i aria-hidden="true" />
+          <ExamplePicker value={example.filename} modified={isModified} onChange={handleExample} />
         </div>
         <div className="home-editor-actions">
           {!isEditing ? (
-            <button type="button" className="home-ed-btn" onClick={handleEnterEdit}>
+            <button type="button" className="home-ed-btn" onClick={handleEnterEdit} aria-label="Write your own">
               <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-              Write your own
+              Edit
             </button>
           ) : null}
-          {isModified || hasExecuted || editorMode === "loading" || editorMode === "failed" ? (
-            <button
-              type="button"
-              className="home-ed-btn"
-              onClick={handleReset}
-              aria-label="Reset to default Python example"
-            >
-              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-              Reset
-            </button>
-          ) : null}
+          <button type="button" className="home-ed-btn" onClick={handleClear} aria-label="Clear Python editor">
+            <Eraser className="h-3.5 w-3.5" aria-hidden="true" /> Clear
+          </button>
+          <button
+            type="button"
+            className="home-ed-btn"
+            onClick={handleReset}
+            aria-label="Reset to original Python example"
+          >
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+            Reset
+          </button>
           {isBusy ? (
             <button
               type="button"
@@ -815,6 +857,8 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           )}
         </div>
       </div>
+
+      <p className="home-example-caption">{example.caption}</p>
 
       <div ref={codeAreaRef} className="home-code-area" data-mode={editorMode}>
         {editorMode !== "ready" ? (
@@ -851,22 +895,20 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
         </p>
       </div>
 
-      {editorMode === "ready" && editorFocused && !isCoarse ? (
-        <p className="home-code-hint" aria-hidden="true">
+      <p className="home-code-hint" data-visible={editorMode === "ready" && editorFocused && !isCoarse ? "true" : "false"} aria-hidden="true">
           <span>
             <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves
           </span>
           <span>
             <kbd>{modifierLabel}</kbd>+<kbd>Enter</kbd> runs
           </span>
-        </p>
-      ) : null}
+      </p>
 
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable output region must be keyboard focusable */}
-      <div ref={termRef} className="home-term" role="region" aria-label="Python program output" tabIndex={0}>
+      <div ref={termRef} className="home-term" role="region" aria-label="Python program output" tabIndex={0} hidden={!outputVisible}>
         <div className="home-term-bar">
           <span className="home-term-line">
-            <span className="home-term-prompt">$</span> python {HERO_FILENAME}
+            <span className="home-term-prompt">$</span> python {example.filename}
           </span>
           {status === "loading" ? (
             <span className="home-term-status">
@@ -897,8 +939,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       </p>
 
       <figcaption id="home-editor-caption" className="sr-only">
-        Interactive Python editor with {HERO_FILENAME}: sums three expenses, prints each category, and shows the remaining
-        budget. Click Run to execute real Python in your browser, or Write your own to edit the code.
+        Interactive Python editor: {example.filename}. {example.caption}. Run Python in your browser, edit, clear, or choose another example.
       </figcaption>
 
       <div className="home-editor-foot">
