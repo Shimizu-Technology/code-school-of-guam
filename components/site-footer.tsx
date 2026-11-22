@@ -22,16 +22,33 @@ export function SiteFooter() {
           <div className="max-w-md">
             <div className="flex items-center gap-3"><Image src="/CSG-Logo.png" alt="Code School of Guam" width={40} height={40} className="rounded-md" /><span className="text-lg font-bold">Code School of Guam</span></div>
             <p className="mt-5 text-sm leading-relaxed text-slate-400">Focused coding courses and a full software development bootcamp, taught from Guam with real production context.</p>
-            <a href="https://shimizu-technology.com" target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-ruby-300">In partnership with Shimizu Technology <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></a>
+            <a href="https://shimizu-technology.com" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-ruby-300 hover:text-ruby-200">In partnership with Shimizu Technology <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></a>
           </div>
           <div>
             <p className="csg-label text-slate-400">Explore</p>
-            <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 text-sm">{footerLinks.map(([label, href]) => <Link key={href} href={href} className="text-slate-300 hover:text-white">{label}</Link>)}</div>
+            <div className="mt-2 grid grid-cols-2 gap-x-6 text-sm">
+              {footerLinks.map(([label, href]) => (
+                <Link key={href} href={href} className="inline-flex min-h-11 items-center text-slate-300 hover:text-white">
+                  {label}
+                </Link>
+              ))}
+              <a
+                href="https://learn.codeschoolofguam.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-1.5 text-slate-300 hover:text-white"
+              >
+                CSG Learn <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            </div>
           </div>
           <div>
             <p className="csg-label text-slate-400">Contact</p>
-            <div className="mt-4 space-y-3 text-sm"><a href="mailto:codeschoolofguam@gmail.com" className="flex items-center gap-2 text-slate-300 hover:text-white"><Mail className="h-4 w-4 text-ruby-400" />codeschoolofguam@gmail.com</a><a href="tel:+16714830219" className="flex items-center gap-2 text-slate-300 hover:text-white"><Phone className="h-4 w-4 text-ruby-400" />(671) 483-0219</a></div>
-            <Link href="/courses" className="csg-press mt-5 inline-flex items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-ruby-500 active:bg-ruby-800">Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
+            <div className="mt-2 space-y-0.5 text-sm">
+              <a href="mailto:codeschoolofguam@gmail.com" className="flex min-h-11 items-center gap-2 text-slate-300 hover:text-white"><Mail className="h-4 w-4 text-ruby-400" aria-hidden="true" />codeschoolofguam@gmail.com</a>
+              <a href="tel:+16714830219" className="flex min-h-11 items-center gap-2 text-slate-300 hover:text-white"><Phone className="h-4 w-4 text-ruby-400" aria-hidden="true" />(671) 483-0219</a>
+            </div>
+            <Link href="/courses" className="csg-press mt-4 inline-flex min-h-11 items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-ruby-500 active:bg-ruby-800">Explore courses <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
           </div>
         </div>
         <div className="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row sm:justify-between"><span>© Code School of Guam</span><span>Built in Guam</span></div>

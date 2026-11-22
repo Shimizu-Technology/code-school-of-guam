@@ -26,7 +26,7 @@ export function RevealOnScroll({ rootId }: { rootId: string }) {
         ;(entry.target as HTMLElement).dataset.revealed = ""
         observer.unobserve(entry.target)
       }
-    }, { rootMargin: "0px 0px -12% 0px" })
+    }, { rootMargin: "0px 0px 40px 0px" })
     items.filter((item) => !("revealed" in item.dataset)).forEach((item) => observer.observe(item))
     return () => {
       observer.disconnect()

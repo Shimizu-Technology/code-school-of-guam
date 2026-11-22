@@ -53,7 +53,7 @@ export default function ProgramsPage() {
 
       <section className="bg-[#0b1220] py-16 text-white md:py-20">
         <div className="container mx-auto grid gap-8 px-4 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div><p className="csg-label text-ruby-300">Find your starting point</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Stay informed about the next cohort.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-300">The next full bootcamp has no announced date. If you want to start sooner, explore the focused-course path and its December invited pilot.</p></div>
+          <div><p className="csg-label text-ruby-300">Find your starting point</p><h2 className="mt-3 font-serif text-4xl font-semibold md:text-5xl">Stay informed about the next cohort.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-300">The next full bootcamp has no announced date. If you want to start sooner, explore the focused-course path and its early 2027 invited pilot.</p></div>
           <div className="flex flex-col gap-3 sm:flex-row"><Link href="/interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white hover:bg-ruby-500">Bootcamp updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link><Link href="/courses" className="inline-flex min-h-12 items-center justify-center rounded-md border border-white/20 px-6 py-3 font-bold text-white hover:bg-white/10">Focused courses</Link></div>
         </div>
       </section>

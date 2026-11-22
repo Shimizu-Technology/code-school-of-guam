@@ -56,7 +56,7 @@ test('the story deck shows one story at a time and Next moves to the following g
   for (const img of container.querySelectorAll('img')) expect(fs.existsSync(path.join('public', img.getAttribute('src')!))).toBe(true)
 })
 
-test('the capstone clip is silent, inline, lazy, and with reduced motion waits for the visitor to press Play', async () => {
+test('the capstone clip is silent, inline, metadata-preloaded with poster fallback, and with reduced motion waits for the visitor to press Play', async () => {
   reducedMotion()
   const play = vi.fn(() => Promise.resolve())
   const pause = vi.fn()
@@ -67,8 +67,9 @@ test('the capstone clip is silent, inline, lazy, and with reduced motion waits f
   expect(video.muted).toBe(true)
   expect(video.loop).toBe(true)
   expect(video.hasAttribute('playsinline')).toBe(true)
-  expect(video.getAttribute('preload')).toBe('none')
+  expect(video.getAttribute('preload')).toBe('metadata')
   expect(video.getAttribute('poster')).toBe(CAPSTONE_CLIP.poster)
+  expect(container.querySelector('img.home-live-poster')?.getAttribute('src')).toBe(CAPSTONE_CLIP.poster)
   expect(play).not.toHaveBeenCalled()
   const toggle = screen.getByRole('button', { name: 'Play capstone clip' })
   expect(toggle.getAttribute('aria-controls')).toBe(video.id)

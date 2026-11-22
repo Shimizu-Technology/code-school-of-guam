@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowRight, Menu } from "lucide-react"
+import { ArrowRight, ArrowUpRight, Menu } from "lucide-react"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 const primaryNavItems = [
@@ -20,6 +20,8 @@ const secondaryNavItems = [
   { href: "/faq", label: "FAQ" },
   { href: "/interest", label: "Bootcamp updates" },
 ]
+
+const CSG_LEARN_URL = "https://learn.codeschoolofguam.com/"
 
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -51,7 +53,7 @@ export function SiteHeader() {
     <header className={`sticky top-0 z-50 border-b border-[#ded7c9] bg-[#faf7f0]/95 text-slate-950 backdrop-blur-xl transition-shadow ${scrolled ? "shadow-lg shadow-slate-950/10" : ""}`}>
       <nav aria-label="Main navigation" className="container mx-auto px-4 sm:px-8">
         <div className="flex h-[72px] items-center justify-between gap-5">
-          <Link ref={brandRef} href="/" className="flex min-w-0 items-center gap-3">
+          <Link ref={brandRef} href="/" className="flex min-h-11 min-w-0 items-center gap-3 py-1">
             <Image src="/CSG-Logo.png" alt="Code School of Guam" width={36} height={36} className="h-9 w-9 shrink-0 rounded-md object-contain" />
             <span className="truncate text-base font-bold tracking-tight sm:text-lg">Code School of Guam</span>
           </Link>
@@ -64,9 +66,19 @@ export function SiteHeader() {
             ))}
           </div>
 
-          <Link href="/courses#course-interest" className="csg-press hidden items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-ruby-500 active:bg-ruby-800 lg:inline-flex">
-            Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
+          <div className="hidden items-center gap-2 lg:flex">
+            <a
+              href={CSG_LEARN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="csg-press inline-flex min-h-11 items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-[#eee7da] hover:text-slate-950 active:bg-[#e4dccd]"
+            >
+              CSG Learn <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+            <Link href="/courses#course-interest" className="csg-press inline-flex min-h-11 items-center gap-2 rounded-md bg-ruby-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-ruby-500 active:bg-ruby-800">
+              Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
 
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -85,6 +97,9 @@ export function SiteHeader() {
                 ))}
                 <div className="my-4 border-t border-[#ded7c9] pt-4">
                   {secondaryNavItems.map((item) => <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined} onClick={() => setMobileMenuOpen(false)} className={`block rounded-md px-4 py-3 transition-[background-color,color] duration-150 ease-out text-sm font-semibold active:bg-[#e4dccd] ${isActive(item.href) ? "bg-[#eee7da] text-ruby-800" : "text-slate-700 hover:bg-[#eee7da]"}`}>{item.label}</Link>)}
+                  <a href={CSG_LEARN_URL} target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)} className="flex min-h-11 items-center justify-between rounded-md px-4 py-3 text-sm font-semibold text-slate-700 transition-[background-color,color] duration-150 ease-out hover:bg-[#eee7da] active:bg-[#e4dccd]">
+                    CSG Learn <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                  </a>
                 </div>
                 <Link href="/courses#course-interest" onClick={() => setMobileMenuOpen(false)} className="csg-press mt-5 flex items-center justify-between rounded-md bg-ruby-600 px-4 py-3 font-bold text-white hover:bg-ruby-500 active:bg-ruby-800">Course updates <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
               </nav>

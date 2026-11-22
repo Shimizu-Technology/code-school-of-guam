@@ -35,8 +35,9 @@ export function OpeningPhoto() {
     let raf = 0
     const measure = () => {
       const rect = section.getBoundingClientRect()
+      const stickyTop = parseFloat(getComputedStyle(sticky).top) || 0
       const distance = rect.height - sticky.offsetHeight
-      return distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 1
+      return distance > 0 ? Math.min(1, Math.max(0, (stickyTop - rect.top) / distance)) : 1
     }
     const step = () => {
       raf = 0
@@ -75,7 +76,7 @@ export function OpeningPhoto() {
           </div>
           <div className="home-expand-copy">
             <div className="container mx-auto px-4 sm:px-8">
-              <p className="csg-label text-[#ffd2cd]">Practice with guidance</p>
+              <p className="csg-label text-[#ffe0dc]">Practice with guidance</p>
               <h2 id="home-teaching-title">Bring your questions. Build your understanding.</h2>
               <p className="home-expand-lead">The school grew from Leon&apos;s experience learning with an instructor. Our guided offers make room for questions, feedback, and practice.</p>
               <p className="home-expand-caption">Photo: Cohort 1&apos;s first in-person class, with a classmate joining on the TV over Zoom.</p>

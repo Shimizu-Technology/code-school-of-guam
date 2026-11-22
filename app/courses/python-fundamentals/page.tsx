@@ -2,16 +2,17 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowDown, ArrowRight, CalendarDays, Check, Clock3, Code2, MessageCircle, PlayCircle, Video } from "lucide-react"
 import { PythonInterestForm } from "@/components/python-interest-form"
+import { buildSocialMetadata } from "@/lib/metadata"
 
 export const metadata: Metadata = {
   title: "Python Fundamentals Course",
-  description: "Explore Code School of Guam's beginner Python course. An invited guided pilot is planned for December 2026; self-paced and later guided enrollment are not open yet.",
+  description: "Explore Code School of Guam's beginner Python course. An invited guided pilot is planned for early 2027; self-paced and later guided enrollment are not open yet.",
   alternates: { canonical: "/courses/python-fundamentals" },
-  openGraph: {
+  ...buildSocialMetadata({
     title: "Python Fundamentals | Code School of Guam",
-    description: "Learn Python through short lessons, browser coding, and a practical project. Join updates while we test an invited guided pilot and prepare future study options.",
+    description: "Learn Python through short lessons, browser coding, and a practical project. Join updates while we prepare an invited guided pilot for early 2027.",
     url: "/courses/python-fundamentals",
-  },
+  }),
 }
 
 const weeks = [
@@ -34,7 +35,7 @@ export default function PythonFundamentalsPage() {
               <a href="#interest" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-ruby-600 px-6 py-3 font-bold text-white transition hover:bg-ruby-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">Get course updates <ArrowRight className="h-5 w-5" aria-hidden="true" /></a>
               <a href="#course-map" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-slate-300 px-6 py-3 font-bold text-slate-950 transition hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ruby-700">See what you&apos;ll build <ArrowDown className="h-5 w-5" aria-hidden="true" /></a>
             </div>
-            <p className="mt-5 text-sm text-slate-600">The December 2026 invited pilot is capped at five learners because each person gets three private teaching hours. Public enrollment is not open yet.</p>
+            <p className="mt-5 text-sm text-slate-600">The early 2027 invited pilot is capped at five learners because each person gets three private teaching hours. Public enrollment is not open yet.</p>
           </div>
           <div className="border border-white/15 bg-[#111c2c] p-5 shadow-[18px_18px_0_rgba(128,18,36,0.23)] sm:p-7" aria-label="Sample Python expense summary output">
             <div className="flex items-center justify-between border-b border-white/10 pb-4 text-xs text-slate-400"><span className="font-mono">expense_summary.py</span><Code2 className="h-4 w-4 text-ruby-300" aria-hidden="true" /></div>
@@ -42,7 +43,6 @@ export default function PythonFundamentalsPage() {
               <p><span className="text-ruby-300">$</span> python expense_summary.py</p>
               <p className="mt-4 text-white">Total: $118</p>
               <p>Food: $61</p><p>Transport: $48</p><p>Supplies: $9</p>
-              <p>Largest: Groceries ($42)</p>
               <p className="mt-2 text-green-300">Under budget by $2</p>
             </div>
             <p className="mt-7 border-t border-white/10 pt-4 text-xs leading-5 text-slate-400">This is the sample program you&apos;ll build step by step. No prior coding experience required.</p>
@@ -70,22 +70,22 @@ export default function PythonFundamentalsPage() {
               <p className="csg-label text-ruby-700">Future ways to take this course</p>
               <h2 id="study-options-title" className="mt-4 font-serif text-4xl font-semibold leading-tight text-slate-950 md:text-5xl">One course. Two levels of support.</h2>
             </div>
-            <p className="max-w-prose leading-7 text-slate-700">Both planned options use the same beginner lessons, coding exercises, and expense-summary project. The December 2026 invited pilot tests the guided option first. Neither option is open for public enrollment yet.</p>
+            <p className="max-w-prose leading-7 text-slate-700">Both planned options use the same beginner lessons, coding exercises, and expense-summary project. The early 2027 invited pilot tests the guided option first. Neither option is open for public enrollment yet.</p>
           </div>
           <div className="mt-10 grid gap-px border border-slate-300 bg-slate-300 md:grid-cols-2">
             <article className="bg-[#fbfaf7] p-7 sm:p-9">
               <PlayCircle className="h-7 w-7 text-ruby-700" aria-hidden="true" />
               <p className="csg-label mt-5 text-ruby-700">Planned · independent study</p>
               <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Self-paced</h3>
-              <p className="mt-4 leading-7 text-slate-700">Work through recordings, written lessons, Hafa Code practice, checkpoints, and the final project on your own schedule. Ask course questions through CSG Learn during a defined support window.</p>
-              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">We plan 12 months of lesson access, plus a defined period for course-question messaging. Private Zoom meetings and individual project review are not included in this planned option. Final price, messaging window, and reply times will be published before enrollment.</p>
+              <p className="mt-4 leading-7 text-slate-700">Work through recordings, written lessons, Hafa Code practice, checkpoints, and the final project on your own schedule. Ask course questions through CSG Learn during a defined support window and get instructor review of your project.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">We plan 12 months of lesson access, instructor review of your project, and a defined period for course-question messaging. Private Zoom meetings are not included in this planned option. Final price, messaging window, and reply times will be published before enrollment.</p>
             </article>
             <article className="bg-white p-7 sm:p-9">
               <Video className="h-7 w-7 text-ruby-700" aria-hidden="true" />
               <p className="csg-label mt-5 text-ruby-700">Invited pilot first</p>
               <h3 className="mt-2 font-serif text-3xl font-semibold text-slate-950">Guided</h3>
-              <p className="mt-4 leading-7 text-slate-700">Use the same lessons and practice, with course messaging plus private instructor meetings and personal feedback on your work.</p>
-              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">The adult-only December pilot includes one private Zoom hour each week for three weeks with Leon and individual project review. Later guided runs may use trained instructors; their lesson-access period, schedule, capacity, price, and terms will be posted before enrollment.</p>
+              <p className="mt-4 leading-7 text-slate-700">Use the same lessons and practice, with course messaging plus private instructor meetings and live personal feedback on your work.</p>
+              <p className="mt-5 border-t border-slate-200 pt-5 text-sm leading-6 text-slate-600">The adult-only early 2027 pilot includes one private Zoom hour each week for three weeks with Leon and individual project review. Later guided runs may use trained instructors; their lesson-access period, schedule, capacity, price, and terms will be posted before enrollment.</p>
             </article>
           </div>
           <p className="mt-6 text-sm leading-6 text-slate-600">CSG Learn will hold course lessons and progress once a learner is invited or enrolled. We are designing future online courses for learners beyond Guam; guided meeting availability will be listed in the learner&apos;s local time.</p>

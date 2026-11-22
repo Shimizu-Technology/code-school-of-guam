@@ -23,13 +23,23 @@ test('navigation identifies the current learning path and closes an open menu at
   expect(document.body.style.overflow).not.toBe('hidden')
 })
 
-test('menu controls meet the 44px touch target and internal calls to action use a forward arrow', () => {
+test('menu controls meet the 44px touch target, internal CTAs use a forward arrow, and CSG Learn links externally', () => {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })))
-  const { container } = render(<SiteHeader />)
+  render(<SiteHeader />)
+  const brand = screen.getByRole('link', { name: /Code School of Guam/ })
+  expect(brand.className).toContain('min-h-11')
   const open = screen.getByRole('button', { name: 'Open menu' })
   expect(open.className).toContain('h-11')
   expect(open.className).toContain('w-11')
-  expect(container.querySelector('.lucide-arrow-up-right')).toBeNull()
+
+  const desktopCsgLearn = screen.getByRole('link', { name: /CSG Learn/ })
+  expect(desktopCsgLearn.getAttribute('href')).toBe('https://learn.codeschoolofguam.com/')
+  expect(desktopCsgLearn.querySelector('.lucide-arrow-up-right')).toBeTruthy()
+
+  const desktopCta = screen.getByRole('link', { name: /Course updates/ })
+  expect(desktopCta.querySelector('.lucide-arrow-up-right')).toBeNull()
+  expect(desktopCta.querySelector('.lucide-arrow-right')).toBeTruthy()
+
   fireEvent.click(open)
   const close = screen.getByRole('button', { name: 'Close' })
   expect(close.className).toContain('h-11')
@@ -37,5 +47,11 @@ test('menu controls meet the 44px touch target and internal calls to action use 
   const dialog = screen.getByRole('dialog')
   expect(dialog.className).toContain('csg-sheet')
   expect(dialog.className).not.toMatch(/duration-500|ease-in-out/)
-  expect(dialog.querySelector('.lucide-arrow-up-right')).toBeNull()
+
+  const mobileCta = Array.from(dialog.querySelectorAll('a')).find((a) => a.getAttribute('href') === '/courses#course-interest')!
+  expect(mobileCta.querySelector('.lucide-arrow-up-right')).toBeNull()
+  expect(mobileCta.querySelector('.lucide-arrow-right')).toBeTruthy()
+
+  const mobileCsgLearn = Array.from(dialog.querySelectorAll('a')).find((a) => a.getAttribute('href') === 'https://learn.codeschoolofguam.com/')!
+  expect(mobileCsgLearn.querySelector('.lucide-arrow-up-right')).toBeTruthy()
 })
