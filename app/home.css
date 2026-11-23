@@ -66,8 +66,7 @@
 
 /* ---------- Editor ----------
    The read-only code (server-highlighted HTML) and the live CodeMirror editor share
-   every metric below — font, line height, padding, gutter width, soft wrap and the
-   hanging indent — so tapping into the editor swaps them with no layout shift. */
+   every metric below — font, line height, padding, gutter width and unwrapped lines — so tapping into the editor swaps them with no layout shift. */
 .home-editor {
   --code-fs: 14px;
   --code-lh: 1.5;
@@ -99,11 +98,11 @@
   .home-editor {
     --code-fs: 16px;
     --code-lh: 1.45;
-    --code-line-pl: 8px;
-    --code-line-pr: 8px;
-    --code-max-h: min(28rem, 60svh);
-    --gutter-pl: 6px;
-    --gutter-pr: 5px;
+    --code-line-pl: 4px;
+    --code-line-pr: 4px;
+    --code-max-h: min(20rem, 60svh);
+    --gutter-pl: 2px;
+    --gutter-pr: 2px;
   }
 }
 .home-editor-top { position: relative; z-index: 5; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px; padding: 6px 8px; background: #0f151e; border-bottom: 1px solid #222d3b; }
@@ -179,15 +178,17 @@
 .home-code-scroller {
   max-height: var(--code-max-h);
   min-height: var(--code-min-h);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: auto;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y pinch-zoom;
   outline: none;
   cursor: text;
   font: var(--code-fs) / var(--code-lh) var(--home-mono);
   -webkit-tap-highlight-color: transparent;
 }
-.home-code-fallback { margin: 0; padding: var(--code-pad-y) var(--code-line-pr); font: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
-.home-code-static { position: relative; z-index: 0; margin: 0; padding: var(--code-pad-y) 0; min-height: 100%; font: inherit; color: #dce3ee; tab-size: 4; }
+.home-code-fallback { margin: 0; padding: var(--code-pad-y) var(--code-line-pr); font: inherit; white-space: pre; overflow-wrap: normal; width: max-content; min-width: 100%; }
+.home-code-static { position: relative; z-index: 0; margin: 0; padding: var(--code-pad-y) 0; min-height: 100%; width: max-content; min-width: 100%; font: inherit; color: #dce3ee; tab-size: 4; }
 .home-code-static::before {
   content: ''; position: absolute; z-index: -1; top: 0; bottom: 0; left: 0;
   width: calc(var(--gutter-w) + 1px); box-sizing: border-box;
@@ -196,15 +197,16 @@
 .home-code-row { display: flex; }
 .home-code-num {
   flex: 0 0 calc(var(--gutter-w) + 1px); min-width: calc(var(--gutter-w) + 1px); box-sizing: border-box;
-  padding: 0 calc(var(--gutter-pr) + 1px) 0 var(--gutter-pl); text-align: right; white-space: nowrap;
+  padding: 0 var(--gutter-pr) 0 var(--gutter-pl); text-align: right; white-space: nowrap;
+  position: sticky; left: 0; z-index: 1; background: var(--gutter-bg); border-right: 1px solid var(--gutter-line);
   color: var(--gutter-fg); -webkit-user-select: none; user-select: none;
 }
 .home-code-line,
 .home-editor .cm-editor .cm-line {
-  padding: 0 var(--code-line-pr) 0 calc(var(--code-line-pl) + var(--hang, 0ch));
-  text-indent: calc(-1 * var(--hang, 0ch));
+  padding: 0 var(--code-line-pr) 0 var(--code-line-pl);
+  text-indent: 0;
 }
-.home-code-line { display: block; flex: 1 1 auto; min-width: 0; white-space: break-spaces; word-break: break-word; overflow-wrap: anywhere; }
+.home-code-line { display: block; flex: 1 0 auto; white-space: pre; word-break: normal; overflow-wrap: normal; }
 
 /* Live CodeMirror editor (mounted invisibly over the static copy, then swapped in). */
 .home-cm-mount:empty { display: none; }
@@ -214,7 +216,10 @@
 .home-editor .cm-editor .cm-scroller {
   max-height: var(--code-max-h);
   min-height: var(--code-min-h);
-  overscroll-behavior: contain;
+  overflow: auto;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y pinch-zoom;
   font-family: var(--home-mono);
   font-size: var(--code-fs);
   line-height: var(--code-lh);
@@ -310,13 +315,13 @@
 }
 
 .home-term[hidden] { display: none; }
-.home-term { height: 14rem; min-height: 14rem; max-height: 14rem; overflow-y: auto; padding: 12px 18px 16px; border-top: 1px solid #222d3b; background: #0f151e; font: 13px/1.65 var(--home-mono); scroll-margin: 88px 0 calc(16px + env(safe-area-inset-bottom, 0px)); }
+.home-term { height: 14rem; min-height: 14rem; max-height: 14rem; overflow: auto; overscroll-behavior-x: contain; overscroll-behavior-y: auto; touch-action: pan-x pan-y pinch-zoom; padding: 12px 18px 16px; border-top: 1px solid #222d3b; background: #0f151e; font: 13px/1.65 var(--home-mono); scroll-margin: 88px 0 calc(16px + env(safe-area-inset-bottom, 0px)); }
 .home-term-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-.home-term-line { display: block; min-height: 1.65em; white-space: pre-wrap; overflow-wrap: anywhere; }
+.home-term-line { display: block; min-height: 1.65em; white-space: pre; overflow-wrap: normal; }
 .home-term-prompt { color: var(--home-ruby-light); }
 .home-term-ok { color: #7ee2a8; }
-.home-term-err { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; color: #fca5a5; font: inherit; }
-.home-term-note { margin-top: 4px; color: #fcd34d; }
+.home-term-err { margin: 6px 0 0; white-space: pre; overflow-wrap: normal; color: #fca5a5; font: inherit; }
+.home-term-note { margin-top: 4px; color: #fcd34d; white-space: normal; overflow-wrap: anywhere; }
 .home-term-status { font: 700 11px/1 'Manrope', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #cbd5e1; }
 .home-term-status-ok { color: #7ee2a8; }
 .home-editor-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 16px; padding: 6px 18px; border-top: 1px solid #222d3b; font-size: 12px; font-weight: 700; color: #a7b3c4; }
@@ -351,13 +356,14 @@
 @media (max-width: 1399px) { .home-editor-tabs > i { display: none; } }
 @media (max-width: 640px), (pointer: coarse) {
   .home-example-list { font-size: 16px; }
+  .home-editor-foot { flex-direction: column; align-items: flex-start; padding: 6px calc(84px + env(safe-area-inset-right, 0px)) 6px 12px; gap: 0; }
+  .home-editor-foot .home-pill-ext { margin-left: 0; }
 }
 @media (max-width: 480px) {
   .home-editor-top { padding: 4px; }
   .home-editor-file { padding-block: 4px; }
   .home-ed-btn { gap: 4px; }
   .home-term { font-size: 12px; padding-inline: 14px; }
-  .home-editor-foot { padding-inline: 12px; gap: 0 12px; }
   .home-editor-foot > span { display: none; }
   .home-pill, .home-pill-ext { font-size: 13px; }
   .home-pill-ext { margin-left: 0; }
@@ -552,3 +558,7 @@ body[data-coding-keys="open"] .chat-launcher { visibility: hidden; pointer-event
 
 /* Paint block runs as one proportional bar; system block-glyph fallback varies on iOS. */
 .home-term-block { display: inline-block; height: 0.95em; vertical-align: -0.08em; background: #dce4ef; color: transparent; overflow: hidden; }
+
+/* A hint only while there is unseen code to the right; never intercept a swipe. */
+.home-code-area::before { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: 18px; z-index: 2; pointer-events: none; opacity: 0; background: linear-gradient(to right, transparent, var(--home-code-bg)); }
+.home-code-area[data-more-code]::before { opacity: 1; }

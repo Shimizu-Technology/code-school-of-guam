@@ -1,6 +1,7 @@
 import { expect, test as base, type Page } from '@playwright/test'
 import fs from 'node:fs'
 import path from 'node:path'
+import expectedOutput from '../fixtures/python-example-output.json'
 import { PYTHON_EXAMPLES, CLEAR_PYTHON_CODE } from '../../lib/python-sample'
 
 const test = base.extend<{ saveData: boolean }>({ saveData: [true, { option: true }] })
@@ -60,7 +61,7 @@ async function openEditor(page: Page, projectName: string) {
   else await button.click()
   await expect(page.locator('.cm-content')).toBeVisible()
   await expect.poll(() => focusedInEditor(page)).toBe(true)
-  await expect(page.locator('.cm-content')).toHaveCSS('font-size', isTouch(projectName) ? '16px' : '14px')
+  await expect(page.locator('.cm-content')).toHaveCSS('font-size', isTouch(projectName) || (page.viewportSize()?.width ?? 1440) <= 640 ? '16px' : '14px')
 }
 
 test.beforeEach(async ({ page, saveData }) => {
@@ -144,7 +145,7 @@ test('tapping the code swaps in CodeMirror with no layout shift and the cursor w
     area: Math.round(document.querySelector('.home-code-area')!.getBoundingClientRect().height),
     color: getComputedStyle(document.querySelector('.home-code-static .home-tok-f')!).color,
   }))
-  // Tap the rain chart print call on line 11.
+  // Tap inside line 11; source and live lines must stay aligned.
   const target = region.locator('.home-code-row').nth(10)
   const box = (await target.boundingBox())!
   const point = { x: box.x + 80, y: box.y + box.height / 2 }
@@ -239,7 +240,7 @@ test('Run executes the edited program and brings the output into view; Reset res
   expect(inView).toBe(true)
   await shot(page, '04-ran', testInfo.project.name)
   await editorAction(page, 'Reset to original Python example')
-  await expect.poll(() => editorText(page)).toContain('for month, mm in rain.items():')
+  await expect.poll(() => editorText(page)).toContain('for month, mm in months:')
   await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
   // Reset is undoable.
   if (isTouch(testInfo.project.name)) {
@@ -251,7 +252,7 @@ test('Run executes the edited program and brings the output into view; Reset res
   await expect.poll(() => editorText(page)).toContain('Hafa adai')
 })
 
-test('long lines wrap inside the editor and a 60-line program scrolls inside a bounded box', async ({ page }, testInfo) => {
+test('long lines scroll sideways with a fixed gutter and a 60-line program stays bounded', async ({ page }, testInfo) => {
   await page.goto('/', { waitUntil: 'networkidle' })
   await openEditor(page, testInfo.project.name)
   const longLine = 'message = "' + 'Learning Python on Guam is fun, '.repeat(5) + '"'
@@ -280,13 +281,17 @@ test('long lines wrap inside the editor and a 60-line program scrolls inside a b
     }
   })
   expect(m.pageOverflow).toBeLessThanOrEqual(0)
-  expect(m.scrollerOverflowX).toBeLessThanOrEqual(1)
+  expect(m.scrollerOverflowX).toBeGreaterThan(100)
   expect(m.scrolls).toBe(true)
   expect(m.height).toBeLessThanOrEqual(Math.min(34 * 16, m.innerHeight * 0.75) + 1)
   expect(m.misaligned).toBe(0)
-  expect(m.wrappedLongLine).toBe(true)
-  expect(m.hang).not.toBe('0px')
-  await page.locator('.cm-scroller').evaluate((el) => { el.scrollTop = 0 })
+  expect(m.wrappedLongLine).toBe(false)
+  expect(m.hang).toBe('0px')
+  const gutterLeft = await page.locator('.cm-gutters').evaluate(el => el.getBoundingClientRect().left)
+  await expect(page.locator('.home-code-area')).toHaveAttribute('data-more-code', '')
+  await page.locator('.cm-scroller').evaluate(el => { el.scrollLeft = el.scrollWidth; el.scrollTop = 0 })
+  await expect(page.locator('.home-code-area')).not.toHaveAttribute('data-more-code')
+  expect(await page.locator('.cm-gutters').evaluate(el => el.getBoundingClientRect().left)).toBeCloseTo(gutterLeft, 0)
   await shot(page, '05-long-program', testInfo.project.name)
 })
 
@@ -515,6 +520,7 @@ test('all seven examples execute cleanly in real Pyodide and carry their code in
     await page.locator('.home-editor-actions').getByRole('button', { name: /Run (your Python code|the Python example in your browser)/ }).click()
     await expect(page.locator('.home-term-status-ok')).toHaveText('Ran in browser', { timeout: 120_000 })
     await expect(page.locator('.home-term')).toContainText(example.lastOutput)
+    await expect(page.locator('.home-term > .home-term-line')).toHaveText(expectedOutput[example.filename as keyof typeof expectedOutput])
     await expect(page.locator('.home-term-err')).toHaveCount(0)
     if (example.filename === 'guam_weather.py') await shot(page, '09-weather-ran', testInfo.project.name)
   }
@@ -799,7 +805,7 @@ test.describe('automatic execution', () => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
     await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
-    await shot(page, 'r5-loading', testInfo.project.name, 'viewport')
+    await shot(page, 'r6-loading', testInfo.project.name, 'viewport')
     const before = await page.evaluate(() => {
       document.body.setAttribute('data-focus-baseline', '')
       return { scroll: scrollY, focused: document.activeElement?.tagName }
@@ -819,7 +825,7 @@ test.describe('automatic execution', () => {
     else testInfo.annotations.push({ type: 'CLS', description: 'Layout Instability API unavailable in this browser; Chromium measures navigation-start CLS.' })
     console.log(JSON.stringify({ project: testInfo.project.name, timeToOutputMs: Date.now() - started, cls: clsSupported ? cls : null, pyodideResponseBytes: transfers.reduce((sum, item) => sum + item.transferBytes, 0), transfers }))
     await expect(page.locator('.home-editor [aria-live=polite]')).toHaveText('')
-    await shot(page, 'r5-first-visit', testInfo.project.name, 'viewport')
+    await shot(page, 'r6-first-visit', testInfo.project.name, 'viewport')
     await openEditor(page, testInfo.project.name)
     await replaceProgram(page, 'print("changed")')
     await expect(page.locator('.home-term')).toHaveAttribute('data-stale', '')
@@ -845,7 +851,7 @@ test('save-data reserves its footprint without loading Python or shifting after 
   if (cls !== null) expect(cls).toBeLessThan(0.01)
   else testInfo.annotations.push({ type: 'CLS', description: 'Layout Instability API unavailable in this browser; Chromium measures navigation-start CLS.' })
   console.log(JSON.stringify({ project: testInfo.project.name, saveData: true, navigationCLS: cls }))
-  await shot(page, 'r5-save-data', testInfo.project.name, 'viewport')
+  await shot(page, 'r6-save-data', testInfo.project.name, 'viewport')
 })
 
 test.describe('automatic execution races', () => {
@@ -891,7 +897,7 @@ test.describe('automatic execution races', () => {
     await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
     await releaseIdle(page)
     await expect(page.locator('.home-term-status')).toHaveText('Loading Python…')
-    await shot(page, 'r5-loading', testInfo.project.name, 'viewport')
+    await shot(page, 'r6-loading', testInfo.project.name, 'viewport')
     await page.locator('.home-editor-actions .home-run').click()
     await expect(page.locator('.home-editor-actions .home-run')).toHaveAccessibleName('Stop running Python')
     await expect(page.locator('.home-editor [aria-live=polite]')).toContainText('Loading Python runtime')
@@ -924,7 +930,7 @@ test('phone menu and every filename remain usable including the modified dot', a
     await expect(more).toBeFocused()
     await expect(page.getByRole('menu')).toHaveCount(0)
     await more.click()
-    if (width === 375) await shot(page, 'r5-menu-open', testInfo.project.name, 'viewport')
+    if (width === 375) await shot(page, 'r6-menu-open', testInfo.project.name, 'viewport')
     await page.locator('.home-example-caption').click({ position: { x: 2, y: 2 } })
     await expect(page.getByRole('menu')).toHaveCount(0)
     await expect(more).toBeFocused()
@@ -933,7 +939,7 @@ test('phone menu and every filename remain usable including the modified dot', a
       await picker.click()
       await page.getByRole('option', { name: example.filename, exact: true }).click()
       await expect(page.locator('.cm-content')).toBeVisible()
-      if (width === 375 && example.filename === 'expense_summary.py') await shot(page, 'r5-expense-selected', testInfo.project.name, 'viewport')
+      if (width === 375 && example.filename === 'expense_summary.py') await shot(page, 'r6-expense-selected', testInfo.project.name, 'viewport')
       await page.locator('.cm-content').focus()
       await page.keyboard.insertText('#')
       await expect(picker).toHaveAccessibleName('Python example (modified)')
@@ -1127,5 +1133,96 @@ test.describe('automatic run regressions', () => {
     await expect(page.locator('.home-term')).toContainText('latest source')
     await expect(page.locator('body')).toHaveAttribute('data-workers', '1')
     await expect(page.locator('body')).toHaveAttribute('data-results', '2')
+  })
+})
+
+test('all seven examples fit phone code columns without wrapping or horizontal overflow', async ({ page }) => {
+  test.setTimeout(180_000)
+  for (const width of [360, 375, 390, 430]) {
+    await page.setViewportSize({ width, height: 844 })
+    await page.goto('/', { waitUntil: 'networkidle' })
+    const staticCode = page.locator('.home-code-scroller')
+    expect(await staticCode.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true)
+    await expect(staticCode).toHaveCSS('font-size', '16px')
+    await expect(page.locator('.home-code-line').first()).toHaveCSS('white-space', 'pre')
+    await expect(page.locator('.home-code-area')).not.toHaveAttribute('data-more-code')
+    for (const example of PYTHON_EXAMPLES) {
+      await page.getByRole('combobox', { name: /^Python example/ }).click()
+      await page.getByRole('option', { name: example.filename, exact: true }).click()
+      await expect(page.locator('.cm-content')).toBeVisible()
+      await expect.poll(() => editorText(page)).toBe(example.code)
+      await expect(page.locator('.cm-content')).toHaveCSS('font-size', '16px')
+      await expect.poll(() => page.locator('.cm-scroller').evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true)
+      expect(await page.locator('.cm-line').evaluateAll(lines => lines.every(line => line.getBoundingClientRect().height < parseFloat(getComputedStyle(line).lineHeight) * 1.1)), `${width}px ${example.filename} line heights`).toBe(true)
+      await expect(page.locator('.home-code-area')).not.toHaveAttribute('data-more-code')
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    }
+  }
+})
+
+test('a typed long line pans inside the phone editor and leaves the page and gutter fixed', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await page.goto('/', { waitUntil: 'networkidle' })
+  // Stress the server-rendered line layout before the live typing journey.
+  await page.locator('.home-code-line').first().evaluate(el => { el.textContent = 'x'.repeat(160) })
+  const readOnly = page.locator('.home-code-scroller')
+  const staticLeft = await page.locator('.home-code-num').first().evaluate(el => el.getBoundingClientRect().left)
+  await expect(page.locator('.home-code-area')).toHaveAttribute('data-more-code', '')
+  await readOnly.evaluate(el => { el.scrollLeft = 120 })
+  expect(await readOnly.evaluate(el => el.scrollLeft)).toBeGreaterThan(100)
+  expect(await page.locator('.home-code-num').first().evaluate(el => el.getBoundingClientRect().left)).toBeCloseTo(staticLeft, 0)
+  expect(await page.locator('.home-code-line').first().evaluate(el => el.getBoundingClientRect().height / parseFloat(getComputedStyle(el).lineHeight))).toBeCloseTo(1, 1)
+  await page.reload({ waitUntil: 'networkidle' })
+  await openEditor(page, testInfo.project.name)
+  await replaceProgram(page, 'message = "' + 'A long Python line '.repeat(12) + '"')
+  const scroller = page.locator('.cm-scroller')
+  // Let CodeMirror finish revealing the newly typed caret before panning back.
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+  await scroller.evaluate(el => { el.scrollLeft = 0 })
+  await expect(page.locator('.home-code-area')).toHaveAttribute('data-more-code', '')
+  const before = await page.locator('.cm-gutters').boundingBox()
+  await scroller.evaluate(el => { el.scrollLeft = 120 })
+  expect(await scroller.evaluate(el => el.scrollLeft)).toBeGreaterThan(100)
+  const after = await page.locator('.cm-gutters').boundingBox()
+  expect(Math.abs(after!.x - before!.x)).toBeLessThan(1)
+  expect(await page.locator('.cm-line').count()).toBe(1)
+  expect(await page.locator('.cm-line').evaluate(el => el.getBoundingClientRect().height / parseFloat(getComputedStyle(el).lineHeight))).toBeCloseTo(1, 1)
+  expect(await scroller.evaluate(el => getComputedStyle(el).overscrollBehaviorX)).toBe('contain')
+  expect(await scroller.evaluate(el => getComputedStyle(el).overscrollBehaviorY)).toBe('auto')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0)
+  await shot(page, 'r6-long-line-sideways', testInfo.project.name, 'viewport')
+})
+
+test.describe('phone footer around automatic execution', () => {
+  test.use({ saveData: false })
+
+  test('Hafa Code stays clear of chat and receives taps before and after the first run', async ({ page }) => {
+    test.setTimeout(180_000)
+    await enableAutomaticRun(page)
+    for (const [width, height] of [[375, 812], [390, 844]]) {
+      await page.setViewportSize({ width, height })
+      await page.goto('/', { waitUntil: 'networkidle' })
+      const link = page.locator('.home-editor-foot').getByRole('link', { name: /Open in Hafa Code/ })
+      await link.scrollIntoViewIfNeeded()
+      await expect(page.locator('.chat-launcher')).toHaveAttribute('data-visible', 'true')
+      const check = async () => {
+        const result = await link.evaluate(el => {
+          const link = el.getBoundingClientRect()
+          const chat = document.querySelector('.chat-launcher')!.getBoundingClientRect()
+          const center = document.elementFromPoint(link.x + link.width / 2, link.y + link.height / 2)
+          return {
+            intersects: link.left < chat.right && link.right > chat.left && link.top < chat.bottom && link.bottom > chat.top,
+            clickable: !!center && el.contains(center),
+          }
+        })
+        expect(result.intersects).toBe(false)
+        expect(result.clickable).toBe(true)
+      }
+      await check()
+      await releaseIdle(page)
+      await expect(page.locator('.home-term-status-ok')).toHaveText('Ran in browser', { timeout: 120_000 })
+      expect(await page.locator('.home-term').evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true)
+      await check()
+    }
   })
 })

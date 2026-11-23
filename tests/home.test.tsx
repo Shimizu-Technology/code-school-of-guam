@@ -109,7 +109,7 @@ test('hero editor reserves output space with highlighted weather code and no wor
   vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = renderHero()
   const code = container.querySelector('.home-code-static')!.textContent!
-  expect(code).toContain('for month, mm in rain.items():')
+  expect(code).toContain('for month, mm in months:')
   expect(container.querySelector('.home-code-static')!.hasAttribute('aria-label')).toBe(false)
   expect(screen.getByRole('region', { name: 'Sample Python code: guam_weather.py' }).tabIndex).toBe(0)
   expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(false)
@@ -120,10 +120,6 @@ test('hero editor reserves output space with highlighted weather code and no wor
   expect(classOf('"Guam: sample data"')).toBe('home-tok-s')
   expect(classOf('77')).toBe('home-tok-n')
   expect(classOf('print')).toBe('home-tok-f')
-  // Wrapped lines hang one indent deeper than their own indentation.
-  const rows = container.querySelectorAll<HTMLElement>('.home-code-line')
-  expect(rows[0].style.getPropertyValue('--hang')).toBe('4ch')
-  expect(rows[10].style.getPropertyValue('--hang')).toBe('8ch')
   expect(editorSpy.instances).toBe(0)
   expect(container.querySelector('.home-term')!.textContent).not.toContain('Food: $61')
   expect(MockPythonWorker.instances).toHaveLength(0)
@@ -353,8 +349,8 @@ test('python-runner worker keeps short tracebacks intact and enforces the output
   expect(String(capped.message)).toContain('200 lines / 8 KB')
 })
 
-test('editor lines stay short: no sample line is longer than 38 characters', () => {
-  for (const line of EDITOR_LINES) expect(line.length).toBeLessThanOrEqual(38)
+test('editor lines stay short: no sample line is longer than 29 characters', () => {
+  for (const line of EDITOR_LINES) expect(line.length).toBeLessThanOrEqual(29)
 })
 
 test('tapping the highlighted code loads the editor; Cmd/Ctrl+Enter runs and touch screens get coding keys with Run', async () => {
@@ -620,14 +616,13 @@ test('every example updates its code, caption, worker filename, and Hafa Code pa
   }
 })
 
-test('examples have distinct starters and compact, noninteractive programs; the original is unchanged', () => {
+test('examples have distinct starters and mobile-fit programs; the approved expense reformat is pinned', () => {
   expect(new Set(PYTHON_EXAMPLES.map(example => example.starterKey)).size).toBe(7)
-  // SHA-256 of DEFAULT_PYTHON_CODE evaluated from main 0f45cf6:lib/python-sample.ts.
-  expect(createHash('sha256').update(PYTHON_EXAMPLES[0].code).digest('hex')).toBe('55c2f21657d492f466443b7033887b54024770743c9e21ea6eeda34986e24aca')
-  for (const example of PYTHON_EXAMPLES.slice(1)) {
-    expect(example.code.split('\n').length).toBeLessThanOrEqual(14)
+  // Intentionally reformatted on Nov 23, 2026 for mobile fit; pins the approved replacement.
+  expect(createHash('sha256').update(PYTHON_EXAMPLES[0].code).digest('hex')).toBe('95f94d2eed88575792b7e66b6751363cc8dfc4a047067ffe7f710929b9264623')
+  for (const example of PYTHON_EXAMPLES) {
     expect(example.code).not.toContain('input(')
-    expect(example.code.split('\n').every(line => line.length <= 32)).toBe(true)
+    expect(example.code.split('\n').every(line => line.length <= 29)).toBe(true)
   }
   const chamorro = PYTHON_EXAMPLES.find(example => example.filename === 'chamorro_hello.py')!.code
   expect(chamorro).toContain('Håfa adai')

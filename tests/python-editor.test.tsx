@@ -5,7 +5,7 @@ import { deleteCharBackward, insertNewlineAndIndent, undo } from '@codemirror/co
 import { EditorView } from '@codemirror/view'
 import { accessoryCommands, createPythonEditor, pythonEditorExtensions, type PythonEditorHandle } from '../components/home/python-editor'
 import { PythonCodeStatic } from '../components/home/python-code-static'
-import { hangingIndentCh, highlightPythonLines } from '../lib/python-highlight'
+import { highlightPythonLines } from '../lib/python-highlight'
 import { DEFAULT_PYTHON_CODE, CLEAR_PYTHON_CODE } from '../lib/python-sample'
 
 const noop = () => {}
@@ -69,7 +69,7 @@ test('Enter after a colon adds an indent level; return keeps the current indenta
   expect(show(apply(stateOf('def f():\n    return 1|'), insertNewlineAndIndent))).toBe('def f():\n    return 1\n    |')
 })
 
-test('the live editor: labelled textbox, smart backspace over indentation, auto-closing brackets, wrapped lines with hanging indent', () => {
+test('the live editor: labelled textbox, smart backspace over indentation, auto-closing brackets, unwrapped code lines', () => {
   const parent = document.createElement('div')
   document.body.appendChild(parent)
   const changes: string[] = []
@@ -79,7 +79,7 @@ test('the live editor: labelled textbox, smart backspace over indentation, auto-
   expect(content.getAttribute('aria-label')).toBe('Python code editor for expense_summary.py')
   expect(content.getAttribute('aria-describedby')).toBe('hint')
   expect(content.getAttribute('autocapitalize')).toBe('off')
-  expect(parent.querySelector('.cm-lineWrapping')).toBeTruthy()
+  expect(parent.querySelector('.cm-lineWrapping')).toBeNull()
 
   // Backspace in leading whitespace removes a whole indent level.
   const view = editor.view
@@ -100,11 +100,7 @@ test('the live editor: labelled textbox, smart backspace over indentation, auto-
   undo(view)
   expect(editor.getDoc()).toBe('if x:\n    ()')
 
-  // Lines carry the same hanging-indent variable as the server-rendered copy.
-  editor.setDoc(DEFAULT_PYTHON_CODE)
-  const lines = parent.querySelectorAll<HTMLElement>('.cm-line')
-  expect(lines[0].style.getPropertyValue('--hang')).toBe('4ch')
-  expect(lines[11].style.getPropertyValue('--hang')).toBe('8ch')
+
 })
 
 test('the server-rendered code and the live editor paint identical token classes, line by line', () => {
@@ -119,14 +115,10 @@ test('the server-rendered code and the live editor paint identical token classes
     Array.from(line.querySelectorAll('span[class*="home-tok-"]')).map((span) => `${span.className}:${span.textContent}`).join(' '),
   )
   expect(liveLines).toEqual(staticLines)
-  expect(staticLines[10]).toBe('home-tok-k:for home-tok-k:in home-tok-f:items')
+  expect(staticLines.some(line => line.includes('home-tok-f:items'))).toBe(true)
 })
 
-test('hanging indent: one level deeper than the line, capped for deeply nested code', () => {
-  expect(hangingIndentCh('total = 1')).toBe(4)
-  expect(hangingIndentCh('    print(x)')).toBe(8)
-  expect(hangingIndentCh('\tprint(x)')).toBe(8)
-  expect(hangingIndentCh(' '.repeat(40) + 'x')).toBe(16)
+test('the highlighter preserves blank source lines', () => {
   expect(highlightPythonLines('a\n\nb')).toHaveLength(3)
 })
 

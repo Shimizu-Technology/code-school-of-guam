@@ -4,23 +4,19 @@
  * server-highlighted copy in python-code-static.tsx, which shares the highlighter and
  * CSS so the swap is invisible.
  */
-import { EditorSelection, EditorState, Prec, RangeSetBuilder, findClusterBreak, countColumn, type StateCommand, type Extension } from "@codemirror/state"
+import { EditorSelection, EditorState, Prec, findClusterBreak, countColumn, type StateCommand, type Extension } from "@codemirror/state"
 import {
-  Decoration,
   EditorView,
-  ViewPlugin,
   highlightActiveLine,
   highlightActiveLineGutter,
   keymap,
   lineNumbers,
-  type DecorationSet,
-  type ViewUpdate,
 } from "@codemirror/view"
 import { LanguageSupport, bracketMatching, indentOnInput, indentUnit, syntaxHighlighting } from "@codemirror/language"
 import { defaultKeymap, history, historyKeymap, indentLess, indentMore, redo, undo, isolateHistory } from "@codemirror/commands"
 import { closeBrackets, closeBracketsKeymap, insertBracket } from "@codemirror/autocomplete"
 import { pythonLanguage } from "@codemirror/lang-python"
-import { hangingIndentCh, pythonHighlighter } from "@/lib/python-highlight"
+import { pythonHighlighter } from "@/lib/python-highlight"
 
 export const INDENT = "    "
 
@@ -133,42 +129,6 @@ export const accessoryCommands: Record<AccessoryKey, StateCommand> = {
   redo,
 }
 
-const hangCache = new Map<number, Decoration>()
-function hangDecoration(ch: number) {
-  let deco = hangCache.get(ch)
-  if (!deco) {
-    deco = Decoration.line({ attributes: { style: `--hang:${ch}ch` } })
-    hangCache.set(ch, deco)
-  }
-  return deco
-}
-
-function buildHangs(view: EditorView): DecorationSet {
-  const builder = new RangeSetBuilder<Decoration>()
-  for (const { from, to } of view.visibleRanges) {
-    for (let pos = from; pos <= to; ) {
-      const line = view.state.doc.lineAt(pos)
-      builder.add(line.from, line.from, hangDecoration(hangingIndentCh(line.text)))
-      pos = line.to + 1
-    }
-  }
-  return builder.finish()
-}
-
-/** Wrapped continuation lines hang one indent deeper than the line itself. */
-const hangingIndent = ViewPlugin.fromClass(
-  class {
-    decorations: DecorationSet
-    constructor(view: EditorView) {
-      this.decorations = buildHangs(view)
-    }
-    update(update: ViewUpdate) {
-      if (update.docChanged || update.viewportChanged) this.decorations = buildHangs(update.view)
-    }
-  },
-  { decorations: (plugin) => plugin.decorations },
-)
-
 export interface PythonEditorOptions {
   parent: HTMLElement
   doc: string
@@ -238,8 +198,6 @@ export function pythonEditorExtensions(options: Pick<PythonEditorOptions, "ariaL
     })),
     closeBrackets(),
     syntaxHighlighting(pythonHighlighter),
-    EditorView.lineWrapping,
-    hangingIndent,
     keymap.of([
       ...closeBracketsKeymap,
       // Tab indents; Escape then Tab (CodeMirror's tab-focus escape) leaves the editor.

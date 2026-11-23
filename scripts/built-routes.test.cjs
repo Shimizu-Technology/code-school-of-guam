@@ -276,7 +276,8 @@ test('/partners and /projects ship verified Guam proof and named graduate capsto
   assert.equal(decoded.kind, 'python')
   assert.equal(decoded.entryPath, 'expense_summary.py')
   assert.match(decoded.files[0].content, /^expenses = \{/)
-  assert.match(decoded.files[0].content, /Under budget by \$\{left\}/)
+  assert.ok(decoded.files[0].content.includes('label = "Under budget by"'))
+  assert.ok(decoded.files[0].content.includes('print(label, f"${left}")'))
 })
 
 test('built / ships highlighted hero code with no editor JavaScript, and the lazy editor chunk stays under 150 KB gzipped', () => {

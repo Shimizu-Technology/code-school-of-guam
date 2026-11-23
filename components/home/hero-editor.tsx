@@ -237,6 +237,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const pendingClearRef = useRef(false)
   const clearUndoDocRef = useRef<string | null>(null)
   const transferPendingRef = useRef(false)
+  const [moreCode, setMoreCode] = useState(false)
   const [outputVisible, setOutputVisible] = useState(false)
   const [lastRun, setLastRun] = useState<{ code: string; filename: string } | null>(null)
   const lastRunRef = useRef<{ code: string; filename: string } | null>(null)
@@ -396,6 +397,32 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
       (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ?? navigator.platform ?? ""
     setModifierLabel(/mac|iphone|ipad/i.test(platform) ? "⌘" : "Ctrl")
   }, [isEditing])
+
+  // Keep the overflow hint outside the scroller so it stays at the visible edge.
+  useLayoutEffect(() => {
+    const area = codeAreaRef.current
+    const scroller = area?.querySelector<HTMLElement>(editorMode === "ready" ? ".cm-scroller" : ".home-code-scroller")
+    if (!scroller) return
+    let frame = 0
+    const measure = () => {
+      frame = 0
+      setMoreCode(scroller.scrollWidth - scroller.clientWidth - scroller.scrollLeft > 1)
+    }
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(measure) }
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(schedule)
+    observer?.observe(scroller)
+    const content = scroller.querySelector(".cm-content, pre")
+    if (content) observer?.observe(content)
+    scroller.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    schedule()
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener("resize", schedule)
+      scroller.removeEventListener("scroll", schedule)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [code, editorMode])
 
   // Keep tracebacks and output-cap notices scrolled into view inside the bounded terminal.
   useEffect(() => {
@@ -833,10 +860,19 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
               // Tapping a coding key can blur for a frame; don't flash the bar away.
               else blurTimerRef.current = window.setTimeout(() => setEditorFocused(false), 150)
             },
-            scrollMargins: () => ({
-              top: visibleHeaderHeight() + 8,
-              bottom: (keysHeightRef.current || 0) + 8,
-            }),
+            scrollMargins: () => {
+              const rect = (editorRef.current?.view.scrollDOM ?? codeAreaRef.current)?.getBoundingClientRect()
+              const vv = window.visualViewport
+              const viewportTop = vv?.offsetTop ?? 0
+              const visibleTop = viewportTop + visibleHeaderHeight()
+              const visibleBottom = viewportTop + (vv?.height ?? innerHeight) - keysHeightRef.current
+              // Only compensate for actual occlusion, not a bar already outside
+              // the code box. Otherwise focusing a visible line needlessly scrolls it.
+              return {
+                top: Math.max(8, visibleTop - (rect?.top ?? visibleTop) + 8),
+                bottom: Math.max(8, (rect?.bottom ?? visibleBottom) - visibleBottom + 8),
+              }
+            },
           })
           editorRef.current = editor
           editor.view.scrollDOM.scrollTop = scrollTop
@@ -1054,7 +1090,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
 
       <p className="home-example-caption">{example.caption}</p>
 
-      <div ref={codeAreaRef} className="home-code-area" data-mode={editorMode} onPointerDownCapture={cancelAutoRun} onFocusCapture={cancelAutoRun} onKeyDownCapture={cancelAutoRun}>
+      <div ref={codeAreaRef} className="home-code-area" data-mode={editorMode} data-more-code={moreCode ? "" : undefined} onPointerDownCapture={cancelAutoRun} onFocusCapture={cancelAutoRun} onKeyDownCapture={cancelAutoRun}>
         {editorMode !== "ready" ? (
           /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- This scrollable code region supports pointer and Enter/Space activation as an alternative to Edit. */
           <div

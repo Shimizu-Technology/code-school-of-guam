@@ -19,23 +19,6 @@ export const pythonHighlighter = tagHighlighter([
   { tag: t.comment, class: "home-tok-c" },
 ])
 
-export const HANG_EXTRA_CH = 4
-export const HANG_MAX_CH = 16
-
-/**
- * Soft-wrapped continuation lines hang one indent level deeper than the line's own
- * indentation, so a wrapped `print(...)` never looks like a new statement.
- */
-export function hangingIndentCh(lineText: string): number {
-  let width = 0
-  for (const ch of lineText) {
-    if (ch === " ") width += 1
-    else if (ch === "\t") width += 4 - (width % 4)
-    else break
-  }
-  return Math.min(width + HANG_EXTRA_CH, HANG_MAX_CH)
-}
-
 export type HighlightedSpan = { text: string; className: string }
 
 /** Splits highlighted Python into lines of spans (unstyled text has an empty class). */
