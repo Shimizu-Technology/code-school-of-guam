@@ -5,6 +5,8 @@ import { ArrowRight, Building2, GraduationCap, Handshake } from "lucide-react"
 import "./home.css"
 import { buildSocialMetadata } from "@/lib/metadata"
 import { HeroEditor } from "@/components/home/hero-editor"
+import { PythonCodeStatic } from "@/components/home/python-code-static"
+import { PYTHON_EXAMPLES } from "@/lib/python-sample"
 import { LearningRoute } from "@/components/home/learning-route"
 import { CapstoneClip } from "@/components/home/capstone-clip"
 import { OpeningPhoto } from "@/components/home/opening-photo"
@@ -105,10 +107,10 @@ export default function HomePage() {
               <Link href="/programs" className="csg-button-secondary">Full program (by request)</Link>
             </div>
             <p className="home-fade mt-4 max-w-lg text-sm leading-6 text-slate-600" style={{ ["--i" as string]: 3 }}>
-              Try the Python example on this page right now — click <strong>Run</strong> or <strong>Write your own</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
+              Python runs here in your browser. Change it or pick another example, then press <strong>Run</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
             </p>
           </div>
-          <HeroEditor />
+          <HeroEditor staticCode={<PythonCodeStatic code={PYTHON_EXAMPLES[1].code} />} />
         </div>
         <div className="border-t border-[#ded7c9]">
           <div className="container mx-auto flex flex-wrap gap-x-6 gap-y-1 px-4 py-4 text-sm leading-6 text-slate-600 sm:px-8">

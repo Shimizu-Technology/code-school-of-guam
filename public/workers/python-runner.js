@@ -1,6 +1,6 @@
 /**
  * On-demand Pyodide Web Worker for the Code School of Guam hero Python runner.
- * Loaded only when a visitor clicks Run or Write your own — never on initial page load.
+ * Loaded for a visible, idle first example or when a visitor asks to run/edit.
  * Classic worker (importScripts) for broad desktop, iOS Safari, and Android Chrome support.
  *
  * Security note: Pyodide is pinned to exact release v0.27.5 on jsDelivr because classic
@@ -131,7 +131,7 @@ function createOutputCollector(id) {
   };
 }
 
-self.onmessage = async (event) => {
+async function handleMessage(event) {
   const data = event.data || {};
   const { id, type, code, filename = "expense_summary.py" } = data;
 
@@ -228,4 +228,13 @@ finally:
       message: err instanceof Error ? err.message : "Could not start the Python runtime.",
     });
   }
+}
+
+let runQueue = Promise.resolve();
+self.onmessage = (event) => {
+  if (event.data?.type === "run") {
+    runQueue = runQueue.then(() => handleMessage(event));
+    return runQueue;
+  }
+  return handleMessage(event);
 };

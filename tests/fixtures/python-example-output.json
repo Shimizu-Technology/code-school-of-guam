@@ -1,0 +1,58 @@
+{
+  "expense_summary.py": [
+    "Total: $118",
+    "Food: $61",
+    "Transport: $48",
+    "Supplies: $9",
+    "Left: $2"
+  ],
+  "guam_weather.py": [
+    "Guam: sample data",
+    "77°F = 25°C",
+    "86°F = 30°C",
+    "95°F = 35°C",
+    "Rain (mm): █ = 50",
+    "Jan ██ 100",
+    "Jun ███ 150",
+    "Sep ███████ 350"
+  ],
+  "tip_split.py": [
+    "Bill: $84.00",
+    "Tip: $15.12",
+    "Each: $33.04"
+  ],
+  "fizzbuzz.py": [
+    "1",
+    "2",
+    "Fizz",
+    "4",
+    "Buzz",
+    "Fizz",
+    "7",
+    "8",
+    "Fizz",
+    "Buzz",
+    "11",
+    "Fizz",
+    "13",
+    "14",
+    "FizzBuzz"
+  ],
+  "bubble_sort.py": [
+    "Start: [5, 1, 4, 2, 8]",
+    "Pass: [1, 4, 2, 5, 8]",
+    "Pass: [1, 2, 4, 5, 8]",
+    "Pass: [1, 2, 4, 5, 8]",
+    "Pass: [1, 2, 4, 5, 8]"
+  ],
+  "password_check.py": [
+    "Score: 4/4",
+    "Strong"
+  ],
+  "chamorro_hello.py": [
+    "Håfa adai — hello",
+    "Letters: 8",
+    "Si Yu'os ma'åse' — thank you",
+    "Letters: 11"
+  ]
+}

@@ -38,3 +38,7 @@ next-env.d.ts
 /Old
 # Environment variables
 .env
+
+# browser test output
+/test-results
+/playwright-report

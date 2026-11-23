@@ -275,6 +275,25 @@ test('/partners and /projects ship verified Guam proof and named graduate capsto
   const decoded = JSON.parse(Buffer.from(hashParams.get('project'), 'base64url').toString('utf8'))
   assert.equal(decoded.kind, 'python')
   assert.equal(decoded.entryPath, 'expense_summary.py')
-  assert.match(decoded.files[0].content, /^expenses = \{/)
-  assert.match(decoded.files[0].content, /Under budget by \$\{left\}/)
+  assert.match(decoded.files[0].content, /^costs = \{/)
+  assert.ok(decoded.files[0].content.includes('print(f"Left: ${left}")'))
+})
+
+test('built / ships highlighted hero code with no editor JavaScript, and the lazy editor chunk stays under 150 KB gzipped', () => {
+  const zlib = require('node:zlib')
+  const html = pages.get('/')
+  const doc = new JSDOM(html).window.document
+  const code = doc.querySelector('.home-code-static')
+  assert.ok(code, '/: missing server-rendered hero code')
+  assert.ok(code.querySelectorAll('[class^="home-tok-"]').length >= 20, '/: hero code is not syntax-highlighted')
+
+  const chunksDir = path.join('.next', 'static', 'chunks')
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)]))
+  const initial = new Set([...html.matchAll(/\/_next\/static\/chunks\/([^"?]+\.js)/g)].map((m) => path.join(chunksDir, m[1])))
+  const isEditorCode = (src) => /cm-gutterElement|FormatReplacement|placeCursorAtEnd\([^)]*\)\{/.test(src)
+  for (const file of initial) assert.ok(!isEditorCode(fs.readFileSync(file, 'utf8')), `/: first-load chunk ${file} contains CodeMirror`)
+  const lazy = walk(chunksDir).filter((f) => f.endsWith('.js') && !initial.has(f) && isEditorCode(fs.readFileSync(f, 'utf8')))
+  assert.ok(lazy.length > 0, 'lazy editor chunk not found')
+  const gzipped = lazy.reduce((sum, f) => sum + zlib.gzipSync(fs.readFileSync(f), { level: 9 }).length, 0)
+  assert.ok(gzipped <= 150 * 1024, `lazy editor chunks are ${(gzipped / 1024).toFixed(1)} KB gzipped (budget 150 KB)`)
 })

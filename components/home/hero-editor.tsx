@@ -1,10 +1,26 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, Check, Copy, Pencil, Play, RotateCcw, Square } from "lucide-react"
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from "react"
+import { ArrowUpRight, Check, Copy, Pencil, Play, RotateCcw, Square, Eraser } from "lucide-react"
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type MouseEvent,
+  type PointerEvent,
+  type ReactNode,
+} from "react"
+import { createPortal } from "react-dom"
+import { EditorActionsMenu } from "./editor-actions-menu"
+import { ExamplePicker } from "./example-picker"
 import { buildHafaCodePythonLink } from "@/lib/hafa-code-link"
-import { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_STARTER_KEY, type Token } from "@/lib/python-sample"
+import { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_STARTER_KEY, PYTHON_EXAMPLES, CLEAR_PYTHON_CODE } from "@/lib/python-sample"
+// Type-only import: erased at build time, so CodeMirror stays out of first-load JS.
+import type { AccessoryKey, PythonEditorHandle } from "./python-editor"
 
 export { DEFAULT_PYTHON_CODE, EDITOR_LINES, EDITOR_OUTPUT, HERO_STARTER_KEY }
 
@@ -12,8 +28,13 @@ export const RUN_EXECUTION_TIMEOUT_MS = 5000
 export const RUNTIME_SLOW_HINT_MS = 10000
 export const RUNTIME_LOAD_SAFETY_TIMEOUT_MS = 90000
 export const STOP_GUARD_MS = 400
+export const EDITOR_LOADING_HINT_DELAY_MS = 400
+/** A visual viewport this much shorter than the window means the on-screen keyboard is open. */
+const KEYBOARD_OPEN_THRESHOLD_PX = 120
+const INITIAL_EXAMPLE = PYTHON_EXAMPLES[1]
 
 type RunStatus = "idle" | "loading" | "running" | "done" | "error"
+type EditorMode = "static" | "loading" | "ready" | "failed"
 
 interface WorkerMessage {
   id?: string
@@ -24,29 +45,230 @@ interface WorkerMessage {
   message?: string
 }
 
-function renderTokenizedLine(line: readonly Token[]) {
-  if (!line.length) return " "
-  return line.map(([kind, text], ti) =>
-    kind ? <span key={ti} className={`home-tok-${kind}`}>{text}</span> : <span key={ti}>{text}</span>
-  )
-}
+const CODING_KEYS: ReadonlyArray<{ key: AccessoryKey; label: string; glyph: string; wide?: boolean }> = [
+  { key: "tab", label: "Indent (Tab)", glyph: "⇥", wide: true },
+  { key: "colon", label: "Insert colon", glyph: ":" },
+  { key: "parens", label: "Insert parentheses", glyph: "( )", wide: true },
+  { key: "quotes", label: "Insert quotes", glyph: '" "', wide: true },
+  { key: "equals", label: "Insert equals sign", glyph: "=" },
+  { key: "undo", label: "Undo", glyph: "↶" },
+  { key: "brackets", label: "Insert square brackets", glyph: "[ ]", wide: true },
+  { key: "braces", label: "Insert curly braces", glyph: "{ }", wide: true },
+  { key: "hash", label: "Insert hash (comment)", glyph: "#" },
+  { key: "left", label: "Move cursor left", glyph: "←" },
+  { key: "right", label: "Move cursor right", glyph: "→" },
+]
 
 function splitLines(text: string): string[] {
   if (!text) return []
   return text.replace(/\r\n/g, "\n").replace(/\n$/, "").split("\n")
 }
 
-export function HeroEditor() {
-  const [code, setCode] = useState(DEFAULT_PYTHON_CODE)
-  const [isEditing, setIsEditing] = useState(false)
+function subscribeMedia(query: string) {
+  return (callback: () => void) => {
+    if (typeof window === "undefined" || !window.matchMedia) return () => {}
+    const list = window.matchMedia(query)
+    list.addEventListener?.("change", callback)
+    return () => list.removeEventListener?.("change", callback)
+  }
+}
+
+const COARSE_QUERY = "(pointer: coarse)"
+const subscribeCoarse = subscribeMedia(COARSE_QUERY)
+const getCoarse = () => typeof window !== "undefined" && !!window.matchMedia?.(COARSE_QUERY).matches
+const getServerCoarse = () => false
+
+function prefersReducedMotion() {
+  return typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+}
+
+function keyboardOpen() {
+  const vv = typeof window !== "undefined" ? window.visualViewport : null
+  return !!vv && window.innerHeight - vv.height > KEYBOARD_OPEN_THRESHOLD_PX
+}
+
+/** The part of the sticky site header still visible above the visual viewport. */
+function visibleHeaderHeight() {
+  const header = document.querySelector("header")
+  if (!header) return 0
+  const offset = window.visualViewport?.offsetTop ?? 0
+  return Math.max(0, header.getBoundingClientRect().bottom - offset)
+}
+
+interface CodingKeysProps {
+  busy: boolean
+  onKey: (key: AccessoryKey) => void
+  onRun: () => void
+  onStop: () => void
+  onLayout: (height: number, keyboardIsOpen: boolean, visibleHeight: number) => void
+}
+
+/** A tap that moved more than this is a swipe along the key strip, not a key press. */
+const TAP_SLOP_PX = 10
+
+/**
+ * Press handling for the coding keys. pointerdown is cancelled so the editor keeps
+ * focus (and the keyboard stays up); the action runs on pointerup because WebKit may
+ * skip the click after a cancelled pointerdown. A swipe (or the browser taking over
+ * the scroll) cancels the press. Clicks without a pointer press (keyboard, VoiceOver)
+ * still work.
+ */
+function usePress() {
+  const startRef = useRef<{ id: number; x: number; y: number; target: HTMLButtonElement } | null>(null)
+  const pressedAtRef = useRef(0)
+  return useCallback(
+    (action: () => void) => ({
+      onPointerDown: (event: PointerEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        startRef.current = { id: event.pointerId, x: event.clientX, y: event.clientY, target: event.currentTarget }
+      },
+      onPointerUp: (event: PointerEvent<HTMLButtonElement>) => {
+        const start = startRef.current
+        startRef.current = null
+        pressedAtRef.current = Date.now()
+        if (!start || start.id !== event.pointerId || start.target !== event.currentTarget) return
+        if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > TAP_SLOP_PX) return
+        action()
+      },
+      onPointerCancel: () => {
+        startRef.current = null
+      },
+      onMouseDown: (event: MouseEvent<HTMLButtonElement>) => event.preventDefault(),
+      onClick: () => {
+        if (Date.now() - pressedAtRef.current < 600) return
+        action()
+      },
+    }),
+    [],
+  )
+}
+
+/**
+ * Coding keys pinned to the bottom of the *visual* viewport, so they ride on top of
+ * the on-screen keyboard (iOS keeps fixed elements on the layout viewport, which the
+ * keyboard covers). Buttons never take focus, so the keyboard stays open.
+ */
+function CodingKeys({ busy, onKey, onRun, onStop, onLayout }: CodingKeysProps) {
+  const barRef = useRef<HTMLDivElement>(null)
+
+  // Layout effect: place the bar before the first paint so it never flashes at the top.
+  useLayoutEffect(() => {
+    const bar = barRef.current
+    if (!bar) return
+    document.body.dataset.codingKeys = "open"
+    const vv = window.visualViewport
+    let frame = 0
+    const place = () => {
+      frame = 0
+      const height = vv ? vv.height : window.innerHeight
+      const top = vv ? vv.offsetTop : 0
+      const left = vv ? vv.offsetLeft : 0
+      const width = vv ? vv.width : window.innerWidth
+      const open = keyboardOpen()
+      bar.dataset.keyboard = open ? "open" : "closed"
+      bar.style.width = `${width}px`
+      bar.style.transform = `translate3d(${left}px, ${top + height - bar.offsetHeight}px, 0)`
+      onLayout(bar.offsetHeight, open, height)
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(place)
+    }
+    place()
+    vv?.addEventListener("resize", schedule)
+    vv?.addEventListener("scroll", schedule)
+    window.addEventListener("resize", schedule)
+    window.addEventListener("scroll", schedule, { passive: true })
+    return () => {
+      if (frame) cancelAnimationFrame(frame)
+      vv?.removeEventListener("resize", schedule)
+      vv?.removeEventListener("scroll", schedule)
+      window.removeEventListener("resize", schedule)
+      window.removeEventListener("scroll", schedule)
+      delete document.body.dataset.codingKeys
+      onLayout(0, false, window.innerHeight)
+    }
+  }, [onLayout])
+
+  const press = usePress()
+
+  return (
+    <div ref={barRef} className="home-keys" role="toolbar" aria-label="Coding keys" data-keyboard="closed">
+      <div className="home-keys-scroll">
+        {CODING_KEYS.map(({ key, label, glyph, wide }) => (
+          <button
+            key={key}
+            type="button"
+            className={wide ? "home-key home-key-wide" : "home-key"}
+            aria-label={label}
+            {...press(() => onKey(key))}
+          >
+            {glyph}
+          </button>
+        ))}
+      </div>
+      {busy ? (
+        <button
+          type="button"
+          className="home-key-run home-key-stop"
+          aria-label="Stop running Python"
+          {...press(onStop)}
+        >
+          <Square className="h-3 w-3 fill-current" aria-hidden="true" />
+          Stop
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="home-key-run"
+          aria-label="Run your Python code"
+          {...press(onRun)}
+        >
+          <Play className="h-3 w-3 fill-current" aria-hidden="true" />
+          Run
+        </button>
+      )}
+    </div>
+  )
+}
+
+export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
+  const [example, setExample] = useState(INITIAL_EXAMPLE)
+  const exampleRef = useRef(INITIAL_EXAMPLE)
+  const pendingClearRef = useRef(false)
+  const clearUndoDocRef = useRef<string | null>(null)
+  const transferPendingRef = useRef(false)
+  const [moreCode, setMoreCode] = useState(false)
+  const [outputVisible, setOutputVisible] = useState(false)
+  const [lastRun, setLastRun] = useState<{ code: string; filename: string } | null>(null)
+  const lastRunRef = useRef<{ code: string; filename: string } | null>(null)
+  const [pendingText, setPendingText] = useState("")
+  const [automaticRun, setAutomaticRun] = useState(false)
+  const [runQueued, setRunQueued] = useState(false)
+  const queuedRunRef = useRef(false)
+  const interactedRef = useRef(false)
+  const automaticRunRef = useRef(false)
+  const autoObserverRef = useRef<IntersectionObserver | null>(null)
+  const cancelAutoRun = useCallback(() => {
+    interactedRef.current = true
+    autoObserverRef.current?.disconnect()
+    autoObserverRef.current = null
+  }, [])
+  const [revealRequested, setRevealRequested] = useState(false)
+  const [code, setCode] = useState(INITIAL_EXAMPLE.code)
+  const [editorMode, setEditorMode] = useState<EditorMode>("static")
+  const [editorFocused, setEditorFocused] = useState(false)
+  const [showEditorLoading, setShowEditorLoading] = useState(false)
+  const [keyboardIsOpen, setKeyboardIsOpen] = useState(false)
+  const [modifierLabel, setModifierLabel] = useState("Ctrl")
   const [status, setStatus] = useState<RunStatus>("idle")
   const [slowLoadHint, setSlowLoadHint] = useState(false)
-  const [stdoutLines, setStdoutLines] = useState<string[]>([...EDITOR_OUTPUT])
+  const [stdoutLines, setStdoutLines] = useState<string[]>([])
   const [stderrText, setStderrText] = useState("")
   const [noticeText, setNoticeText] = useState("")
   const [statusAnnouncement, setStatusAnnouncement] = useState("")
   const [hasExecuted, setHasExecuted] = useState(false)
   const [copiedCode, setCopiedCode] = useState(false)
+  const isCoarse = useSyncExternalStore(subscribeCoarse, getCoarse, getServerCoarse)
 
   const workerRef = useRef<Worker | null>(null)
   const workerReadyRef = useRef(false)
@@ -56,13 +278,32 @@ export function HeroEditor() {
   const execTimeoutRef = useRef<number | null>(null)
   const loadHintTimeoutRef = useRef<number | null>(null)
   const loadSafetyTimeoutRef = useRef<number | null>(null)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const gutterRef = useRef<HTMLDivElement>(null)
   const runButtonRef = useRef<HTMLButtonElement>(null)
   const termRef = useRef<HTMLDivElement>(null)
+  const figureRef = useRef<HTMLElement>(null)
+  const codeAreaRef = useRef<HTMLDivElement>(null)
+  const staticRef = useRef<HTMLDivElement>(null)
+  const mountRef = useRef<HTMLDivElement>(null)
+  const proxyRef = useRef<HTMLTextAreaElement | null>(null)
+  const editorRef = useRef<PythonEditorHandle | null>(null)
+  const editorLoadingRef = useRef(false)
+  const pendingInputRef = useRef("")
+  const keyboardWasOpenRef = useRef(false)
+  const codeRef = useRef(INITIAL_EXAMPLE.code)
+  const keysHeightRef = useRef(0)
+  const blurTimerRef = useRef<number | null>(null)
+  const runFromEditorRef = useRef<() => void>(() => {})
+  const focusOnReadyRef = useRef(false)
 
-  const isModified = code !== DEFAULT_PYTHON_CODE
-  const isBusy = status === "loading" || status === "running"
+  const isEditing = editorMode === "loading" || editorMode === "ready"
+  const isModified = code !== example.code
+  const isBusy = runQueued || status === "loading" || status === "running"
+  const outputStale = hasExecuted && !!lastRun && (lastRun.code !== code + pendingText || lastRun.filename !== example.filename)
+
+  const updateCode = useCallback((next: string) => {
+    codeRef.current = next
+    setCode(next)
+  }, [])
 
   const clearTimers = useCallback(() => {
     if (execTimeoutRef.current !== null) {
@@ -90,15 +331,131 @@ export function HeroEditor() {
     workerReadyRef.current = false
   }, [clearTimers])
 
+  // Discard an obsolete automatic result without discarding its runtime download.
+  const invalidateAutomaticRun = useCallback(() => {
+    if (!automaticRunRef.current || !activeRunIdRef.current) return
+    clearTimers()
+    activeRunIdRef.current = null
+    automaticRunRef.current = false
+    setAutomaticRun(false)
+    setStatus("idle")
+    setOutputVisible(false)
+    setSlowLoadHint(false)
+    setLastRun(null)
+    lastRunRef.current = null
+  }, [clearTimers])
+
+  const quietAutomaticFailure = useCallback(() => {
+    if (!automaticRunRef.current) return false
+    terminateWorker()
+    automaticRunRef.current = false
+    setAutomaticRun(false)
+    setStatus("idle")
+    setHasExecuted(false)
+    setStdoutLines([])
+    setStderrText("")
+    setNoticeText("Couldn't load Python here. Press Run to try again, or open it in Hafa Code.")
+    setStatusAnnouncement("")
+    return true
+  }, [terminateWorker])
+
   useEffect(() => terminateWorker, [terminateWorker])
+
+  useEffect(
+    () => () => {
+      editorRef.current?.destroy()
+      editorRef.current = null
+      proxyRef.current?.remove()
+      if (blurTimerRef.current !== null) window.clearTimeout(blurTimerRef.current)
+    },
+    [],
+  )
+
+  useEffect(() => {
+    const cancelOutsideFocus = (event: FocusEvent) => {
+      if (editorLoadingRef.current && !codeAreaRef.current?.contains(event.target as Node)) {
+        focusOnReadyRef.current = false
+      }
+    }
+    const cancelProxyBlur = (event: FocusEvent) => {
+      if (event.target !== proxyRef.current) return
+      if (!event.relatedTarget || !codeAreaRef.current?.contains(event.relatedTarget as Node)) {
+        focusOnReadyRef.current = false
+      }
+    }
+    document.addEventListener("focusin", cancelOutsideFocus)
+    document.addEventListener("focusout", cancelProxyBlur)
+    return () => {
+      document.removeEventListener("focusin", cancelOutsideFocus)
+      document.removeEventListener("focusout", cancelProxyBlur)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isEditing) return
+    const platform =
+      (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ?? navigator.platform ?? ""
+    setModifierLabel(/mac|iphone|ipad/i.test(platform) ? "⌘" : "Ctrl")
+  }, [isEditing])
+
+  // Keep the overflow hint outside the scroller so it stays at the visible edge.
+  useLayoutEffect(() => {
+    const area = codeAreaRef.current
+    const scroller = area?.querySelector<HTMLElement>(editorMode === "ready" ? ".cm-scroller" : ".home-code-scroller")
+    if (!scroller) return
+    let frame = 0
+    const measure = () => {
+      frame = 0
+      setMoreCode(scroller.scrollWidth - scroller.clientWidth - scroller.scrollLeft > 1)
+    }
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(measure) }
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(schedule)
+    observer?.observe(scroller)
+    const content = scroller.querySelector(".cm-content, pre")
+    if (content) observer?.observe(content)
+    scroller.addEventListener("scroll", schedule, { passive: true })
+    window.addEventListener("resize", schedule)
+    schedule()
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener("resize", schedule)
+      scroller.removeEventListener("scroll", schedule)
+      if (frame) cancelAnimationFrame(frame)
+    }
+  }, [code, editorMode])
 
   // Keep tracebacks and output-cap notices scrolled into view inside the bounded terminal.
   useEffect(() => {
     if (!termRef.current) return
-    if (hasExecuted || stderrText || noticeText) {
+    if (stderrText || noticeText) {
       termRef.current.scrollTop = termRef.current.scrollHeight
     }
   }, [stdoutLines, stderrText, noticeText, hasExecuted])
+
+  // A short "Loading editor…" note only if the chunk takes a noticeable moment.
+  useEffect(() => {
+    if (editorMode !== "loading") {
+      setShowEditorLoading(false)
+      return
+    }
+    const timer = window.setTimeout(() => setShowEditorLoading(true), EDITOR_LOADING_HINT_DELAY_MS)
+    return () => window.clearTimeout(timer)
+  }, [editorMode])
+
+  /** Brings the output into view (scrolling only as far as needed). */
+  const revealOutput = useCallback(() => {
+    const term = termRef.current
+    if (!term || typeof term.scrollIntoView !== "function") return
+    term.scrollIntoView({ block: "nearest", behavior: prefersReducedMotion() ? "auto" : "smooth" })
+  }, [])
+
+  useLayoutEffect(() => {
+    if (!outputVisible || !revealRequested) return
+    revealOutput()
+    setRevealRequested(false)
+  }, [outputVisible, revealRequested, revealOutput])
+
+  const requestOutputReveal = useCallback(() => setRevealRequested(true), [])
 
   const ensureWorker = useCallback(() => {
     if (workerRef.current) return workerRef.current
@@ -110,6 +467,7 @@ export function HeroEditor() {
       if (workerRef.current !== worker) return
       const msg = event.data
       if (!msg) return
+      if (msg.type === "started" || msg.type === "result") workerReadyRef.current = true
       if (msg.type === "ready") {
         workerReadyRef.current = true
         return
@@ -121,9 +479,10 @@ export function HeroEditor() {
         clearTimers()
         setSlowLoadHint(false)
         setStatus("running")
-        setStatusAnnouncement("Running expense_summary.py")
+        if (!automaticRunRef.current) setStatusAnnouncement(`Running ${exampleRef.current.filename}`)
         // Start the 5s execution timeout only once Pyodide is loaded and Python starts executing.
         execTimeoutRef.current = window.setTimeout(() => {
+          if (quietAutomaticFailure()) return
           terminateWorker()
           setStatus("error")
           setNoticeText("Stopped after 5 seconds — check for an infinite loop.")
@@ -133,6 +492,7 @@ export function HeroEditor() {
       }
 
       if (msg.type === "output_limit") {
+        if (quietAutomaticFailure()) return
         terminateWorker()
         setStdoutLines(splitLines(msg.stdout ?? ""))
         setStderrText(msg.stderr ?? "")
@@ -144,6 +504,7 @@ export function HeroEditor() {
       }
 
       if (msg.type === "result") {
+        if (msg.exitCode !== 0 && quietAutomaticFailure()) return
         clearTimers()
         activeRunIdRef.current = null
         setSlowLoadHint(false)
@@ -154,7 +515,7 @@ export function HeroEditor() {
         setNoticeText(outLines.length === 0 && !err ? "(Program finished with no output)" : "")
         setStatus(msg.exitCode === 0 ? "done" : "error")
         setHasExecuted(true)
-        setStatusAnnouncement(
+        if (!automaticRunRef.current) setStatusAnnouncement(
           msg.exitCode === 0
             ? `Program finished${outLines.length ? ` with ${outLines.length} lines of output` : " with no output"}.`
             : "Program finished with a Python error.",
@@ -163,6 +524,7 @@ export function HeroEditor() {
       }
 
       if (msg.type === "error") {
+        if (quietAutomaticFailure()) return
         terminateWorker()
         setStderrText(msg.message ?? "Could not run Python in this browser.")
         setNoticeText("")
@@ -173,6 +535,8 @@ export function HeroEditor() {
 
     worker.onerror = () => {
       if (workerRef.current !== worker) return
+      if (!activeRunIdRef.current) { terminateWorker(); return }
+      if (quietAutomaticFailure()) return
       terminateWorker()
       setStderrText("Python runtime failed to load. Check your connection or open in Hafa Code.")
       setNoticeText("")
@@ -182,7 +546,7 @@ export function HeroEditor() {
 
     workerRef.current = worker
     return worker
-  }, [clearTimers, terminateWorker])
+  }, [clearTimers, quietAutomaticFailure, terminateWorker])
 
   const startWarmup = useCallback(() => {
     if (workerRef.current) return
@@ -194,7 +558,38 @@ export function HeroEditor() {
     }
   }, [ensureWorker])
 
-  const startRun = useCallback(() => {
+  const startRun = useCallback((automatic = false) => {
+    if (activeRunIdRef.current) {
+      if (!automatic && automaticRunRef.current) {
+        automaticRunRef.current = false
+        setAutomaticRun(false)
+        runStartedAtRef.current = Date.now()
+        setStatusAnnouncement(workerReadyRef.current ? `Running ${exampleRef.current.filename}` : "Loading Python runtime in your browser…")
+      }
+      return
+    }
+    // The lazy adapter owns mapping a tap to a document position. Wait for that
+    // transfer rather than appending buffered text to a different program.
+    if (!automatic && !editorRef.current && (pendingInputRef.current || proxyRef.current?.value)) {
+      if (!editorLoadingRef.current) {
+        setStatusAnnouncement("The editor didn’t load. Choose Try again before running.")
+        return
+      }
+      queuedRunRef.current = true
+      setRunQueued(true)
+      runStartedAtRef.current = Date.now()
+      setStatusAnnouncement("Waiting for the editor before running your code…")
+      return
+    }
+    const source = { code: editorRef.current?.getDoc() ?? codeRef.current, filename: exampleRef.current.filename }
+    lastRunRef.current = source
+    setLastRun(source)
+    automaticRunRef.current = automatic
+    setAutomaticRun(automatic)
+    setStatusAnnouncement("")
+    setHasExecuted(false)
+    setOutputVisible(true)
+    setRevealRequested(false)
     clearTimers()
     const runId = `run-${++runIdRef.current}`
     activeRunIdRef.current = runId
@@ -206,147 +601,469 @@ export function HeroEditor() {
     setSlowLoadHint(false)
     const needsLoad = !workerReadyRef.current
     setStatus(needsLoad ? "loading" : "running")
-    setStatusAnnouncement(needsLoad ? "Loading Python runtime in your browser…" : "Running expense_summary.py")
+    if (!automatic) setStatusAnnouncement(needsLoad ? "Loading Python runtime in your browser…" : `Running ${exampleRef.current.filename}`)
 
     try {
       const worker = ensureWorker()
       if (needsLoad) {
         loadHintTimeoutRef.current = window.setTimeout(() => {
           setSlowLoadHint(true)
-          setStatusAnnouncement("Still loading Python (first time only)…")
+          if (!automaticRunRef.current) setStatusAnnouncement("Still loading Python (first time only)…")
         }, RUNTIME_SLOW_HINT_MS)
       }
       // Generous safety cap while waiting for runtime load/start; does not interrupt slow mobile downloads early.
       loadSafetyTimeoutRef.current = window.setTimeout(() => {
+        if (quietAutomaticFailure()) return
         terminateWorker()
         setStatus("error")
         setNoticeText("Python took too long to load. Check your connection and try again, or open in Hafa Code.")
         setStatusAnnouncement("Python runtime load timed out.")
       }, RUNTIME_LOAD_SAFETY_TIMEOUT_MS)
 
-      worker.postMessage({ id: runId, type: "run", code, filename: "expense_summary.py" })
+      worker.postMessage({ id: runId, type: "run", ...source })
     } catch (err) {
+      if (quietAutomaticFailure()) return
       terminateWorker()
       setStderrText(err instanceof Error ? err.message : "Could not start Python.")
       setStatus("error")
       setStatusAnnouncement("Could not start Python.")
     }
-  }, [clearTimers, code, ensureWorker, terminateWorker])
+  }, [clearTimers, ensureWorker, quietAutomaticFailure, terminateWorker])
+
+  // Visibility, load and idle are all required; no worker is created for an unseen hero.
+  useEffect(() => {
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection
+    if (typeof IntersectionObserver === "undefined" || connection?.saveData || ["slow-2g", "2g"].includes(connection?.effectiveType ?? "")) {
+      return
+    }
+    if (interactedRef.current) return
+    let disposed = false
+    let visible = false
+    let idle = false
+    let idleId: number | undefined
+    let timer: number | undefined
+    const attempt = () => {
+      if (disposed || !visible || !idle || interactedRef.current) return
+      disposed = true
+      observer.disconnect()
+      autoObserverRef.current = null
+      startRun(true)
+    }
+    const observer = new IntersectionObserver(entries => {
+      visible = entries.some(entry => entry.isIntersecting)
+      attempt()
+    })
+    autoObserverRef.current = observer
+    if (!interactedRef.current && figureRef.current) observer.observe(figureRef.current)
+    const afterLoad = () => {
+      const ready = () => { idle = true; attempt() }
+      if (window.requestIdleCallback) idleId = window.requestIdleCallback(ready, { timeout: 2000 })
+      else timer = window.setTimeout(ready, 200)
+    }
+    if (document.readyState === "complete") afterLoad()
+    else window.addEventListener("load", afterLoad, { once: true })
+    return () => {
+      disposed = true
+      observer.disconnect()
+      if (autoObserverRef.current === observer) autoObserverRef.current = null
+      window.removeEventListener("load", afterLoad)
+      if (idleId !== undefined) window.cancelIdleCallback(idleId)
+      if (timer !== undefined) window.clearTimeout(timer)
+    }
+  }, [startRun])
 
   const handleRunClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       if (event.detail > 1) return
       startRun()
+      requestOutputReveal()
     },
-    [startRun],
+    [requestOutputReveal, startRun],
   )
+
+  const stopRun = useCallback(() => {
+    // Guard against a double-tap on Run accidentally hitting the swapped Stop button.
+    if (Date.now() - runStartedAtRef.current < STOP_GUARD_MS) return
+    queuedRunRef.current = false
+    setRunQueued(false)
+    terminateWorker()
+    setStatus("idle")
+    setNoticeText("Stopped.")
+    setStatusAnnouncement("Execution stopped.")
+  }, [terminateWorker])
 
   const handleStopClick = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
-      // Guard against a double-click/double-tap on Run accidentally hitting the swapped Stop button.
       if (event.detail > 1) return
-      if (Date.now() - runStartedAtRef.current < STOP_GUARD_MS) return
-      terminateWorker()
-      setStatus("idle")
-      setNoticeText("Stopped.")
-      setStatusAnnouncement("Execution stopped.")
+      stopRun()
     },
-    [terminateWorker],
+    [stopRun],
   )
 
-  const handleEnterEdit = useCallback(() => {
-    setIsEditing(true)
-    startWarmup()
-    requestAnimationFrame(() => {
-      textareaRef.current?.focus()
-    })
-  }, [startWarmup])
+  // Cmd/Ctrl+Enter inside the editor: run and keep typing.
+  useEffect(() => {
+    runFromEditorRef.current = () => {
+      startRun()
+      requestOutputReveal()
+    }
+  }, [requestOutputReveal, startRun])
 
-  const handleReset = useCallback(() => {
-    // Always terminate the worker on Reset so any mutated Python globals/builtins start fresh.
-    terminateWorker()
-    setCode(DEFAULT_PYTHON_CODE)
-    setStdoutLines([...EDITOR_OUTPUT])
+  /** Run from the coding keys: close the keyboard first, then show the output. */
+  const handleKeysRun = useCallback(() => {
+    const wasOpen = keyboardOpen()
+    editorRef.current?.blur()
+    startRun()
+    const vv = window.visualViewport
+    if (!wasOpen || !vv) {
+      requestOutputReveal()
+      return
+    }
+    let fallback = 0
+    const done = () => {
+      vv.removeEventListener("resize", onResize)
+      window.clearTimeout(fallback)
+      requestOutputReveal()
+    }
+    const onResize = () => {
+      if (!keyboardOpen()) done()
+    }
+    vv.addEventListener("resize", onResize)
+    fallback = window.setTimeout(done, 700)
+  }, [requestOutputReveal, startRun])
+
+  const handleKey = useCallback((key: AccessoryKey) => {
+    const editor = editorRef.current
+    if (!editor) return
+    editor.runKey(key)
+    editor.focus()
+  }, [])
+
+  const handleKeysLayout = useCallback((height: number, open: boolean, visibleHeight: number) => {
+    keysHeightRef.current = height
+    setKeyboardIsOpen(open)
+    if (!height) keyboardWasOpenRef.current = false
+    const figure = figureRef.current
+    if (!figure) return
+    if (open) {
+      // Fit the code between the visible header and the coding keys while typing.
+      const areaTop = (codeAreaRef.current?.getBoundingClientRect().top ?? 0) - (window.visualViewport?.offsetTop ?? 0)
+      const room = Math.min(
+        visibleHeight - visibleHeaderHeight() - height - 8,
+        visibleHeight - Math.max(0, areaTop) - height - 8,
+      )
+      figure.style.setProperty("--code-kb-max-h", `${Math.max(48, Math.round(room))}px`)
+    } else {
+      figure.style.removeProperty("--code-kb-max-h")
+    }
+  }, [])
+
+  // When the keyboard opens, line the code up under the header so the whole (shrunk) editor
+  // sits between the header and the coding keys; then keep the cursor in view.
+  useEffect(() => {
+    if (editorMode !== "ready" || !editorFocused) return
+    if (keyboardIsOpen && !keyboardWasOpenRef.current) {
+      const area = codeAreaRef.current
+      const vv = window.visualViewport
+      if (area && vv) {
+        const offset = area.getBoundingClientRect().top - vv.offsetTop - (visibleHeaderHeight() + 8)
+        if (Math.abs(offset) > 4) window.scrollBy({ top: offset, behavior: "auto" })
+        handleKeysLayout(keysHeightRef.current, true, vv.height)
+      }
+    }
+    keyboardWasOpenRef.current = keyboardIsOpen
+    editorRef.current?.revealCursor()
+  }, [keyboardIsOpen, editorMode, editorFocused, handleKeysLayout])
+
+  const removeProxy = useCallback(() => {
+    const proxy = proxyRef.current
+    proxyRef.current = null
+    if (!proxy) return ""
+    const typed = proxy.value
+    proxy.remove()
+    return typed
+  }, [])
+
+  /**
+   * iOS only raises the keyboard for focus() inside the tap itself, and the editor
+   * arrives a moment later. Hold the keyboard open with an invisible textarea at the
+   * tap point; CodeMirror takes focus (and anything typed meanwhile) when it mounts.
+   */
+  const holdKeyboard = useCallback((offsetY: number) => {
+    const area = codeAreaRef.current
+    if (!area || proxyRef.current) return
+    const proxy = document.createElement("textarea")
+    proxy.className = "home-focus-proxy"
+    proxy.setAttribute("aria-hidden", "true")
+    proxy.setAttribute("autocapitalize", "off")
+    proxy.setAttribute("autocorrect", "off")
+    proxy.setAttribute("autocomplete", "off")
+    proxy.spellcheck = false
+    proxy.addEventListener("input", () => {
+      invalidateAutomaticRun()
+      setPendingText(pendingInputRef.current + proxy.value)
+    })
+    proxy.tabIndex = -1
+    proxy.style.top = `${Math.max(0, offsetY)}px`
+    area.appendChild(proxy)
+    proxyRef.current = proxy
+    proxy.focus({ preventScroll: true })
+  }, [invalidateAutomaticRun])
+
+  const loadEditor = useCallback(
+    (tap?: { clientX: number; clientY: number }, { focus = true }: { focus?: boolean } = {}) => {
+      focusOnReadyRef.current = focus
+      if (!focus) removeProxy()
+      if (editorRef.current) {
+        if (focus) editorRef.current.focus()
+        return
+      }
+      if (editorLoadingRef.current) {
+        if (focus && getCoarse()) holdKeyboard(24)
+        return
+      }
+      editorLoadingRef.current = true
+
+      const area = codeAreaRef.current
+      const staticScroller = staticRef.current
+      const areaRect = area?.getBoundingClientRect()
+      // Remember the tap relative to the code (the page may scroll while the keyboard opens).
+      const tapOffset =
+        tap && areaRect ? { x: tap.clientX - areaRect.left, y: tap.clientY - areaRect.top } : null
+      const scrollTop = staticScroller?.scrollTop ?? 0
+      if (focus && getCoarse()) holdKeyboard(tapOffset?.y ?? 24)
+
+      setEditorMode("loading")
+      if (focus) startWarmup()
+
+      import("./python-editor")
+        .then((mod) => {
+          const parent = mountRef.current
+          if (!parent) throw new Error("Editor container is missing.")
+          const editor = mod.createPythonEditor({
+            parent,
+            doc: clearUndoDocRef.current ?? codeRef.current,
+            ariaLabel: "Python code editor",
+            describedBy: "home-editor-hint",
+            onChange: (next) => {
+              codeRef.current = next
+              setCode(next)
+              setPendingText("")
+              if (lastRunRef.current && next !== lastRunRef.current.code) invalidateAutomaticRun()
+            },
+            onRun: () => runFromEditorRef.current(),
+            onFocusChange: (focused) => {
+              if (blurTimerRef.current !== null) {
+                window.clearTimeout(blurTimerRef.current)
+                blurTimerRef.current = null
+              }
+              if (focused) setEditorFocused(true)
+              // Tapping a coding key can blur for a frame; don't flash the bar away.
+              else blurTimerRef.current = window.setTimeout(() => setEditorFocused(false), 150)
+            },
+            scrollMargins: () => {
+              const rect = (editorRef.current?.view.scrollDOM ?? codeAreaRef.current)?.getBoundingClientRect()
+              const vv = window.visualViewport
+              const viewportTop = vv?.offsetTop ?? 0
+              const visibleTop = viewportTop + visibleHeaderHeight()
+              const visibleBottom = viewportTop + (vv?.height ?? innerHeight) - keysHeightRef.current
+              // Only compensate for actual occlusion, not a bar already outside
+              // the code box. Otherwise focusing a visible line needlessly scrolls it.
+              return {
+                top: Math.max(8, visibleTop - (rect?.top ?? visibleTop) + 8),
+                bottom: Math.max(8, (rect?.bottom ?? visibleBottom) - visibleBottom + 8),
+              }
+            },
+          })
+          editorRef.current = editor
+          editor.view.scrollDOM.scrollTop = scrollTop
+          const newRect = parent.getBoundingClientRect()
+          if (tapOffset) editor.placeCursorAt(newRect.left + tapOffset.x, newRect.top + tapOffset.y)
+          else editor.placeCursorAtEnd(false)
+          transferPendingRef.current = true
+          setEditorMode("ready")
+        })
+        .catch(() => {
+          editorLoadingRef.current = false
+          queuedRunRef.current = false
+          setRunQueued(false)
+          pendingInputRef.current += removeProxy()
+          setEditorMode("failed")
+          setStatusAnnouncement("The code editor did not load. Check your connection and try again.")
+        })
+    },
+    [holdKeyboard, invalidateAutomaticRun, removeProxy, startWarmup],
+  )
+
+  // Focus once the editor is visible (an invisible element cannot take focus).
+  useLayoutEffect(() => {
+    if (editorMode !== "ready" || !transferPendingRef.current) return
+    transferPendingRef.current = false
+    const shouldFocus = focusOnReadyRef.current
+    focusOnReadyRef.current = false
+    const editor = editorRef.current
+    if (!editor) return
+    // Transfer focus directly from the still-mounted iOS holder, with no body-focus gap.
+    if (shouldFocus) editor.focus()
+    if (pendingClearRef.current) {
+      editor.setDoc(codeRef.current)
+      editor.placeCursorAtEnd(false)
+      pendingClearRef.current = false
+      clearUndoDocRef.current = null
+    }
+    const typed = pendingInputRef.current + (proxyRef.current?.value ?? "")
+    editor.insertAtCursor(typed, shouldFocus)
+    pendingInputRef.current = ""
+    setPendingText("")
+    removeProxy()
+    if (queuedRunRef.current) {
+      queuedRunRef.current = false
+      setRunQueued(false)
+      startRun()
+      requestOutputReveal()
+    }
+    if (shouldFocus) editor.revealCursor()
+  }, [editorMode, removeProxy, requestOutputReveal, startRun])
+
+  const handleEnterEdit = useCallback(() => loadEditor(), [loadEditor])
+
+  const handleStaticClick = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      // Let visitors select and copy the sample without switching modes.
+      const selection = window.getSelection?.()
+      if (selection && !selection.isCollapsed) return
+      loadEditor({ clientX: event.clientX, clientY: event.clientY })
+    },
+    [loadEditor],
+  )
+
+  const clearOutput = useCallback(() => {
+    if (activeRunIdRef.current && automaticRunRef.current) invalidateAutomaticRun()
+    else terminateWorker()
+    automaticRunRef.current = false
+    setAutomaticRun(false)
+    queuedRunRef.current = false
+    setRunQueued(false)
+    setLastRun(null)
+    lastRunRef.current = null
+    setPendingText("")
+    setStdoutLines([])
     setStderrText("")
     setNoticeText("")
     setStatus("idle")
     setHasExecuted(false)
-    setStatusAnnouncement("Reset to the default expense_summary.py example.")
-    requestAnimationFrame(() => {
-      if (isEditing && textareaRef.current) {
-        textareaRef.current.focus()
-      } else {
-        runButtonRef.current?.focus()
-      }
-    })
-  }, [isEditing, terminateWorker])
+    setOutputVisible(false)
+    setRevealRequested(false)
+    pendingInputRef.current = ""
+    if (proxyRef.current) proxyRef.current.value = ""
+  }, [invalidateAutomaticRun, terminateWorker])
 
-  const handleEditorKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
-      event.preventDefault()
-      if (!isBusy) startRun()
+  const handleReset = useCallback(() => {
+    clearOutput()
+    pendingClearRef.current = false
+    clearUndoDocRef.current = null
+    updateCode(exampleRef.current.code)
+    // Reset and Clear are whole-document edits, preserving the visitor's undo history.
+    editorRef.current?.setDoc(exampleRef.current.code)
+    setStatusAnnouncement(`Reset to the original ${exampleRef.current.filename} example.`)
+    if (editorRef.current) editorRef.current.focus()
+    else if (proxyRef.current) {
+      focusOnReadyRef.current = true
+      proxyRef.current.focus()
     }
-  }
+    else runButtonRef.current?.focus()
+  }, [clearOutput, updateCode])
+
+  const handleClear = useCallback(() => {
+    const previous = codeRef.current + pendingInputRef.current + (proxyRef.current?.value ?? "")
+    clearOutput()
+    const editor = editorRef.current
+    if (editor) {
+      editor.setDoc(CLEAR_PYTHON_CODE)
+      editor.placeCursorAtEnd()
+      editor.focus()
+    } else {
+      // Keep the live document current immediately; seed the lazy editor from the
+      // saved document and apply Clear as a history entry once the import resolves.
+      if (!pendingClearRef.current || previous !== CLEAR_PYTHON_CODE) clearUndoDocRef.current = previous
+      pendingClearRef.current = true
+      updateCode(CLEAR_PYTHON_CODE)
+      loadEditor()
+    }
+    setStatusAnnouncement("Editor cleared. Write your Python on line two. Undo restores your code.")
+  }, [clearOutput, loadEditor, updateCode])
+
+  const handleExample = useCallback((filename: string) => {
+    const next = PYTHON_EXAMPLES.find(item => item.filename === filename)
+    if (!next || next === exampleRef.current) return
+    clearOutput()
+    pendingClearRef.current = false
+    clearUndoDocRef.current = null
+    exampleRef.current = next
+    setExample(next)
+    updateCode(next.code)
+    editorRef.current?.setDoc(next.code)
+    loadEditor(undefined, { focus: false })
+    setStatusAnnouncement(`Selected ${next.filename}. ${next.caption}.`)
+  }, [clearOutput, loadEditor, updateCode])
 
   const handleCopyCode = useCallback(async () => {
     try {
-      await navigator.clipboard?.writeText(code)
+      await navigator.clipboard?.writeText(codeRef.current)
       setCopiedCode(true)
       setStatusAnnouncement("Python code copied to clipboard.")
       window.setTimeout(() => setCopiedCode(false), 2000)
     } catch {
       setStatusAnnouncement("Could not copy automatically. Select the code in the editor to copy it.")
     }
-  }, [code])
-
-  const handleEditorScroll = useCallback(() => {
-    if (gutterRef.current && textareaRef.current) {
-      gutterRef.current.scrollTop = textareaRef.current.scrollTop
-    }
   }, [])
 
   const hafaCodeLink = useMemo(
     () =>
       buildHafaCodePythonLink(code, {
-        title: "Expense summary",
-        filename: "expense_summary.py",
-        starterKey: HERO_STARTER_KEY,
+        title: example.title,
+        filename: example.filename,
+        starterKey: example.starterKey,
       }),
-    [code],
+    [code, example],
   )
 
-  const lineCount = useMemo(() => Math.max(EDITOR_LINES.length, code.split("\n").length), [code])
+  const showKeys = editorMode === "ready" && editorFocused && isCoarse
 
   return (
-    <figure className="home-editor" aria-labelledby="home-editor-caption">
-      <div className="home-editor-top">
-        <div className="home-editor-tabs" aria-hidden="true">
-          <i /><i /><i />
-          <span>expense_summary.py</span>
+    <figure
+      ref={figureRef}
+      className="home-editor"
+      aria-labelledby="home-editor-caption"
+      data-editing={isEditing ? "" : undefined}
+      data-keyboard={showKeys && keyboardIsOpen ? "open" : undefined}
+    >
+      <div className="home-editor-top" onPointerDownCapture={cancelAutoRun} onFocusCapture={cancelAutoRun} onKeyDownCapture={cancelAutoRun}>
+        <div className="home-editor-tabs">
+          <i aria-hidden="true" />
+          <i aria-hidden="true" />
+          <i aria-hidden="true" />
+          <ExamplePicker value={example.filename} modified={isModified} onChange={handleExample} />
         </div>
         <div className="home-editor-actions">
-          {!isEditing ? (
-            <button
-              type="button"
-              className="home-ed-btn"
-              onClick={handleEnterEdit}
-            >
-              <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
-              Write your own
-            </button>
-          ) : null}
-          {isModified || hasExecuted ? (
-            <button
-              type="button"
-              className="home-ed-btn"
-              onClick={handleReset}
-              aria-label="Reset to default Python example"
-            >
-              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-              Reset
-            </button>
-          ) : null}
-          {isBusy ? (
+          <button type="button" className="home-ed-btn" onClick={handleEnterEdit} aria-label="Edit Python code" title="Edit Python code">
+            <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Edit</span>
+          </button>
+          <button type="button" className="home-ed-btn home-editor-secondary" onClick={handleClear} aria-label="Clear Python editor" title="Clear Python editor">
+            <Eraser className="h-3.5 w-3.5" aria-hidden="true" /> <span>Clear</span>
+          </button>
+          <button
+            type="button"
+            className="home-ed-btn home-editor-secondary"
+            onClick={handleReset}
+            aria-label="Reset to original Python example"
+            title="Reset to original Python example"
+          >
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Reset</span>
+          </button>
+          <EditorActionsMenu onClear={handleClear} onReset={handleReset} />
+          {isBusy && !(automaticRun && status === "loading") ? (
             <button
               type="button"
               className="home-run home-run-stop"
@@ -371,68 +1088,83 @@ export function HeroEditor() {
         </div>
       </div>
 
-      {isEditing ? (
-        <div className="home-code-edit-wrap">
-          <div ref={gutterRef} className="home-code-gutter" aria-hidden="true">
-            {Array.from({ length: lineCount }, (_, i) => (
-              <span key={i}>{i + 1}</span>
-            ))}
+      <p className="home-example-caption">{example.caption}</p>
+
+      <div ref={codeAreaRef} className="home-code-area" data-mode={editorMode} data-more-code={moreCode ? "" : undefined} onPointerDownCapture={cancelAutoRun} onFocusCapture={cancelAutoRun} onKeyDownCapture={cancelAutoRun}>
+        {editorMode !== "ready" ? (
+          /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- This scrollable code region supports pointer and Enter/Space activation as an alternative to Edit. */
+          <div
+            ref={staticRef}
+            role="region"
+            aria-label={`Sample Python code: ${example.filename}`}
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable code region must be keyboard focusable
+            tabIndex={0}
+            className="home-code-scroller"
+            onClick={handleStaticClick}
+            onKeyDown={event => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                loadEditor()
+              }
+            }}
+          >
+            {example === INITIAL_EXAMPLE && code === INITIAL_EXAMPLE.code ? staticCode : <pre className="home-code-fallback">{code}</pre>}
           </div>
-          <textarea
-            ref={textareaRef}
-            value={code}
-            onChange={(event) => setCode(event.target.value)}
-            onKeyDown={handleEditorKeyDown}
-            onScroll={handleEditorScroll}
-            spellCheck={false}
-            autoCapitalize="none"
-            autoCorrect="off"
-            autoComplete="off"
-            aria-label="Python code editor for expense_summary.py"
-            aria-describedby="home-editor-hint"
-            className="home-code-input"
-          />
-          <p id="home-editor-hint" className="sr-only">
-            Edit the Python code, then press Run or Control plus Enter to execute it in your browser. Press Tab to move to the next button.
+        ) : null}
+        <div ref={mountRef} className="home-cm-mount" />
+        {showEditorLoading ? (
+          <p className="home-code-note" role="status">
+            <span className="home-code-spinner" aria-hidden="true" /> Loading editor…
           </p>
-        </div>
-      ) : (
-        /* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable code region must be keyboard focusable */
-        <div role="region" aria-label="Sample Python code: expense_summary.py" tabIndex={0} className="home-code-region">
-          <pre className="home-code">
-            {EDITOR_LINES.map((line, li) => (
-              <span key={li} className="home-ln">
-                {renderTokenizedLine(line)}
-              </span>
-            ))}
-          </pre>
-        </div>
-      )}
+        ) : null}
+        {editorMode === "failed" ? (
+          <p className="home-code-note home-code-note-error" role="alert">
+            The editor didn’t load.
+            <button type="button" className="home-ed-btn home-ed-btn-sm" onClick={handleEnterEdit}>
+              Try again
+            </button>
+          </p>
+        ) : null}
+        <p id="home-editor-hint" className="sr-only">
+          Tab indents. Press Escape, then Tab, to leave the editor. Press Control or Command plus Enter to run the code
+          in your browser.
+        </p>
+      </div>
+
+      <p className="home-code-hint" data-visible={editorMode === "ready" && editorFocused && !isCoarse ? "true" : "false"} aria-hidden="true">
+          <span>
+            <kbd>Esc</kbd> then <kbd>Tab</kbd> leaves
+          </span>
+          <span>
+            <kbd>{modifierLabel}</kbd>+<kbd>Enter</kbd> runs
+          </span>
+      </p>
 
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- Scrollable output region must be keyboard focusable */}
-      <div ref={termRef} className="home-term" role="region" aria-label="Python program output" tabIndex={0}>
+      <div ref={termRef} className="home-term" data-stale={outputStale ? "" : undefined} role="region" aria-label="Python program output" tabIndex={0}>
         <div className="home-term-bar">
           <span className="home-term-line">
-            <span className="home-term-prompt">$</span> python expense_summary.py
+            <span className="home-term-prompt">$</span> python {example.filename}
           </span>
+
           {status === "loading" ? (
             <span className="home-term-status">
               {slowLoadHint ? "Still loading Python (first time only)…" : "Loading Python…"}
             </span>
           ) : null}
           {status === "running" ? <span className="home-term-status">Running…</span> : null}
-          {status === "done" && hasExecuted ? <span className="home-term-status home-term-status-ok">Ran in browser</span> : null}
+          {status === "done" && hasExecuted && !outputStale ? <span className="home-term-status home-term-status-ok">Ran in browser</span> : null}
         </div>
+        {!outputVisible ? <p className="home-output-prompt">Press Run to see the output.</p> : null}
+        {outputStale ? <span className="home-term-note">Code changed. Press Run to update the output.</span> : null}
         {stdoutLines.map((line, i) => (
           <span
             key={`${i}-${line}`}
-            className={
-              !stderrText && !noticeText && i === stdoutLines.length - 1 && line.startsWith("Under budget")
-                ? "home-term-line home-term-ok"
-                : "home-term-line"
-            }
+            className="home-term-line"
           >
-            {line}
+            {line.split(/(█+)/).map((part, index) => part.startsWith("█")
+              ? <span key={index} className="home-term-block" style={{ width: `${part.length}ch` }}>{part}</span>
+              : part)}
           </span>
         ))}
         {stderrText ? <pre className="home-term-err">{stderrText}</pre> : null}
@@ -444,7 +1176,7 @@ export function HeroEditor() {
       </p>
 
       <figcaption id="home-editor-caption" className="sr-only">
-        Interactive Python editor with expense_summary.py: sums three expenses, prints each category, and shows the remaining budget. Click Run to execute real Python in your browser, or Write your own to edit the code.
+        Interactive Python editor: {example.filename}. {example.caption}. Run Python in your browser, edit, clear, or choose another example.
       </figcaption>
 
       <div className="home-editor-foot">
@@ -452,12 +1184,7 @@ export function HeroEditor() {
           Python Fundamentals
         </Link>
         <span className="home-pill">Runs in your browser</span>
-        <a
-          href={hafaCodeLink.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="home-pill-ext"
-        >
+        <a href={hafaCodeLink.url} target="_blank" rel="noopener noreferrer" className="home-pill-ext">
           Open in Hafa Code <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
         </a>
       </div>
@@ -470,6 +1197,19 @@ export function HeroEditor() {
           </button>
         </div>
       ) : null}
+
+      {showKeys
+        ? createPortal(
+            <CodingKeys
+              busy={isBusy}
+              onKey={handleKey}
+              onRun={handleKeysRun}
+              onStop={stopRun}
+              onLayout={handleKeysLayout}
+            />,
+            document.body,
+          )
+        : null}
     </figure>
   )
 }
