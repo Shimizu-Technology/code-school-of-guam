@@ -110,7 +110,7 @@ export default function HomePage() {
               Python runs here in your browser. Change it or pick another example, then press <strong>Run</strong>. The early 2027 Python pilot is for invited adults; public courses are being prepared.
             </p>
           </div>
-          <HeroEditor staticCode={<PythonCodeStatic code={PYTHON_EXAMPLES[1].code} />} />
+          <HeroEditor staticExamples={Object.fromEntries(PYTHON_EXAMPLES.map(example => [example.filename, <PythonCodeStatic key={example.filename} code={example.code} />]))} />
         </div>
         <div className="border-t border-[#ded7c9]">
           <div className="container mx-auto flex flex-wrap gap-x-6 gap-y-1 px-4 py-4 text-sm leading-6 text-slate-600 sm:px-8">

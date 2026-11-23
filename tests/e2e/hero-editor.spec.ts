@@ -199,7 +199,7 @@ test('a real editor: indent after colon, auto-closing brackets and quotes, smart
   if (!testInfo.project.name.includes('iphone')) {
     await page.keyboard.press(`${mod()}+z`)
     expect(await editorText(page)).not.toContain('greet("Guam")')
-    await page.keyboard.press(`${mod()}+Shift+z`)
+    await page.keyboard.press(await page.evaluate(() => /Mac/.test(navigator.platform)) ? 'Meta+Shift+z' : 'Control+y')
     expect(await editorText(page)).toContain('greet("Guam")')
   }
   // Tab indents; Shift-Tab outdents.
@@ -433,6 +433,10 @@ test('rejected editor import retains pending input on retry, and Reset clears pe
     if (reset) await editorAction(page, 'Reset to original Python example')
     release()
     await expect(page.locator('.home-code-note-error')).toContainText('The editor didn’t load.')
+    if (!reset) {
+      await expect(page.getByRole('button', { name: /Open in Hafa Code/ })).toBeDisabled()
+      await expect(page.getByRole('button', { name: 'Copy code' })).toBeDisabled()
+    }
     await page.unroute('**/_next/static/chunks/*.js', fail)
     await page.getByRole('button', { name: 'Try again' }).tap()
     await expect(page.locator('.cm-content')).toBeFocused()
@@ -588,7 +592,7 @@ test('background example load failure shows the selected source without opening 
   await expect(picker).toBeFocused()
   await expect(page.locator('.home-focus-proxy')).toHaveCount(0)
   const fallback = page.getByRole('region', { name: 'Sample Python code: expense_summary.py' })
-  await expect(fallback.locator('pre')).toHaveText(PYTHON_EXAMPLES[0].code)
+  expect(await fallback.locator('.home-code-line').allTextContents()).toEqual(PYTHON_EXAMPLES[0].code.split('\n').map(line => line || '\n'))
   await page.unroute('**/_next/static/chunks/*.js')
   await page.getByRole('button', { name: 'Edit Python code' }).click()
   await expect(page.locator('.cm-content')).toBeFocused()
@@ -643,7 +647,8 @@ test('slow Clear immediately updates the document/link and Run includes buffered
   const href = await page.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')
   const payload = new URLSearchParams(href!.split('#')[1]).get('project')!
   expect(JSON.parse(Buffer.from(payload, 'base64url').toString()).files[0].content).toBe(CLEAR_PYTHON_CODE)
-  await expect(page.locator('.home-code-fallback')).toHaveText(CLEAR_PYTHON_CODE)
+  await expect(page.locator('.home-code-line').first()).toHaveText('# Write your Python here')
+  await expect(page.locator('.home-code-num')).toHaveCount(2)
   await page.keyboard.insertText('print("hello")')
   await page.locator('.home-editor-actions').getByRole('button', { name: 'Run your Python code' }).tap()
   await expect(page.locator('.home-term-status-ok')).toHaveCount(0)
@@ -666,7 +671,8 @@ test('Clear remains current through an import rejection and retry seeds the orig
   await editorAction(page, 'Clear Python editor')
   await expect(page.locator('.home-code-note-error')).toBeVisible()
   await expect(page.getByRole('combobox', { name: 'Python example (modified)' })).toBeVisible()
-  await expect(page.locator('.home-code-fallback')).toHaveText(CLEAR_PYTHON_CODE)
+  await expect(page.locator('.home-code-line').first()).toHaveText('# Write your Python here')
+  await expect(page.locator('.home-code-num')).toHaveCount(2)
   const href = await page.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')
   expect(JSON.parse(Buffer.from(new URLSearchParams(href!.split('#')[1]).get('project')!, 'base64url').toString()).files[0].content).toBe(CLEAR_PYTHON_CODE)
   await page.unroute('**/_next/static/chunks/*.js')
@@ -1041,7 +1047,9 @@ test.describe('automatic run regressions', () => {
       await page.mouse.move(before.x + before.width / 2, before.y + before.height / 2)
       await page.mouse.down()
       const after = (await edit.boundingBox())!
-      expect(Math.abs(after.y - before.y)).toBeLessThan(0.5)
+      // The pressed button intentionally scales around its center. Compare the
+      // center so that animation is not mistaken for a toolbar layout shift.
+      expect(Math.abs(after.y + after.height / 2 - before.y - before.height / 2)).toBeLessThan(0.5)
       expect(await page.locator('.home-term').evaluate(el => el.getBoundingClientRect().height)).toBe(224)
       await page.mouse.up()
       await expect(page.locator('.cm-content')).toBeFocused()
@@ -1240,4 +1248,76 @@ test.describe('phone footer around automatic execution', () => {
       await check()
     }
   })
+})
+
+
+test('non-default example keeps its code and gutter aligned across the lazy swap', async ({ page }) => {
+  for (const width of [375, 1440]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/', { waitUntil: 'networkidle' })
+    let release!: () => void
+    const gate = new Promise<void>(resolve => { release = resolve })
+    await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
+    try {
+      await page.getByRole('combobox', { name: /^Python example/ }).click()
+      await page.getByRole('option', { name: 'expense_summary.py', exact: true }).click()
+      const code = page.locator('.home-code-line').first()
+      await expect(code).toContainText('costs')
+      const before = await code.evaluate(el => {
+        const range = document.createRange()
+        range.selectNodeContents(el)
+        return range.getBoundingClientRect().x
+      })
+      const gutter = await page.locator('.home-code-num').first().boundingBox()
+      await expect(page.locator('.home-code-num').first()).toHaveText('1')
+      release()
+      await expect(page.locator('.cm-content')).toBeVisible()
+      const after = await page.locator('.cm-line').first().evaluate(el => {
+        const range = document.createRange()
+        range.selectNodeContents(el)
+        return range.getBoundingClientRect().x
+      })
+      expect(Math.abs(after - before)).toBeLessThan(0.5)
+      const liveGutter = (await page.locator('.cm-gutters').boundingBox())!
+      expect(Math.abs(liveGutter.x - gutter!.x)).toBeLessThan(0.5)
+      expect(Math.abs(liveGutter.width - gutter!.width)).toBeLessThan(0.5)
+      await expect(page.locator('.cm-lineNumbers .cm-gutterElement').filter({ hasText: /^1$/ })).toBeVisible()
+    } finally {
+      release()
+      await page.unroute('**/_next/static/chunks/*.js')
+    }
+  }
+})
+
+test('buffered typing blocks export and copy until its insertion inside the program transfers', async ({ page }, testInfo) => {
+  test.skip(!isTouch(testInfo.project.name), 'touch input buffered in the focus proxy')
+  await page.goto('/', { waitUntil: 'networkidle' })
+  let release!: () => void
+  const gate = new Promise<void>(resolve => { release = resolve })
+  await page.route('**/_next/static/chunks/*.js', async route => { await gate; await route.continue() })
+  try {
+    const literal = page.locator('.home-code-static .home-tok-s').first()
+    await literal.scrollIntoViewIfNeeded()
+    const rect = (await literal.boundingBox())!
+    await page.touchscreen.tap(rect.x + rect.width * 0.4, rect.y + rect.height / 2)
+    await expect(page.locator('.home-focus-proxy')).toBeFocused()
+    await page.keyboard.insertText('buffered')
+    const exportLink = page.locator('.home-pill-ext')
+    await expect(exportLink).toBeDisabled()
+    await expect(exportLink).not.toHaveAttribute('href')
+    await expect(page.getByRole('button', { name: 'Copy code' })).toBeDisabled()
+    expect(page.url()).not.toContain('code.shimizu-technology.com')
+    release()
+    await expect(page.locator('.cm-content')).toBeVisible()
+    await expect(exportLink).toHaveAttribute('href')
+    const source = await editorText(page)
+    expect(source).toContain('buffered')
+    expect(source.endsWith('buffered')).toBe(false)
+    const href = await exportLink.getAttribute('href')
+    const encoded = new URLSearchParams(new URL(href!).hash.slice(1)).get('project')!
+    expect(JSON.parse(Buffer.from(encoded, 'base64url').toString()).files[0].content).toBe(source)
+  } finally {
+    release()
+    await page.unroute('**/_next/static/chunks/*.js')
+  }
 })

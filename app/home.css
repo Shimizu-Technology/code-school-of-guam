@@ -189,7 +189,6 @@
   font: var(--code-fs) / var(--code-lh) var(--home-mono);
   -webkit-tap-highlight-color: transparent;
 }
-.home-code-fallback { margin: 0; padding: var(--code-pad-y) var(--code-line-pr); font: inherit; white-space: pre; overflow-wrap: normal; width: max-content; min-width: 100%; }
 .home-code-static { position: relative; z-index: 0; margin: 0; padding: var(--code-pad-y) 0; min-height: 100%; width: max-content; min-width: 100%; font: inherit; color: #dce3ee; tab-size: 4; }
 .home-code-static::before {
   content: ''; position: absolute; z-index: -1; top: 0; bottom: 0; left: 0;
