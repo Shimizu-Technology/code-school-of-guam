@@ -58,7 +58,7 @@ vi.mock('../components/home/python-editor', () => ({
 const DEFAULT_PYTHON_CODE = PYTHON_EXAMPLES[1].code
 
 function renderHero() {
-  return render(<HeroEditor staticCode={<PythonCodeStatic code={DEFAULT_PYTHON_CODE} />} />)
+  return render(<HeroEditor staticExamples={Object.fromEntries(PYTHON_EXAMPLES.map(example => [example.filename, <PythonCodeStatic key={example.filename} code={example.code} />]))} />)
 }
 
 /** Lets the lazily imported (mocked) editor module resolve and mount. */
@@ -651,7 +651,8 @@ test('Clear updates the pending document and Hafa link immediately; Run waits fo
   const link = screen.getByRole('link', { name: /Open in Hafa Code/ }).getAttribute('href')!
   const project = JSON.parse(Buffer.from(new URLSearchParams(link.split('#')[1]).get('project')!, 'base64url').toString())
   expect(project.files[0].content).toBe(CLEAR_PYTHON_CODE)
-  expect(container.querySelector('.home-code-fallback')!.textContent).toBe(CLEAR_PYTHON_CODE)
+  expect(container.querySelector('.home-code-line')!.textContent).toBe('# Write your Python here')
+  expect(container.querySelectorAll('.home-code-num')).toHaveLength(2)
   const proxy = container.querySelector<HTMLTextAreaElement>('.home-focus-proxy')!
   proxy.value = 'print("hello")'
   fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))

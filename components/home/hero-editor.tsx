@@ -231,7 +231,7 @@ function CodingKeys({ busy, onKey, onRun, onStop, onLayout }: CodingKeysProps) {
   )
 }
 
-export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
+export function HeroEditor({ staticExamples }: { staticExamples: Record<string, ReactNode> }) {
   const [example, setExample] = useState(INITIAL_EXAMPLE)
   const exampleRef = useRef(INITIAL_EXAMPLE)
   const pendingClearRef = useRef(false)
@@ -296,6 +296,7 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
   const focusOnReadyRef = useRef(false)
 
   const isEditing = editorMode === "loading" || editorMode === "ready"
+  const exportPending = pendingText.length > 0
   const isModified = code !== example.code
   const isBusy = runQueued || status === "loading" || status === "running"
   const outputStale = hasExecuted && !!lastRun && (lastRun.code !== code + pendingText || lastRun.filename !== example.filename)
@@ -1108,7 +1109,14 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
               }
             }}
           >
-            {example === INITIAL_EXAMPLE && code === INITIAL_EXAMPLE.code ? staticCode : <pre className="home-code-fallback">{code}</pre>}
+            {code === example.code ? staticExamples[example.filename] : (
+              <pre className="home-code-static">{code.split("\n").map((line, index) => (
+                <span key={index} className="home-code-row">
+                  <span className="home-code-num" aria-hidden="true">{index + 1}</span>
+                  <span className="home-code-line">{line || "\n"}</span>
+                </span>
+              ))}</pre>
+            )}
           </div>
         ) : null}
         <div ref={mountRef} className="home-cm-mount" />
@@ -1184,14 +1192,17 @@ export function HeroEditor({ staticCode }: { staticCode: ReactNode }) {
           Python Fundamentals
         </Link>
         <span className="home-pill">Runs in your browser</span>
-        <a href={hafaCodeLink.url} target="_blank" rel="noopener noreferrer" className="home-pill-ext">
+        {exportPending ? <button type="button" disabled className="home-pill-ext">
           Open in Hafa Code <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-        </a>
+        </button> : <a href={hafaCodeLink.url} target="_blank" rel="noopener noreferrer" className="home-pill-ext">
+          Open in Hafa Code <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>}
       </div>
-      {hafaCodeLink.truncated ? (
+      {exportPending ? <p className="home-editor-oversize" role="status">Finish loading the editor before opening or copying your code. If loading fails, choose Try again.</p> : null}
+      {hafaCodeLink.truncated || exportPending ? (
         <div className="home-editor-oversize" role="note">
-          <span>Code is too large to preload in a link — copy it, then paste in Hafa Code.</span>
-          <button type="button" className="home-ed-btn home-ed-btn-sm" onClick={handleCopyCode}>
+          {hafaCodeLink.truncated ? <span>Code is too large to preload in a link — copy it, then paste in Hafa Code.</span> : null}
+          <button type="button" className="home-ed-btn home-ed-btn-sm" disabled={exportPending} onClick={handleCopyCode}>
             {copiedCode ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
             {copiedCode ? "Copied" : "Copy code"}
           </button>
