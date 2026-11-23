@@ -109,7 +109,7 @@ test('hero editor reserves output space with highlighted weather code and no wor
   vi.stubGlobal('Worker', MockPythonWorker)
   const { container } = renderHero()
   const code = container.querySelector('.home-code-static')!.textContent!
-  expect(code).toContain('for month, mm in months:')
+  expect(code).toContain('for month in rain:')
   expect(container.querySelector('.home-code-static')!.hasAttribute('aria-label')).toBe(false)
   expect(screen.getByRole('region', { name: 'Sample Python code: guam_weather.py' }).tabIndex).toBe(0)
   expect(container.querySelector<HTMLElement>('.home-term')!.hidden).toBe(false)
@@ -163,10 +163,10 @@ test('hero editor runs Python in a Web Worker on click, supports Edit Python cod
 
     act(() => {
       worker.emit({ id: runMsg.id, type: 'started' })
-      worker.emit({ id: runMsg.id, type: 'result', stdout: 'Total: $118\nUnder budget by $2\n', stderr: '', exitCode: 0 })
+      worker.emit({ id: runMsg.id, type: 'result', stdout: 'Total: $118\nLeft: $2\n', stderr: '', exitCode: 0 })
     })
     expect(container.querySelector('.home-term')!.textContent).toContain('Ran in browser')
-    expect(container.querySelector('.home-term')!.textContent).toContain('Under budget by $2')
+    expect(container.querySelector('.home-term')!.textContent).toContain('Left: $2')
 
     // Edit Python code lazily loads the editor in place of the highlighted copy and updates the Hafa Code link.
     fireEvent.click(screen.getByRole('button', { name: /Edit Python code/ }))
@@ -192,7 +192,7 @@ test('hero editor runs Python in a Web Worker on click, supports Edit Python cod
     act(() => { vi.advanceTimersByTime(RUN_EXECUTION_TIMEOUT_MS) })
     expect(worker.terminated).toBe(true)
     expect(container.querySelector('.home-term')!.textContent).toContain('Stopped after 5 seconds')
-    expect(container.querySelector('.home-term')!.textContent).not.toContain('Under budget by $2')
+    expect(container.querySelector('.home-term')!.textContent).not.toContain('Left: $2')
 
     // Output-limit message terminates the next worker and displays the cap notice.
     fireEvent.click(screen.getByRole('button', { name: 'Run your Python code' }))
@@ -405,7 +405,7 @@ test('the hero editor client component keeps CodeMirror and the highlighter out 
 test('the sample output matches what the program prints', () => {
   const expenses = { Food: 61, Transport: 48, Supplies: 9 }
   const total = Object.values(expenses).reduce((a, b) => a + b, 0)
-  expect(EDITOR_OUTPUT).toEqual([`Total: $${total}`, ...Object.entries(expenses).map(([k, v]) => `${k}: $${v}`), `Under budget by $${120 - total}`])
+  expect(EDITOR_OUTPUT).toEqual([`Total: $${total}`, ...Object.entries(expenses).map(([k, v]) => `${k}: $${v}`), `Left: $${120 - total}`])
 })
 
 test('the story deck shows one story at a time and Next moves to the following graduate', () => {
@@ -618,12 +618,13 @@ test('every example updates its code, caption, worker filename, and Hafa Code pa
 
 test('examples have distinct starters and mobile-fit programs; the approved expense reformat is pinned', () => {
   expect(new Set(PYTHON_EXAMPLES.map(example => example.starterKey)).size).toBe(7)
-  // Intentionally reformatted on Nov 23, 2026 for mobile fit; pins the approved replacement.
-  expect(createHash('sha256').update(PYTHON_EXAMPLES[0].code).digest('hex')).toBe('95f94d2eed88575792b7e66b6751363cc8dfc4a047067ffe7f710929b9264623')
+  // Intentionally reformatted Nov 23, 2026 for mobile fit and natural beginner Python (round 7).
+  expect(createHash('sha256').update(PYTHON_EXAMPLES[0].code).digest('hex')).toBe('35c54507141ca94a811a222c89b699fbbba7ea221254274f3fa1cf6a2634be20')
   for (const example of PYTHON_EXAMPLES) {
     expect(example.code).not.toContain('input(')
     expect(example.code.split('\n').every(line => line.length <= 29)).toBe(true)
   }
+  expect(PYTHON_EXAMPLES[1].code.split('\n')).toHaveLength(13)
   const chamorro = PYTHON_EXAMPLES.find(example => example.filename === 'chamorro_hello.py')!.code
   expect(chamorro).toContain('Håfa adai')
   expect(chamorro).toContain("Si Yu'os ma'åse'")

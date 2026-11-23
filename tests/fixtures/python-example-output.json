@@ -4,22 +4,22 @@
     "Food: $61",
     "Transport: $48",
     "Supplies: $9",
-    "Under budget by $2"
+    "Left: $2"
   ],
   "guam_weather.py": [
     "Guam: sample data",
     "77°F = 25°C",
     "86°F = 30°C",
     "95°F = 35°C",
-    "Rain: █ = 50 mm",
-    "Jan ██ 100 mm",
-    "Jun ███ 150 mm",
-    "Sep ███████ 350 mm"
+    "Rain (mm): █ = 50",
+    "Jan ██ 100",
+    "Jun ███ 150",
+    "Sep ███████ 350"
   ],
   "tip_split.py": [
     "Bill: $84.00",
     "Tip: $15.12",
-    "Each pays: $33.04"
+    "Each: $33.04"
   ],
   "fizzbuzz.py": [
     "1",

@@ -115,7 +115,7 @@ test('the server-rendered code and the live editor paint identical token classes
     Array.from(line.querySelectorAll('span[class*="home-tok-"]')).map((span) => `${span.className}:${span.textContent}`).join(' '),
   )
   expect(liveLines).toEqual(staticLines)
-  expect(staticLines.some(line => line.includes('home-tok-f:items'))).toBe(true)
+  expect(staticLines.some(line => line.includes('home-tok-f:values'))).toBe(true)
 })
 
 test('the highlighter preserves blank source lines', () => {

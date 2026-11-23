@@ -100,7 +100,7 @@
     --code-lh: 1.45;
     --code-line-pl: 4px;
     --code-line-pr: 4px;
-    --code-max-h: min(20rem, 60svh);
+    --code-max-h: min(21rem, 60svh);
     --gutter-pl: 2px;
     --gutter-pr: 2px;
   }
@@ -174,11 +174,13 @@
 .home-code-area:focus-within::after { box-shadow: inset 0 0 0 2px var(--code-ring), inset 0 0 18px -6px rgba(143, 184, 255, 0.35); }
 .home-term:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--code-ring); }
 
-/* Read-only (server-rendered) code, laid out exactly like CodeMirror below. */
+/* Read-only (server-rendered) code, laid out exactly like CodeMirror below.
+   Opaque sticky gutters and a 4px edge mask keep scrolled glyphs clear in Safari. */
 .home-code-scroller {
   max-height: var(--code-max-h);
   min-height: var(--code-min-h);
   overflow: auto;
+  isolation: isolate;
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   touch-action: pan-x pan-y pinch-zoom;
@@ -198,7 +200,7 @@
 .home-code-num {
   flex: 0 0 calc(var(--gutter-w) + 1px); min-width: calc(var(--gutter-w) + 1px); box-sizing: border-box;
   padding: 0 var(--gutter-pr) 0 var(--gutter-pl); text-align: right; white-space: nowrap;
-  position: sticky; left: 0; z-index: 1; background: var(--gutter-bg); border-right: 1px solid var(--gutter-line);
+  position: sticky; left: 0; z-index: 4; background: var(--gutter-bg); background-clip: border-box; border-right: 1px solid var(--gutter-line); box-shadow: 4px 0 var(--home-code-bg);
   color: var(--gutter-fg); -webkit-user-select: none; user-select: none;
 }
 .home-code-line,
@@ -217,6 +219,7 @@
   max-height: var(--code-max-h);
   min-height: var(--code-min-h);
   overflow: auto;
+  isolation: isolate;
   overscroll-behavior-x: contain;
   overscroll-behavior-y: auto;
   touch-action: pan-x pan-y pinch-zoom;
@@ -228,7 +231,8 @@
 .home-editor .cm-editor .cm-content { padding: var(--code-pad-y) 0; caret-color: #ffd2cd; }
 .home-editor .cm-editor .cm-content ::selection,
 .home-editor .cm-editor .cm-content::selection { background: rgba(143, 184, 255, 0.32); }
-.home-editor .cm-editor .cm-gutters { background: var(--gutter-bg); color: var(--gutter-fg); border-right: 1px solid var(--gutter-line); }
+.home-editor .cm-editor .cm-gutters { z-index: 200; isolation: isolate; background: var(--gutter-bg); color: var(--gutter-fg); border-right: 1px solid var(--gutter-line); box-shadow: 4px 0 var(--home-code-bg); }
+.home-editor .cm-editor .cm-gutter { background: var(--gutter-bg); }
 .home-editor .cm-editor .cm-lineNumbers .cm-gutterElement { min-width: var(--gutter-w); padding: 0 var(--gutter-pr) 0 var(--gutter-pl); }
 .home-editor .cm-editor .cm-activeLine,
 .home-editor .cm-editor .cm-activeLineGutter { background: transparent; }

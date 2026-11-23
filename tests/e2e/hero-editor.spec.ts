@@ -240,7 +240,7 @@ test('Run executes the edited program and brings the output into view; Reset res
   expect(inView).toBe(true)
   await shot(page, '04-ran', testInfo.project.name)
   await editorAction(page, 'Reset to original Python example')
-  await expect.poll(() => editorText(page)).toContain('for month, mm in months:')
+  await expect.poll(() => editorText(page)).toContain('for month in rain:')
   await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
   // Reset is undoable.
   if (isTouch(testInfo.project.name)) {
@@ -805,7 +805,7 @@ test.describe('automatic execution', () => {
     await page.goto('/', { waitUntil: 'networkidle' })
     await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
     await expect(page.locator('.home-output-prompt')).toContainText('Press Run')
-    await shot(page, 'r6-loading', testInfo.project.name, 'viewport')
+    await shot(page, 'r7-loading', testInfo.project.name, 'viewport')
     const before = await page.evaluate(() => {
       document.body.setAttribute('data-focus-baseline', '')
       return { scroll: scrollY, focused: document.activeElement?.tagName }
@@ -813,7 +813,7 @@ test.describe('automatic execution', () => {
     const started = Date.now()
     await releaseIdle(page)
     await expect(page.locator('.home-term-status-ok')).toHaveText('Ran in browser', { timeout: 120_000 })
-    await expect(page.locator('.home-term')).toContainText('Sep ███████ 350 mm')
+    await expect(page.locator('.home-term')).toContainText('Sep ███████ 350')
     const bars = await page.locator('.home-term-block').evaluateAll(elements => elements.map(el => ({ characters: el.textContent!.length, width: el.getBoundingClientRect().width })))
     for (const bar of bars) expect(Math.abs(bar.width / bar.characters - bars[0].width)).toBeLessThan(0.1)
     expect(await page.locator('.home-term').evaluate(el => el.scrollHeight <= el.clientHeight)).toBe(true)
@@ -825,7 +825,7 @@ test.describe('automatic execution', () => {
     else testInfo.annotations.push({ type: 'CLS', description: 'Layout Instability API unavailable in this browser; Chromium measures navigation-start CLS.' })
     console.log(JSON.stringify({ project: testInfo.project.name, timeToOutputMs: Date.now() - started, cls: clsSupported ? cls : null, pyodideResponseBytes: transfers.reduce((sum, item) => sum + item.transferBytes, 0), transfers }))
     await expect(page.locator('.home-editor [aria-live=polite]')).toHaveText('')
-    await shot(page, 'r6-first-visit', testInfo.project.name, 'viewport')
+    await shot(page, 'r7-first-visit', testInfo.project.name, 'viewport')
     await openEditor(page, testInfo.project.name)
     await replaceProgram(page, 'print("changed")')
     await expect(page.locator('.home-term')).toHaveAttribute('data-stale', '')
@@ -851,7 +851,7 @@ test('save-data reserves its footprint without loading Python or shifting after 
   if (cls !== null) expect(cls).toBeLessThan(0.01)
   else testInfo.annotations.push({ type: 'CLS', description: 'Layout Instability API unavailable in this browser; Chromium measures navigation-start CLS.' })
   console.log(JSON.stringify({ project: testInfo.project.name, saveData: true, navigationCLS: cls }))
-  await shot(page, 'r6-save-data', testInfo.project.name, 'viewport')
+  await shot(page, 'r7-save-data', testInfo.project.name, 'viewport')
 })
 
 test.describe('automatic execution races', () => {
@@ -897,7 +897,7 @@ test.describe('automatic execution races', () => {
     await page.locator('figure.home-editor').scrollIntoViewIfNeeded()
     await releaseIdle(page)
     await expect(page.locator('.home-term-status')).toHaveText('Loading Python…')
-    await shot(page, 'r6-loading', testInfo.project.name, 'viewport')
+    await shot(page, 'r7-loading', testInfo.project.name, 'viewport')
     await page.locator('.home-editor-actions .home-run').click()
     await expect(page.locator('.home-editor-actions .home-run')).toHaveAccessibleName('Stop running Python')
     await expect(page.locator('.home-editor [aria-live=polite]')).toContainText('Loading Python runtime')
@@ -930,7 +930,7 @@ test('phone menu and every filename remain usable including the modified dot', a
     await expect(more).toBeFocused()
     await expect(page.getByRole('menu')).toHaveCount(0)
     await more.click()
-    if (width === 375) await shot(page, 'r6-menu-open', testInfo.project.name, 'viewport')
+    if (width === 375) await shot(page, 'r7-menu-open', testInfo.project.name, 'viewport')
     await page.locator('.home-example-caption').click({ position: { x: 2, y: 2 } })
     await expect(page.getByRole('menu')).toHaveCount(0)
     await expect(more).toBeFocused()
@@ -939,7 +939,7 @@ test('phone menu and every filename remain usable including the modified dot', a
       await picker.click()
       await page.getByRole('option', { name: example.filename, exact: true }).click()
       await expect(page.locator('.cm-content')).toBeVisible()
-      if (width === 375 && example.filename === 'expense_summary.py') await shot(page, 'r6-expense-selected', testInfo.project.name, 'viewport')
+      if (width === 375 && example.filename === 'expense_summary.py') await shot(page, 'r7-expense-selected', testInfo.project.name, 'viewport')
       await page.locator('.cm-content').focus()
       await page.keyboard.insertText('#')
       await expect(picker).toHaveAccessibleName('Python example (modified)')
@@ -1171,6 +1171,9 @@ test('a typed long line pans inside the phone editor and leaves the page and gut
   await readOnly.evaluate(el => { el.scrollLeft = 120 })
   expect(await readOnly.evaluate(el => el.scrollLeft)).toBeGreaterThan(100)
   expect(await page.locator('.home-code-num').first().evaluate(el => el.getBoundingClientRect().left)).toBeCloseTo(staticLeft, 0)
+  await expect(page.locator('.home-code-num').first()).toHaveCSS('background-color', 'rgb(17, 24, 34)')
+  await expect(page.locator('.home-code-num').first()).toHaveCSS('z-index', '4')
+  await expect(page.locator('.home-code-num').first()).toHaveCSS('box-shadow', 'rgb(20, 27, 37) 4px 0px 0px 0px')
   expect(await page.locator('.home-code-line').first().evaluate(el => el.getBoundingClientRect().height / parseFloat(getComputedStyle(el).lineHeight))).toBeCloseTo(1, 1)
   await page.reload({ waitUntil: 'networkidle' })
   await openEditor(page, testInfo.project.name)
@@ -1185,12 +1188,16 @@ test('a typed long line pans inside the phone editor and leaves the page and gut
   expect(await scroller.evaluate(el => el.scrollLeft)).toBeGreaterThan(100)
   const after = await page.locator('.cm-gutters').boundingBox()
   expect(Math.abs(after!.x - before!.x)).toBeLessThan(1)
+  await expect(page.locator('.cm-gutters')).toHaveCSS('background-color', 'rgb(17, 24, 34)')
+  await expect(page.locator('.cm-gutters')).toHaveCSS('z-index', '200')
+  await expect(page.locator('.cm-gutters')).toHaveCSS('box-shadow', 'rgb(20, 27, 37) 4px 0px 0px 0px')
+  await expect(page.locator('.cm-lineNumbers')).toHaveCSS('background-color', 'rgb(17, 24, 34)')
   expect(await page.locator('.cm-line').count()).toBe(1)
   expect(await page.locator('.cm-line').evaluate(el => el.getBoundingClientRect().height / parseFloat(getComputedStyle(el).lineHeight))).toBeCloseTo(1, 1)
   expect(await scroller.evaluate(el => getComputedStyle(el).overscrollBehaviorX)).toBe('contain')
   expect(await scroller.evaluate(el => getComputedStyle(el).overscrollBehaviorY)).toBe('auto')
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0)
-  await shot(page, 'r6-long-line-sideways', testInfo.project.name, 'viewport')
+  await shot(page, 'r7-long-line-sideways', testInfo.project.name, 'viewport')
 })
 
 test.describe('phone footer around automatic execution', () => {
@@ -1202,6 +1209,13 @@ test.describe('phone footer around automatic execution', () => {
     for (const [width, height] of [[375, 812], [390, 844]]) {
       await page.setViewportSize({ width, height })
       await page.goto('/', { waitUntil: 'networkidle' })
+      const code = page.locator('.home-code-scroller')
+      await expect(page.locator('.home-code-row')).toHaveCount(13)
+      const checkCodeFits = async () => {
+        expect(await code.evaluate(el => el.scrollHeight <= el.clientHeight + 1), `${width}×${height}: whole default program is visible`).toBe(true)
+        expect(await code.evaluate(el => el.scrollWidth <= el.clientWidth), `${width}×${height}: default program fits across`).toBe(true)
+      }
+      await checkCodeFits()
       const link = page.locator('.home-editor-foot').getByRole('link', { name: /Open in Hafa Code/ })
       await link.scrollIntoViewIfNeeded()
       await expect(page.locator('.chat-launcher')).toHaveAttribute('data-visible', 'true')
@@ -1222,6 +1236,7 @@ test.describe('phone footer around automatic execution', () => {
       await releaseIdle(page)
       await expect(page.locator('.home-term-status-ok')).toHaveText('Ran in browser', { timeout: 120_000 })
       expect(await page.locator('.home-term').evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true)
+      await checkCodeFits()
       await check()
     }
   })
